@@ -1,7 +1,9 @@
-﻿namespace Spectre.CommandLine
+﻿using System;
+
+namespace Spectre.CommandLine
 {
     public interface ICommandRegistrar
     {
-        void Register<TCommand>() where TCommand : ICommand;
+        void Register(Type type);
     }
 }

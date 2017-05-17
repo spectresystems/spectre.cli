@@ -10,10 +10,10 @@ namespace Spectre.CommandLine
     {
         private readonly CommandLineApplication _app;
         private readonly Mapper _mapper;
-        private readonly ConsoleStreams _streams;
+        private readonly IConsoleStreams _streams;
         private readonly IResolver _resolver;
 
-        public CommandRegistrar(CommandLineApplication app, Mapper mapper, ConsoleStreams streams, IResolver resolver)
+        public CommandRegistrar(CommandLineApplication app, Mapper mapper, IConsoleStreams streams, IResolver resolver)
         {
             _app = app;
             _mapper = mapper;
@@ -21,11 +21,16 @@ namespace Spectre.CommandLine
             _resolver = resolver;
         }
 
-        public void Register<TCommand>()
-            where TCommand : ICommand
+        public void Register(Type type)
         {
+            var commandType = typeof(ICommand);
+            if (!commandType.GetTypeInfo().IsAssignableFrom(type))
+            {
+                throw new InvalidOperationException($"Could not register command of type '{type.FullName}' since it does not implement '{commandType.FullName}'.");
+            }
+
             // Resolve the command.
-            var command = _resolver.Resolve(typeof(TCommand)) as ICommand;
+            var command = _resolver.Resolve(type) as ICommand;
             if (command == null)
             {
                 throw new InvalidOperationException("Could not resolve command.");

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Spectre.CommandLine;
+﻿using Spectre.CommandLine;
 
 namespace Example.Commands.Nuget
 {

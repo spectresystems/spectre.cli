@@ -1,5 +1,4 @@
-﻿using Example.Commands;
-using Example.Commands.Build;
+﻿using Example.Commands.Build;
 using Example.Commands.Nuget;
 using Spectre.CommandLine;
 
@@ -15,8 +14,8 @@ namespace Example
                 app.SetTitle("Microsoft .NET Core Shared Framework Host");
 
                 // Register commands.
-                app.Register<BuildCommand>();
-                app.Register<NuGetCommand>();
+                app.RegisterCommand<BuildCommand>();
+                app.RegisterCommand<NuGetCommand>();
 
                 // Run the application.
                 return app.Run(args);

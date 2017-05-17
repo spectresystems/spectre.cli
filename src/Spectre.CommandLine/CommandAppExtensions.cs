@@ -4,28 +4,32 @@ namespace Spectre.CommandLine
 {
     public static class CommandAppExtensions
     {
-        public static void SetExecutableName(this CommandApp app, string name)
+        public static void SetExecutableName<TSettings>(this CommandAppBase<TSettings> appBase, string name)
+            where TSettings : CommandAppSettings, new()
         {
-            app.App.Name = name;
+            appBase.App.Name = name;
         }
 
-        public static void SetTitle(this CommandApp app, string title)
+        public static void SetTitle<TSettings>(this CommandAppBase<TSettings> appBase, string title)
+            where TSettings : CommandAppSettings, new()
         {
-            app.App.FullName = title;
+            appBase.App.FullName = title;
         }
 
-        public static void SetVersion(this CommandApp app, string version, string longVersion = null)
+        public static void SetVersion<TSettings>(this CommandAppBase<TSettings> appBase, string version, string longVersion = null)
+            where TSettings : CommandAppSettings, new()
         {
             if (version == null)
             {
                 throw new ArgumentNullException(nameof(version));
             }
-            app.App.VersionOption("-v | --version", version, longVersion ?? version);
+            appBase.App.VersionOption("-v | --version", version, longVersion ?? version);
         }
 
-        public static void SetHelpText(this CommandApp app, string text)
+        public static void SetHelpText<TSettings>(this CommandAppBase<TSettings> appBase, string text)
+            where TSettings : CommandAppSettings, new()
         {
-            app.App.ExtendedHelpText = text;
+            appBase.App.ExtendedHelpText = text;
         }
     }
 }
