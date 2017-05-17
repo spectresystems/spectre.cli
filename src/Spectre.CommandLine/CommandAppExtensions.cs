@@ -5,19 +5,19 @@ namespace Spectre.CommandLine
     public static class CommandAppExtensions
     {
         public static void SetExecutableName<TSettings>(this CommandAppBase<TSettings> appBase, string name)
-            where TSettings : CommandAppSettings, new()
+            where TSettings : CommandAppSettings
         {
             appBase.App.Name = name;
         }
 
         public static void SetTitle<TSettings>(this CommandAppBase<TSettings> appBase, string title)
-            where TSettings : CommandAppSettings, new()
+            where TSettings : CommandAppSettings
         {
             appBase.App.FullName = title;
         }
 
         public static void SetVersion<TSettings>(this CommandAppBase<TSettings> appBase, string version, string longVersion = null)
-            where TSettings : CommandAppSettings, new()
+            where TSettings : CommandAppSettings
         {
             if (version == null)
             {
@@ -27,7 +27,7 @@ namespace Spectre.CommandLine
         }
 
         public static void SetHelpText<TSettings>(this CommandAppBase<TSettings> appBase, string text)
-            where TSettings : CommandAppSettings, new()
+            where TSettings : CommandAppSettings
         {
             appBase.App.ExtendedHelpText = text;
         }

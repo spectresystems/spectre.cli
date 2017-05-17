@@ -6,13 +6,13 @@
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>
     <Authors>Patrik Svensson</Authors>
-    <AssemblyVersion>0.0.3.0</AssemblyVersion>
-    <FileVersion>0.0.3.0</FileVersion>
+    <AssemblyVersion>0.0.4.0</AssemblyVersion>
+    <FileVersion>0.0.4.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://raw.githubusercontent.com/spectresystems/commandline/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/spectresystems/commandline</PackageProjectUrl>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

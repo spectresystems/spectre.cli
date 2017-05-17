@@ -7,7 +7,7 @@ using Spectre.CommandLine.Internal;
 namespace Spectre.CommandLine
 {
     public abstract class CommandAppBase<TSettings> : IDisposable
-        where TSettings : CommandAppSettings, new()
+        where TSettings : CommandAppSettings
     {
         private readonly Mapper _mapper;
 
@@ -18,10 +18,10 @@ namespace Spectre.CommandLine
 
         protected CommandAppBase(TSettings settings)
         {
-            Settings = settings;
-
-            Resolver = settings.Resolver ?? new DefaultResolver();
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             Streams = settings.Streams ?? new ConsoleStreams();
+            Resolver = settings.Resolver ?? new DefaultResolver();
+
             _mapper = new Mapper();
 
             App = new CommandLineApplication();
@@ -38,7 +38,7 @@ namespace Spectre.CommandLine
             });
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Streams?.Dispose();
         }
