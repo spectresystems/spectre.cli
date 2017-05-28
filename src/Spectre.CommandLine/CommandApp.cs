@@ -1,20 +1,37 @@
+﻿using System;
+using Spectre.CommandLine.Internal;
+
 namespace Spectre.CommandLine
 {
-    public sealed class CommandApp : CommandAppBase<CommandAppSettings>
+    public sealed class CommandApp
     {
-        public CommandApp() 
-            : base(new CommandAppSettings())
+        private readonly IResolver _provider;
+        private readonly Configurator _configurator;
+
+        public CommandApp()
+            : this(new DefaultResolver())
         {
         }
 
-        protected override void Initialize()
+        public CommandApp(IResolver resolver)
         {
+            _provider = resolver ?? throw new ArgumentNullException(nameof(resolver));
+            _configurator = new Configurator();
         }
 
-        public void RegisterCommand<TCommand>()
-            where TCommand : ICommand
+        public void Configure(Action<IConfigurator> configuration)
         {
-            RegisterCommand(typeof(TCommand));
+            configuration(_configurator);
+        }
+
+        public int Run(string[] args)
+        {
+            // Build the application.
+            var builder = new ApplicationBuilder(_provider);
+            var application = builder.Build(_configurator);
+
+            // Run the application.
+            return application.Execute(args);
         }
     }
 }

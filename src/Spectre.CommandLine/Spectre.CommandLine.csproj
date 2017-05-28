@@ -16,12 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.0" />
-    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <None Remove="Spectre.CommandLine.net451.v3.ncrunchproject" />
+    <None Remove="Spectre.CommandLine.netstandard1.5.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
 
 </Project>

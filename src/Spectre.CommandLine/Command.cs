@@ -1,17 +1,25 @@
+﻿using System.Diagnostics;
+
 namespace Spectre.CommandLine
 {
-    public abstract class Command : Command<NoSettings>
+    public abstract class Command : ICommand
     {
-        protected Command(string name) 
-            : base(name)
-        {
-        }
+        protected abstract int Run();
 
-        public abstract int Run();
-
-        public sealed override int Run(NoSettings settings)
+        int ICommand.Run(object settings)
         {
             return Run();
+        }
+    }
+
+    public abstract class Command<TSettings> : ICommand<TSettings>
+    {
+        public abstract int Run(TSettings settings);
+
+        int ICommand.Run(object settings)
+        {
+            Debug.Assert(settings is TSettings);
+            return Run((TSettings)settings);
         }
     }
 }

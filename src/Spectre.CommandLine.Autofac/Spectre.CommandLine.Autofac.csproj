@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Spectre.CommandLine.Autofac.net451.v3.ncrunchproject" />
+    <None Remove="Spectre.CommandLine.Autofac.netstandard1.5.v3.ncrunchproject" />
+    <None Remove="Spectre.CommandLine.Autofac.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spectre.CommandLine\Spectre.CommandLine.csproj" />
+  </ItemGroup>
+
+</Project>

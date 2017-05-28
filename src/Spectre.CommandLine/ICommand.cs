@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace Spectre.CommandLine
+﻿namespace Spectre.CommandLine
 {
     public interface ICommand
     {
-        Type SettingsType { get; }
-        string Name { get; }
-        void Configure(ICommandRegistrar registrar);
         int Run(object settings);
+    }
+
+    public interface ICommand<TSettings> : ICommandLimiter<TSettings>
+    {
+        int Run(TSettings settings);
     }
 }
