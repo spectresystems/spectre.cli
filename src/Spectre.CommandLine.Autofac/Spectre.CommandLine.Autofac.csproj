@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
+    <Version>0.0.1</Version>
+    <Authors>Patrik Svensson</Authors>
+    <Company>Spectre Systems AB</Company>
+    <Product>Spectre.CommandLine</Product>
+    <Description>Autofac integration for Spectre.CommandLine.</Description>
+    <Copyright>Spectre Systems AB</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/spectresystems/commandline/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/spectresystems/commandline</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/spectresystems/graphics/raw/master/png/logo-medium.png</PackageIconUrl>
+    <AssemblyVersion>0.0.5.0</AssemblyVersion>
+    <FileVersion>0.0.5.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
