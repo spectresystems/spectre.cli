@@ -9,28 +9,27 @@ By using some clever generic constraints, the framework guarantees that all sett
 with a command, is inherited from the parent commands' settings.
 
 ```csharp
-using Example.Commands;
 using Spectre.CommandLine;
 
-namespace Example
+public class Program
 {
-    public class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
+        using (var app = new CommandApp())
         {
-            using (var app = new CommandApp())
+            app.Configure(config =>
             {
-                app.Configure(config =>
+                config.AddProxy<FooSettings>("foo", foo =>
                 {
-                    config.AddProxy<FooSettings>("foo", foo =>
+                    foo.AddCommand<BarCommand>("bar");
+                    foo.AddProxy<BazSettings>("baz", baz =>
                     {
-                        foo.AddCommand<BarCommand>("bar");
-                        foo.AddCommand<BazCommand>("baz");
+                        baz.AddCommand<QuxCommand>("qux");
                     });
                 });
+            });
 
-                return app.Run(args);
-            }
+            return app.Run(args);
         }
     }
 }
