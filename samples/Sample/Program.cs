@@ -1,4 +1,4 @@
-﻿using Sample.Commands;
+﻿using Sample.Shared;
 using Spectre.CommandLine;
 
 namespace Sample
@@ -13,7 +13,10 @@ namespace Sample
                 config.AddProxy<FooSettings>("foo", foo =>
                 {
                     foo.AddCommand<BarCommand>("bar");
-                    foo.AddCommand<BazCommand>("baz");
+                    foo.AddProxy<BazSettings>("baz", baz =>
+                    {
+                        baz.AddCommand<QuxCommand>("qux");
+                    });
                 });
             });
             return app.Run(args);

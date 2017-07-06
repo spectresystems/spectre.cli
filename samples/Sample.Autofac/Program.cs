@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using Sample.Autofac.Commands;
 using Spectre.CommandLine;
 using Spectre.CommandLine.Autofac;
+using Sample.Shared;
 
 namespace Sample.Autofac
 {
@@ -20,7 +20,10 @@ namespace Sample.Autofac
                     config.AddProxy<FooSettings>("foo", foo =>
                     {
                         foo.AddCommand<BarCommand>("bar");
-                        foo.AddCommand<BazCommand>("baz");
+                        foo.AddProxy<BazSettings>("baz", baz =>
+                        {
+                            baz.AddCommand<QuxCommand>("qux");
+                        });
                     });
                 });
 
@@ -35,10 +38,11 @@ namespace Sample.Autofac
 
             builder.RegisterType<Greeting>();
 
+            // Register top level commands.
             builder.RegisterType<BarCommand>();
             builder.RegisterType<BarCommand.Settings>();
-            builder.RegisterType<BazCommand>();
-            builder.RegisterType<BazCommand.Settings>();
+            builder.RegisterType<QuxCommand>();
+            builder.RegisterType<QuxCommand.Settings>();
 
             return builder.Build();
         }

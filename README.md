@@ -78,10 +78,39 @@ public sealed class BazCommand : Command<BazCommand.Settings>
         return 0;
     }
 }
+
+public abstract class BazSettings : FooSettings
+{
+    [Option("-b|--baz")]
+    [Description("Re-enables the baz in all sub systems.")]
+    public string Baz { get; set; }
+}
+
+public sealed class QuxCommand : Command<QuxCommand.Settings>
+{
+    public sealed class Settings : BazSettings
+    {
+        [Option("-q|--qux")]
+        [Description("Sets the qux timestamp for the current baz.")]
+        public DateTime Qux { get; set; }
+    }
+
+    public override int Run(Settings settings)
+    {
+        Console.WriteLine($"Foo={settings.Foo} Baz={settings.Baz} Qux={settings.Qux}");
+        return 0;
+    }
+}
 ```
 
 You can now execute the `Baz` command like this:
 
 ```
-myapp foo --foo Hello baz --baz 101
+myapp foo --foo Hello baz --baz 101 --qux "2017-07-06 15:21"
+```
+
+Or like this:
+
+```
+myapp foo --foo Hello bar --bar 101
 ```

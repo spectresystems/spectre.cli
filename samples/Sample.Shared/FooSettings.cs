@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Spectre.CommandLine;
 
-namespace Sample.Commands
+namespace Sample.Shared
 {
     public abstract class FooSettings
     {

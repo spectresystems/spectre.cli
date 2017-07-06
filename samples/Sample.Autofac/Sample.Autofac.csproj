@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spectre.CommandLine.Autofac\Spectre.CommandLine.Autofac.csproj" />
     <ProjectReference Include="..\..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
+    <ProjectReference Include="..\Sample.Shared\Sample.Shared.csproj" />
   </ItemGroup>
 
 </Project>
