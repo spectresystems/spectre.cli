@@ -15,6 +15,7 @@
     <Version>0.0.5</Version>
     <PackageIconUrl>https://github.com/spectresystems/graphics/raw/master/png/logo-medium.png</PackageIconUrl>
     <Product>Spectre.CommandLine</Product>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Spectre.CommandLine.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
