@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -21,18 +22,30 @@ namespace Spectre.CommandLine.Internal
                         continue;
                     }
 
+                    // Make sure it's an option.
                     var attribute = property.GetCustomAttribute<OptionAttribute>();
                     if (attribute == null)
                     {
                         continue;
                     }
 
+                    // Get the default attribute if present.
+                    var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
+
+                    // What kind of property is it?
+                    var isFlag = property.PropertyType == typeof(bool);
+                    var mappingType = isFlag ? MappingType.Flag : MappingType.Scalar;
+
                     result.Add(new OptionDefinition
                     {
                         Type = property.PropertyType,
                         Property = property,
                         Template = attribute.Template,
-                        Inherited = IsInherited(command, settingsType, property, attribute)
+                        Inherited = IsInherited(command, settingsType, property, attribute),
+                        Description = property.GetCustomAttribute<DescriptionAttribute>()?.Description,
+                        MappingType = mappingType,
+                        HasDefaultValue = defaultValue != null,
+                        DefaultValue = defaultValue?.Value
                     });
                 }
             }

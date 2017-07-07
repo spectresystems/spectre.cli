@@ -10,8 +10,16 @@ namespace Spectre.CommandLine.Internal
 
         public PropertyInfo Property { get; set; }
 
+        public string Description { get; set; }
+
         public bool Inherited { get; set; }
 
         public string Template { get; set; }
+
+        public MappingType MappingType { get; set; }
+
+        public bool HasDefaultValue { get; set; }
+
+        public object DefaultValue { get; set; }
     }
 }

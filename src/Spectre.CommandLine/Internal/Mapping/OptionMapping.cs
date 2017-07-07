@@ -16,20 +16,16 @@ namespace Spectre.CommandLine.Internal
         public string Value => Option.Value();
         public bool Required => false;
 
-        public bool HasDefaultValue { get; private set; }
-        public object DefaultValue { get; private set; }
+        public bool HasDefaultValue { get; }
+        public object DefaultValue { get; }
 
-        public OptionMapping(PropertyInfo property, MappingType kind, CommandOption option)
+        public OptionMapping(OptionDefinition definition, CommandOption option)
         {
-            Property = property;
-            Kind = kind;
+            Property = definition.Property;
+            Kind = definition.MappingType;
             Option = option;
-        }
-
-        public void SetDefaultValue(object value)
-        {
-            HasDefaultValue = true;
-            DefaultValue = value;
+            HasDefaultValue = definition.HasDefaultValue;
+            DefaultValue = definition.DefaultValue;
         }
 
         public void Assign(object obj, object value)
