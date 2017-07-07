@@ -25,7 +25,6 @@ namespace Spectre.CommandLine.Tests.Unit
                 config.AddProxy<FooSettings>("foo", foo =>
                 {
                     foo.AddCommand<BarCommand>("bar");
-                    foo.AddCommand<BazCommand>("baz");
                 });
             });
             return app.Run(args);

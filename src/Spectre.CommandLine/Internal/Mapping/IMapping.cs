@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
 namespace Spectre.CommandLine.Internal
@@ -14,6 +15,8 @@ namespace Spectre.CommandLine.Internal
 
         bool HasDefaultValue { get; }
         object DefaultValue { get; }
+
+        TypeConverter Converter { get; }
 
         void Assign(object settings, object value);
     }

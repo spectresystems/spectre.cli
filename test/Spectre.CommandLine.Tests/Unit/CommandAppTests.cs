@@ -26,7 +26,7 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // Then
             result.ShouldBe(0);
-            fixture.CallRecorder.WasCalled("FooBar Foo=Hello Bar=2").ShouldBeTrue();
+            fixture.CallRecorder.WasCalled("FooBar Foo=Hello Bar=2 Qux=0").ShouldBeTrue();
         }
 
         [Fact]
@@ -40,7 +40,21 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // Then
             result.ShouldBe(0);
-            fixture.CallRecorder.WasCalled("FooBar Foo=1 Bar=3").ShouldBeTrue();
+            fixture.CallRecorder.WasCalled("FooBar Foo=1 Bar=3 Qux=0").ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Should_Use_Type_Converter_For_Options_If_Specified()
+        {
+            // Given
+            var fixture = new CommandAppFixture();
+
+            // When
+            var result = fixture.Run(new[] { "foo", "--foo", "1", "bar", "--bar", "1", "--qux", "HelloWorld" });
+
+            // Then
+            result.ShouldBe(0);
+            fixture.CallRecorder.WasCalled("FooBar Foo=1 Bar=1 Qux=10").ShouldBeTrue();
         }
     }
 }
