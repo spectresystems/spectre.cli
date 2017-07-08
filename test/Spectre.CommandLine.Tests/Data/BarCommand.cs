@@ -17,11 +17,15 @@ namespace Spectre.CommandLine.Tests.Data
             [Option("-b|--bar")]
             [DefaultValue(3)]
             public int Bar { get; set; }
+
+            [Option("-q|--qux")]
+            [TypeConverter(typeof(LengthTypeConverter))]
+            public int Qux { get; set; }
         }
 
         public override int Run(Settings settings)
         {
-            _recorder.RecordCall($"FooBar Foo={settings.Foo} Bar={settings.Bar}");
+            _recorder.RecordCall($"FooBar Foo={settings.Foo} Bar={settings.Bar} Qux={settings.Qux}");
             return 0;
         }
     }

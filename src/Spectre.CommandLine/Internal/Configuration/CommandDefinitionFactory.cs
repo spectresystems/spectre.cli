@@ -6,11 +6,11 @@ namespace Spectre.CommandLine.Internal
 {
     internal static class CommandDefinitionFactory
     {
-        public static CommandDefinition CreateProxy(CommandDefinition parent, string name, Type settingsType)
+        public static CommandDefinition CreateProxy(IResolver resolver, CommandDefinition parent, string name, Type settingsType)
         {
             var command = new CommandDefinition(parent, name, null, settingsType);
 
-            var options = OptionDefinitionFactory.CreateOptions(command, settingsType);
+            var options = OptionDefinitionFactory.CreateOptions(resolver, command, settingsType);
             foreach (var option in options)
             {
                 command.Options.Add(option);
@@ -19,12 +19,12 @@ namespace Spectre.CommandLine.Internal
             return command;
         }
 
-        public static CommandDefinition CreateCommand(CommandDefinition parent, string name, Type commandType)
+        public static CommandDefinition CreateCommand(IResolver resolver, CommandDefinition parent, string name, Type commandType)
         {
             var settingsType = GetSettingsType(commandType);
             var command = new CommandDefinition(parent, name, commandType, settingsType);
 
-            var options = OptionDefinitionFactory.CreateOptions(command, settingsType);
+            var options = OptionDefinitionFactory.CreateOptions(resolver, command, settingsType);
             foreach (var option in options)
             {
                 command.Options.Add(option);

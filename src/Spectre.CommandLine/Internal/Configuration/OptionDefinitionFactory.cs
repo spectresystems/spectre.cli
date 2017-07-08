@@ -9,7 +9,7 @@ namespace Spectre.CommandLine.Internal
 {
     internal static class OptionDefinitionFactory
     {
-        public static IEnumerable<OptionDefinition> CreateOptions(CommandDefinition command, Type settingsType)
+        public static IEnumerable<OptionDefinition> CreateOptions(IResolver resolver, CommandDefinition command, Type settingsType)
         {
             var result = new List<OptionDefinition>();
             if (settingsType != null)
@@ -29,6 +29,15 @@ namespace Spectre.CommandLine.Internal
                         continue;
                     }
 
+                    // Got a specific type converter?
+                    TypeConverter converter = null;
+                    var converterAttribute = property.GetCustomAttribute<TypeConverterAttribute>();
+                    if (converterAttribute != null)
+                    {
+                        var type = Type.GetType(converterAttribute.ConverterTypeName);
+                        converter = resolver.Resolve(type) as TypeConverter;
+                    }
+
                     // Get the default attribute if present.
                     var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
@@ -45,7 +54,8 @@ namespace Spectre.CommandLine.Internal
                         Description = property.GetCustomAttribute<DescriptionAttribute>()?.Description,
                         MappingType = mappingType,
                         HasDefaultValue = defaultValue != null,
-                        DefaultValue = defaultValue?.Value
+                        DefaultValue = defaultValue?.Value,
+                        Converter = converter
                     });
                 }
             }

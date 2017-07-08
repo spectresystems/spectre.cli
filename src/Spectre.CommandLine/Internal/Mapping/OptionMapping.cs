@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using Microsoft.Extensions.CommandLineUtils;
 
@@ -19,6 +20,8 @@ namespace Spectre.CommandLine.Internal
         public bool HasDefaultValue { get; }
         public object DefaultValue { get; }
 
+        public TypeConverter Converter { get; }
+
         public OptionMapping(OptionDefinition definition, CommandOption option)
         {
             Property = definition.Property;
@@ -26,6 +29,7 @@ namespace Spectre.CommandLine.Internal
             Option = option;
             HasDefaultValue = definition.HasDefaultValue;
             DefaultValue = definition.DefaultValue;
+            Converter = definition.Converter;
         }
 
         public void Assign(object obj, object value)

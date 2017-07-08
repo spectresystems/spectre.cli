@@ -8,14 +8,14 @@ namespace Spectre.CommandLine
     /// </summary>
     public sealed class CommandApp
     {
-        private readonly IResolver _provider;
+        private readonly IResolver _resolver;
         private readonly Configurator _configurator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandApp"/> class.
         /// </summary>
         public CommandApp()
-            : this(new DefaultResolver())
+            : this(null)
         {
         }
 
@@ -25,8 +25,8 @@ namespace Spectre.CommandLine
         /// <param name="resolver">The resolver to be used to instanciate types.</param>
         public CommandApp(IResolver resolver)
         {
-            _provider = resolver ?? throw new ArgumentNullException(nameof(resolver));
-            _configurator = new Configurator();
+            _resolver = new ResolverAdapter(resolver);
+            _configurator = new Configurator(_resolver);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Spectre.CommandLine
         public int Run(string[] args)
         {
             // Build the application.
-            var builder = new ApplicationBuilder(_provider);
+            var builder = new ApplicationBuilder(_resolver);
             var application = builder.Build(_configurator);
 
             // Run the application.

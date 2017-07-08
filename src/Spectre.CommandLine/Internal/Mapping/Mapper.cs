@@ -39,7 +39,7 @@ namespace Spectre.CommandLine.Internal
             // Scalar mapping?
             if (mapping.Kind == MappingType.Scalar)
             {
-                var converter = TypeDescriptor.GetConverter(mapping.Type);
+                var converter = mapping.Converter ?? TypeDescriptor.GetConverter(mapping.Type);
                 var value = converter.ConvertFromInvariantString(mapping.Value);
                 mapping.Assign(settings, value);
             }

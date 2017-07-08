@@ -19,7 +19,11 @@ namespace Spectre.CommandLine.Tests.Testing
 
         public object Resolve(Type type)
         {
-            return _lookup[type];
+            if (_lookup.ContainsKey(type))
+            {
+                return _lookup[type];
+            }
+            return null;
         }
     }
 }
