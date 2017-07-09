@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Shouldly;
+using Spectre.CommandLine.Tests.Fixtures;
 using Xunit;
 
-namespace Spectre.CommandLine.Tests.Unit
+namespace Spectre.CommandLine.Tests.Integration
 {
     public sealed class CommandAppTests
     {

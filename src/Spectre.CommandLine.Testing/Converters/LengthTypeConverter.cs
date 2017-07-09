@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Spectre.CommandLine.Tests.Testing
+namespace Spectre.CommandLine.Testing.Converters
 {
     public sealed class LengthTypeConverter : TypeConverter
     {

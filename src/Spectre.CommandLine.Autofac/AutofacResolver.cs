@@ -14,7 +14,11 @@ namespace Spectre.CommandLine.Autofac
 
         public object Resolve(Type type)
         {
-            return _scope.Resolve(type);
+            if (_scope.TryResolve(type, out object result))
+            {
+                return result;
+            }
+            return null;
         }
     }
 }

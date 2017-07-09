@@ -1,4 +1,4 @@
-﻿namespace Spectre.CommandLine.Tests.Data
+﻿namespace Spectre.CommandLine.Testing.Data
 {
     public class FooSettings
     {

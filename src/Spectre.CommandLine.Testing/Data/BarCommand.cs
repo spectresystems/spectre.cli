@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Spectre.CommandLine.Tests.Testing;
+using Spectre.CommandLine.Testing.Converters;
 
-namespace Spectre.CommandLine.Tests.Data
+namespace Spectre.CommandLine.Testing.Data
 {
     public class BarCommand : Command<BarCommand.Settings>
     {

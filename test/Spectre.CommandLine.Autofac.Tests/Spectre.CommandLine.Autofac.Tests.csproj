@@ -5,23 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Spectre.CommandLine.Tests.v3.ncrunchproject" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="Shouldly" Version="2.8.2" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Spectre.CommandLine.Autofac\Spectre.CommandLine.Autofac.csproj" />
     <ProjectReference Include="..\..\src\Spectre.CommandLine.Testing\Spectre.CommandLine.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
 </Project>

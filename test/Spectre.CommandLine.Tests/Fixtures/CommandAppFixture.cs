@@ -1,7 +1,7 @@
-﻿using Spectre.CommandLine.Tests.Data;
-using Spectre.CommandLine.Tests.Testing;
+﻿using Spectre.CommandLine.Testing;
+using Spectre.CommandLine.Testing.Data;
 
-namespace Spectre.CommandLine.Tests.Unit
+namespace Spectre.CommandLine.Tests.Fixtures
 {
     public sealed class CommandAppFixture
     {

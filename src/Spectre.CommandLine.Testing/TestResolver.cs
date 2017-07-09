@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Spectre.CommandLine.Tests.Testing
+namespace Spectre.CommandLine.Testing
 {
     public sealed class TestResolver : IResolver
     {
