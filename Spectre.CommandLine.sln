@@ -2,25 +2,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine", "Spectre.CommandLine\Spectre.CommandLine.csproj", "{F50E199A-71E4-4724-B53D-42F25E9C1B66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine", "src\Spectre.CommandLine\Spectre.CommandLine.csproj", "{F50E199A-71E4-4724-B53D-42F25E9C1B66}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Tests", "..\test\Spectre.CommandLine.Tests\Spectre.CommandLine.Tests.csproj", "{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Tests", "test\Spectre.CommandLine.Tests\Spectre.CommandLine.Tests.csproj", "{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{B2407886-2084-4155-B81E-C32B19247455}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Autofac", "Spectre.CommandLine.Autofac\Spectre.CommandLine.Autofac.csproj", "{55124258-E7D3-470C-B872-6ABD5C1FB751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Autofac", "src\Spectre.CommandLine.Autofac\Spectre.CommandLine.Autofac.csproj", "{55124258-E7D3-470C-B872-6ABD5C1FB751}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8FC1C14D-00D9-4332-A7D5-A72D102494FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "..\samples\Sample\Sample.csproj", "{1682EF73-8932-4646-A029-6EF113996FB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "samples\Sample\Sample.csproj", "{1682EF73-8932-4646-A029-6EF113996FB8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Autofac", "..\samples\Sample.Autofac\Sample.Autofac.csproj", "{9EDFCB59-7C2B-48E6-8147-655A27CCED31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Autofac", "samples\Sample.Autofac\Sample.Autofac.csproj", "{9EDFCB59-7C2B-48E6-8147-655A27CCED31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Shared", "..\samples\Sample.Shared\Sample.Shared.csproj", "{EA6F6043-4438-41E3-B97F-CAEA3DB94613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Shared", "samples\Sample.Shared\Sample.Shared.csproj", "{EA6F6043-4438-41E3-B97F-CAEA3DB94613}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Autofac.Tests", "..\test\Spectre.CommandLine.Autofac.Tests\Spectre.CommandLine.Autofac.Tests.csproj", "{86D3618A-3C44-4199-9CA2-5B9A28639CD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Autofac.Tests", "test\Spectre.CommandLine.Autofac.Tests\Spectre.CommandLine.Autofac.Tests.csproj", "{86D3618A-3C44-4199-9CA2-5B9A28639CD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Testing", "Spectre.CommandLine.Testing\Spectre.CommandLine.Testing.csproj", "{2622C627-9159-4927-BC83-AC0A4C3D7E21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Testing", "src\Spectre.CommandLine.Testing\Spectre.CommandLine.Testing.csproj", "{2622C627-9159-4927-BC83-AC0A4C3D7E21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{C151D602-78EE-49E0-B066-E60878E57955}"
 EndProject
