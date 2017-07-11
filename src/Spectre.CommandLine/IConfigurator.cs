@@ -8,6 +8,18 @@ namespace Spectre.CommandLine
     public interface IConfigurator
     {
         /// <summary>
+        /// Sets the name of the application.
+        /// </summary>
+        /// <param name="name">The name of the application.</param>
+        void SetApplicationName(string name);
+
+        /// <summary>
+        /// Sets the help option template.
+        /// </summary>
+        /// <param name="template">The help option template.</param>
+        void SetHelpOption(string template);
+
+        /// <summary>
         /// Adds a command proxy to the configuration.
         /// </summary>
         /// <typeparam name="TSettings">The settings type.</typeparam>
@@ -29,6 +41,12 @@ namespace Spectre.CommandLine
     /// <typeparam name="TSettings">The settings type.</typeparam>
     public interface IConfigurator<in TSettings>
     {
+        /// <summary>
+        /// Sets the description of the command proxy.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        void SetDescription(string description);
+
         /// <summary>
         /// Adds a command proxy to the configuration.
         /// </summary>

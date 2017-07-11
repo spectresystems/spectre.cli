@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFrameworks>net451;netcoreapp1.1</TargetFrameworks>
     <Product>Spectre.CommandLine</Product>
     <Company>Spectre Systems AB</Company>
     <Authors>Patrik Svensson</Authors>
@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
-    <ProjectReference Include="..\Sample.Shared\Sample.Shared.csproj" />
   </ItemGroup>
 
 </Project>

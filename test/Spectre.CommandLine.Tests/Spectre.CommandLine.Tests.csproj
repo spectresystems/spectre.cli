@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Spectre.CommandLine.Testing\Spectre.CommandLine.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
   </ItemGroup>
 
