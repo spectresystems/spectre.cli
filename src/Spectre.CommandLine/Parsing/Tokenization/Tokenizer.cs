@@ -62,7 +62,8 @@ namespace Spectre.CommandLine.Parsing.Tokenization
 
         private static Token ScanQuotedString(TextReader reader)
         {
-            Debug.Assert(reader.Read() == '\"');
+            Debug.Assert(reader.Peek() == '\"');
+            reader.Read(); // Consume
 
             var builder = new StringBuilder();
             while (reader.Peek() != -1)
@@ -88,7 +89,9 @@ namespace Spectre.CommandLine.Parsing.Tokenization
         {
             var result = new List<Token>();
 
-            Debug.Assert(reader.Read() == '-');
+            Debug.Assert(reader.Peek() == '-');
+
+            reader.Read(); // Consume
             if (reader.Peek() == -1)
             {
                 throw new CommandAppException("Encountered unterminated option.");
@@ -143,7 +146,8 @@ namespace Spectre.CommandLine.Parsing.Tokenization
 
         private static Token ScanLongOption(TextReader reader)
         {
-            Debug.Assert(reader.Read() == '-');
+            Debug.Assert(reader.Peek() == '-');
+            reader.Read();
 
             if (char.IsWhiteSpace((char)reader.Peek()))
             {
