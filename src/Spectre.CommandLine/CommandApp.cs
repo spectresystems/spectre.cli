@@ -51,7 +51,13 @@ namespace Spectre.CommandLine
         {
             try
             {
-                return RunCore(args);
+                var configuration = _configurator.Configuration;
+                if (configuration.Commands.Count == 0)
+                {
+                    throw new CommandAppException("No commands have been configured.");
+                }
+
+                return RunCore(configuration, args);
             }
             catch (CommandAppException ex)
             {
@@ -60,15 +66,9 @@ namespace Spectre.CommandLine
             }
         }
 
-        private int RunCore(string[] args)
+        private int RunCore(IConfiguration configuration, string[] args)
         {
-            var configuration = _configurator.Configuration;
-            if (configuration.Commands.Count == 0)
-            {
-                return -1;
-            }
-
-            // Parse the command tree.
+            // Parse the arguments into a command tree.
             var parser = new CommandTreeParser(configuration);
             var tree = parser.Parse(args);
             if (tree == null)
@@ -77,7 +77,7 @@ namespace Spectre.CommandLine
                 return 0;
             }
 
-            // Get the top command node.
+            // Get the command to execute.
             var leaf = tree.GetTopCommand();
             if (leaf.Command.IsProxy || leaf.ShowHelp)
             {
@@ -86,14 +86,11 @@ namespace Spectre.CommandLine
                 return 0;
             }
 
-            // Check if there's any required parameters not set for command.
             ValidateRequiredParameters(tree);
 
-            // Create a mapped settings object.
             var settings = _settingsFactory.CreateSettings(tree, leaf.Command.SettingsType);
-
-            // Create the command instance and run it with the provided settings.
             var command = (ICommand) _resolver.Resolve(leaf.Command.CommandType);
+
             return command.Run(settings);
         }
 
