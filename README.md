@@ -1,6 +1,6 @@
 # Spectre.CommandLine
 
-A wrapper library for Microsoft.Extensions.CommandLineUtils.
+An extremly opinionated command line parser.
 
 ## Usage
 
@@ -21,7 +21,7 @@ public class Program
             {
                 config.AddProxy<FooSettings>("foo", foo =>
                 {
-                    foo.AddCommand<BarCommand>("bar");
+                    foo.AddCommand<BarCommand>("bar");                    
                     foo.AddProxy<BazSettings>("baz", baz =>
                     {
                         baz.AddCommand<QuxCommand>("qux");
@@ -31,73 +31,6 @@ public class Program
 
             return app.Run(args);
         }
-    }
-}
-```
-
-This is implemented as following:
-
-```csharp
-public abstract class FooSettings
-{
-    [Option("-f|--foo")]
-    [Description("Essential to enable fooing of the bar or baz.")]
-    public string Foo { get; set; }
-}
-
-public sealed class BarCommand : Command<BarCommand.Settings>
-{
-    public sealed class Settings : FooSettings
-    {
-        [Option("-b|--bar")]
-        [Description("Triggers a bar.")]
-        [DefaultValue(99)]
-        public int Bar { get; set; }
-    }
-
-    public override int Run(Settings settings)
-    {
-        Console.WriteLine($"Foo={settings.Foo} Bar={settings.Bar}");
-        return 0;
-    }
-}
-
-public sealed class BazCommand : Command<BazCommand.Settings>
-{
-    public sealed class Settings : FooSettings
-    {
-        [Option("-b|--baz")]
-        [Description("Re-enables the baz in all sub systems.")]
-        public int Baz { get; set; }
-    }
-
-    public override int Run(Settings settings)
-    {
-        Console.WriteLine($"Foo={settings.Foo} Baz={settings.Baz}");
-        return 0;
-    }
-}
-
-public abstract class BazSettings : FooSettings
-{
-    [Option("-b|--baz")]
-    [Description("Re-enables the baz in all sub systems.")]
-    public string Baz { get; set; }
-}
-
-public sealed class QuxCommand : Command<QuxCommand.Settings>
-{
-    public sealed class Settings : BazSettings
-    {
-        [Option("-q|--qux")]
-        [Description("Sets the qux timestamp for the current baz.")]
-        public DateTime Qux { get; set; }
-    }
-
-    public override int Run(Settings settings)
-    {
-        Console.WriteLine($"Foo={settings.Foo} Baz={settings.Baz} Qux={settings.Qux}");
-        return 0;
     }
 }
 ```
@@ -113,3 +46,9 @@ Or like this:
 ```
 myapp foo --foo Hello bar --bar 101
 ```
+
+Since everything is strongly typed, and the generic parameter type 
+for `AddProxy`/`AddCommand` is enforced by the compiler, everything 
+in `FooSettings` will be available in the `BarCommand`.
+
+See the `samples` directory for more information.

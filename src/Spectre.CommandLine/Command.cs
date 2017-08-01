@@ -3,23 +3,6 @@
 namespace Spectre.CommandLine
 {
     /// <summary>
-    /// Represents the base class for a command.
-    /// </summary>
-    public abstract class Command : ICommand
-    {
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <returns>The command exit code.</returns>
-        protected abstract int Run();
-
-        int ICommand.Run(object settings)
-        {
-            return Run();
-        }
-    }
-
-    /// <summary>
     /// Represents the base class for a command with settings.
     /// </summary>
     /// <typeparam name="TSettings"></typeparam>
