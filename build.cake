@@ -54,4 +54,7 @@ Task("Package")
 Task("Default")
     .IsDependentOn("Package");
 
+Task("AppVeyor")
+    .IsDependentOn("Default");
+
 RunTarget(target);
