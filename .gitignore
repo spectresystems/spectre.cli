@@ -2,9 +2,8 @@
 [Bb]in/
 [Oo]bj/
 [Tt]emp/
-[Ll]ib/
 [Pp]ackages/
-/[Aa]rtifacts/
+/.artifacts/
 /[Tt]ools/
 
 # .NET Core CLI
