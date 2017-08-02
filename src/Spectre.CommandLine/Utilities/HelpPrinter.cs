@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Spectre.CommandLine.Configuration;
+using Spectre.CommandLine.Configuration.Parameters;
 
 namespace Spectre.CommandLine.Utilities
 {
@@ -26,12 +27,23 @@ namespace Spectre.CommandLine.Utilities
             Console.WriteLine();
             Console.WriteLine($"Usage: {configuration.ApplicationName} {BuildUsageString(command)}");
 
+            var arguments = command.Parameters.OfType<CommandArgument>().ToArray();
+            if (arguments.Length > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Arguments for {command.Name}:");
+                foreach (var argument in arguments.Where(x => !x.Parameter.IsInherited))
+                {
+                    Console.WriteLine($"  {BuildArgumentString(argument)}");
+                }
+            }
+
             var options = command.Parameters.OfType<CommandOption>().ToArray();
             if (options.Length > 0)
             {
                 Console.WriteLine();
                 Console.WriteLine($"Options for {command.Name}:");
-                foreach (var option in options.Where(x => !x.Info.IsInherited))
+                foreach (var option in options.Where(x => !x.Parameter.IsInherited))
                 {
                     Console.WriteLine($"  {BuildOptionString(option)}");
                 }
@@ -48,6 +60,21 @@ namespace Spectre.CommandLine.Utilities
             }
 
             Console.WriteLine();
+        }
+
+        private static string BuildArgumentString(CommandArgument argument)
+        {
+            var builder = new List<string>();
+            builder.Add("<" + argument.Name + ">");
+            if (!string.IsNullOrWhiteSpace(argument.Parameter.Description))
+            {
+                builder.Add(" " + argument.Parameter.Description);
+            }
+            if (argument.Parameter.IsRequired)
+            {
+                builder.Add(" [Required]");
+            }
+            return string.Join(" ", builder);
         }
 
         private static string BuildCommandString(CommandInfo command)
@@ -74,11 +101,11 @@ namespace Spectre.CommandLine.Utilities
             {
                 builder.Add("<" + option.ValueName + ">");
             }
-            if (!string.IsNullOrWhiteSpace(option.Info.Description))
+            if (!string.IsNullOrWhiteSpace(option.Parameter.Description))
             {
-                builder.Add(" " + option.Info.Description);
+                builder.Add(" " + option.Parameter.Description);
             }
-            if (option.Info.IsRequired)
+            if (option.Parameter.IsRequired)
             {
                 builder.Add(" [Required]");
             }
@@ -97,6 +124,10 @@ namespace Spectre.CommandLine.Utilities
             {
                 var builder = new StringBuilder();
                 builder.Append(current.Name);
+                if (current.Parameters.OfType<CommandArgument>().Any())
+                {
+                    builder.Append(" [arguments]");
+                }
                 if (current.Parameters.OfType<CommandOption>().Any())
                 {
                     builder.Append(" [options]");

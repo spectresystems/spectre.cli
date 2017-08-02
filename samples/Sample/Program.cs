@@ -1,5 +1,5 @@
-﻿using Sample.Commands;
-using Sample.Commands.Settings;
+﻿using Sample.NuGet;
+using Sample.Solution;
 using Spectre.CommandLine;
 
 namespace Sample
@@ -12,18 +12,17 @@ namespace Sample
 
             app.Configure(config =>
             {
-                config.SetApplicationName("sample");
+                config.SetApplicationName("dotnet");
 
-                config.AddProxy<FooSettings>("foo", foo =>
+                config.AddProxy<NuGetSettings>("nuget", nuget =>
                 {
-                    foo.SetDescription("The foo command.");
+                    nuget.AddCommand<DeletePackageCommand>("delete");
+                });
 
-                    foo.AddCommand<BarCommand>("bar");
-                    foo.AddProxy<BazSettings>("baz", baz =>
-                    {
-                        baz.SetDescription("The baz command.");
-                        baz.AddCommand<QuxCommand>("qux");
-                    });
+                config.AddProxy<SolutionSettings>("sln", sln =>
+                {
+                    sln.AddCommand<AddProjectCommand>("add");
+                    sln.AddCommand<ListProjectsCommand>("list");
                 });
             });
 

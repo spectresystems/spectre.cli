@@ -9,12 +9,12 @@ namespace Spectre.CommandLine.Configuration
         public string Description { get; set; }
 
         public Type CommandType { get; }
-        public Type SettingsType { get; set; }
+        public Type SettingsType { get; }
 
         public CommandInfo Parent { get; }
 
-        public ICollection<CommandInfo> Commands { get; set; }
-        public ICollection<CommandParameter> Parameters { get; set; }
+        public ICollection<CommandInfo> Commands { get; }
+        public ICollection<CommandParameter> Parameters { get; }
 
         public bool IsProxy => CommandType == null;
 

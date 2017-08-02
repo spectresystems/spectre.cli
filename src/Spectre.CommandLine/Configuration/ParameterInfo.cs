@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using Spectre.CommandLine.Annotations;
 
 namespace Spectre.CommandLine.Configuration
 {
@@ -14,7 +15,7 @@ namespace Spectre.CommandLine.Configuration
         public TypeConverterAttribute Converter { get; }
         public bool IsRequired { get; }
 
-        public ParameterInfo(
+        private ParameterInfo(
             Type type, ParameterType parameterType, PropertyInfo property, string description,
             bool isInherited, TypeConverterAttribute converter, bool isRequired)
         {
@@ -25,6 +26,19 @@ namespace Spectre.CommandLine.Configuration
             IsInherited = isInherited;
             Converter = converter;
             IsRequired = isRequired;
+        }
+
+        public static ParameterInfo Create(CommandInfo command, PropertyInfo property)
+        {
+            var description = property.GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var required = property.GetCustomAttribute<RequiredAttribute>() != null;
+            var inherited = property.DeclaringType != command.SettingsType;
+
+            var type = property.PropertyType == typeof(bool)
+                ? ParameterType.Flag : ParameterType.Single;
+
+            return new ParameterInfo(property.PropertyType, type, property, description, inherited, converter, required);
         }
     }
 }

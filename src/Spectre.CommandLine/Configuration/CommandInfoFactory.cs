@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using Spectre.CommandLine.Annotations;
+using Spectre.CommandLine.Configuration.Parameters;
 
 namespace Spectre.CommandLine.Configuration
 {
@@ -23,14 +25,27 @@ namespace Spectre.CommandLine.Configuration
                 throw new InvalidOperationException($"Could not determine settings type for command of type '{name}'");
             }
 
-            var command = new CommandInfo(parent, name, commandType, settingsType);
-            command.Description = commandType.GetTypeInfo().GetCustomAttribute<DescriptionAttribute>()?.Description;
+            var command = new CommandInfo(parent, name, commandType, settingsType)
+            {
+                Description = commandType.GetTypeInfo().GetCustomAttribute<DescriptionAttribute>()?.Description
+            };
+
             command.Parameters.AddRange(GetParameters(command));
+
+            // Normalize argument positions.
+            var index = 0;
+            foreach (var argument in command.Parameters.OfType<CommandArgument>().OrderBy(argument => argument.Position))
+            {
+                argument.Position = index;
+                index++;
+            }
+
             return command;
         }
 
         private static IEnumerable<CommandParameter> GetParameters(CommandInfo command)
         {
+            var result = new List<CommandParameter>();
             if (command.SettingsType != null)
             {
                 var properties = command.SettingsType.GetTypeInfo().GetProperties();
@@ -42,16 +57,26 @@ namespace Spectre.CommandLine.Configuration
                     }
 
                     // Create the parameter info.
-                    var parameter = CreateParameterInfo(command, property);
+                    var parameter = ParameterInfo.Create(command, property);
 
                     // Is this an option?
                     var option = property.GetCustomAttribute<OptionAttribute>();
                     if (option != null)
                     {
-                        yield return CreateOptionDefinition(option, parameter);
+                        result.Add(CommandOption.Create(parameter, option));
+                    }
+                    else
+                    {
+                        // Is this an argument?
+                        var argument = property.GetCustomAttribute<ArgumentAttribute>();
+                        if (argument != null)
+                        {
+                            result.Add(new CommandArgument(parameter, argument.Position, argument.ArgumentName));
+                        }
                     }
                 }
             }
+            return result;
         }
 
         private static Type GetSettingsType(Type commandType)
@@ -84,27 +109,6 @@ namespace Spectre.CommandLine.Configuration
                 }
             }
             return null;
-        }
-
-        private static ParameterInfo CreateParameterInfo(CommandInfo command, PropertyInfo property)
-        {
-            var description = property.GetCustomAttribute<DescriptionAttribute>()?.Description;
-            var converter = property.GetCustomAttribute<TypeConverterAttribute>();
-            var required = property.GetCustomAttribute<RequiredAttribute>() != null;
-            var inherited = property.DeclaringType != command.SettingsType;
-
-            var type = property.PropertyType == typeof(bool)
-                ? ParameterType.Flag : ParameterType.Single;
-
-            return new ParameterInfo(property.PropertyType, type, property, description, inherited, converter, required);
-        }
-
-        private static CommandOption CreateOptionDefinition(OptionAttribute attribute, ParameterInfo parameter)
-        {
-            return new CommandOption(
-                parameter,
-                attribute,
-                parameter.Property.GetCustomAttribute<DefaultValueAttribute>());
         }
     }
 }

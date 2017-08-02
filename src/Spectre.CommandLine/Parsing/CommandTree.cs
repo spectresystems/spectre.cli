@@ -20,25 +20,5 @@ namespace Spectre.CommandLine.Parsing
             Mapped = new List<(CommandParameter, string)>();
             Unmapped = new List<CommandParameter>();
         }
-
-        public CommandTree GetBottomCommand()
-        {
-            var node = this;
-            while (node.Parent != null)
-            {
-                node = node.Parent;
-            }
-            return node;
-        }
-
-        public CommandTree GetTopCommand()
-        {
-            var node = this;
-            while (node.Next != null)
-            {
-                node = node.Next;
-            }
-            return node;
-        }
     }
 }
