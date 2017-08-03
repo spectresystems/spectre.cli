@@ -4,9 +4,9 @@ An extremly opinionated command line parser.
 
 ## Usage
 
-Here is a short example of how to configure the command chain.
+Below is a short example of how to configure the command chain.
 By using some clever generic constraints, the framework guarantees that all settings associated 
-with a command, is inherited from the parent commands' settings.
+with a command is inherited from the parent commands' settings.
 
 ```csharp
 using Spectre.CommandLine;
@@ -19,13 +19,13 @@ public class Program
         {
             app.Configure(config =>
             {
-                config.AddProxy<FooSettings>("foo", foo =>
+                config.AddProxy<EFSettings>("ef", ef => 
                 {
-                    foo.AddCommand<BarCommand>("bar");                    
-                    foo.AddProxy<BazSettings>("baz", baz =>
+                    ef.AddProxy<EFDatabaseSettings>("database", database =>
                     {
-                        baz.AddCommand<QuxCommand>("qux");
-                    });
+                        database.AddCommand<EFUpdateCommand>("update");
+                        database.AddCommand<EFDropCommand>("drop");
+                    }
                 });
             });
 
@@ -35,20 +35,10 @@ public class Program
 }
 ```
 
-You can now execute the `Baz` command like this:
+You can now execute the `drop` command like this:
 
 ```
-myapp foo --foo Hello baz --baz 101 --qux "2017-07-06 15:21"
+./fakedotnet.exe ef --verbose database drop --startup-project "./../Foo/Foo.csproj"
 ```
-
-Or like this:
-
-```
-myapp foo --foo Hello bar --bar 101
-```
-
-Since everything is strongly typed, and the generic parameter type 
-for `AddProxy`/`AddCommand` is enforced by the compiler, everything 
-in `FooSettings` will be available in the `BarCommand`.
 
 See the `samples` directory for more information.
