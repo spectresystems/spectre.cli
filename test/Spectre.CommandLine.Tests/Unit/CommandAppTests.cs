@@ -33,6 +33,20 @@ namespace Spectre.CommandLine.Tests.Unit
             }
 
             [Fact]
+            public void Should_Execute_Command_With_Specified_Arguments()
+            {
+                // Given
+                var fixture = new Fixture();
+
+                // When
+                var result = fixture.Run(new[] { "foo", "--foo", "1", "baz", "a", "b", "--baz", "2" });
+
+                // Then
+                result.ShouldBe(0);
+                fixture.CallRecorder.LastCalled().ShouldBe("FooBaz Alpha=a Beta=b Foo=1 Baz=2");
+            }
+
+            [Fact]
             public void Should_Use_Default_Value_For_Options_If_Specified()
             {
                 // Given
@@ -73,6 +87,8 @@ namespace Spectre.CommandLine.Tests.Unit
                 Resolver = new TestResolver();
                 Resolver.Register(new BarCommand(CallRecorder));
                 Resolver.Register(new BarSettings());
+                Resolver.Register(new BazCommand(CallRecorder));
+                Resolver.Register(new BazSettings());
             }
 
             public int Run(string[] args)
@@ -83,6 +99,7 @@ namespace Spectre.CommandLine.Tests.Unit
                     config.AddProxy<FooSettings>("foo", foo =>
                     {
                         foo.AddCommand<BarCommand>("bar");
+                        foo.AddCommand<BazCommand>("baz");
                     });
                 });
                 return app.Run(args);

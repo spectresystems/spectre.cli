@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Spectre.CommandLine.Configuration;
+using Spectre.CommandLine.Configuration.Parameters;
 using Spectre.CommandLine.Parsing.Tokenization;
 
 namespace Spectre.CommandLine.Parsing
@@ -17,23 +18,23 @@ namespace Spectre.CommandLine.Parsing
         public CommandTree Parse(string[] args)
         {
             var tokens = Tokenizer.Tokenize(args);
-            return Parse(_configuration, tokens);
+            return Parse(new CommandTreeParserContext(), _configuration, tokens);
         }
 
-        private CommandTree Parse(ICommandContainer commands, TokenStream stream)
+        private CommandTree Parse(CommandTreeParserContext context, ICommandContainer commands, TokenStream stream)
         {
-            if (stream.Count == 0)
-            {
-                return null;
-            }
-            return ParseCommand(commands, null, stream);
+            return stream.Count == 0 
+                ? null : ParseCommand(context, commands, null, stream);
         }
 
         private CommandTree ParseCommand(
+            CommandTreeParserContext context,
             ICommandContainer current,
             CommandTree parent,
             TokenStream stream)
         {
+            context.ResetArgumentPosition();
+            
             // Find the command.
             var commandToken = stream.Consume(Token.Type.String);
             var command = current.FindCommand(commandToken.Value);
@@ -58,10 +59,10 @@ namespace Spectre.CommandLine.Parsing
                         break;
                     case Token.Type.String:
                         // Command
-                        node.Next = ParseCommand(node.Command, node, stream);
+                        ParseString(context, stream, node);
                         break;
                     default:
-                        throw new NotImplementedException("Unknown token type.");
+                        throw new InvalidOperationException("Unknown token type.");
                 }
             }
 
@@ -77,13 +78,46 @@ namespace Spectre.CommandLine.Parsing
             return node;
         }
 
+        private void ParseString(
+            CommandTreeParserContext context,
+            TokenStream stream,
+            CommandTree node)
+        {
+            var token = stream.Expect(Token.Type.String);
+
+            // Command?
+            var command = node.Command.FindCommand(token.Value);
+            if (command != null)
+            {
+                node.Next = ParseCommand(context, node.Command, node, stream);
+                return;
+            }
+
+            // Current command has no arguments?
+            if (!node.HasArguments())
+            {
+                throw new CommandAppException($"Unknown child command '{token.Value}' of '{node.Command.Name}'.");
+            }
+
+            // Argument?
+            var parameter = node.FindArgument(context.CurrentArgumentPosition);
+            if (parameter == null)
+            {
+                throw new CommandAppException($"Could not match '{token.Value}' with an argument.");
+            }
+
+            node.Mapped.Add((parameter, stream.Consume(Token.Type.String).Value));
+
+            context.IncreaseArgumentPosition();
+        }
+
         private void ParseOption(TokenStream stream, CommandTree node, bool isLongOption)
         {
             // Get the option token.
             var token = stream.Consume(isLongOption ? Token.Type.LongOption : Token.Type.ShortOption);
 
             // Find the option.
-            var option = FindOption(node, token, isLongOption);
+            var option = node.FindOption(token.Value, isLongOption);
             if (option != null)
             {
                 node.Mapped.Add((option, ParseParameterValue(stream, node, option)));
@@ -104,25 +138,7 @@ namespace Spectre.CommandLine.Parsing
             throw new CommandAppException($"Unknown option '{token.Value}'.");
         }
 
-        private static CommandOption FindOption(CommandTree node, Token token, bool isLongOption)
-        {
-            var current = node;
-            while (current != null)
-            {
-                var option = current.Command.Parameters.OfType<CommandOption>()
-                    .FirstOrDefault(o => isLongOption ? o.LongName == token.Value : o.ShortName == token.Value);
-
-                if (option != null)
-                {
-                    return option;
-                }
-
-                current = current.Parent;
-            }
-            return null;
-        }
-
-        private static string ParseParameterValue(TokenStream stream, CommandTree current, CommandOption parameter)
+        private static string ParseParameterValue(TokenStream stream, CommandTree current, CommandParameter parameter)
         {
             var value = (string)null;
 
@@ -135,11 +151,11 @@ namespace Spectre.CommandLine.Parsing
                 {
                     if (parameter != null)
                     {
-                        if (parameter.Info.ParameterType == ParameterType.Single)
+                        if (parameter.Parameter.ParameterType == ParameterType.Single)
                         {
                             value = stream.Consume(Token.Type.String).Value;
                         }
-                        else if (parameter.Info.ParameterType == ParameterType.Flag)
+                        else if (parameter.Parameter.ParameterType == ParameterType.Flag)
                         {
                             throw new CommandAppException("Flags cannot be assigned a value.");
                         }
@@ -155,13 +171,20 @@ namespace Spectre.CommandLine.Parsing
             // No value?
             if (value == null && parameter != null)
             {
-                if (parameter.Info.ParameterType == ParameterType.Flag)
+                if (parameter.Parameter.ParameterType == ParameterType.Flag)
                 {
                     value = true.ToString();
                 }
                 else
                 {
-                    throw new CommandAppException($"Option '{parameter.GetOptionName()}' is defined but no value has been provided.");
+                    if (parameter is CommandOption option)
+                    {
+                        throw new CommandAppException($"Option '{option.GetOptionName()}' is defined but no value has been provided.");
+                    }
+                    if (parameter is CommandArgument argument)
+                    {
+                        throw new CommandAppException($"Argument '{argument.Name}' is defined but no value has been provided.");
+                    }
                 }
             }
 

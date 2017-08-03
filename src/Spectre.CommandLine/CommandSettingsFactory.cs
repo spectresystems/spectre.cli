@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Spectre.CommandLine.Configuration;
+using Spectre.CommandLine.Configuration.Parameters;
 using Spectre.CommandLine.Parsing;
 
 namespace Spectre.CommandLine
@@ -20,11 +21,11 @@ namespace Spectre.CommandLine
 
             TypeConverter GetConverter(CommandParameter parameter)
             {
-                if (parameter.Info.Converter == null)
+                if (parameter.Parameter.Converter == null)
                 {
-                    return TypeDescriptor.GetConverter(parameter.Info.Type);
+                    return TypeDescriptor.GetConverter(parameter.Parameter.Type);
                 }
-                var type = Type.GetType(parameter.Info.Converter.ConverterTypeName);
+                var type = Type.GetType(parameter.Parameter.Converter.ConverterTypeName);
                 return _resolver.Resolve(type) as TypeConverter;
             }
 
@@ -33,7 +34,7 @@ namespace Spectre.CommandLine
                 // Process mapped parameters.
                 foreach (var (parameter, value) in root.Mapped)
                 {
-                    if (!parameter.Info.IsInherited)
+                    if (!parameter.Parameter.IsInherited)
                     {
                         var converter = GetConverter(parameter);
                         parameter.Assign(settings, converter.ConvertFromInvariantString(value));
@@ -43,7 +44,7 @@ namespace Spectre.CommandLine
                 // Process unmapped parameters.
                 foreach (var parameter in root.Unmapped)
                 {
-                    if (!parameter.Info.IsInherited)
+                    if (!parameter.Parameter.IsInherited)
                     {
                         // Is this an option with a default value?
                         if (parameter is CommandOption option && option.DefaultValue != null)

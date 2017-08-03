@@ -1,5 +1,6 @@
 ﻿using System;
 using Spectre.CommandLine.Configuration;
+using Spectre.CommandLine.Configuration.Parameters;
 using Spectre.CommandLine.Parsing;
 using Spectre.CommandLine.Utilities;
 
@@ -78,7 +79,7 @@ namespace Spectre.CommandLine
             }
 
             // Get the command to execute.
-            var leaf = tree.GetTopCommand();
+            var leaf = tree.GetLeafCommand();
             if (leaf.Command.IsProxy || leaf.ShowHelp)
             {
                 // Proxys can't be executed. Show help.
@@ -96,17 +97,20 @@ namespace Spectre.CommandLine
 
         private static void ValidateRequiredParameters(CommandTree tree)
         {
-            var node = tree.GetBottomCommand();
+            var node = tree.GetRootCommand();
             while (node != null)
             {
                 foreach (var parameter in node.Unmapped)
                 {
-                    if (parameter.Info.IsRequired && !parameter.Info.IsInherited && !node.ShowHelp)
+                    if (parameter.IsRequired && !parameter.Parameter.IsInherited && !node.ShowHelp)
                     {
                         if (parameter is CommandOption option)
                         {
-                            throw new CommandAppException(
-                                $"Command '{node.Command.Name}' is missing required option '{option.GetOptionName()}'.");
+                            throw new CommandAppException($"Command '{node.Command.Name}' is missing required option '{option.GetOptionName()}'.");
+                        }
+                        if (parameter is CommandArgument argument)
+                        {
+                            throw new CommandAppException($"Command '{node.Command.Name}' is missing required argument '{argument.Name}'.");
                         }
                     }
                 }

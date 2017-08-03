@@ -2,16 +2,18 @@ namespace Spectre.CommandLine.Configuration
 {
     internal abstract class CommandParameter
     {
-        public ParameterInfo Info { get; }
+        public ParameterInfo Parameter { get; }
+        public bool IsRequired { get; set; }
 
-        protected CommandParameter(ParameterInfo info)
+        protected CommandParameter(ParameterInfo info, bool required)
         {
-            Info = info;
+            Parameter = info;
+            IsRequired = required;
         }
 
         public void Assign(object settings, object value)
         {
-            Info.Property.SetValue(settings, value);
+            Parameter.Property.SetValue(settings, value);
         }
     }
 }
