@@ -5,8 +5,8 @@
         public int Position { get; set; }
         public string Name { get; }
 
-        public CommandArgument(ParameterInfo info, int position, string name) 
-            : base(info)
+        public CommandArgument(ParameterInfo info, int position, string name, bool required) 
+            : base(info, required)
         {
             Position = position;
             Name = name;

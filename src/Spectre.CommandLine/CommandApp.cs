@@ -102,7 +102,7 @@ namespace Spectre.CommandLine
             {
                 foreach (var parameter in node.Unmapped)
                 {
-                    if (parameter.Parameter.IsRequired && !parameter.Parameter.IsInherited && !node.ShowHelp)
+                    if (parameter.IsRequired && !parameter.Parameter.IsInherited && !node.ShowHelp)
                     {
                         if (parameter is CommandOption option)
                         {

@@ -27,6 +27,14 @@ namespace Spectre.CommandLine.Annotations
         public string ValueName { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this option is required.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this option is required; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRequired { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OptionAttribute"/> class.
         /// </summary>
         /// <param name="template">The option template.</param>
@@ -58,11 +66,13 @@ namespace Spectre.CommandLine.Annotations
                     }
                     throw new CommandAppException("Invalid short option.");
                 }
-                if (part.StartsWith("<") && part.EndsWith(">"))
+                if (part.StartsWith("<") && part.EndsWith(">") ||
+                    part.StartsWith("[") && part.EndsWith("]"))
                 {
                     if (part.Length > 2)
                     {
                         ValueName = part.Substring(1, part.Length - 2);
+                        IsRequired = part.StartsWith("[") && part.EndsWith("]");
                         continue;
                     }
                 }

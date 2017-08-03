@@ -11,8 +11,8 @@ namespace Spectre.CommandLine.Configuration.Parameters
         public string ValueName { get; }
         public DefaultValueAttribute DefaultValue { get; }
 
-        public CommandOption(ParameterInfo info, OptionAttribute attribute, DefaultValueAttribute defaultValue) 
-            : base(info)
+        public CommandOption(ParameterInfo info, OptionAttribute attribute, DefaultValueAttribute defaultValue, bool required) 
+            : base(info, required)
         {
             LongName = attribute.LongName;
             ShortName = attribute.ShortName;
@@ -22,8 +22,7 @@ namespace Spectre.CommandLine.Configuration.Parameters
 
         public string GetOptionName()
         {
-            return !string.IsNullOrWhiteSpace(LongName)
-                ? $"--{LongName}" : $"-{ShortName}";
+            return !string.IsNullOrWhiteSpace(LongName) ? $"{LongName}" : $"{ShortName}";
         }
 
         public static CommandOption Create(ParameterInfo parameter, OptionAttribute attribute)
@@ -31,7 +30,8 @@ namespace Spectre.CommandLine.Configuration.Parameters
             return new CommandOption(
                 parameter,
                 attribute,
-                parameter.Property.GetCustomAttribute<DefaultValueAttribute>());
+                parameter.Property.GetCustomAttribute<DefaultValueAttribute>(),
+                attribute.IsRequired);
         }
     }
 }

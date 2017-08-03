@@ -70,7 +70,7 @@ namespace Spectre.CommandLine.Utilities
             {
                 builder.Add(" " + argument.Parameter.Description);
             }
-            if (argument.Parameter.IsRequired)
+            if (argument.IsRequired)
             {
                 builder.Add(" [Required]");
             }
@@ -105,7 +105,7 @@ namespace Spectre.CommandLine.Utilities
             {
                 builder.Add(" " + option.Parameter.Description);
             }
-            if (option.Parameter.IsRequired)
+            if (option.IsRequired)
             {
                 builder.Add(" [Required]");
             }

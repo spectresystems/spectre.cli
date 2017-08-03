@@ -71,7 +71,7 @@ namespace Spectre.CommandLine.Configuration
                         var argument = property.GetCustomAttribute<ArgumentAttribute>();
                         if (argument != null)
                         {
-                            result.Add(new CommandArgument(parameter, argument.Position, argument.ArgumentName));
+                            result.Add(new CommandArgument(parameter, argument.Position, argument.ArgumentName, argument.IsRequired));
                         }
                     }
                 }

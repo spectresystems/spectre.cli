@@ -8,8 +8,25 @@ namespace Spectre.CommandLine.Annotations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public sealed class ArgumentAttribute : Attribute
     {
+        /// <summary>
+        /// Gets the argument position.
+        /// </summary>
+        /// <value>The argument position.</value>
         public int Position { get; }
+
+        /// <summary>
+        /// Gets the name of the argument.
+        /// </summary>
+        /// <value>The name of the argument.</value>
         public string ArgumentName { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this argument is required.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this argument is required; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRequired { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentAttribute"/> class.
@@ -19,7 +36,8 @@ namespace Spectre.CommandLine.Annotations
         public ArgumentAttribute(int position, string argumentName)
         {
             Position = position;
-            ArgumentName = argumentName;
+            IsRequired = argumentName.StartsWith("[") && argumentName.EndsWith("]");
+            ArgumentName = argumentName.Trim('[', ']', '<', '>');
         }
     }
 }

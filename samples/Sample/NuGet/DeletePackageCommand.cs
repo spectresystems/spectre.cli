@@ -8,7 +8,6 @@ namespace Sample.NuGet
     {
         public sealed class Settings : NuGetSettings
         {
-            [Required]
             [Argument(0, "[root]")]
             [Description("The Package Id and version.")]
             public string Root { get; set; }
@@ -17,7 +16,7 @@ namespace Sample.NuGet
             [Description("Forces the application to run using an invariant, English-based culture.")]
             public bool ForceEnglishOutput { get; set; }
 
-            [Option("-s|--source <source>")]
+            [Option("-s|--source [source]")] // Required
             [Description("Specifies the server URL.")]
             public string Source { get; set; }
 
