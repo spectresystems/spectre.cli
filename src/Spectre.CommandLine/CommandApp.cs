@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to Spectre Systems AB under one or more agreements.
+// Spectre Systems AB licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using Spectre.CommandLine.Configuration;
 using Spectre.CommandLine.Configuration.Parameters;
 using Spectre.CommandLine.Parsing;
@@ -14,7 +18,7 @@ namespace Spectre.CommandLine
         private readonly ITypeResolver _resolver;
         private readonly Configurator _configurator;
         private readonly CommandSettingsFactory _settingsFactory;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandApp"/> class.
         /// </summary>
@@ -90,7 +94,7 @@ namespace Spectre.CommandLine
             ValidateRequiredParameters(tree);
 
             var settings = _settingsFactory.CreateSettings(tree, leaf.Command.SettingsType);
-            var command = (ICommand) _resolver.Resolve(leaf.Command.CommandType);
+            var command = (ICommand)_resolver.Resolve(leaf.Command.CommandType);
 
             return command.Run(settings);
         }

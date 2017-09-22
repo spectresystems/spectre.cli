@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to Spectre Systems AB under one or more agreements.
+// Spectre Systems AB licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 
 namespace Spectre.CommandLine.Utilities
 {
@@ -17,7 +21,6 @@ namespace Spectre.CommandLine.Utilities
             {
                 if (_resolver != null)
                 {
-
                     var obj = _resolver.Resolve(type);
                     if (obj == null)
                     {

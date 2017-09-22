@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to Spectre Systems AB under one or more agreements.
+// Spectre Systems AB licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 
 namespace Spectre.CommandLine.Annotations
 {
@@ -66,8 +70,8 @@ namespace Spectre.CommandLine.Annotations
                     }
                     throw new CommandAppException("Invalid short option.");
                 }
-                if (part.StartsWith("<") && part.EndsWith(">") ||
-                    part.StartsWith("[") && part.EndsWith("]"))
+                if ((part.StartsWith("<") && part.EndsWith(">")) ||
+                    (part.StartsWith("[") && part.EndsWith("]")))
                 {
                     if (part.Length > 2)
                     {

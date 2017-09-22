@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="54fc77ea-8fd6-40dd-945e-06d2f3743156" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>i</find>
+      <find>is of</find>
+      <find>is o</find>
+      <find>is</find>
+      <find>is</find>
+      <find>u</find>
+      <find>une</find>
+      <find>unex</find>
+      <find>unexp</find>
+      <find>unexpec</find>
+      <find>unexpecter</find>
+      <find>unexpecte</find>
+      <find>unexpect</find>
+      <find>are</find>
+      <find>D</find>
+      <find>De</find>
+      <find>Debug</find>
+      <find>Debug.</find>
+      <find>Debug.As</find>
+      <find>Debug.Ass</find>
+      <find>Debug.Asser</find>
+      <find>Debug.Assert</find>
+    </findStrings>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../samples/Sample/NuGet/NuGetVerbosity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandSettingsFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../samples/Sample/NuGet/NuGetSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/IConfigurator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/ITypeResolver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/ICommandLimiter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandAppException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandOption.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandArgument.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandParameter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configuration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ICommandContainer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfoFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Annotations/ArgumentAttribute.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Annotations/OptionAttribute.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandTreeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Utilities/TypeResolverAdapter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Utilities/HelpPrinter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/stylecop.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Tokenizer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Token.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/TokenStream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTree.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParserContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/Command.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/ICommand.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandApp.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Annotations/ArgumentAttribute.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Annotations/OptionAttribute.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/CommandApp.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/CommandAppException.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/CommandSettingsFactory.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfo.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfoFactory.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandParameter.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configuration.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator`1.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/ICommandContainer.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/IConfiguration.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterInfo.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterType.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandArgument.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandOption.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Extensions/CollectionExtensions.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandExtensions.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandTreeExtensions.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/ICommand.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/ICommandLimiter.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/IConfigurator.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/ITypeResolver.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTree.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParser.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Token.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/TokenStream.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Tokenizer.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Properties/AssemblyInfo.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Utilities/HelpPrinter.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Utilities/TypeResolverAdapter.cs" />
+        <option value="$PROJECT_DIR$/stylecop.json" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParserContext.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Command.cs" />
+        <option value="$PROJECT_DIR$/Spectre.CommandLine/Spectre.CommandLine.csproj" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="SolutionExplorer">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine (3 projects)" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine (3 projects)" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine (3 projects)" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Annotations" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine (3 projects)" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spectre.CommandLine" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dependencies" />
+              <option name="myItemType" value="com.jetbrains.rider.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <option name="show-file-system" value="false" />
+        <option name="show-all-items" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected=".NET Project.Default">
+    <configuration default="true" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="PROJECT_TFM" value="" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="USE_MONO" value="0" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <configuration default="false" name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="PROJECT_TFM" value="" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="USE_MONO" value="0" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <envs />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue=".NET Project.Default" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="54fc77ea-8fd6-40dd-945e-06d2f3743156" name="Default" comment="" />
+      <created>1506066915297</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1506066915297</updated>
+      <workItem from="1506066916389" duration="2808000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2808000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25266525" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Annotations/OptionAttribute.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="65" lean-forward="false" selection-start-line="2" selection-start-column="65" selection-end-line="2" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandApp.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068256232" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068256232" expanded="true" signature="208:380" ph="..." />
+            <marker date="1506068256232" expanded="true" signature="411:4381" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="418:483" ph="/// The command application. ... " />
+            <marker date="1506068256232" expanded="true" signature="518:4379" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="703:817" ph="/// Initializes a new instance of the &lt;see cref=&quot;CommandApp&quot;/&gt; class. ... " />
+            <marker date="1506068256232" expanded="true" signature="870:890" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="900:1103" ph="/// Initializes a new instance of the &lt;see cref=&quot;CommandApp&quot;/&gt; class. ... " />
+            <marker date="1506068256232" expanded="true" signature="1153:1350" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="1360:1522" ph="/// Adds a configuration to the application. ... " />
+            <marker date="1506068256232" expanded="true" signature="1589:1651" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="1661:1847" ph="/// Executes the application. ... " />
+            <marker date="1506068256232" expanded="true" signature="1885:2404" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="1911:2237" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="2045:2169" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="2280:2394" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="2478:3378" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="2680:2784" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="2929:3103" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="3452:4373" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="3541:4363" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="3612:4315" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="3730:4297" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="3815:4015" ph="{...}" />
+            <marker date="1506068256232" expanded="true" signature="4082:4275" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandAppException.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068261259" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068261259" expanded="true" signature="246:1174" ph="{...}" />
+            <marker date="1506068261259" expanded="true" signature="253:394" ph="/// Represents errors that occur in the command application. ... " />
+            <marker date="1506068261259" expanded="true" signature="450:1172" ph="{...}" />
+            <marker date="1506068261259" expanded="true" signature="465:668" ph="/// Initializes a new instance of the &lt;see cref=&quot;CommandAppException&quot;/&gt; class. ... " />
+            <marker date="1506068261259" expanded="true" signature="747:767" ph="{...}" />
+            <marker date="1506068261259" expanded="true" signature="777:1025" ph="/// Initializes a new instance of the &lt;see cref=&quot;CommandAppException&quot;/&gt; class. ... " />
+            <marker date="1506068261259" expanded="true" signature="1146:1166" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/CommandSettingsFactory.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068264126" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068264126" expanded="false" signature="208:372" ph="..." />
+            <marker date="1506068264126" expanded="true" signature="403:2295" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="454:2293" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="573:627" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="702:2287" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="913:1031" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="1234:2247" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="1358:1658" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="1434:1640" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="1764:2198" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="1840:2180" ph="{...}" />
+            <marker date="1506068264126" expanded="true" signature="2023:2158" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068266882" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068266882" expanded="false" signature="208:249" ph="..." />
+            <marker date="1506068266882" expanded="true" signature="294:1112" ph="{...}" />
+            <marker date="1506068266882" expanded="true" signature="354:1110" ph="{...}" />
+            <marker date="1506068266882" expanded="true" signature="847:1104" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandInfoFactory.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068269654" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068269654" expanded="true" signature="208:413" ph="..." />
+            <marker date="1506068269654" expanded="true" signature="458:4471" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="505:4469" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="609:799" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="899:1777" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="1008:1156" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="1253:1380" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="1642:1738" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="1866:3198" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="1977:3161" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="2129:3147" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="2199:2277" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="2569:2690" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="2715:3129" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="2920:3107" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="3261:4463" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="3425:4033" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="3583:3959" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="3730:3820" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="4201:4428" ph="{...}" />
+            <marker date="1506068269654" expanded="true" signature="4326:4414" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/CommandParameter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068272624" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068272624" expanded="true" signature="245:692" ph="{...}" />
+            <marker date="1506068272624" expanded="true" signature="292:690" ph="{...}" />
+            <marker date="1506068272624" expanded="true" signature="462:547" ph="{...}" />
+            <marker date="1506068272624" expanded="true" signature="606:684" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configuration.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068275460" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068275460" expanded="false" signature="208:274" ph="..." />
+            <marker date="1506068275460" expanded="true" signature="319:706" ph="{...}" />
+            <marker date="1506068275460" expanded="true" signature="378:704" ph="{...}" />
+            <marker date="1506068275460" expanded="true" signature="577:698" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068278147" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068278147" expanded="false" signature="208:254" ph="..." />
+            <marker date="1506068278147" expanded="true" signature="299:1344" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="356:1342" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="445:514" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="567:637" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="689:773" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="868:1084" ph="{...}" />
+            <marker date="1506068278147" expanded="true" signature="1177:1336" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Configurator`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068280639" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068280639" expanded="true" signature="260:1275" ph="{...}" />
+            <marker date="1506068280639" expanded="true" signature="339:1273" ph="{...}" />
+            <marker date="1506068280639" expanded="true" signature="440:490" ph="{...}" />
+            <marker date="1506068280639" expanded="true" signature="546:613" ph="{...}" />
+            <marker date="1506068280639" expanded="true" signature="769:990" ph="{...}" />
+            <marker date="1506068280639" expanded="true" signature="1111:1267" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/IConfiguration.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068286385" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068286385" expanded="true" signature="285:437" ph="{...}" />
+            <marker date="1506068286385" expanded="true" signature="345:435" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068289050" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068289050" expanded="false" signature="208:308" ph="..." />
+            <marker date="1506068289050" expanded="true" signature="353:1706" ph="{...}" />
+            <marker date="1506068289050" expanded="true" signature="395:1704" ph="{...}" />
+            <marker date="1506068289050" expanded="true" signature="865:1099" ph="{...}" />
+            <marker date="1506068289050" expanded="true" signature="1187:1698" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ParameterType.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068291679" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068291679" expanded="true" signature="245:322" ph="{...}" />
+            <marker date="1506068291679" expanded="true" signature="279:320" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandArgument.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068294311" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068294311" expanded="true" signature="256:618" ph="{...}" />
+            <marker date="1506068294311" expanded="true" signature="319:616" ph="{...}" />
+            <marker date="1506068294311" expanded="true" signature="532:610" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/Parameters/CommandOption.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068297287" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068297287" expanded="false" signature="208:294" ph="..." />
+            <marker date="1506068297287" expanded="true" signature="350:1439" ph="{...}" />
+            <marker date="1506068297287" expanded="true" signature="411:1437" ph="{...}" />
+            <marker date="1506068297287" expanded="true" signature="761:955" ph="{...}" />
+            <marker date="1506068297287" expanded="true" signature="994:1104" ph="{...}" />
+            <marker date="1506068297287" expanded="true" signature="1200:1431" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CollectionExtensions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068300078" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068300078" expanded="true" signature="307:748" ph="{...}" />
+            <marker date="1506068300078" expanded="true" signature="356:746" ph="{...}" />
+            <marker date="1506068300078" expanded="true" signature="451:740" ph="{...}" />
+            <marker date="1506068300078" expanded="true" signature="501:567" ph="{...}" />
+            <marker date="1506068300078" expanded="true" signature="584:730" ph="{...}" />
+            <marker date="1506068300078" expanded="true" signature="642:716" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandExtensions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068303305" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068303305" expanded="false" signature="208:275" ph="..." />
+            <marker date="1506068303305" expanded="true" signature="347:650" ph="{...}" />
+            <marker date="1506068303305" expanded="true" signature="393:648" ph="{...}" />
+            <marker date="1506068303305" expanded="true" signature="499:642" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Extensions/CommandTreeExtensions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068305798" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068305798" expanded="false" signature="208:307" ph="..." />
+            <marker date="1506068305798" expanded="true" signature="379:1924" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="429:1922" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="507:656" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="557:621" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="729:874" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="777:839" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="977:1425" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="1020:1390" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="1268:1339" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="1489:1614" ph="{...}" />
+            <marker date="1506068305798" expanded="true" signature="1711:1916" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/ICommandLimiter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068311738" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068311738" expanded="true" signature="231:566" ph="{...}" />
+            <marker date="1506068311738" expanded="true" signature="238:489" ph="/// Represent a type limiter for commands and should ... " />
+            <marker date="1506068311738" expanded="true" signature="552:564" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/IConfigurator.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068314227" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068314227" expanded="true" signature="246:2660" ph="{...}" />
+            <marker date="1506068314227" expanded="true" signature="253:320" ph="/// Represents a configurator. ... " />
+            <marker date="1506068314227" expanded="true" signature="355:1468" ph="{...}" />
+            <marker date="1506068314227" expanded="true" signature="370:520" ph="/// Sets the name of the application. ... " />
+            <marker date="1506068314227" expanded="true" signature="576:724" ph="/// Sets the help option template. ... " />
+            <marker date="1506068314227" expanded="true" signature="779:1072" ph="/// Adds a command proxy to the configuration. ... " />
+            <marker date="1506068314227" expanded="true" signature="1170:1388" ph="/// Adds a command to the configuration. ... " />
+            <marker date="1506068314227" expanded="true" signature="1474:1608" ph="/// Represents a configurator. ... " />
+            <marker date="1506068314227" expanded="true" signature="1657:2658" ph="{...}" />
+            <marker date="1506068314227" expanded="true" signature="1672:1826" ph="/// Sets the description of the command proxy. ... " />
+            <marker date="1506068314227" expanded="true" signature="1885:2185" ph="/// Adds a command proxy to the configuration. ... " />
+            <marker date="1506068314227" expanded="true" signature="2332:2550" ph="/// Adds a command to the configuration. ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/ITypeResolver.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068316907" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068316907" expanded="true" signature="246:634" ph="{...}" />
+            <marker date="1506068316907" expanded="true" signature="253:321" ph="/// Represents a type resolver. ... " />
+            <marker date="1506068316907" expanded="true" signature="356:632" ph="{...}" />
+            <marker date="1506068316907" expanded="true" signature="371:591" ph="/// Resolves an instance from the specified type. ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTree.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParser.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068322569" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068322569" expanded="false" signature="208:375" ph="..." />
+            <marker date="1506068322569" expanded="true" signature="414:7141" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="453:7139" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="579:643" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="692:845" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="962:1075" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="1267:2843" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="1522:1641" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="1741:2525" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="1839:2511" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="2629:2807" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="2707:2793" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="2986:3952" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="3177:3308" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="3396:3539" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="3680:3809" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="4043:5040" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="4327:4465" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="4511:4950" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="4830:4936" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5160:7133" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5388:6300" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5515:6286" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5576:6074" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5685:5814" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="5904:6052" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6099:6268" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6378:7096" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6469:6550" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6571:7082" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6648:6828" ph="{...}" />
+            <marker date="1506068322569" expanded="true" signature="6891:7064" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Token.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068329787" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068329787" expanded="true" signature="252:614" ph="{...}" />
+            <marker date="1506068329787" expanded="true" signature="286:612" ph="{...}" />
+            <marker date="1506068329787" expanded="true" signature="394:482" ph="{...}" />
+            <marker date="1506068329787" expanded="true" signature="529:606" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/TokenStream.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068332224" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068332224" expanded="false" signature="208:280" ph="..." />
+            <marker date="1506068332224" expanded="true" signature="332:2549" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="395:2547" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="609:825" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="635:815" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="689:758" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="880:1003" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1032:1080" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1118:1314" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1209:1266" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1361:1595" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1433:1490" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1646:1714" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1774:2321" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="1817:2004" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="2079:2283" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="2372:2436" ph="{...}" />
+            <marker date="1506068332224" expanded="true" signature="2485:2541" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/Tokenization/Tokenizer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Properties/AssemblyInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068337484" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Utilities/HelpPrinter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1506068341311" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068341311" expanded="false" signature="208:380" ph="..." />
+            <marker date="1506068341311" expanded="true" signature="421:5012" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="461:5010" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="530:936" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="794:893" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="1021:2438" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="1289:1625" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="1498:1611" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="1742:2068" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="1945:2054" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="2102:2394" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="2264:2380" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="2515:2959" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="2699:2794" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="2831:2903" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3030:3118" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3189:4122" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3307:3388" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3449:3643" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3502:3576" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3705:3792" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3866:3959" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="3994:4066" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="4191:5004" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="4314:4383" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="4419:4950" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="4602:4690" ph="{...}" />
+            <marker date="1506068341311" expanded="true" signature="4760:4846" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Utilities/TypeResolverAdapter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="33" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+          <folding>
+            <marker date="1506068344312" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068344312" expanded="true" signature="256:1214" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="320:1212" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="436:490" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="532:1206" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="558:1038" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="611:917" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="721:866" ph="{...}" />
+            <marker date="1506068344312" expanded="true" signature="1071:1196" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Annotations/ArgumentAttribute.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1506068246962" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068246962" expanded="true" signature="258:1638" ph="{...}" />
+            <marker date="1506068246962" expanded="true" signature="265:329" ph="/// Represents an argument. ... " />
+            <marker date="1506068246962" expanded="true" signature="454:1636" ph="{...}" />
+            <marker date="1506068246962" expanded="true" signature="469:595" ph="/// Gets the argument position. ... " />
+            <marker date="1506068246962" expanded="true" signature="642:774" ph="/// Gets the name of the argument. ... " />
+            <marker date="1506068246962" expanded="true" signature="828:1057" ph="/// Gets a value indicating whether this argument is required. ... " />
+            <marker date="1506068246962" expanded="true" signature="1107:1358" ph="/// Initializes a new instance of the &lt;see cref=&quot;ArgumentAttribute&quot;/&gt; class. ... " />
+            <marker date="1506068246962" expanded="true" signature="1426:1630" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stylecop.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="44" lean-forward="false" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
+          <folding>
+            <marker date="1506068372579" expanded="true" signature="0:971" ph="{...}" />
+            <marker date="1506068372579" expanded="true" signature="198:266" ph="{...}" />
+            <marker date="1506068372579" expanded="true" signature="296:546" ph="{...}" />
+            <marker date="1506068372579" expanded="true" signature="569:618" ph="{...}" />
+            <marker date="1506068372579" expanded="true" signature="684:965" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Parsing/CommandTreeParserContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="9" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+          <folding>
+            <marker date="1506068436347" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068436347" expanded="true" signature="239:580" ph="{...}" />
+            <marker date="1506068436347" expanded="true" signature="285:578" ph="{...}" />
+            <marker date="1506068436347" expanded="true" signature="401:462" ph="{...}" />
+            <marker date="1506068436347" expanded="true" signature="510:572" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/ICommand.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="74" lean-forward="false" selection-start-line="22" selection-start-column="74" selection-end-line="22" selection-end-column="74" />
+          <folding>
+            <marker date="1506068308980" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068308980" expanded="true" signature="231:1096" ph="{...}" />
+            <marker date="1506068308980" expanded="true" signature="238:300" ph="/// Represents a command. ... " />
+            <marker date="1506068308980" expanded="true" signature="330:604" ph="{...}" />
+            <marker date="1506068308980" expanded="true" signature="345:564" ph="/// Executes the command with the specified settings. ... " />
+            <marker date="1506068308980" expanded="true" signature="610:747" ph="/// Represents a command. ... " />
+            <marker date="1506068308980" expanded="true" signature="817:1094" ph="{...}" />
+            <marker date="1506068308980" expanded="true" signature="832:1051" ph="/// Executes the command with the specified settings. ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Configuration/ICommandContainer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding>
+            <marker date="1506068283812" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506068283812" expanded="true" signature="280:388" ph="{...}" />
+            <marker date="1506068283812" expanded="true" signature="323:386" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Spectre.CommandLine.csproj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="36" column="62" lean-forward="false" selection-start-line="36" selection-start-column="62" selection-end-line="36" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spectre.CommandLine/Command.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="9" lean-forward="false" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+          <folding>
+            <marker date="1506069283796" expanded="true" signature="0:200" ph="/* Licensed to Spectre Systems AB under one or more agreements. ... */" />
+            <marker date="1506069283796" expanded="true" signature="258:996" ph="{...}" />
+            <marker date="1506069283796" expanded="true" signature="265:435" ph="/// Represents the base class for a command with settings. ... " />
+            <marker date="1506069283796" expanded="true" signature="502:994" ph="{...}" />
+            <marker date="1506069283796" expanded="true" signature="517:734" ph="/// Executes the command with the specified settings. ... " />
+            <marker date="1506069283796" expanded="true" signature="830:988" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

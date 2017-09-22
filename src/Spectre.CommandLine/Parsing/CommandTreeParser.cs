@@ -1,3 +1,7 @@
+// Licensed to Spectre Systems AB under one or more agreements.
+// Spectre Systems AB licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System;
 using System.Linq;
 using Spectre.CommandLine.Configuration;
@@ -23,8 +27,7 @@ namespace Spectre.CommandLine.Parsing
 
         private CommandTree Parse(CommandTreeParserContext context, ICommandContainer commands, TokenStream stream)
         {
-            return stream.Count == 0 
-                ? null : ParseCommand(context, commands, null, stream);
+            return stream.Count == 0 ? null : ParseCommand(context, commands, null, stream);
         }
 
         private CommandTree ParseCommand(
@@ -34,7 +37,7 @@ namespace Spectre.CommandLine.Parsing
             TokenStream stream)
         {
             context.ResetArgumentPosition();
-            
+
             // Find the command.
             var commandToken = stream.Consume(Token.Type.String);
             var command = current.FindCommand(commandToken.Value);
@@ -127,8 +130,8 @@ namespace Spectre.CommandLine.Parsing
             if (_configuration.Help != null)
             {
                 // Help?
-                if (_configuration.Help.ShortName != null && _configuration.Help.ShortName.Equals(token.Value, StringComparison.Ordinal) ||
-                    _configuration.Help.LongName != null && _configuration.Help.LongName.Equals(token.Value, StringComparison.Ordinal))
+                if ((_configuration.Help.ShortName != null && _configuration.Help.ShortName.Equals(token.Value, StringComparison.Ordinal)) ||
+                    (_configuration.Help.LongName != null && _configuration.Help.LongName.Equals(token.Value, StringComparison.Ordinal)))
                 {
                     node.ShowHelp = true;
                     return;

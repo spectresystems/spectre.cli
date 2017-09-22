@@ -18,14 +18,14 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore("./Spectre.CommandLine.sln");
+    DotNetCoreRestore("./src/Spectre.CommandLine.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {
-    DotNetCoreBuild("./Spectre.CommandLine.sln", new DotNetCoreBuildSettings {
+    DotNetCoreBuild("./src/Spectre.CommandLine.sln", new DotNetCoreBuildSettings {
         Configuration = "Release",
         MSBuildSettings = settings
     });
@@ -35,7 +35,7 @@ Task("Run-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    DotNetCoreTest("./test/Spectre.CommandLine.Tests/Spectre.CommandLine.Tests.csproj", new DotNetCoreTestSettings {
+    DotNetCoreTest("./src/Spectre.CommandLine.Tests/Spectre.CommandLine.Tests.csproj", new DotNetCoreTestSettings {
         Configuration = "Release"
     });
 });

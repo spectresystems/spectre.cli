@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Licensed to Spectre Systems AB under one or more agreements.
+// Spectre Systems AB licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -62,7 +66,7 @@ namespace Spectre.CommandLine.Parsing.Tokenization
 
         private static Token ScanQuotedString(TextReader reader)
         {
-            Debug.Assert(reader.Peek() == '\"');
+            Debug.Assert(reader.Peek() == '\"', "Expected '\"' token.");
             reader.Read(); // Consume
 
             var builder = new StringBuilder();
@@ -89,21 +93,19 @@ namespace Spectre.CommandLine.Parsing.Tokenization
         {
             var result = new List<Token>();
 
-            Debug.Assert(reader.Peek() == '-');
-
+            Debug.Assert(reader.Peek() == '-', "Expected '-' token.");
             reader.Read(); // Consume
-            if (reader.Peek() == -1)
-            {
-                throw new CommandAppException("Encountered unterminated option.");
-            }
 
-            if (reader.Peek() == '-')
+            switch (reader.Peek())
             {
-                result.Add(ScanLongOption(reader));
-            }
-            else
-            {
-                result.AddRange(ScanShortOptions(reader));
+                case -1:
+                    throw new CommandAppException("Encountered unterminated option.");
+                case '-':
+                    result.Add(ScanLongOption(reader));
+                    break;
+                default:
+                    result.AddRange(ScanShortOptions(reader));
+                    break;
             }
 
             return result;
@@ -146,7 +148,7 @@ namespace Spectre.CommandLine.Parsing.Tokenization
 
         private static Token ScanLongOption(TextReader reader)
         {
-            Debug.Assert(reader.Peek() == '-');
+            Debug.Assert(reader.Peek() == '-', "Expected '-' token.");
             reader.Read();
 
             if (char.IsWhiteSpace((char)reader.Peek()))
