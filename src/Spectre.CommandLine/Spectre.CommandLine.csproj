@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard1.5</TargetFrameworks>
     <Description>An extremly opinionated command line parser.</Description>
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>
@@ -17,21 +16,17 @@
     <Product>Spectre.CommandLine</Product>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Spectre.CommandLine.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Spectre.CommandLine.net451.v3.ncrunchproject" />
     <None Remove="Spectre.CommandLine.netstandard1.5.v3.ncrunchproject" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
-  
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
   </ItemGroup>
-
   <!-- StyleCop -->
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../Spectre.ruleset</CodeAnalysisRuleSet>
@@ -42,5 +37,4 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
 </Project>
