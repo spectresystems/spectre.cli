@@ -15,22 +15,21 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        using (var app = new CommandApp())
+        var app = new CommandApp();
+
+        app.Configure(config =>
         {
-            app.Configure(config =>
+            config.AddProxy<EfSettings>("ef", ef =>
             {
-                config.AddProxy<EFSettings>("ef", ef => 
+                ef.AddProxy<EfDatabaseSettings>("database", database =>
                 {
-                    ef.AddProxy<EFDatabaseSettings>("database", database =>
-                    {
-                        database.AddCommand<EFUpdateCommand>("update");
-                        database.AddCommand<EFDropCommand>("drop");
-                    }
+                    database.AddCommand<EfUpdateCommand>("update");
+                    database.AddCommand<EfDropCommand>("drop");
                 });
             });
+        });
 
-            return app.Run(args);
-        }
+        return app.Run(args);
     }
 }
 ```
@@ -38,7 +37,7 @@ public class Program
 You can now execute the `drop` command like this:
 
 ```
-./fakedotnet.exe ef --verbose database drop --startup-project "./../Foo/Foo.csproj"
+./fakedotnet.exe ef --verbose database --no-color drop --startup-project "./../Foo/Foo.csproj" --dry-run
 ```
 
 See the `samples` directory for more information.

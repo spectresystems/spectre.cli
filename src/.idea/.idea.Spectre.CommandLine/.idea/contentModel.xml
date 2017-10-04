@@ -1,5 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Patrik\.nuget\packages\xunit.runner.visualstudio\2.2.0\build\netcoreapp1.0\xunit.runner.reporters.netstandard15.dll" t="Include" />
+    <e p="C:\Users\Patrik\.nuget\packages\xunit.runner.visualstudio\2.2.0\build\netcoreapp1.0\xunit.runner.utility.netstandard15.dll" t="Include" />
+    <e p="C:\Users\Patrik\.nuget\packages\xunit.runner.visualstudio\2.2.0\build\netcoreapp1.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll" t="Include" />
+    <e p="C:\Users\Patrik\.Rider2017.2\system\resharper-host\local\Transient\ReSharperHost\v10\SolutionCaches\_Spectre.CommandLine.-262791387.00" t="ExcludeRecursive" />
+    <e p="D:\Source\Git\spectre\spectre.commandline\Sample" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="EF" t="Include">
+        <e p="Commands" t="Include">
+          <e p="EfDropCommand.cs" t="Include" />
+          <e p="EfUpdateCommand.cs" t="Include" />
+        </e>
+        <e p="EFDatabaseSettings.cs" t="Include" />
+        <e p="EFSettings.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp2.0" t="Include">
+            <e p="Sample.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Program.cs" t="Include" />
+      <e p="Sample.csproj" t="IncludeRecursive" />
+    </e>
+    <e p="D:\Source\Git\spectre\spectre.commandline\src" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Sample" t="Include" />
+      <e p="spectre.commandline" t="IncludeRecursive">
+        <e p="Annotations" t="Include">
+          <e p="ArgumentAttribute.cs" t="Include" />
+          <e p="OptionAttribute.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Command.cs" t="Include" />
+        <e p="CommandApp.cs" t="Include" />
+        <e p="CommandAppException.cs" t="Include" />
+        <e p="CommandSettingsFactory.cs" t="Include" />
+        <e p="Configuration" t="Include">
+          <e p="CommandInfo.cs" t="Include" />
+          <e p="CommandInfoFactory.cs" t="Include" />
+          <e p="CommandParameter.cs" t="Include" />
+          <e p="Configuration.cs" t="Include" />
+          <e p="Configurator.cs" t="Include" />
+          <e p="Configurator`1.cs" t="Include" />
+          <e p="ICommandContainer.cs" t="Include" />
+          <e p="IConfiguration.cs" t="Include" />
+          <e p="ParameterInfo.cs" t="Include" />
+          <e p="Parameters" t="Include">
+            <e p="CommandArgument.cs" t="Include" />
+            <e p="CommandOption.cs" t="Include" />
+          </e>
+          <e p="ParameterType.cs" t="Include" />
+        </e>
+        <e p="Extensions" t="Include">
+          <e p="CollectionExtensions.cs" t="Include" />
+          <e p="CommandExtensions.cs" t="Include" />
+          <e p="CommandTreeExtensions.cs" t="Include" />
+        </e>
+        <e p="ICommand.cs" t="Include" />
+        <e p="ICommandLimiter.cs" t="Include" />
+        <e p="IConfigurator.cs" t="Include" />
+        <e p="ITypeResolver.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard1.5" t="Include">
+              <e p="Spectre.CommandLine.AssemblyInfo.cs" t="Include" />
+            </e>
+            <e p="netstandard2.0" t="Include">
+              <e p="Spectre.CommandLine.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Parsing" t="Include">
+          <e p="CommandTree.cs" t="Include" />
+          <e p="CommandTreeParser.cs" t="Include" />
+          <e p="CommandTreeParserContext.cs" t="Include" />
+          <e p="Tokenization" t="Include">
+            <e p="Token.cs" t="Include" />
+            <e p="Tokenizer.cs" t="Include" />
+            <e p="TokenStream.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Spectre.CommandLine.csproj" t="IncludeRecursive" />
+        <e p="Utilities" t="Include">
+          <e p="HelpPrinter.cs" t="Include" />
+          <e p="TypeResolverAdapter.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Spectre.CommandLine.sln" t="IncludeFlat" />
+      <e p="Spectre.CommandLine.Tests" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="CallRecorder.cs" t="Include" />
+        <e p="Converters" t="Include">
+          <e p="LengthTypeConverter.cs" t="Include" />
+        </e>
+        <e p="Data" t="Include">
+          <e p="BarCommand.cs" t="Include" />
+          <e p="BarSettings.cs" t="Include" />
+          <e p="BazCommand.cs" t="Include" />
+          <e p="BazSettings.cs" t="Include" />
+          <e p="FooSettings.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp1.1" t="Include">
+              <e p="Spectre.CommandLine.Tests.AssemblyInfo.cs" t="Include" />
+              <e p="Spectre.CommandLine.Tests.Program.cs" t="Include" />
+            </e>
+            <e p="netcoreapp2.0" t="Include">
+              <e p="Spectre.CommandLine.Tests.AssemblyInfo.cs" t="Include" />
+              <e p="Spectre.CommandLine.Tests.Program.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Spectre.CommandLine.Tests.csproj" t="IncludeRecursive" />
+        <e p="TestResolver.cs" t="Include" />
+        <e p="Unit" t="Include">
+          <e p="CommandAppTests.cs" t="Include" />
+        </e>
+      </e>
+      <e p="stylecop.json" t="Include" />
+    </e>
+  </component>
   <component name="RiderRiderContentModelStore">
     <excludedPaths />
   </component>

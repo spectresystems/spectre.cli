@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
@@ -7,13 +6,10 @@
     <Company>Spectre Systems AB</Company>
     <Authors>Patrik Svensson</Authors>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Example.v3.ncrunchproject" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
+    <ProjectReference Include="..\src\Spectre.CommandLine\Spectre.CommandLine.csproj" />
   </ItemGroup>
-
 </Project>
