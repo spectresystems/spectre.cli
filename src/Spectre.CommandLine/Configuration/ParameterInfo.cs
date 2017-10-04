@@ -5,7 +5,6 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
-using Spectre.CommandLine.Annotations;
 
 namespace Spectre.CommandLine.Configuration
 {
