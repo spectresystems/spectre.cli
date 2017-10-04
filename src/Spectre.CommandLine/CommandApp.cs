@@ -108,13 +108,12 @@ namespace Spectre.CommandLine
                 {
                     if (parameter.IsRequired && !parameter.Parameter.IsInherited && !node.ShowHelp)
                     {
-                        if (parameter is CommandOption option)
+                        switch (parameter)
                         {
-                            throw new CommandAppException($"Command '{node.Command.Name}' is missing required option '{option.GetOptionName()}'.");
-                        }
-                        if (parameter is CommandArgument argument)
-                        {
-                            throw new CommandAppException($"Command '{node.Command.Name}' is missing required argument '{argument.Name}'.");
+                            case CommandOption option:
+                                throw new CommandAppException($"Command '{node.Command.Name}' is missing required option '{option.GetOptionName()}'.");
+                            case CommandArgument argument:
+                                throw new CommandAppException($"Command '{node.Command.Name}' is missing required argument '{argument.Name}'.");
                         }
                     }
                 }
