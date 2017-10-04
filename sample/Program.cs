@@ -14,6 +14,7 @@ namespace Sample
             {
                 config.AddProxy<EfSettings>("ef", ef =>
                 {
+                    ef.SetDescription("Fake EF Core .NET Command Line Tools");
                     ef.AddProxy<EfDatabaseSettings>("database", database =>
                     {
                         database.AddCommand<EfUpdateCommand>("update");
