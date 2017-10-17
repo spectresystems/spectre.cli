@@ -75,7 +75,7 @@ namespace Spectre.CommandLine.Utilities
             }
             else
             {
-                builder.Add("[" + argument.Name + "]");                    
+                builder.Add("[" + argument.Name + "]");
             }
             if (!string.IsNullOrWhiteSpace(argument.Parameter.Description))
             {
@@ -112,7 +112,7 @@ namespace Spectre.CommandLine.Utilities
                 }
                 else
                 {
-                    builder.Add("[" + option.ValueName + "]");                    
+                    builder.Add("[" + option.ValueName + "]");
                 }
             }
             if (!string.IsNullOrWhiteSpace(option.Parameter.Description))
