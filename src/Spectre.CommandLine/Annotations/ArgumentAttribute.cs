@@ -40,8 +40,8 @@ namespace Spectre.CommandLine.Annotations
         public ArgumentAttribute(int position, string argumentName)
         {
             Position = position;
-            IsRequired = argumentName.StartsWith("[") && argumentName.EndsWith("]");
-            ArgumentName = argumentName.Trim('[', ']', '<', '>');
+            IsRequired = argumentName.IsRequiredArgument();
+            ArgumentName = argumentName.TrimArgument();
         }
     }
 }

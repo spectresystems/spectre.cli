@@ -69,14 +69,17 @@ namespace Spectre.CommandLine.Utilities
         private static string BuildArgumentString(CommandArgument argument)
         {
             var builder = new List<string>();
-            builder.Add("<" + argument.Name + ">");
+            if (argument.IsRequired)
+            {
+                builder.Add("<" + argument.Name + ">");
+            }
+            else
+            {
+                builder.Add("[" + argument.Name + "]");                    
+            }
             if (!string.IsNullOrWhiteSpace(argument.Parameter.Description))
             {
                 builder.Add(" " + argument.Parameter.Description);
-            }
-            if (argument.IsRequired)
-            {
-                builder.Add(" [Required]");
             }
             return string.Join(" ", builder);
         }
@@ -103,15 +106,18 @@ namespace Spectre.CommandLine.Utilities
             }
             if (!string.IsNullOrWhiteSpace(option.ValueName))
             {
-                builder.Add("<" + option.ValueName + ">");
+                if (option.IsRequired)
+                {
+                    builder.Add("<" + option.ValueName + ">");
+                }
+                else
+                {
+                    builder.Add("[" + option.ValueName + "]");                    
+                }
             }
             if (!string.IsNullOrWhiteSpace(option.Parameter.Description))
             {
                 builder.Add(" " + option.Parameter.Description);
-            }
-            if (option.IsRequired)
-            {
-                builder.Add(" [Required]");
             }
             return string.Join(" ", builder);
         }

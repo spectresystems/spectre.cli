@@ -70,13 +70,12 @@ namespace Spectre.CommandLine.Annotations
                     }
                     throw new CommandAppException("Invalid short option.");
                 }
-                if ((part.StartsWith("<") && part.EndsWith(">")) ||
-                    (part.StartsWith("[") && part.EndsWith("]")))
+                if (part.IsRequiredOrOptionalArgument())
                 {
                     if (part.Length > 2)
                     {
-                        ValueName = part.Substring(1, part.Length - 2);
-                        IsRequired = part.StartsWith("[") && part.EndsWith("]");
+                        ValueName = part.TrimArgument();
+                        IsRequired = part.IsRequiredArgument();
                         continue;
                     }
                 }
