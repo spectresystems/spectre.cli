@@ -11,8 +11,8 @@ namespace Spectre.CommandLine
         {
             if (text != null)
             {
-                return text.StartsWith("[") && text.EndsWith("]") &&
-                       text.StartsWith("<") && text.EndsWith(">");
+                return (text.StartsWith("[") && text.EndsWith("]")) ||
+                       (text.StartsWith("<") && text.EndsWith(">"));
             }
             return false;
         }
