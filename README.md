@@ -19,10 +19,10 @@ public class Program
 
         app.Configure(config =>
         {
-            config.AddProxy<EfSettings>("ef", ef =>
+            config.AddCommand<EfSettings>("ef", ef =>
             {
                 ef.SetDescription("Fake EF Core .NET Command Line Tools");
-                ef.AddProxy<EfDatabaseSettings>("database", database =>
+                ef.AddCommand<EfDatabaseSettings>("database", database =>
                 {
                     database.AddCommand<EfUpdateCommand>("update");
                     database.AddCommand<EfDropCommand>("drop");
