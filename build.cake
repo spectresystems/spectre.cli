@@ -1,6 +1,6 @@
+#tool nuget:?package=GitVersion.CommandLine&version=3.6.2
 #load "./scripts/version.cake"
 #load "./scripts/msbuild.cake"
-#tool "nuget:https://www.nuget.org/api/v2?package=GitVersion.CommandLine&version=3.6.2"
 
 var configuration = Argument("configuration", "Release");
 var target = Argument("target", "Default");

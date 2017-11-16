@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Spectre Systems Ruleset" ToolsVersion="12.0">
-  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" /> <!-- Remove to enable XML documentation warning -->
     <Rule Id="SA1100" Action="None" />
     <Rule Id="SA1101" Action="None" />
     <Rule Id="SA1116" Action="None" />
@@ -23,8 +24,21 @@
     <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1516" Action="None" />
     <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1602" Action="None" /> <!-- Remove to enable XML documentation warning -->
     <Rule Id="SA1625" Action="None" />
+    <Rule Id="SA1633" Action="None" /> <!-- Remove to enable file headers -->
     <Rule Id="SA1636" Action="None" />
     <Rule Id="SA1649" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1029" Action="None" />
+    <Rule Id="RCS1079" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1720" Action="None" />
+    <Rule Id="CA1801" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <Rule Id="S1066" Action="None" />
   </Rules>
 </RuleSet>

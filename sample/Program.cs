@@ -1,5 +1,6 @@
 ﻿using Sample.EF;
-using Sample.EF.Commands;
+using Sample.EF.Database;
+using Sample.EF.DbContext;
 using Spectre.CommandLine;
 
 namespace Sample
@@ -9,16 +10,26 @@ namespace Sample
         public static int Main(string[] args)
         {
             var app = new CommandApp();
-
             app.Configure(config =>
             {
-                config.AddProxy<EfSettings>("ef", ef =>
+                config.SetApplicationName("fakedotnet");
+
+                // Root command
+                config.AddCommand<EfSettings>("ef", ef =>
                 {
                     ef.SetDescription("Fake EF Core .NET Command Line Tools");
-                    ef.AddProxy<EfDatabaseSettings>("database", database =>
+
+                    // Database
+                    ef.AddCommand<EfCommandSettings>("database", database =>
                     {
                         database.AddCommand<EfUpdateCommand>("update");
                         database.AddCommand<EfDropCommand>("drop");
+                    });
+
+                    // DbContext
+                    ef.AddCommand<EfCommandSettings>("dbcontext", dbcontext =>
+                    {
+                        dbcontext.AddCommand<EfScaffoldCommand>("scaffold");
                     });
                 });
             });
@@ -27,5 +38,3 @@ namespace Sample
         }
     }
 }
-
-

@@ -1,109 +1,96 @@
-﻿using System.Collections.Generic;
-using Shouldly;
+﻿using Shouldly;
 using Spectre.CommandLine.Tests.Data;
+using Spectre.CommandLine.Tests.Fakes;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit
 {
     public sealed class CommandAppTests
     {
-        public sealed class TheRunMethod
+        [Fact]
+        public void Should_Pass_Case_1()
         {
-            public static IEnumerable<object[]> Arguments()
+            // Given
+            var activator = new FakeTypeResolver();
+            var settings = new DogSettings();
+            activator.Register(settings);
+
+            var app = new CommandApp(activator);
+            app.Configure(config =>
             {
-                yield return new object[] {new[] {"foo", "--foo", "Hello", "bar", "--bar", "2"}};
-                yield return new object[] {new[] {"foo", "--foo", "Hello", "bar", "-b", "2"}};
-                yield return new object[] {new[] {"foo", "-f", "Hello", "bar", "-b", "2"}};
-                yield return new object[] {new[] {"foo", "-f", "Hello", "bar", "--bar", "2"}};
-            }
-
-            [Theory]
-            [MemberData(nameof(Arguments))]
-            public void Should_Execute_Command_With_Specified_Options(string[] args)
-            {
-                // Given
-                var fixture = new Fixture();
-
-                // When
-                var result = fixture.Run(args);
-
-                // Then
-                result.ShouldBe(0);
-                fixture.CallRecorder.WasCalled("FooBar Foo=Hello Bar=2 Qux=0").ShouldBeTrue();
-            }
-
-            [Fact]
-            public void Should_Execute_Command_With_Specified_Arguments()
-            {
-                // Given
-                var fixture = new Fixture();
-
-                // When
-                var result = fixture.Run(new[] { "foo", "--foo", "1", "baz", "a", "b", "--baz", "2" });
-
-                // Then
-                result.ShouldBe(0);
-                fixture.CallRecorder.LastCalled().ShouldBe("FooBaz Alpha=a Beta=b Foo=1 Baz=2");
-            }
-
-            [Fact]
-            public void Should_Use_Default_Value_For_Options_If_Specified()
-            {
-                // Given
-                var fixture = new Fixture();
-
-                // When
-                var result = fixture.Run(new[] {"foo", "--foo", "1", "bar"});
-
-                // Then
-                result.ShouldBe(0);
-                fixture.CallRecorder.WasCalled("FooBar Foo=1 Bar=3 Qux=0").ShouldBeTrue();
-            }
-
-            [Fact]
-            public void Should_Use_Type_Converter_For_Options_If_Specified()
-            {
-                // Given
-                var fixture = new Fixture();
-
-                // When
-                var result = fixture.Run(new[] {"foo", "--foo", "1", "bar", "--bar", "1", "--qux", "HelloWorld"});
-
-                // Then
-                result.ShouldBe(0);
-                fixture.CallRecorder.WasCalled("FooBar Foo=1 Bar=1 Qux=10").ShouldBeTrue();
-            }
-        }
-
-        public sealed class Fixture
-        {
-            public CallRecorder CallRecorder { get; set; }
-            public TestResolver Resolver { get; set; }
-
-            public Fixture()
-            {
-                CallRecorder = new CallRecorder();
-
-                Resolver = new TestResolver();
-                Resolver.Register(new BarCommand(CallRecorder));
-                Resolver.Register(new BarSettings());
-                Resolver.Register(new BazCommand(CallRecorder));
-                Resolver.Register(new BazSettings());
-            }
-
-            public int Run(string[] args)
-            {
-                var app = new CommandApp(Resolver);
-                app.Configure(config =>
+                config.AddCommand<AnimalSettings>("animal", animal =>
                 {
-                    config.AddProxy<FooSettings>("foo", foo =>
+                    animal.AddCommand<MammalSettings>("mammal", mammal =>
                     {
-                        foo.AddCommand<BarCommand>("bar");
-                        foo.AddCommand<BazCommand>("baz");
+                        mammal.AddCommand<DogCommand>("dog");
+                        mammal.AddCommand<HorseCommand>("horse");
                     });
                 });
-                return app.Run(args);
-            }
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Age.ShouldBe(12);
+            settings.GoodBoy.ShouldBe(true);
+            settings.IsAlive.ShouldBe(true);
+            settings.Name.ShouldBe("Rufus");
+        }
+
+        [Fact]
+        public void Should_Pass_Case_2()
+        {
+            // Given
+            var activator = new FakeTypeResolver();
+            var settings = new DogSettings();
+            activator.Register(settings);
+
+            var app = new CommandApp(activator);
+            app.Configure(config =>
+            {
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Age.ShouldBe(12);
+            settings.GoodBoy.ShouldBe(true);
+            settings.IsAlive.ShouldBe(true);
+            settings.Name.ShouldBe("Rufus");
+        }
+
+        [Fact]
+        public void Should_Pass_Case_3()
+        {
+            // Given
+            var activator = new FakeTypeResolver();
+            var settings = new DogSettings();
+            activator.Register(settings);
+
+            var app = new CommandApp(activator);
+            app.Configure(config =>
+            {
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Age.ShouldBe(12);
+            settings.GoodBoy.ShouldBe(true);
+            settings.IsAlive.ShouldBe(false);
+            settings.Name.ShouldBe("Rufus");
         }
     }
 }
