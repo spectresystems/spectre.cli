@@ -23,17 +23,15 @@
 
   <!-- Packages -->
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.4.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <!-- Static analysis -->
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../Spectre.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../Spectre.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)../stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

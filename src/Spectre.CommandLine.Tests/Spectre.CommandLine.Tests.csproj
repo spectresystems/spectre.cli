@@ -5,13 +5,6 @@
     <Features>IOperation</Features>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
-    <CodeAnalysisRuleSet>Spectre.CommandLine.Tests.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <CodeAnalysisRuleSet>Spectre.CommandLine.Tests.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Spectre.CommandLine.Tests.ruleset" />
     <None Remove="Spectre.CommandLine.Tests.v3.ncrunchproject" />
@@ -43,10 +36,10 @@
 
   <!-- Static analysis -->
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../Spectre.Test.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../Spectre.Test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)../stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
