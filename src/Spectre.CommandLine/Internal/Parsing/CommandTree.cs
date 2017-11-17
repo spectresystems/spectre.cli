@@ -23,7 +23,7 @@ namespace Spectre.CommandLine.Internal.Parsing
 
         public object CreateSettings(ITypeResolver resolver)
         {
-            var settings = resolver.Activate(Command.SettingsType);
+            var settings = resolver.Resolve(Command.SettingsType);
             if (settings != null)
             {
                 return settings;
@@ -33,7 +33,7 @@ namespace Spectre.CommandLine.Internal.Parsing
 
         public ICommand CreateCommand(ITypeResolver resolver)
         {
-            if (resolver.Activate(Command.CommandType) is ICommand command)
+            if (resolver.Resolve(Command.CommandType) is ICommand command)
             {
                 return command;
             }

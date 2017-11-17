@@ -7,7 +7,7 @@ using System.Xml;
 using Spectre.CommandLine.Internal.Configuration;
 using Spectre.CommandLine.Internal.Modelling;
 
-namespace Spectre.CommandLine.Tests.Unit.Internal.Reflection
+namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
 {
     internal static class CommandModelSerializer
     {

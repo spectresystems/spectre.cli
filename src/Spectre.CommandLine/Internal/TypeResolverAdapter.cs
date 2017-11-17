@@ -11,13 +11,13 @@ namespace Spectre.CommandLine.Internal
             _resolver = resolver;
         }
 
-        public object Activate(Type type)
+        public object Resolve(Type type)
         {
             try
             {
                 if (_resolver != null)
                 {
-                    var obj = _resolver.Activate(type);
+                    var obj = _resolver.Resolve(type);
                     if (obj == null)
                     {
                         throw new CommandAppException($"Could not resolve type '{type.FullName}'.");

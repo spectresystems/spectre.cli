@@ -17,7 +17,7 @@ namespace Spectre.CommandLine.Tests.Fakes
             _lookup[typeof(T)] = instance;
         }
 
-        public object Activate(Type type)
+        public object Resolve(Type type)
         {
             if (_lookup.TryGetValue(type, out var value))
             {

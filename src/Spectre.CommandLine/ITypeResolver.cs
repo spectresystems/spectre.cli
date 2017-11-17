@@ -4,6 +4,6 @@ namespace Spectre.CommandLine
 {
     public interface ITypeResolver
     {
-        object Activate(Type type);
+        object Resolve(Type type);
     }
 }

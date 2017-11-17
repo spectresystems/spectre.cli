@@ -86,6 +86,21 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Binding
             settings.IsAlive.ShouldBe(false);
         }
 
+        [Fact]
+        public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
+        {
+            // Given, When
+            var settings = Fixture.Bind<CatSettings>(
+                new[] { "cat", "--name", "Tiger", "--agility", "FOOBAR" },
+                config =>
+                {
+                    config.AddCommand<CatCommand>("cat");
+                });
+
+            // Then
+            settings.Agility.ShouldBe(6);
+        }
+
         internal static class Fixture
         {
             public static T Bind<T>(IEnumerable<string> args, Action<Configurator> action)
@@ -101,7 +116,8 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Binding
 
                 // Bind the settings to the tree.
                 object settings = new T();
-                CommandBinder.Bind(result.tree, ref settings);
+                var binder = new CommandBinder(new TypeResolverAdapter(null));
+                binder.Bind(result.tree, ref settings);
 
                 // Return the settings.
                 return (T)settings;

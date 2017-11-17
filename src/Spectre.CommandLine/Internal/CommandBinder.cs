@@ -5,9 +5,16 @@ using Spectre.CommandLine.Internal.Parsing;
 
 namespace Spectre.CommandLine.Internal
 {
-    internal static class CommandBinder
+    internal sealed class CommandBinder
     {
-        public static void Bind(CommandTree tree, ref object obj)
+        private readonly ITypeResolver _resolver;
+
+        public CommandBinder(ITypeResolver resolver)
+        {
+            _resolver = resolver;
+        }
+
+        public void Bind(CommandTree tree, ref object obj)
         {
             ValidateRequiredParameters(tree);
 
@@ -17,7 +24,8 @@ namespace Spectre.CommandLine.Internal
                 {
                     return TypeDescriptor.GetConverter(parameter.ParameterType);
                 }
-                throw new NotSupportedException("Custom converters not yet supported.");
+                var type = Type.GetType(parameter.Converter.ConverterTypeName);
+                return _resolver.Resolve(type) as TypeConverter;
             }
 
             while (tree != null)

@@ -10,10 +10,12 @@ namespace Spectre.CommandLine.Internal
     internal sealed class CommandExecutor
     {
         private readonly ITypeResolver _resolver;
+        private readonly CommandBinder _binder;
 
         public CommandExecutor(ITypeResolver resolver)
         {
             _resolver = new TypeResolverAdapter(resolver);
+            _binder = new CommandBinder(_resolver);
         }
 
         public int Execute(IConfiguration configuration, IEnumerable<string> args)
@@ -60,7 +62,7 @@ namespace Spectre.CommandLine.Internal
             var settings = leaf.CreateSettings(_resolver);
 
             // Bind the command tree against the settings.
-            CommandBinder.Bind(tree, ref settings);
+            _binder.Bind(tree, ref settings);
 
             // Execute the command.
             var command = leaf.CreateCommand(_resolver);

@@ -4,7 +4,7 @@ using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Tests.Data;
 using Xunit;
 
-namespace Spectre.CommandLine.Tests.Unit.Internal.Reflection
+namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
 {
     public sealed class CommandModelBuilderTests
     {
