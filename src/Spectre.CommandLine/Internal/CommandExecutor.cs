@@ -9,20 +9,22 @@ namespace Spectre.CommandLine.Internal
 {
     internal sealed class CommandExecutor
     {
-        private readonly ITypeResolver _resolver;
         private readonly CommandBinder _binder;
 
-        public CommandExecutor(ITypeResolver resolver)
+        public CommandExecutor()
         {
-            _resolver = new TypeResolverAdapter(resolver);
-            _binder = new CommandBinder(_resolver);
+            _binder = new CommandBinder();
         }
 
-        public int Execute(IConfiguration configuration, IEnumerable<string> args)
+        public int Execute(IConfiguration configuration, IEnumerable<string> args, ITypeResolver resolver)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
+            }
+            if (resolver == null)
+            {
+                throw new ArgumentNullException(nameof(resolver));
             }
             if (configuration.Commands.Count == 0)
             {
@@ -34,10 +36,10 @@ namespace Spectre.CommandLine.Internal
 
             // Parse and map the model against the arguments.
             var parser = new CommandTreeParser(model, new CommandOptionAttribute("-h|--help"));
-            var result = parser.Parse(args);
+            var (tree, remaining) = parser.Parse(args);
 
             // Currently the root?
-            if (result.tree == null)
+            if (tree == null)
             {
                 // Display help.
                 HelpWriter.Write(model);
@@ -45,7 +47,7 @@ namespace Spectre.CommandLine.Internal
             }
 
             // Get the command to execute.
-            var leaf = result.tree.GetLeafCommand();
+            var leaf = tree.GetLeafCommand();
             if (leaf.Command.IsProxy || leaf.ShowHelp)
             {
                 // Proxy's can't be executed. Show help.
@@ -53,19 +55,19 @@ namespace Spectre.CommandLine.Internal
                 return 0;
             }
 
-            return Execute(leaf, result.tree, result.remaining);
+            return Execute(leaf, tree, remaining, resolver);
         }
 
-        private int Execute(CommandTree leaf, CommandTree tree, ILookup<string, string> remaining)
+        private int Execute(CommandTree leaf, CommandTree tree, ILookup<string, string> remaining, ITypeResolver resolver)
         {
             // Create the command and the settings.
-            var settings = leaf.CreateSettings(_resolver);
+            var settings = leaf.CreateSettings(resolver);
 
             // Bind the command tree against the settings.
-            _binder.Bind(tree, ref settings);
+            _binder.Bind(tree, ref settings, resolver);
 
             // Execute the command.
-            var command = leaf.CreateCommand(_resolver);
+            var command = leaf.CreateCommand(resolver);
             return command.Execute(settings, remaining);
         }
     }

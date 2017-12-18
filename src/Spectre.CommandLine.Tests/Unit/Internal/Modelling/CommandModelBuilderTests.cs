@@ -12,7 +12,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Set_Parents_Correctly()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<AnimalSettings>("animal", animal =>
             {
                 animal.AddCommand<MammalSettings>("mammal", mammal =>
@@ -45,7 +45,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Set_Descriptions_For_Proxy_Commands()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<AnimalSettings>("animal", animal =>
             {
                 animal.SetDescription("An animal");
@@ -75,7 +75,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Set_TypeConverter_For_Options()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<CatCommand>("cat");
 
             // When
@@ -92,7 +92,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Shadow_Options_Declared_In_Parent_Command_If_Settings_Are_Of_Same_Type()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<MammalSettings>("mammal", mammal =>
             {
                 mammal.AddCommand<HorseCommand>("horse");
@@ -125,7 +125,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Make_Shadowed_Options_Non_Required()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<MammalSettings>("mammal", mammal =>
             {
                 mammal.AddCommand<HorseCommand>("horse");
@@ -152,7 +152,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         public void Should_Set_Default_Value_For_Options()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<CatCommand>("cat");
 
             // When

@@ -18,21 +18,21 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
         public void Should_Capture_Remaining_Arguments()
         {
             // Given, When
-            var result = Fixture.Parse(new[] { "dog", "--woof" }, config =>
+            var (_, remaining) = Fixture.Parse(new[] { "dog", "--woof" }, config =>
             {
                 config.AddCommand<DogCommand>("dog");
             });
 
             // Then
-            result.remaining.Count.ShouldBe(1);
-            result.remaining.Contains("--woof").ShouldBe(true);
+            remaining.Count.ShouldBe(1);
+            remaining.Contains("--woof").ShouldBe(true);
         }
 
         [Fact]
         public void Should_Capture_Option_Beloning_To_Parent_Commands_As_Remaining_Arguments()
         {
             // Given, When
-            var result = Fixture.Parse(new[] { "animal", "dog", "--alive" }, config =>
+            var (_, remaining) = Fixture.Parse(new[] { "animal", "dog", "--alive" }, config =>
             {
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
@@ -41,15 +41,15 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             });
 
             // Then
-            result.remaining.Count.ShouldBe(1);
-            result.remaining.Contains("--alive").ShouldBe(true);
+            remaining.Count.ShouldBe(1);
+            remaining.Contains("--alive").ShouldBe(true);
         }
 
         [Fact]
         public void Should_Not_Capture_Option_Belonging_To_Parent_Commands_As_Remaining_Arguments_If_Option_Was_Assigned_To_Parent_Command()
         {
             // Given, When
-            var result = Fixture.Parse(new[] { "animal", "--alive", "dog", "--alive" }, config =>
+            var (_, remaining) = Fixture.Parse(new[] { "animal", "--alive", "dog", "--alive" }, config =>
             {
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
@@ -58,7 +58,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             });
 
             // Then
-            result.remaining.Count.ShouldBe(0);
+            remaining.Count.ShouldBe(0);
         }
 
         /// <remarks>
@@ -133,7 +133,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
         {
             public static (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
             {
-                var configurator = new Configurator();
+                var configurator = new Configurator(null);
                 func(configurator);
 
                 var model = CommandModelBuilder.Build(configurator);
@@ -142,7 +142,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
 
             public static string Serialize(IEnumerable<string> args, Action<Configurator> func)
             {
-                var result = Parse(args, func);
+                var (tree, _) = Parse(args, func);
 
                 var settings = new XmlWriterSettings
                 {
@@ -155,7 +155,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 using (var buffer = new StringWriter())
                 using (var xmlWriter = XmlWriter.Create(buffer, settings))
                 {
-                    CommandTreeSerializer.Serialize(result.tree).WriteTo(xmlWriter);
+                    CommandTreeSerializer.Serialize(tree).WriteTo(xmlWriter);
                     xmlWriter.Flush();
                     return buffer.GetStringBuilder().ToString().NormalizeLineEndings();
                 }

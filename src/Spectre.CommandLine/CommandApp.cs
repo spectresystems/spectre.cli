@@ -5,20 +5,15 @@ using Spectre.CommandLine.Internal.Configuration;
 
 namespace Spectre.CommandLine
 {
-    public sealed class CommandApp
+    public class CommandApp
     {
         private readonly Configurator _configurator;
         private readonly CommandExecutor _executor;
 
-        public CommandApp()
-            : this(null)
+        public CommandApp(ITypeRegistrar registrar = null)
         {
-        }
-
-        public CommandApp(ITypeResolver resolver)
-        {
-            _configurator = new Configurator();
-            _executor = new CommandExecutor(resolver);
+            _configurator = new Configurator(registrar);
+            _executor = new CommandExecutor();
         }
 
         public void Configure(Action<IConfigurator> configuration)
@@ -26,11 +21,13 @@ namespace Spectre.CommandLine
             configuration(_configurator);
         }
 
-        public int Run(IEnumerable<string> args)
+        public int Run(IEnumerable<string> args, ITypeResolver resolver = null)
         {
             try
             {
-                return _executor.Execute(_configurator, args);
+                // Execute the command.
+                resolver = resolver ?? new TypeResolverAdapter(null);
+                return _executor.Execute(_configurator, args, resolver);
             }
             catch (CommandAppException ex)
             {

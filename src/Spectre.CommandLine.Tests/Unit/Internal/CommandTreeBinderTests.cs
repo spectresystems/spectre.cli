@@ -8,7 +8,7 @@ using Spectre.CommandLine.Internal.Parsing;
 using Spectre.CommandLine.Tests.Data;
 using Xunit;
 
-namespace Spectre.CommandLine.Tests.Unit.Internal.Binding
+namespace Spectre.CommandLine.Tests.Unit.Internal
 {
     public sealed class CommandTreeBinderTests
     {
@@ -107,17 +107,17 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Binding
                 where T : class, new()
             {
                 // Configure
-                var configurator = new Configurator();
+                var configurator = new Configurator(null);
                 action(configurator);
 
                 // Parse command tree.
                 var parser = new CommandTreeParser(CommandModelBuilder.Build(configurator));
-                var result = parser.Parse(args);
+                var (tree, _) = parser.Parse(args);
 
                 // Bind the settings to the tree.
                 object settings = new T();
-                var binder = new CommandBinder(new TypeResolverAdapter(null));
-                binder.Bind(result.tree, ref settings);
+                var binder = new CommandBinder();
+                binder.Bind(tree, ref settings, new TypeResolverAdapter(null));
 
                 // Return the settings.
                 return (T)settings;
