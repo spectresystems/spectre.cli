@@ -15,7 +15,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var settings = new DogSettings();
             resolver.Register(settings);
 
-            var app = new CommandApp();
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
                 config.AddCommand<AnimalSettings>("animal", animal =>
@@ -30,8 +30,7 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // When
             var result = app.Run(
-                new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" },
-                resolver);
+                new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" });
 
             // Then
             result.ShouldBe(0);
@@ -49,16 +48,14 @@ namespace Spectre.CommandLine.Tests.Unit
             var settings = new DogSettings();
             resolver.Register(settings);
 
-            var app = new CommandApp();
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
                 config.AddCommand<DogCommand>("dog");
             });
 
             // When
-            var result = app.Run(
-                new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" },
-                resolver);
+            var result = app.Run(new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" });
 
             // Then
             result.ShouldBe(0);
@@ -76,7 +73,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var settings = new DogSettings();
             resolver.Register(settings);
 
-            var app = new CommandApp();
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
                 config.AddCommand<AnimalSettings>("animal", animal =>
@@ -87,9 +84,7 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            var result = app.Run(
-                new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" },
-                resolver);
+            var result = app.Run(new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" });
 
             // Then
             result.ShouldBe(0);

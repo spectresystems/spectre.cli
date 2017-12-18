@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Spectre.CommandLine.Tests.Fakes
 {
     public sealed class FakeTypeRegistrar : ITypeRegistrar
     {
+        private readonly ITypeResolver _resolver;
         public Dictionary<Type, List<Type>> Registrations { get; }
 
-        public FakeTypeRegistrar()
+        public FakeTypeRegistrar(ITypeResolver resolver = null)
         {
+            _resolver = resolver;
             Registrations = new Dictionary<Type, List<Type>>();
         }
 
@@ -22,6 +25,11 @@ namespace Spectre.CommandLine.Tests.Fakes
             {
                 Registrations[service].Add(implementation);
             }
+        }
+
+        public ITypeResolver Build()
+        {
+            return _resolver;
         }
     }
 }
