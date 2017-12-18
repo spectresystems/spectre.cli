@@ -13,7 +13,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
     {
         public static string Serialize(Action<Configurator> func)
         {
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             func(configurator);
 
             var model = CommandModelBuilder.Build(configurator);

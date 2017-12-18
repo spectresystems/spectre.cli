@@ -11,7 +11,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Configuration
         public void Should_Create_Configured_Commands_Correctly()
         {
             // Given
-            var configurator = new Configurator();
+            var configurator = new Configurator(null);
             configurator.AddCommand<AnimalSettings>("animal", animal =>
             {
                 animal.AddCommand<MammalSettings>("mammal", mammal =>

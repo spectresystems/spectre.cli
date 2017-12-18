@@ -7,14 +7,7 @@ namespace Spectre.CommandLine.Internal
 {
     internal sealed class CommandBinder
     {
-        private readonly ITypeResolver _resolver;
-
-        public CommandBinder(ITypeResolver resolver)
-        {
-            _resolver = resolver;
-        }
-
-        public void Bind(CommandTree tree, ref object obj)
+        public void Bind(CommandTree tree, ref object obj, ITypeResolver resolver)
         {
             ValidateRequiredParameters(tree);
 
@@ -25,7 +18,7 @@ namespace Spectre.CommandLine.Internal
                     return TypeDescriptor.GetConverter(parameter.ParameterType);
                 }
                 var type = Type.GetType(parameter.Converter.ConverterTypeName);
-                return _resolver.Resolve(type) as TypeConverter;
+                return resolver.Resolve(type) as TypeConverter;
             }
 
             while (tree != null)

@@ -1,7 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System;
 
-using System;
-
+// ReSharper disable once CheckNamespace
 namespace Spectre.CommandLine.Tests
 {
     internal static class StringExtensions
