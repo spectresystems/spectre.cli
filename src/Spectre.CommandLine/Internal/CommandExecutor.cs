@@ -10,21 +10,19 @@ namespace Spectre.CommandLine.Internal
     internal sealed class CommandExecutor
     {
         private readonly CommandBinder _binder;
+        private readonly ITypeRegistrar _registrar;
 
-        public CommandExecutor()
+        public CommandExecutor(ITypeRegistrar registrar)
         {
             _binder = new CommandBinder();
+            _registrar = registrar;
         }
 
-        public int Execute(IConfiguration configuration, IEnumerable<string> args, ITypeResolver resolver)
+        public int Execute(IConfiguration configuration, IEnumerable<string> args)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
-            }
-            if (resolver == null)
-            {
-                throw new ArgumentNullException(nameof(resolver));
             }
             if (configuration.Commands.Count == 0)
             {
@@ -55,6 +53,14 @@ namespace Spectre.CommandLine.Internal
                 return 0;
             }
 
+            // Register the arguments with the container.
+            var arguments = new Arguments(remaining);
+            _registrar?.RegisterInstance(typeof(IArguments), arguments);
+
+            // Create the resolver.
+            var resolver = new TypeResolverAdapter(_registrar?.Build());
+
+            // Execute the command tree.
             return Execute(leaf, tree, remaining, resolver);
         }
 

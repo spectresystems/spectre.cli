@@ -22,6 +22,11 @@ namespace Spectre.CommandLine.Tests
             action(obj);
         }
 
+        public static void As<T>(this object obj, Action<T> action)
+        {
+            action((T)obj);
+        }
+
         public static void ShouldBe<T>(this Type obj)
         {
             obj.ShouldBe(typeof(T));

@@ -7,15 +7,13 @@ namespace Spectre.CommandLine
 {
     public sealed class CommandApp
     {
-        private readonly ITypeRegistrar _registrar;
         private readonly Configurator _configurator;
         private readonly CommandExecutor _executor;
 
         public CommandApp(ITypeRegistrar registrar = null)
         {
-            _registrar = registrar;
             _configurator = new Configurator(registrar);
-            _executor = new CommandExecutor();
+            _executor = new CommandExecutor(registrar);
         }
 
         public void Configure(Action<IConfigurator> configuration)
@@ -27,8 +25,7 @@ namespace Spectre.CommandLine
         {
             try
             {
-                var resolver = new TypeResolverAdapter(_registrar?.Build());
-                return _executor.Execute(_configurator, args, resolver);
+                return _executor.Execute(_configurator, args);
             }
             catch (CommandAppException ex)
             {

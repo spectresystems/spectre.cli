@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using System.Linq;
+using Shouldly;
 using Spectre.CommandLine.Tests.Data;
 using Spectre.CommandLine.Tests.Fakes;
 using Xunit;
@@ -142,6 +143,36 @@ namespace Spectre.CommandLine.Tests.Unit
             registrar.Registrations.ContainsKey(typeof(MammalSettings)).ShouldBeTrue();
             registrar.Registrations[typeof(MammalSettings)].Count.ShouldBe(1);
             registrar.Registrations[typeof(MammalSettings)].ShouldContain(typeof(MammalSettings));
+        }
+
+        [Fact]
+        public void Should_Register_Remaining_Arguments()
+        {
+            // Given
+            var registrar = new FakeTypeRegistrar();
+            var app = new CommandApp(registrar);
+            app.Configure(config =>
+            {
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            app.Run(new[] { "animal", "--foo", "f", "dog", "--bar", "b", "--name", "Rufus" });
+
+            // Then
+            registrar.Instances.ContainsKey(typeof(IArguments)).ShouldBeTrue();
+            registrar.Instances[typeof(IArguments)].Single().As<IArguments>(args =>
+            {
+                args.Count.ShouldBe(2);
+                args.Contains("--foo").ShouldBeTrue();
+                args["--foo"].Single().ShouldBe("f");
+                args.Contains("--bar").ShouldBeTrue();
+                args["--bar"].Single().ShouldBe("b");
+            });
         }
     }
 }
