@@ -1,6 +1,6 @@
 ﻿using Spectre.CommandLine;
 
-namespace Sample.EF.Database
+namespace FakeDotNet.EF.Database
 {
     public sealed class EfUpdateSettings : EfCommandSettings
     {

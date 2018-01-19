@@ -85,7 +85,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
         private static IEnumerable<XmlNode> CreateParameterNodes(XmlDocument document, CommandInfo command)
         {
             // Arguments
-            foreach (var argument in command.Parameters.OfType<CommandArgument>())
+            foreach (var argument in command.Parameters.OfType<CommandArgument>().OrderBy(x => x.Position))
             {
                 var node = document.CreateElement("argument");
                 node.SetNullableAttribute("name", argument.Value);
@@ -105,7 +105,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
             }
 
             // Options
-            foreach (var option in command.Parameters.OfType<CommandOption>())
+            foreach (var option in command.Parameters.OfType<CommandOption>()
+                .OrderBy(x => x.LongName)
+                .ThenBy(x => x.ShortName))
             {
                 var node = document.CreateElement("option");
 

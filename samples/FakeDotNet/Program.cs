@@ -1,9 +1,9 @@
-﻿using Sample.EF;
-using Sample.EF.Database;
-using Sample.EF.DbContext;
+﻿using FakeDotNet.EF;
+using FakeDotNet.EF.Database;
+using FakeDotNet.EF.DbContext;
 using Spectre.CommandLine;
 
-namespace Sample
+namespace FakeDotNet
 {
     public class Program
     {

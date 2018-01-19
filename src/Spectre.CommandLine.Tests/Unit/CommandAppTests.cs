@@ -56,10 +56,11 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            var result = app.Run(new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" });
+            var result = app.Run(new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" });
 
             // Then
             result.ShouldBe(0);
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
             settings.GoodBoy.ShouldBe(true);
             settings.IsAlive.ShouldBe(true);
@@ -89,6 +90,35 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // Then
             result.ShouldBe(0);
+            settings.Age.ShouldBe(12);
+            settings.GoodBoy.ShouldBe(true);
+            settings.IsAlive.ShouldBe(false);
+            settings.Name.ShouldBe("Rufus");
+        }
+
+        [Fact]
+        public void Should_Pass_Case_4()
+        {
+            // Given
+            var resolver = new FakeTypeResolver();
+            var settings = new DogSettings();
+            resolver.Register(settings);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
             settings.GoodBoy.ShouldBe(true);
             settings.IsAlive.ShouldBe(false);

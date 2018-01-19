@@ -3,20 +3,31 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Features>IOperation</Features>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Resources\Models\case1.xml" />
+    <None Remove="Data\Resources\Models\case2.xml" />
+    <None Remove="Data\Resources\Models\case3.xml" />
+    <None Remove="Data\Resources\Models\case4.xml" />
+    <None Remove="Data\Resources\Parsing\case1.xml" />
+    <None Remove="Data\Resources\Parsing\case2.xml" />
+    <None Remove="Data\Resources\Parsing\case3.xml" />
+    <None Remove="Data\Resources\Parsing\case4.xml" />
     <None Remove="Spectre.CommandLine.Tests.ruleset" />
     <None Remove="Spectre.CommandLine.Tests.v3.ncrunchproject" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\Resources\Models\case1.xml" />
-    <EmbeddedResource Include="Data\Resources\Models\case3.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case2.xml" />
+    <EmbeddedResource Include="Data\Resources\Models\case3.xml" />
+    <EmbeddedResource Include="Data\Resources\Models\case4.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\case1.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\case3.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\case4.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,9 +48,6 @@
   <!-- Static analysis -->
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Spectre.Test.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />

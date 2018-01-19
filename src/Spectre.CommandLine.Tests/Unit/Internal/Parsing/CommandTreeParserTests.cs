@@ -61,9 +61,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             remaining.Count.ShouldBe(0);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-1
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Parsing/case1.xml")]
         public void Should_Parse_Correct_Tree_For_Case_1(string expected)
@@ -87,16 +87,16 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             result.ShouldBe(expected);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-2
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Parsing/case2.xml")]
         public void Should_Parse_Correct_Tree_For_Case_2(string expected)
         {
             // Given, When
             var result = Fixture.Serialize(
-                new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" },
+                new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" },
                 config =>
                 {
                     config.AddCommand<DogCommand>("dog");
@@ -106,9 +106,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             result.ShouldBe(expected);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-3
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Parsing/case3.xml")]
         public void Should_Parse_Correct_Tree_For_Case_3(string expected)
@@ -124,6 +124,28 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                     animal.AddCommand<HorseCommand>("horse");
                 });
             });
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        /// <summary>
+        /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-4
+        /// </summary>
+        [Theory]
+        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Parsing/case4.xml")]
+        public void Should_Parse_Correct_Tree_For_Case_4(string expected)
+        {
+            // Given, When
+            var result = Fixture.Serialize(
+                new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" },
+                config =>
+                {
+                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    {
+                        animal.AddCommand<DogCommand>("dog");
+                    });
+                });
 
             // Then
             result.ShouldBe(expected);

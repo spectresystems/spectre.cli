@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -47,7 +48,8 @@ namespace Spectre.CommandLine.Internal.Modelling
 
             // Normalize argument positions.
             var index = 0;
-            foreach (var argument in info.Parameters.OfType<CommandArgument>().OrderBy(argument => argument.Position))
+            foreach (var argument in info.Parameters.OfType<CommandArgument>()
+                .OrderBy(argument => argument.Position))
             {
                 argument.Position = index;
                 index++;
@@ -58,49 +60,87 @@ namespace Spectre.CommandLine.Internal.Modelling
 
         private static IEnumerable<CommandParameter> GetParameters(CommandInfo command)
         {
-            foreach (var property in command.SettingsType.GetProperties())
+            var result = new List<CommandParameter>();
+            var argumentPosition = 0;
+
+            // We need to get parameters in order of the class where they were defined.
+            // We assign each inheritance level a value that is used to properly sort the
+            // arguments when iterating over them.
+            IEnumerable<(int level, PropertyInfo[] properties)> GetPropertiesInOrder(Type settingsType)
             {
-                if (property.IsDefined(typeof(CommandOptionAttribute)))
+                var current = settingsType;
+                var level = 0;
+                while (current.BaseType != null)
                 {
-                    var attribute = property.GetCustomAttribute<CommandOptionAttribute>();
-                    if (attribute != null)
-                    {
-                        var option = BuildOptionParameter(property, attribute);
-
-                        // Any previous command has this option defined?
-                        if (command.HaveParentWithOption(option))
-                        {
-                            // Do we allow it to exist on this command as well?
-                            if (command.AllowParentOption(option))
-                            {
-                                option.Required = false;
-                                option.IsShadowed = true;
-                                yield return option;
-                            }
-                        }
-                        else
-                        {
-                            // No parent have this option.
-                            yield return option;
-                        }
-                    }
-                }
-                else if (property.IsDefined(typeof(CommandArgumentAttribute)))
-                {
-                    var attribute = property.GetCustomAttribute<CommandArgumentAttribute>();
-                    if (attribute != null)
-                    {
-                        var argument = BuildArgumentParameter(property, attribute);
-
-                        // Any previous command has this argument defined?
-                        // In that case, we should not assign the parameter to this command.
-                        if (!command.HaveParentWithArgument(argument))
-                        {
-                            yield return argument;
-                        }
-                    }
+                    yield return (level, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
+                    current = current.BaseType;
+                    level--;
                 }
             }
+
+            var groups = GetPropertiesInOrder(command.SettingsType);
+            foreach (var (_, properties) in groups.OrderBy(x => x.level))
+            {
+                var parameters = new List<CommandParameter>();
+
+                foreach (var property in properties)
+                {
+                    if (property.IsDefined(typeof(CommandOptionAttribute)))
+                    {
+                        var attribute = property.GetCustomAttribute<CommandOptionAttribute>();
+                        if (attribute != null)
+                        {
+                            var option = BuildOptionParameter(property, attribute);
+
+                            // Any previous command has this option defined?
+                            if (command.HaveParentWithOption(option))
+                            {
+                                // Do we allow it to exist on this command as well?
+                                if (command.AllowParentOption(option))
+                                {
+                                    option.Required = false;
+                                    option.IsShadowed = true;
+                                    parameters.Add(option);
+                                }
+                            }
+                            else
+                            {
+                                // No parent have this option.
+                                parameters.Add(option);
+                            }
+                        }
+                    }
+                    else if (property.IsDefined(typeof(CommandArgumentAttribute)))
+                    {
+                        var attribute = property.GetCustomAttribute<CommandArgumentAttribute>();
+                        if (attribute != null)
+                        {
+                            var argument = BuildArgumentParameter(property, attribute);
+
+                            // Any previous command has this argument defined?
+                            // In that case, we should not assign the parameter to this command.
+                            if (!command.HaveParentWithArgument(argument))
+                            {
+                                parameters.Add(argument);
+                            }
+                        }
+                    }
+                }
+
+                // Update the position for the parameters.
+                foreach (var argument in parameters.OfType<CommandArgument>().OrderBy(x => x.Position))
+                {
+                    argument.Position = argumentPosition++;
+                }
+
+                // Add all parameters to the result.
+                foreach (var groupResult in parameters)
+                {
+                    result.Add(groupResult);
+                }
+            }
+
+            return result;
         }
 
         private static CommandOption BuildOptionParameter(PropertyInfo property, CommandOptionAttribute attribute)

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Spectre.CommandLine.Tests.Data
 {
-    public class CatCommand : Command<CatSettings>
+    public class CatCommand : AnimalCommand<CatSettings>
     {
         public override int Execute(CatSettings settings, ILookup<string, string> remaining)
         {
-            throw new NotImplementedException();
+            DumpSettings(settings, remaining);
+            return 0;
         }
     }
 }

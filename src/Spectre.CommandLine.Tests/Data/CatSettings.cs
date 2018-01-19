@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Spectre.CommandLine.Tests.Data.Converters;
 
 namespace Spectre.CommandLine.Tests.Data
 {

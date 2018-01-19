@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Sample.EF.Database
+namespace FakeDotNet.EF.Database
 {
     public sealed class EfUpdateCommand : EfCommand<EfUpdateSettings>
     {

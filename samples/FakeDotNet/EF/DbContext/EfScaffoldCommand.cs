@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Sample.EF.DbContext
+namespace FakeDotNet.EF.DbContext
 {
     public sealed class EfScaffoldCommand : EfCommand<EfScaffoldSettings>
     {

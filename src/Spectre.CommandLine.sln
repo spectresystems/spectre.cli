@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine", "Spectre.CommandLine\Spectre.CommandLine.csproj", "{F50E199A-71E4-4724-B53D-42F25E9C1B66}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.CommandLine.Tests", "Spectre.CommandLine.Tests\Spectre.CommandLine.Tests.csproj", "{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{10A85EE7-DCD2-4B11-BE48-B93B340B247B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{10A85EE7-DCD2-4B11-BE48-B93B340B247B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "..\sample\Sample.csproj", "{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeDotNet", "..\samples\FakeDotNet\FakeDotNet.csproj", "{35E430FC-460E-4343-A4F0-1EC976CE6034}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,24 +45,24 @@ Global
 		{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}.Release|x64.Build.0 = Release|Any CPU
 		{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}.Release|x86.ActiveCfg = Release|Any CPU
 		{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}.Release|x86.Build.0 = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|x64.Build.0 = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Debug|x86.Build.0 = Debug|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|x64.ActiveCfg = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|x64.Build.0 = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|x86.ActiveCfg = Release|Any CPU
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088}.Release|x86.Build.0 = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|x64.Build.0 = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Debug|x86.Build.0 = Debug|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|x64.ActiveCfg = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|x64.Build.0 = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|x86.ActiveCfg = Release|Any CPU
+		{35E430FC-460E-4343-A4F0-1EC976CE6034}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FDF012DE-3B20-4F0A-85C5-EAD5DF590088} = {10A85EE7-DCD2-4B11-BE48-B93B340B247B}
+		{35E430FC-460E-4343-A4F0-1EC976CE6034} = {10A85EE7-DCD2-4B11-BE48-B93B340B247B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F42C737-45EA-4E96-9855-84B8F32223CA}

@@ -11,11 +11,11 @@ namespace Spectre.CommandLine.Internal.Modelling
 
         public CommandArgument(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string description,
-            TypeConverterAttribute converter, CommandArgumentAttribute argumentAttribute)
-                : base(parameterType, parameterKind, property, description, converter, argumentAttribute.IsRequired)
+            TypeConverterAttribute converter, CommandArgumentAttribute argument)
+                : base(parameterType, parameterKind, property, description, converter, argument.IsRequired)
         {
-            Value = argumentAttribute.Value;
-            Position = argumentAttribute.Position;
+            Value = argument.Value;
+            Position = argument.Position;
         }
     }
 }

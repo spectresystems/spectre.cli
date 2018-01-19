@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Spectre.CommandLine;
 
-namespace Sample.EF
+namespace FakeDotNet.EF
 {
     public abstract class EfSettings
     {

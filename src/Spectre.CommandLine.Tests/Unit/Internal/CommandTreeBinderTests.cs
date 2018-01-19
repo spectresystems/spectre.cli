@@ -48,13 +48,14 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
         {
             // Given, When
             var settings = Fixture.Bind<DogSettings>(
-                new[] { "dog", "12", "--good-boy", "--name", "Rufus", "--alive" },
+                new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" },
                 config =>
                 {
                     config.AddCommand<DogCommand>("dog");
                 });
 
             // Then
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
             settings.GoodBoy.ShouldBe(true);
             settings.Name.ShouldBe("Rufus");

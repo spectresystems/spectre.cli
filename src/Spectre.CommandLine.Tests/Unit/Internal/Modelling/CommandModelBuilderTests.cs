@@ -85,7 +85,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
             model.Commands[0]
                 .GetOption(option => option.LongName == "agility")
                 .Converter.ConverterTypeName
-                .ShouldStartWith("Spectre.CommandLine.Tests.Data.CatAgilityConverter");
+                .ShouldStartWith("Spectre.CommandLine.Tests.Data.Converters.CatAgilityConverter");
         }
 
         [Fact]
@@ -164,9 +164,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
                 .DefaultValue.Value.ShouldBe(10);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-1
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Models/case1.xml")]
         public void Should_Generate_Correct_Model_For_Case_1(string expected)
@@ -188,9 +188,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
             result.ShouldBe(expected);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-2
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Models/case2.xml")]
         public void Should_Generate_Correct_Model_For_Case_2(string expected)
@@ -205,9 +205,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
             result.ShouldBe(expected);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-3
-        /// </remarks>
+        /// </summary>
         [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Models/case3.xml")]
         public void Should_Generate_Correct_Model_For_Case_3(string expected)
@@ -219,6 +219,26 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        /// <summary>
+        /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-4
+        /// </summary>
+        [Theory]
+        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Models/case4.xml")]
+        public void Should_Generate_Correct_Model_For_Case_4(string expected)
+        {
+            // Given, When
+            var result = CommandModelSerializer.Serialize(config =>
+            {
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
                 });
             });
 

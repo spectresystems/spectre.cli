@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Spectre.CommandLine;
 
-namespace Sample.EF.Database
+namespace FakeDotNet.EF.Database
 {
     public sealed class EfDropSettings : EfCommandSettings
     {
