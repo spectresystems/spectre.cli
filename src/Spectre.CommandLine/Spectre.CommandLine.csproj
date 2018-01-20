@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Features>IOperation</Features>
+    <LangVersion>latest</LangVersion>
     <Description>An extremly opinionated command line parser.</Description>
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>
@@ -29,9 +30,6 @@
   <!-- Static analysis -->
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Spectre.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />

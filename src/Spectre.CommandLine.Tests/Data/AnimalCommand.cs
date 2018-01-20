@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Spectre.CommandLine;
 
-namespace Sample.EF
+namespace Spectre.CommandLine.Tests.Data
 {
-    public abstract class EfCommand<TSettings> : Command<TSettings>
-        where TSettings : EfCommandSettings
+    public abstract class AnimalCommand<TSettings> : Command<TSettings>
+        where TSettings : class
     {
         protected void DumpSettings(TSettings settings, ILookup<string, string> remaining)
         {

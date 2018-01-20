@@ -56,16 +56,6 @@ namespace Spectre.CommandLine.Internal.Modelling
 
         public static bool HaveParentWithArgument(this CommandInfo command, CommandArgument argument)
         {
-            // Got an immediate parent?
-            if (command?.Parent != null)
-            {
-                // Is the current node's settings type the same as the previous one?
-                if (command.SettingsType == command.Parent.SettingsType)
-                {
-                    return false;
-                }
-            }
-
             var parent = command?.Parent;
             while (parent != null)
             {

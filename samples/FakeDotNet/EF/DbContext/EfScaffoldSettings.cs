@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Spectre.CommandLine;
 
-namespace Sample.EF.DbContext
+namespace FakeDotNet.EF.DbContext
 {
     public sealed class EfScaffoldSettings : EfCommandSettings
     {
