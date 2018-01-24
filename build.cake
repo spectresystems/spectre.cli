@@ -1,11 +1,13 @@
 #tool nuget:?package=GitVersion.CommandLine&version=3.6.2
 #load "./scripts/version.cake"
 #load "./scripts/msbuild.cake"
+#load "./scripts/appveyor.cake"
 
 var configuration = Argument("configuration", "Release");
 var target = Argument("target", "Default");
 
-var version = BuildVersion.Calculate(Context);
+var ci = AppVeyorSettings.Initialize(Context);
+var version = BuildVersion.Calculate(Context, ci);
 var settings = MSBuildHelper.CreateSettings(version);
 
 Task("Clean")
