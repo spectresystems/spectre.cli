@@ -1,4 +1,5 @@
 #tool nuget:?package=GitVersion.CommandLine&version=3.6.2
+
 #load "./scripts/version.cake"
 #load "./scripts/msbuild.cake"
 #load "./scripts/appveyor.cake"
