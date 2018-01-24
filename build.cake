@@ -54,11 +54,12 @@ Task("Package")
 });
 
 Task("Upload-AppVeyor-Artifacts")
+    .IsDependentOn("Package")
     .WithCriteria(() => ci.IsRunningOnAppVeyor)
     .Does(() => 
 {
     AppVeyor.UploadArtifact(
-        new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupk")
+        new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg")
     );
 });
 
