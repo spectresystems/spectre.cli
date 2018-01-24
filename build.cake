@@ -58,7 +58,7 @@ Task("Upload-AppVeyor-Artifacts")
     .Does(() => 
 {
     AppVeyor.UploadArtifact(
-        new FilePath($"./artifacts/Spectre.CommandLine.{version.SemVersion}.nupk")
+        new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupk")
     );
 });
 
