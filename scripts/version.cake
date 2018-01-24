@@ -49,7 +49,10 @@ public class BuildVersion
 
         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(semVersion))
         {
-            throw new CakeException("Could not parse version.");
+            context.Information("Fetching version from solution info...");
+            version = ReadSolutionInfoVersion(context);
+            semVersion = version;
+            milestone = string.Concat("v", version);
         }
 
         var cakeVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
@@ -62,5 +65,15 @@ public class BuildVersion
             Milestone = milestone,
             CakeVersion = cakeVersion
         };
+    }
+
+    public static string ReadSolutionInfoVersion(ICakeContext context)
+    {
+        var solutionInfo = context.ParseAssemblyInfo("./src/SolutionInfo.cs");
+        if (!string.IsNullOrEmpty(solutionInfo.AssemblyVersion))
+        {
+            return solutionInfo.AssemblyVersion;
+        }
+        throw new CakeException("Could not parse version.");
     }
 }
