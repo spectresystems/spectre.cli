@@ -54,7 +54,7 @@ Task("Package")
 });
 
 Task("Upload-AppVeyor-Artifacts")
-    .WithCriteria(() => !ci.IsRunningOnAppVeyor)
+    .WithCriteria(() => ci.IsRunningOnAppVeyor)
     .Does(() => 
 {
     AppVeyor.UploadArtifact(
