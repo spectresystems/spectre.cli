@@ -53,10 +53,19 @@ Task("Package")
     });
 });
 
+Task("Upload-AppVeyor-Artifacts")
+    .WithCriteria(() => !ci.IsRunningOnAppVeyor)
+    .Does(() => 
+{
+    AppVeyor.UploadArtifact(
+        new FilePath($"./artifactsSpectre.CommandLine.{version.SemVersion}.nupk")
+    );
+});
+
 Task("Default")
     .IsDependentOn("Package");
 
 Task("AppVeyor")
-    .IsDependentOn("Default");
+    .IsDependentOn("Upload-AppVeyor-Artifacts");
 
 RunTarget(target);

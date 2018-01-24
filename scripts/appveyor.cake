@@ -1,6 +1,7 @@
 public sealed class AppVeyorSettings
 {
     public bool IsLocal { get; set; }
+    public bool IsRunningOnAppVeyor { get; set; }
     public bool IsPullRequest { get; set; }
     public bool IsDevelopBranch { get; set; }
     public bool IsMasterBranch { get; set; }
@@ -13,7 +14,8 @@ public sealed class AppVeyorSettings
 
         return new AppVeyorSettings
         {
-            IsLocal = !buildSystem.AppVeyor.IsRunningOnAppVeyor,
+            IsLocal = buildSystem.IsLocalBuild,
+            IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor,
             IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest,
             IsDevelopBranch = "develop".Equals(branchName, StringComparison.OrdinalIgnoreCase),
             IsMasterBranch = "master".Equals(branchName, StringComparison.OrdinalIgnoreCase),
