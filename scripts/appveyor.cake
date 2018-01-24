@@ -6,11 +6,15 @@ public sealed class AppVeyorSettings
     public bool IsDevelopBranch { get; set; }
     public bool IsMasterBranch { get; set; }
     public bool IsTaggedBuild { get; set; }
+    public bool IsMaintenanceBuild { get; set; }
 
     public static AppVeyorSettings Initialize(ICakeContext context)
     {
         var buildSystem = context.BuildSystem();
         var branchName = buildSystem.AppVeyor.Environment.Repository.Branch;
+
+        var commitMessage = buildSystem.AppVeyor.Environment.Repository.Commit.Message?.Trim();
+        var isMaintenanceBuild = commitMessage?.StartsWith("(build)", StringComparison.OrdinalIgnoreCase) ?? false;
 
         return new AppVeyorSettings
         {
@@ -19,7 +23,8 @@ public sealed class AppVeyorSettings
             IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest,
             IsDevelopBranch = "develop".Equals(branchName, StringComparison.OrdinalIgnoreCase),
             IsMasterBranch = "master".Equals(branchName, StringComparison.OrdinalIgnoreCase),
-            IsTaggedBuild = IsBuildTagged(buildSystem)
+            IsTaggedBuild = IsBuildTagged(buildSystem),
+            IsMaintenanceBuild = isMaintenanceBuild
         };
     }
 

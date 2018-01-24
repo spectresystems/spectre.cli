@@ -63,10 +63,33 @@ Task("Upload-AppVeyor-Artifacts")
     );
 });
 
+Task("Publish-To-NuGet")
+    .IsDependentOn("Package")
+    .WithCriteria(() => ci.IsRunningOnAppVeyor 
+        && !ci.IsPullRequest
+        && (ci.IsDevelopBranch || ci.IsMasterBranch)
+        && !ci.IsMaintenanceBuild)
+    .Does(() => 
+{
+    var path = new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg");
+
+    // Get the API key.
+    var apiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");
+    if(string.IsNullOrWhiteSpace(apiKey)) {
+        throw new CakeException("Could not resolve API key.");
+    }
+
+    // Push the package.
+    NuGetPush(path, new NuGetPushSettings {
+        ApiKey = apiKey,
+        Source = "https://nuget.org/api/v2/package"
+    });
+});
+
 Task("Default")
     .IsDependentOn("Package");
 
 Task("AppVeyor")
-    .IsDependentOn("Upload-AppVeyor-Artifacts");
+    .IsDependentOn("Publish-To-NuGet");
 
 RunTarget(target);
