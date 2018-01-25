@@ -31,7 +31,7 @@ namespace Spectre.CommandLine.Internal
             {
                 Console.WriteLine();
                 Console.WriteLine("Arguments:");
-                foreach (var argument in arguments)
+                foreach (var argument in arguments.OrderBy(a => a.Position))
                 {
                     Console.WriteLine($"  {BuildArgumentString(argument)}");
                 }
@@ -143,7 +143,8 @@ namespace Spectre.CommandLine.Internal
                     var isCurrent = current == command;
                     if (isCurrent)
                     {
-                        foreach (var argument in current.Parameters.OfType<CommandArgument>().Where(x => x.Required).ToArray())
+                        foreach (var argument in current.Parameters.OfType<CommandArgument>()
+                            .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
                         {
                             builder.Append($" <{argument.Value}>");
                         }

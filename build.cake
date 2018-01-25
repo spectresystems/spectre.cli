@@ -1,11 +1,14 @@
 #tool nuget:?package=GitVersion.CommandLine&version=3.6.2
+
 #load "./scripts/version.cake"
 #load "./scripts/msbuild.cake"
+#load "./scripts/appveyor.cake"
 
 var configuration = Argument("configuration", "Release");
 var target = Argument("target", "Default");
 
-var version = BuildVersion.Calculate(Context);
+var ci = AppVeyorSettings.Initialize(Context);
+var version = BuildVersion.Calculate(Context, ci);
 var settings = MSBuildHelper.CreateSettings(version);
 
 Task("Clean")
@@ -51,10 +54,43 @@ Task("Package")
     });
 });
 
+Task("Upload-AppVeyor-Artifacts")
+    .IsDependentOn("Package")
+    .WithCriteria(() => ci.IsRunningOnAppVeyor)
+    .Does(() => 
+{
+    AppVeyor.UploadArtifact(
+        new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg")
+    );
+});
+
+Task("Publish-To-NuGet")
+    .IsDependentOn("Package")
+    .WithCriteria(() => ci.IsRunningOnAppVeyor 
+        && !ci.IsPullRequest
+        && (ci.IsDevelopBranch || ci.IsMasterBranch)
+        && !ci.IsMaintenanceBuild)
+    .Does(() => 
+{
+    var path = new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg");
+
+    // Get the API key.
+    var apiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");
+    if(string.IsNullOrWhiteSpace(apiKey)) {
+        throw new CakeException("Could not resolve API key.");
+    }
+
+    // Push the package.
+    NuGetPush(path, new NuGetPushSettings {
+        ApiKey = apiKey,
+        Source = "https://nuget.org/api/v2/package"
+    });
+});
+
 Task("Default")
     .IsDependentOn("Package");
 
 Task("AppVeyor")
-    .IsDependentOn("Default");
+    .IsDependentOn("Publish-To-NuGet");
 
 RunTarget(target);

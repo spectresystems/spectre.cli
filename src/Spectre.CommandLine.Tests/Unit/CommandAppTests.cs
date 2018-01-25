@@ -56,7 +56,7 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            var result = app.Run(new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" });
+            var result = app.Run(new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" });
 
             // Then
             result.ShouldBe(0);

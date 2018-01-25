@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -66,19 +65,33 @@ namespace Spectre.CommandLine.Internal.Modelling
             // We need to get parameters in order of the class where they were defined.
             // We assign each inheritance level a value that is used to properly sort the
             // arguments when iterating over them.
-            IEnumerable<(int level, PropertyInfo[] properties)> GetPropertiesInOrder(Type settingsType)
+            IEnumerable<(int level, PropertyInfo[] properties)> GetPropertiesInOrder()
             {
-                var current = settingsType;
+                var current = command.SettingsType;
                 var level = 0;
                 while (current.BaseType != null)
                 {
                     yield return (level, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
                     current = current.BaseType;
-                    level--;
+
+                    // Things get a little bit complicated now.
+                    // Only consider a setting's base type part of the
+                    // setting, if there isn't a parent command that implements
+                    // the setting's base type. This might come back to bite us :)
+                    var currentCommand = command.Parent;
+                    while (currentCommand != null)
+                    {
+                        if (currentCommand.SettingsType == current)
+                        {
+                            level--;
+                            break;
+                        }
+                        currentCommand = currentCommand.Parent;
+                    }
                 }
             }
 
-            var groups = GetPropertiesInOrder(command.SettingsType);
+            var groups = GetPropertiesInOrder();
             foreach (var (_, properties) in groups.OrderBy(x => x.level))
             {
                 var parameters = new List<CommandParameter>();
