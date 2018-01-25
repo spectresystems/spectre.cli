@@ -8,7 +8,7 @@ namespace Spectre.CommandLine.Tests.Data
         [Description("Indicates whether or not the animal is alive.")]
         public bool IsAlive { get; set; }
 
-        [CommandArgument(0, "[LEGS]")]
+        [CommandArgument(1, "[LEGS]")]
         [Description("The number of legs.")]
         public int Legs { get; set; }
     }

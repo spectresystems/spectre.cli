@@ -96,7 +96,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
         {
             // Given, When
             var result = Fixture.Serialize(
-                new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" },
+                new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" },
                 config =>
                 {
                     config.AddCommand<DogCommand>("dog");

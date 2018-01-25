@@ -12,9 +12,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
 {
     public sealed class CommandTreeBinderTests
     {
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-1
-        /// </remarks>
+        /// </summary>
         [Fact]
         public void Should_Bind_Parameters_Correctly_For_Case_1()
         {
@@ -40,15 +40,15 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
             settings.IsAlive.ShouldBe(true);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-2
-        /// </remarks>
+        /// </summary>
         [Fact]
         public void Should_Bind_Parameters_Correctly_For_Case_2()
         {
             // Given, When
             var settings = Fixture.Bind<DogSettings>(
-                new[] { "dog", "4", "12", "--good-boy", "--name", "Rufus", "--alive" },
+                new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" },
                 config =>
                 {
                     config.AddCommand<DogCommand>("dog");
@@ -62,9 +62,9 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
             settings.IsAlive.ShouldBe(true);
         }
 
-        /// <remarks>
+        /// <summary>
         /// https://github.com/spectresystems/spectre.commandline/wiki/Test-cases#test-case-3
-        /// </remarks>
+        /// </summary>
         [Fact]
         public void Should_Bind_Parameters_Correctly_For_Case_3()
         {
