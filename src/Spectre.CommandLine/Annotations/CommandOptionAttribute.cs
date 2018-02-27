@@ -9,7 +9,6 @@ namespace Spectre.CommandLine
         public string LongName { get; }
         public string ShortName { get; }
         public string ValueName { get; }
-        public bool IsRequired { get; }
 
         public CommandOptionAttribute(string template)
         {
@@ -39,10 +38,9 @@ namespace Spectre.CommandLine
                     }
                     throw new CommandAppException("Invalid short option.");
                 }
-                if (IsRequiredOrOptionalArgument(part) && part.Length > 2)
+                if (IsOptionValue(part) && part.Length > 2)
                 {
                     ValueName = TrimArgument(part);
-                    IsRequired = IsRequiredArgument(part);
                     continue;
                 }
 
@@ -55,20 +53,16 @@ namespace Spectre.CommandLine
             }
         }
 
-        private static bool IsRequiredOrOptionalArgument(string text)
+        private static bool IsOptionValue(string text)
         {
             if (text != null)
             {
-                return (text.StartsWith("[", StringComparison.OrdinalIgnoreCase) && text.EndsWith("]", StringComparison.OrdinalIgnoreCase)) ||
-                       (text.StartsWith("<", StringComparison.OrdinalIgnoreCase) && text.EndsWith(">", StringComparison.OrdinalIgnoreCase));
-            }
-            return false;
-        }
+                if (text.StartsWith("[", StringComparison.OrdinalIgnoreCase) &&
+                    text.EndsWith("]", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException("Option values cannot be optional.");
+                }
 
-        private static bool IsRequiredArgument(string text)
-        {
-            if (text != null)
-            {
                 return text.StartsWith("<", StringComparison.OrdinalIgnoreCase) && text.EndsWith(">", StringComparison.OrdinalIgnoreCase);
             }
             return false;
@@ -76,7 +70,7 @@ namespace Spectre.CommandLine
 
         private static string TrimArgument(string text)
         {
-            return text?.TrimStart('[', '<')?.TrimEnd(']', '>');
+            return text?.TrimStart('<')?.TrimEnd('>');
         }
     }
 }

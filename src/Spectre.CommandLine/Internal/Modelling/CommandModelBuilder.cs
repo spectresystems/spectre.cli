@@ -166,6 +166,11 @@ namespace Spectre.CommandLine.Internal.Modelling
                 ? ParameterKind.Flag
                 : ParameterKind.Single;
 
+            if (defaultValue == null && property.PropertyType == typeof(bool))
+            {
+                defaultValue = new DefaultValueAttribute(false);
+            }
+
             return new CommandOption(property.PropertyType, kind,
                 property, description?.Description, converter,
                 attribute, defaultValue);

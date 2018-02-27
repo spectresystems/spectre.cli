@@ -15,7 +15,7 @@ namespace Spectre.CommandLine.Internal.Modelling
         public CommandOption(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string description,
             TypeConverterAttribute converter, CommandOptionAttribute optionAttribute, DefaultValueAttribute defaultValue)
-                : base(parameterType, parameterKind, property, description, converter, optionAttribute.IsRequired)
+                : base(parameterType, parameterKind, property, description, converter, false)
         {
             LongName = optionAttribute.LongName;
             ShortName = optionAttribute.ShortName;

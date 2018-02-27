@@ -55,8 +55,6 @@ namespace Spectre.CommandLine.Internal
                     {
                         switch (parameter)
                         {
-                            case CommandOption option:
-                                throw new CommandAppException($"Command '{node.Command.Name}' is missing required option '{option.GetOptionName()}'.");
                             case CommandArgument argument:
                                 throw new CommandAppException($"Command '{node.Command.Name}' is missing required argument '{argument.Value}'.");
                         }

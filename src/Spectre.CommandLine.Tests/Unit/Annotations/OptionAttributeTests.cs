@@ -1,11 +1,26 @@
 ﻿using System;
 using Shouldly;
+using Spectre.CommandLine.Tests;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Annotations
 {
     public sealed class OptionAttributeTests
     {
+        [Fact]
+        public void Should_Throw_If_Value_Name_Is_Marked_As_Optional()
+        {
+            // Given, When
+            var result = Record.Exception(() => new CommandOptionAttribute("-o|--option [VALUE]"));
+
+            // Then
+            result.ShouldNotBe(null);
+            result.ShouldBeOfType<InvalidOperationException>().And(exception =>
+            {
+                exception.Message.ShouldBe("Option values cannot be optional.");
+            });
+        }
+
         [Fact]
         public void Should_Parse_Short_Name_Correctly()
         {
@@ -27,15 +42,14 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
         }
 
         [Theory]
-        [InlineData("<VALUE>", true)]
-        [InlineData("[VALUE]", false)]
-        public void Should_Parse_Requirement_Correctly(string value, bool expected)
+        [InlineData("<VALUE>")]
+        public void Should_Parse_Value_Correctly(string value)
         {
             // Given, When
             var option = new CommandOptionAttribute($"-o|--option {value}");
 
             // Then
-            option.IsRequired.ShouldBe(expected);
+            option.ValueName.ShouldBe("VALUE");
         }
 
         [Fact]

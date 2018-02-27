@@ -2,10 +2,10 @@
 {
     public class DogSettings : MammalSettings
     {
-        [CommandOption("-g|--good-boy [VALUE]")]
-        public bool GoodBoy { get; set; }
-
-        [CommandArgument(0, "[AGE]")]
+        [CommandArgument(0, "<AGE>")]
         public int Age { get; set; }
+
+        [CommandOption("-g|--good-boy")]
+        public bool GoodBoy { get; set; }
     }
 }

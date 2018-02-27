@@ -4,7 +4,7 @@ namespace Spectre.CommandLine.Tests.Data
 {
     public class AnimalSettings
     {
-        [CommandOption("-a|--alive [VALUE]")]
+        [CommandOption("-a|--alive")]
         [Description("Indicates whether or not the animal is alive.")]
         public bool IsAlive { get; set; }
 
