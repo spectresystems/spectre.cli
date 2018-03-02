@@ -65,13 +65,14 @@ namespace Spectre.CommandLine.Internal.Modelling
             // We need to get parameters in order of the class where they were defined.
             // We assign each inheritance level a value that is used to properly sort the
             // arguments when iterating over them.
-            IEnumerable<(int level, PropertyInfo[] properties)> GetPropertiesInOrder()
+            IEnumerable<(int level, int sortOrder, PropertyInfo[] properties)> GetPropertiesInOrder()
             {
                 var current = command.SettingsType;
                 var level = 0;
+                var sortOrder = 0;
                 while (current.BaseType != null)
                 {
-                    yield return (level, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
+                    yield return (level, sortOrder, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
                     current = current.BaseType;
 
                     // Things get a little bit complicated now.
@@ -88,11 +89,13 @@ namespace Spectre.CommandLine.Internal.Modelling
                         }
                         currentCommand = currentCommand.Parent;
                     }
+
+                    sortOrder--;
                 }
             }
 
             var groups = GetPropertiesInOrder();
-            foreach (var (_, properties) in groups.OrderBy(x => x.level))
+            foreach (var (_, _, properties) in groups.OrderBy(x => x.level).ThenBy(x => x.sortOrder))
             {
                 var parameters = new List<CommandParameter>();
 

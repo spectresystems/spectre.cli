@@ -60,8 +60,8 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // Then
             result.ShouldBe(0);
-            settings.Legs.ShouldBe(4);
-            settings.Age.ShouldBe(12);
+            settings.Legs.ShouldBe(12);
+            settings.Age.ShouldBe(4);
             settings.GoodBoy.ShouldBe(true);
             settings.IsAlive.ShouldBe(true);
             settings.Name.ShouldBe("Rufus");

@@ -55,8 +55,8 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
                 });
 
             // Then
-            settings.Legs.ShouldBe(4);
-            settings.Age.ShouldBe(12);
+            settings.Legs.ShouldBe(12);
+            settings.Age.ShouldBe(4);
             settings.GoodBoy.ShouldBe(true);
             settings.Name.ShouldBe("Rufus");
             settings.IsAlive.ShouldBe(true);
