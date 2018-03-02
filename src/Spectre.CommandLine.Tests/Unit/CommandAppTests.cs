@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.CommandLine.Tests.Data;
 using Spectre.CommandLine.Tests.Fakes;
@@ -9,7 +10,7 @@ namespace Spectre.CommandLine.Tests.Unit
     public sealed class CommandAppTests
     {
         [Fact]
-        public void Should_Pass_Case_1()
+        public async Task Should_Pass_Case_1()
         {
             // Given
             var resolver = new FakeTypeResolver();
@@ -30,7 +31,7 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            var result = app.Run(
+            var result = await app.RunAsync(
                 new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" });
 
             // Then

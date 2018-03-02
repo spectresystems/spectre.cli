@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Features>IOperation</Features>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.2</LangVersion>
     <Description>An extremly opinionated command line parser.</Description>
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>

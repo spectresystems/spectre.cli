@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Spectre.CommandLine.Tests.Data
+﻿namespace Spectre.CommandLine.Tests.Data
 {
     public sealed class InvalidSettings
     {

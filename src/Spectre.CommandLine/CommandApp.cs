@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Spectre.CommandLine.Internal;
 using Spectre.CommandLine.Internal.Configuration;
 
@@ -23,9 +24,16 @@ namespace Spectre.CommandLine
 
         public int Run(IEnumerable<string> args)
         {
+            return RunAsync(args).GetAwaiter().GetResult();
+        }
+
+        public async Task<int> RunAsync(IEnumerable<string> args)
+        {
             try
             {
-                return _executor.Execute(_configurator, args);
+                return await _executor
+                    .Execute(_configurator, args)
+                    .ConfigureAwait(false);
             }
             catch (CommandAppException ex)
             {

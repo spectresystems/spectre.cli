@@ -5,7 +5,7 @@ using Spectre.CommandLine;
 
 namespace FakeDotNet
 {
-    public class Program
+    public static class Program
     {
         public static int Main(string[] args)
         {

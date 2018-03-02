@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Spectre.CommandLine.Internal.Configuration;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
@@ -18,7 +19,7 @@ namespace Spectre.CommandLine.Internal
             _registrar = registrar;
         }
 
-        public int Execute(IConfiguration configuration, IEnumerable<string> args)
+        public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
         {
             if (configuration == null)
             {
@@ -41,7 +42,7 @@ namespace Spectre.CommandLine.Internal
             {
                 // Display help.
                 HelpWriter.Write(model);
-                return 0;
+                return Task.FromResult(0);
             }
 
             // Get the command to execute.
@@ -50,7 +51,7 @@ namespace Spectre.CommandLine.Internal
             {
                 // Proxy's can't be executed. Show help.
                 HelpWriter.Write(model, leaf.Command);
-                return 0;
+                return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 
             // Register the arguments with the container.
@@ -64,7 +65,10 @@ namespace Spectre.CommandLine.Internal
             return Execute(leaf, tree, remaining, resolver);
         }
 
-        private int Execute(CommandTree leaf, CommandTree tree, ILookup<string, string> remaining, ITypeResolver resolver)
+        private Task<int> Execute(CommandTree leaf,
+            CommandTree tree,
+            ILookup<string, string> remaining,
+            ITypeResolver resolver)
         {
             // Create the command and the settings.
             var settings = leaf.CreateSettings(resolver);
