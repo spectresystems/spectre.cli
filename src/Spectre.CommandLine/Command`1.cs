@@ -7,7 +7,7 @@ namespace Spectre.CommandLine
     public abstract class Command<TSettings> : ICommand<TSettings>
         where TSettings : class
     {
-        protected abstract int Execute(TSettings settings, ILookup<string, string> remaining);
+        public abstract int Execute(TSettings settings, ILookup<string, string> remaining);
 
         Task<int> ICommand.Execute(object settings, ILookup<string, string> remaining)
         {
