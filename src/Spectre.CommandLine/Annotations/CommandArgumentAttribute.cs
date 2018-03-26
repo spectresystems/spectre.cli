@@ -1,4 +1,5 @@
 ﻿using System;
+using Spectre.CommandLine.Internal.Parsing;
 
 // ReSharper disable once CheckNamespace
 namespace Spectre.CommandLine
@@ -10,40 +11,20 @@ namespace Spectre.CommandLine
         public string Value { get; }
         public bool IsRequired { get; }
 
-        public CommandArgumentAttribute(int position, string value)
+        public CommandArgumentAttribute(int position, string template)
         {
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
+            // Parse the option template.
+            var result = TemplateParser.ParseArgumentTemplate(template);
+
+            // Assign the result.
             Position = position;
-            Value = value;
-
-            if (IsRequiredOrOptionalArgument(Value))
-            {
-                IsRequired = IsRequiredArgument(Value);
-                Value = TrimArgument(Value);
-            }
-        }
-
-        private static bool IsRequiredOrOptionalArgument(string text)
-        {
-            if (text != null)
-            {
-                return (text.StartsWith("[", StringComparison.OrdinalIgnoreCase) && text.EndsWith("]", StringComparison.OrdinalIgnoreCase)) ||
-                       (text.StartsWith("<", StringComparison.OrdinalIgnoreCase) && text.EndsWith(">", StringComparison.OrdinalIgnoreCase));
-            }
-            return false;
-        }
-
-        private static bool IsRequiredArgument(string text)
-        {
-            if (text != null)
-            {
-                return text.StartsWith("<", StringComparison.OrdinalIgnoreCase) && text.EndsWith(">", StringComparison.OrdinalIgnoreCase);
-            }
-            return false;
-        }
-
-        private static string TrimArgument(string text)
-        {
-            return text?.TrimStart('[', '<')?.TrimEnd(']', '>');
+            Value = result.Value;
+            IsRequired = result.Required;
         }
     }
 }

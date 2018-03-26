@@ -1,24 +1,27 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Text;
 
 namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 {
-    internal static class Tokenizer
+    internal static class CommandTreeTokenizer
     {
-        public static TokenStream Tokenize(IEnumerable<string> args)
+        public static CommandTreeTokenStream Tokenize(IEnumerable<string> args)
         {
-            var tokens = new List<Token>();
+            var tokens = new List<CommandTreeToken>();
             foreach (var arg in args)
             {
-                var reader = new StringReader(arg);
+                var reader = new TextBuffer(arg);
                 while (reader.Peek() != -1)
                 {
                     EatWhitespace(reader);
 
-                    var character = (char)reader.Peek();
+                    if (reader.ReachedEnd)
+                    {
+                        break;
+                    }
+
+                    var character = reader.Peek();
                     if (character == '\"')
                     {
                         tokens.Add(ScanQuotedString(reader));
@@ -33,15 +36,14 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                     }
                 }
             }
-            return new TokenStream(tokens);
+            return new CommandTreeTokenStream(tokens);
         }
 
-        private static void EatWhitespace(TextReader reader)
+        private static void EatWhitespace(TextBuffer reader)
         {
-            int ch;
-            while ((ch = reader.Peek()) != -1)
+            while (!reader.ReachedEnd)
             {
-                if (!char.IsWhiteSpace((char)ch))
+                if (!char.IsWhiteSpace(reader.Peek()))
                 {
                     break;
                 }
@@ -49,30 +51,29 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
         }
 
-        private static Token ScanString(TextReader reader)
+        private static CommandTreeToken ScanString(TextBuffer reader)
         {
             var builder = new StringBuilder();
-            while (reader.Peek() != -1)
+            while (!reader.ReachedEnd)
             {
-                builder.Append((char)reader.Read());
+                builder.Append(reader.Read());
             }
-            return new Token(Token.Type.String, builder.ToString());
+            return new CommandTreeToken(CommandTreeToken.Kind.String, builder.ToString());
         }
 
-        private static Token ScanQuotedString(TextReader reader)
+        private static CommandTreeToken ScanQuotedString(TextBuffer reader)
         {
-            Debug.Assert(reader.Peek() == '\"', "Expected '\"' token.");
-            reader.Read(); // Consume
+            reader.Consume('\"');
 
             var builder = new StringBuilder();
-            while (reader.Peek() != -1)
+            while (!reader.ReachedEnd)
             {
-                var character = (char)reader.Peek();
+                var character = reader.Peek();
                 if (character == '\"')
                 {
                     break;
                 }
-                builder.Append((char)reader.Read());
+                builder.Append(reader.Read());
             }
 
             if (reader.Peek() != '\"')
@@ -81,20 +82,21 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
 
             reader.Read();
-            return new Token(Token.Type.String, builder.ToString());
+            return new CommandTreeToken(CommandTreeToken.Kind.String, builder.ToString());
         }
 
-        private static IEnumerable<Token> ScanOptions(TextReader reader)
+        private static IEnumerable<CommandTreeToken> ScanOptions(TextBuffer reader)
         {
-            var result = new List<Token>();
+            var result = new List<CommandTreeToken>();
 
-            Debug.Assert(reader.Peek() == '-', "Expected '-' token.");
-            reader.Read(); // Consume
-
-            switch (reader.Peek())
+            reader.Consume('-');
+            if (!reader.TryPeek(out var character))
             {
-                case -1:
-                    throw new CommandAppException("Encountered unterminated option.");
+                throw new CommandAppException("Encountered unterminated option.");
+            }
+
+            switch (character)
+            {
                 case '-':
                     result.Add(ScanLongOption(reader));
                     break;
@@ -106,22 +108,22 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return result;
         }
 
-        private static IEnumerable<Token> ScanShortOptions(TextReader reader)
+        private static IEnumerable<CommandTreeToken> ScanShortOptions(TextBuffer reader)
         {
-            if (char.IsWhiteSpace((char)reader.Peek()))
+            if (char.IsWhiteSpace(reader.Peek()))
             {
                 throw new CommandAppException("Option does not have an identifier.");
             }
 
-            var result = new List<Token>();
+            var result = new List<CommandTreeToken>();
             while (true)
             {
-                if (reader.Peek() == -1)
+                if (reader.ReachedEnd)
                 {
                     break;
                 }
 
-                var current = (char)reader.Peek();
+                var current = reader.Peek();
                 if (char.IsWhiteSpace(current))
                 {
                     break;
@@ -130,7 +132,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 if (char.IsLetter(current))
                 {
                     reader.Read(); // Consume
-                    result.Add(new Token(Token.Type.ShortOption, current.ToString(CultureInfo.InvariantCulture)));
+                    result.Add(new CommandTreeToken(CommandTreeToken.Kind.ShortOption, current.ToString(CultureInfo.InvariantCulture)));
                 }
                 else
                 {
@@ -141,18 +143,17 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return result;
         }
 
-        private static Token ScanLongOption(TextReader reader)
+        private static CommandTreeToken ScanLongOption(TextBuffer reader)
         {
-            Debug.Assert(reader.Peek() == '-', "Expected '-' token.");
-            reader.Read();
+            reader.Consume('-');
 
-            if (char.IsWhiteSpace((char)reader.Peek()))
+            if (char.IsWhiteSpace(reader.Peek()))
             {
                 throw new CommandAppException("Option does not have an identifier.");
             }
 
             var name = ScanString(reader);
-            return new Token(Token.Type.LongOption, name.Value);
+            return new CommandTreeToken(CommandTreeToken.Kind.LongOption, name.Value);
         }
     }
 }

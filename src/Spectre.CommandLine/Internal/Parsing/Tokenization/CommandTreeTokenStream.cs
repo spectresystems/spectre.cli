@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 {
-    internal sealed class TokenStream : IReadOnlyList<Token>
+    internal sealed class CommandTreeTokenStream : IReadOnlyList<CommandTreeToken>
     {
-        private readonly List<Token> _tokens;
+        private readonly List<CommandTreeToken> _tokens;
         private int _position;
 
         public int Count => _tokens.Count;
 
-        public Token this[int index] => _tokens[index];
+        public CommandTreeToken this[int index] => _tokens[index];
 
-        public Token Current
+        public CommandTreeToken Current
         {
             get
             {
@@ -25,18 +25,18 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
         }
 
-        public TokenStream(IEnumerable<Token> tokens)
+        public CommandTreeTokenStream(IEnumerable<CommandTreeToken> tokens)
         {
-            _tokens = new List<Token>(tokens ?? Enumerable.Empty<Token>());
+            _tokens = new List<CommandTreeToken>(tokens ?? Enumerable.Empty<CommandTreeToken>());
             _position = 0;
         }
 
-        public Token Peek()
+        public CommandTreeToken Peek()
         {
             return Peek(0);
         }
 
-        public Token Peek(int index)
+        public CommandTreeToken Peek(int index)
         {
             var position = _position + index;
             if (position >= Count)
@@ -46,7 +46,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return _tokens[position];
         }
 
-        public Token Consume(Token.Type type)
+        public CommandTreeToken Consume(CommandTreeToken.Kind type)
         {
             Expect(type);
             if (_position >= Count)
@@ -58,27 +58,27 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return token;
         }
 
-        public Token Expect(Token.Type tokenType)
+        public CommandTreeToken Expect(CommandTreeToken.Kind tokenKind)
         {
-            return Expect(new[] { tokenType });
+            return Expect(new[] { tokenKind });
         }
 
-        public Token Expect(params Token.Type[] tokenType)
+        public CommandTreeToken Expect(params CommandTreeToken.Kind[] tokenKind)
         {
             if (Current == null)
             {
-                var message = $"Expected to find token of type '{tokenType}' but found null instead.";
+                var message = $"Expected to find token of type '{tokenKind}' but found null instead.";
                 throw new CommandAppException(message);
             }
-            if (Current == null || !tokenType.Contains(Current.TokenType))
+            if (Current == null || !tokenKind.Contains(Current.TokenKind))
             {
-                var message = $"Expected to find token of type '{tokenType}' but found '{Current.TokenType}' instead.";
+                var message = $"Expected to find token of type '{tokenKind}' but found '{Current.TokenKind}' instead.";
                 throw new CommandAppException(message);
             }
             return Current;
         }
 
-        public IEnumerator<Token> GetEnumerator()
+        public IEnumerator<CommandTreeToken> GetEnumerator()
         {
             return _tokens.GetEnumerator();
         }
