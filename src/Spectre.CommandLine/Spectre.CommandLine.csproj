@@ -14,7 +14,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/spectresystems/commandline/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/spectresystems/commandline</PackageProjectUrl>
     <Version>0.0.10</Version>
-    <PackageIconUrl>https://github.com/spectresystems/spectre.commandline/raw/master/gfx/png/logo-medium.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/spectresystems/spectre.commandline/raw/master/res/gfx/png/logo-medium.png</PackageIconUrl>
     <Product>Spectre.CommandLine</Product>
   </PropertyGroup>
 
