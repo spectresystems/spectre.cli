@@ -9,16 +9,23 @@ namespace Spectre.CommandLine.Internal.Configuration
 
         public IList<ConfiguredCommand> Commands { get; }
         public string ApplicationName { get; private set; }
+        public bool ShouldPropagateExceptions { get; private set; }
 
         public Configurator(ITypeRegistrar registrar)
         {
             _registrar = registrar;
             Commands = new List<ConfiguredCommand>();
+            ShouldPropagateExceptions = false;
         }
 
         public void SetApplicationName(string name)
         {
             ApplicationName = name;
+        }
+
+        public void PropagateExceptions()
+        {
+            ShouldPropagateExceptions = true;
         }
 
         public void AddCommand<TCommand>(string name) where TCommand : class, ICommand
@@ -34,7 +41,7 @@ namespace Spectre.CommandLine.Internal.Configuration
         }
 
         public void AddCommand<TSettings>(string name, Action<IConfigurator<TSettings>> action)
-            where TSettings : class
+            where TSettings : CommandSettings
         {
             var command = new ConfiguredCommand(name, null, typeof(TSettings));
             action(new Configurator<TSettings>(command, _registrar));

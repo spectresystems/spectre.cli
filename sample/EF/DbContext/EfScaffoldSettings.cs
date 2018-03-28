@@ -17,15 +17,15 @@ namespace FakeDotNet.EF.DbContext
         [Description("Overwrite existing files.")]
         public bool Force { get; set; }
 
-        [CommandOption("-o|--output-dir [PATH]")]
+        [CommandOption("-o|--output-dir <PATH>")]
         [Description("The directory to put files in. Paths are relative to the project directory.")]
         public string OutputDir { get; set; }
 
-        [CommandOption("--schema [SCHEMA_NAME]")]
+        [CommandOption("--schema <SCHEMA>")]
         [Description("The schemas of tables to generate entity types for.")]
         public string Schema { get; set; }
 
-        [CommandOption("-t|--table [TABLE_NAME]")]
+        [CommandOption("-t|--table <TABLE>")]
         [Description("The tables to generate entity types for.")]
         public string Table { get; set; }
 

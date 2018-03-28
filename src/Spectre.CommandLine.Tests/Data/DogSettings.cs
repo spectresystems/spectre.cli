@@ -1,11 +1,20 @@
 ﻿namespace Spectre.CommandLine.Tests.Data
 {
-    public class DogSettings : MammalSettings
+    public sealed class DogSettings : MammalSettings
     {
-        [CommandOption("-g|--good-boy [VALUE]")]
+        [CommandArgument(0, "<AGE>")]
+        public int Age { get; set; }
+
+        [CommandOption("-g|--good-boy")]
         public bool GoodBoy { get; set; }
 
-        [CommandArgument(0, "[AGE]")]
-        public int Age { get; set; }
+        public override ValidationResult Validate()
+        {
+            if (Name == "Tiger")
+            {
+                return ValidationResult.Error("Tiger is not a dog name!");
+            }
+            return ValidationResult.Success();
+        }
     }
 }

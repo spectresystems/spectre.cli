@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.CommandLine.Tests.Data;
 using Spectre.CommandLine.Tests.Fakes;
@@ -9,7 +10,7 @@ namespace Spectre.CommandLine.Tests.Unit
     public sealed class CommandAppTests
     {
         [Fact]
-        public void Should_Pass_Case_1()
+        public async Task Should_Pass_Case_1()
         {
             // Given
             var resolver = new FakeTypeResolver();
@@ -19,6 +20,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<MammalSettings>("mammal", mammal =>
@@ -30,7 +32,7 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            var result = app.Run(
+            var result = await app.RunAsync(
                 new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" });
 
             // Then
@@ -52,6 +54,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<DogCommand>("dog");
             });
 
@@ -60,8 +63,8 @@ namespace Spectre.CommandLine.Tests.Unit
 
             // Then
             result.ShouldBe(0);
-            settings.Legs.ShouldBe(4);
-            settings.Age.ShouldBe(12);
+            settings.Legs.ShouldBe(12);
+            settings.Age.ShouldBe(4);
             settings.GoodBoy.ShouldBe(true);
             settings.IsAlive.ShouldBe(true);
             settings.Name.ShouldBe("Rufus");
@@ -78,6 +81,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -107,6 +111,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar(resolver));
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -135,6 +140,7 @@ namespace Spectre.CommandLine.Tests.Unit
             // When
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -159,6 +165,7 @@ namespace Spectre.CommandLine.Tests.Unit
             // When
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -183,6 +190,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var app = new CommandApp(registrar);
             app.Configure(config =>
             {
+                config.PropagateExceptions();
                 config.AddCommand<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -191,7 +199,7 @@ namespace Spectre.CommandLine.Tests.Unit
             });
 
             // When
-            app.Run(new[] { "animal", "--foo", "f", "dog", "--bar", "b", "--name", "Rufus" });
+            app.Run(new[] { "animal", "--foo", "f", "dog", "5", "--bar", "b", "--name", "Rufus" });
 
             // Then
             registrar.Instances.ContainsKey(typeof(IArguments)).ShouldBeTrue();
@@ -203,6 +211,136 @@ namespace Spectre.CommandLine.Tests.Unit
                 args.Contains("--bar").ShouldBeTrue();
                 args["--bar"].Single().ShouldBe("b");
             });
+        }
+
+        [Fact]
+        public void Should_Throw_If_Attribute_Validation_Fails()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "animal", "3", "dog", "7", "--name", "Rufus" }));
+
+            // Then
+            result.ShouldBeOfType<CommandAppException>().And(e =>
+            {
+                e.Message.ShouldBe("Animals must have an even number of legs.");
+            });
+        }
+
+        [Fact]
+        public void Should_Throw_If_Settings_Validation_Fails()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "7", "--name", "Tiger" }));
+
+            // Then
+            result.ShouldBeOfType<CommandAppException>().And(e =>
+            {
+                e.Message.ShouldBe("Tiger is not a dog name!");
+            });
+        }
+
+        [Fact]
+        public void Should_Throw_If_Command_Validation_Fails()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" }));
+
+            // Then
+            result.ShouldBeOfType<CommandAppException>().And(e =>
+            {
+                e.Message.ShouldBe("Dog is too old...");
+            });
+        }
+
+        [Fact]
+        public void Should_Not_Propagate_Runtime_Exceptions_If_Not_Explicitly_Told_To_Do_So()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.AddCommand<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                    animal.AddCommand<HorseCommand>("horse");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" });
+
+            // Then
+            result.ShouldBe(-1);
+        }
+
+        [Fact]
+        public void Should_Not_Propagate_Exceptions_If_Not_Explicitly_Told_To_Do_So()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.AddCommand<ThrowingCommand>("throw");
+            });
+
+            // When
+            var result = app.Run(new[] { "throw" });
+
+            // Then
+            result.ShouldBe(-1);
+        }
+
+        [Fact]
+        public void Should_Always_Propagate_Configuration_Errors_Even_If_Not_Explicitly_Told_To_Do_So()
+        {
+            // Given
+            var app = new CommandApp(new FakeTypeRegistrar());
+            app.Configure(config =>
+            {
+                config.AddCommand<InvalidCommand>("invalid");
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "--foo bar" }));
+
+            // Then
+            result.ShouldBeOfType<ConfigurationException>();
         }
     }
 }

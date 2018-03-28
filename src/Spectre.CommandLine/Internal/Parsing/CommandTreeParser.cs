@@ -19,14 +19,14 @@ namespace Spectre.CommandLine.Internal.Parsing
 
         public (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args)
         {
-            var tokens = Tokenizer.Tokenize(args);
+            var tokens = CommandTreeTokenizer.Tokenize(args);
             var context = new CommandTreeParserContext();
 
             var result = (CommandTree)null;
             if (tokens.Count > 0)
             {
                 var token = tokens.Current;
-                if (token.TokenType != Token.Type.String)
+                if (token.TokenKind != CommandTreeToken.Kind.String)
                 {
                     if (_help != null)
                     {
@@ -49,12 +49,12 @@ namespace Spectre.CommandLine.Internal.Parsing
             CommandTreeParserContext context,
             ICommandContainer current,
             CommandTree parent,
-            TokenStream stream)
+            CommandTreeTokenStream stream)
         {
             context.ResetArgumentPosition();
 
             // Find the command.
-            var commandToken = stream.Consume(Token.Type.String);
+            var commandToken = stream.Consume(CommandTreeToken.Kind.String);
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
@@ -65,22 +65,22 @@ namespace Spectre.CommandLine.Internal.Parsing
             while (stream.Peek() != null)
             {
                 var token = stream.Peek();
-                switch (token.TokenType)
+                switch (token.TokenKind)
                 {
-                    case Token.Type.LongOption:
+                    case CommandTreeToken.Kind.LongOption:
                         // Long option
                         ParseOption(context, stream, node, true);
                         break;
-                    case Token.Type.ShortOption:
+                    case CommandTreeToken.Kind.ShortOption:
                         // Short option
                         ParseOption(context, stream, node, false);
                         break;
-                    case Token.Type.String:
+                    case CommandTreeToken.Kind.String:
                         // Command
                         ParseString(context, stream, node);
                         break;
                     default:
-                        throw new InvalidOperationException("Unknown token type.");
+                        throw new CommandAppException("Encountered unknown token type.");
                 }
             }
 
@@ -98,10 +98,10 @@ namespace Spectre.CommandLine.Internal.Parsing
 
         private void ParseString(
             CommandTreeParserContext context,
-            TokenStream stream,
+            CommandTreeTokenStream stream,
             CommandTree node)
         {
-            var token = stream.Expect(Token.Type.String);
+            var token = stream.Expect(CommandTreeToken.Kind.String);
 
             // Command?
             var command = node.Command.FindCommand(token.Value);
@@ -124,19 +124,19 @@ namespace Spectre.CommandLine.Internal.Parsing
                 throw new CommandAppException($"Could not match '{token.Value}' with an argument.");
             }
 
-            node.Mapped.Add((parameter, stream.Consume(Token.Type.String).Value));
+            node.Mapped.Add((parameter, stream.Consume(CommandTreeToken.Kind.String).Value));
 
             context.IncreaseArgumentPosition();
         }
 
         private void ParseOption(
             CommandTreeParserContext context,
-            TokenStream stream,
+            CommandTreeTokenStream stream,
             CommandTree node,
             bool isLongOption)
         {
             // Get the option token.
-            var token = stream.Consume(isLongOption ? Token.Type.LongOption : Token.Type.ShortOption);
+            var token = stream.Consume(isLongOption ? CommandTreeToken.Kind.LongOption : CommandTreeToken.Kind.ShortOption);
 
             // Find the option.
             var option = node.FindOption(token.Value, isLongOption);
@@ -161,18 +161,18 @@ namespace Spectre.CommandLine.Internal.Parsing
             if (!node.IsMappedWithParent(token.Value, isLongOption))
             {
                 // Add this option as an remaining argument.
-                var optionName = token.TokenType == Token.Type.LongOption ? $"--{token.Value}" : $"-{token.Value}";
+                var optionName = token.TokenKind == CommandTreeToken.Kind.LongOption ? $"--{token.Value}" : $"-{token.Value}";
                 context.AddRemainingArgument(optionName, ParseParameterValue(stream, node, null));
             }
         }
 
-        private static string ParseParameterValue(TokenStream stream, CommandTree current, CommandParameter parameter)
+        private static string ParseParameterValue(CommandTreeTokenStream stream, CommandTree current, CommandParameter parameter)
         {
             var value = (string)null;
 
             // Parse the value of the token (if any).
             var valueToken = stream.Peek();
-            if (valueToken?.TokenType == Token.Type.String)
+            if (valueToken?.TokenKind == CommandTreeToken.Kind.String)
             {
                 // Is this a command?
                 if (current.Command.FindCommand(valueToken.Value) == null)
@@ -181,7 +181,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                     {
                         if (parameter.ParameterKind == ParameterKind.Single)
                         {
-                            value = stream.Consume(Token.Type.String).Value;
+                            value = stream.Consume(CommandTreeToken.Kind.String).Value;
                         }
                         else if (parameter.ParameterKind == ParameterKind.Flag)
                         {
@@ -191,7 +191,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                     else
                     {
                         // Unknown parameter value.
-                        value = stream.Consume(Token.Type.String).Value;
+                        value = stream.Consume(CommandTreeToken.Kind.String).Value;
                     }
                 }
             }

@@ -65,13 +65,14 @@ namespace Spectre.CommandLine.Internal.Modelling
             // We need to get parameters in order of the class where they were defined.
             // We assign each inheritance level a value that is used to properly sort the
             // arguments when iterating over them.
-            IEnumerable<(int level, PropertyInfo[] properties)> GetPropertiesInOrder()
+            IEnumerable<(int level, int sortOrder, PropertyInfo[] properties)> GetPropertiesInOrder()
             {
                 var current = command.SettingsType;
                 var level = 0;
+                var sortOrder = 0;
                 while (current.BaseType != null)
                 {
-                    yield return (level, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
+                    yield return (level, sortOrder, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
                     current = current.BaseType;
 
                     // Things get a little bit complicated now.
@@ -88,11 +89,13 @@ namespace Spectre.CommandLine.Internal.Modelling
                         }
                         currentCommand = currentCommand.Parent;
                     }
+
+                    sortOrder--;
                 }
             }
 
             var groups = GetPropertiesInOrder();
-            foreach (var (_, properties) in groups.OrderBy(x => x.level))
+            foreach (var (_, _, properties) in groups.OrderBy(x => x.level).ThenBy(x => x.sortOrder))
             {
                 var parameters = new List<CommandParameter>();
 
@@ -160,28 +163,35 @@ namespace Spectre.CommandLine.Internal.Modelling
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
             var kind = property.PropertyType == typeof(bool)
                 ? ParameterKind.Flag
                 : ParameterKind.Single;
 
+            if (defaultValue == null && property.PropertyType == typeof(bool))
+            {
+                defaultValue = new DefaultValueAttribute(false);
+            }
+
             return new CommandOption(property.PropertyType, kind,
                 property, description?.Description, converter,
-                attribute, defaultValue);
+                attribute, validators, defaultValue);
         }
 
         private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
 
             var kind = property.PropertyType == typeof(bool)
                 ? ParameterKind.Flag
                 : ParameterKind.Single;
 
             return new CommandArgument(property.PropertyType, kind,
-                property, description?.Description, converter, attribute);
+                property, description?.Description, converter, attribute, validators);
         }
     }
 }

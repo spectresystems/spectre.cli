@@ -23,9 +23,9 @@ namespace Spectre.CommandLine.Internal.Modelling
                 var keys = string.Join(", ", options.Select(x => x.Length > 1 ? $"--{x}" : $"-{x}"));
                 if (options.Length > 1)
                 {
-                    throw new CommandAppException($"Options {keys} are duplicated in command '{command.Name}'.");
+                    throw new ConfigurationException($"Options {keys} are duplicated in command '{command.Name}'.");
                 }
-                throw new CommandAppException($"Option {keys} is duplicated in command '{command.Name}'.");
+                throw new ConfigurationException($"Option {keys} is duplicated in command '{command.Name}'.");
             }
 
             // Validate child commands.
@@ -47,7 +47,7 @@ namespace Spectre.CommandLine.Internal.Modelling
                     {
                         result.Add(key, 0);
                     }
-                    result[key] += 1;
+                    result[key]++;
                 }
             }
 

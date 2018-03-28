@@ -1,11 +1,24 @@
-﻿using System;
-using Shouldly;
+﻿using Shouldly;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Annotations
 {
     public sealed class OptionAttributeTests
     {
+        [Fact]
+        public void Should_Throw_If_Value_Name_Is_Marked_As_Optional()
+        {
+            // Given, When
+            var result = Record.Exception(() => new CommandOptionAttribute("-o|--option [VALUE]"));
+
+            // Then
+            result.ShouldNotBe(null);
+            result.ShouldBeOfType<ConfigurationException>().And(exception =>
+            {
+                exception.Message.ShouldBe("Option values cannot be optional.");
+            });
+        }
+
         [Fact]
         public void Should_Parse_Short_Name_Correctly()
         {
@@ -27,15 +40,14 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
         }
 
         [Theory]
-        [InlineData("<VALUE>", true)]
-        [InlineData("[VALUE]", false)]
-        public void Should_Parse_Requirement_Correctly(string value, bool expected)
+        [InlineData("<VALUE>")]
+        public void Should_Parse_Value_Correctly(string value)
         {
             // Given, When
             var option = new CommandOptionAttribute($"-o|--option {value}");
 
             // Then
-            option.IsRequired.ShouldBe(expected);
+            option.ValueName.ShouldBe("VALUE");
         }
 
         [Fact]
@@ -67,7 +79,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<InvalidOperationException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("No long or short name for option has been specified.");
             });
@@ -75,31 +87,44 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
 
         [Theory]
         [InlineData("-option")]
-        [InlineData("-")]
         public void Should_Throw_If_Short_Name_Is_Invalid(string value)
         {
             // Given, When
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
-                e.Message.ShouldBe("Invalid short option.");
+                e.Message.ShouldBe("Short option names can not be longer than one character.");
             });
         }
 
         [Theory]
         [InlineData("--o")]
-        [InlineData("--")]
         public void Should_Throw_If_Long_Name_Is_Invalid(string value)
         {
             // Given, When
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
-                e.Message.ShouldBe("Invalid long option.");
+                e.Message.ShouldBe("Long option names must consist of more than one character.");
+            });
+        }
+
+        [Theory]
+        [InlineData("-")]
+        [InlineData("--")]
+        public void Should_Throw_If_Option_Have_No_Name(string template)
+        {
+            // Given, When
+            var option = Record.Exception(() => new CommandOptionAttribute(template));
+
+            // Then
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
+            {
+                e.Message.ShouldBe("Options without name are not allowed.");
             });
         }
     }

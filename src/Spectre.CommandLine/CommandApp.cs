@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Spectre.CommandLine.Internal;
 using Spectre.CommandLine.Internal.Configuration;
 
@@ -23,13 +24,30 @@ namespace Spectre.CommandLine
 
         public int Run(IEnumerable<string> args)
         {
+            return RunAsync(args).GetAwaiter().GetResult();
+        }
+
+        public async Task<int> RunAsync(IEnumerable<string> args)
+        {
             try
             {
-                return _executor.Execute(_configurator, args);
+                return await _executor
+                    .Execute(_configurator, args)
+                    .ConfigureAwait(false);
             }
-            catch (CommandAppException ex)
+            catch (Exception ex) when (ex.GetType() != typeof(ConfigurationException))
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                // Should we propagate exceptions?
+                if (_configurator.ShouldPropagateExceptions)
+                {
+                    throw;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Error: ");
+                Console.ResetColor();
+                Console.WriteLine(ex.Message);
+
                 return -1;
             }
         }

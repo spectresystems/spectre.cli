@@ -59,20 +59,20 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
 
         private static IEnumerable<XmlNode> CreateMappedParameterNodes(XmlDocument document, List<(CommandParameter param, string value)> parameters)
         {
-            foreach (var parameter in parameters)
+            foreach (var (param, value) in parameters)
             {
-                if (parameter.param is CommandOption option)
+                if (param is CommandOption option)
                 {
                     var node = document.CreateElement("option");
                     node.SetNullableAttribute("name", option.GetOptionName());
-                    node.SetNullableAttribute("assigned", parameter.value);
+                    node.SetNullableAttribute("assigned", value);
                     yield return node;
                 }
-                else if (parameter.param is CommandArgument argument)
+                else if (param is CommandArgument argument)
                 {
                     var node = document.CreateElement("argument");
                     node.SetNullableAttribute("name", argument.Value);
-                    node.SetNullableAttribute("assigned", parameter.value);
+                    node.SetNullableAttribute("assigned", value);
                     yield return node;
                 }
             }

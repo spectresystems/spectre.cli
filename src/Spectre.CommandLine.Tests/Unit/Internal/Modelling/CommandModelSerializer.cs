@@ -101,6 +101,19 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
                     node.AppendChild(descriptionNode);
                 }
 
+                if (argument.Validators.Count > 0)
+                {
+                    var validatorRootNode = document.CreateElement("validators");
+                    foreach (var validator in argument.Validators)
+                    {
+                        var validatorNode = document.CreateElement("validator");
+                        validatorNode.SetNullableAttribute("type", validator.GetType().FullName);
+                        validatorNode.SetNullableAttribute("message", validator.Message);
+                        validatorRootNode.AppendChild(validatorNode);
+                    }
+                    node.AppendChild(validatorRootNode);
+                }
+
                 yield return node;
             }
 

@@ -3,7 +3,7 @@ using Spectre.CommandLine;
 
 namespace FakeDotNet.EF
 {
-    public abstract class EfSettings
+    public abstract class EfSettings : CommandSettings
     {
         [CommandOption("-v|--verbose")]
         [Description("Show verbose output.")]

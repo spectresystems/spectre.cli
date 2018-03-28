@@ -1,10 +1,11 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace Spectre.CommandLine
 {
     public interface ICommand<TSettings> : ICommandLimiter<TSettings>
-        where TSettings : class
+        where TSettings : CommandSettings
     {
-        int Execute(TSettings settings, ILookup<string, string> remaining);
+        Task<int> Execute(TSettings settings, ILookup<string, string> remaining);
     }
 }

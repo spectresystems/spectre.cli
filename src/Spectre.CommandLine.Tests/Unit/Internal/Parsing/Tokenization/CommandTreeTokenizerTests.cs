@@ -4,18 +4,18 @@ using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
 {
-    public sealed class TokenizerTests
+    public sealed class CommandTreeTokenizerTests
     {
         [Theory]
         [InlineData("foo")]
         public void Should_Parse_String_Correctly(params string[] args)
         {
             // Given, When
-            var result = Tokenizer.Tokenize(args);
+            var result = CommandTreeTokenizer.Tokenize(args);
 
             // Then
             result.Count.ShouldBe(1);
-            result[0].TokenType.ShouldBe(Token.Type.String);
+            result[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             result[0].Value.ShouldBe("foo");
         }
 
@@ -24,11 +24,11 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
         public void Should_Parse_Quoted_String_Correctly(params string[] args)
         {
             // Given, When
-            var result = Tokenizer.Tokenize(args);
+            var result = CommandTreeTokenizer.Tokenize(args);
 
             // Then
             result.Count.ShouldBe(1);
-            result[0].TokenType.ShouldBe(Token.Type.String);
+            result[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             result[0].Value.ShouldBe("foo");
         }
 
@@ -37,13 +37,13 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
         public void Should_Parse_Short_Option_Correctly(params string[] args)
         {
             // Given, When
-            var result = Tokenizer.Tokenize(args);
+            var result = CommandTreeTokenizer.Tokenize(args);
 
             // Then
             result.Count.ShouldBe(2);
-            result[0].TokenType.ShouldBe(Token.Type.ShortOption);
+            result[0].TokenKind.ShouldBe(CommandTreeToken.Kind.ShortOption);
             result[0].Value.ShouldBe("f");
-            result[1].TokenType.ShouldBe(Token.Type.String);
+            result[1].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             result[1].Value.ShouldBe("bar");
         }
 
@@ -52,13 +52,13 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
         public void Should_Parse_Long_Option_Correctly(params string[] args)
         {
             // Given, When
-            var result = Tokenizer.Tokenize(args);
+            var result = CommandTreeTokenizer.Tokenize(args);
 
             // Then
             result.Count.ShouldBe(2);
-            result[0].TokenType.ShouldBe(Token.Type.LongOption);
+            result[0].TokenKind.ShouldBe(CommandTreeToken.Kind.LongOption);
             result[0].Value.ShouldBe("foo");
-            result[1].TokenType.ShouldBe(Token.Type.String);
+            result[1].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             result[1].Value.ShouldBe("bar");
         }
     }

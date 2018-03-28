@@ -1,8 +1,8 @@
 #tool nuget:?package=GitVersion.CommandLine&version=3.6.2
 
-#load "./scripts/version.cake"
-#load "./scripts/msbuild.cake"
-#load "./scripts/appveyor.cake"
+#load "./res/scripts/version.cake"
+#load "./res/scripts/msbuild.cake"
+#load "./res/scripts/appveyor.cake"
 
 var configuration = Argument("configuration", "Release");
 var target = Argument("target", "Default");

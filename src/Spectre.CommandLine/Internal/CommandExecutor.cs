@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Spectre.CommandLine.Internal.Configuration;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
@@ -9,16 +10,14 @@ namespace Spectre.CommandLine.Internal
 {
     internal sealed class CommandExecutor
     {
-        private readonly CommandBinder _binder;
         private readonly ITypeRegistrar _registrar;
 
         public CommandExecutor(ITypeRegistrar registrar)
         {
-            _binder = new CommandBinder();
             _registrar = registrar;
         }
 
-        public int Execute(IConfiguration configuration, IEnumerable<string> args)
+        public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
         {
             if (configuration == null)
             {
@@ -26,7 +25,7 @@ namespace Spectre.CommandLine.Internal
             }
             if (configuration.Commands.Count == 0)
             {
-                throw new CommandAppException("No commands have been configured.");
+                throw new ConfigurationException("No commands have been configured.");
             }
 
             // Create the command model.
@@ -41,7 +40,7 @@ namespace Spectre.CommandLine.Internal
             {
                 // Display help.
                 HelpWriter.Write(model);
-                return 0;
+                return Task.FromResult(0);
             }
 
             // Get the command to execute.
@@ -50,7 +49,7 @@ namespace Spectre.CommandLine.Internal
             {
                 // Proxy's can't be executed. Show help.
                 HelpWriter.Write(model, leaf.Command);
-                return 0;
+                return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 
             // Register the arguments with the container.
@@ -64,16 +63,26 @@ namespace Spectre.CommandLine.Internal
             return Execute(leaf, tree, remaining, resolver);
         }
 
-        private int Execute(CommandTree leaf, CommandTree tree, ILookup<string, string> remaining, ITypeResolver resolver)
+        private static Task<int> Execute(CommandTree leaf,
+            CommandTree tree,
+            ILookup<string, string> remaining,
+            ITypeResolver resolver)
         {
             // Create the command and the settings.
             var settings = leaf.CreateSettings(resolver);
 
             // Bind the command tree against the settings.
-            _binder.Bind(tree, ref settings, resolver);
+            CommandBinder.Bind(tree, ref settings, resolver);
+
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(settings, remaining);
+            if (!validationResult.Successful)
+            {
+                throw new CommandAppException(validationResult.Message);
+            }
 
             // Execute the command.
-            var command = leaf.CreateCommand(resolver);
             return command.Execute(settings, remaining);
         }
     }

@@ -32,20 +32,20 @@ public class BuildVersion
                     OutputType = GitVersionOutput.BuildServer
                 });
             }
-
-            GitVersion assertedVersions = context.GitVersion(new GitVersionSettings
-            {
-                OutputType = GitVersionOutput.Json,
-            });
-
-            version = assertedVersions.MajorMinorPatch;
-            semVersion = assertedVersions.LegacySemVerPadded;
-            milestone = string.Concat("v", version);
-
-            context.Information("Version: {0}", version);
-            context.Information("Semantic version: {0}", semVersion);
-            context.Information("Milestone: {0}", milestone);
         }
+
+        GitVersion assertedVersions = context.GitVersion(new GitVersionSettings
+        {
+            OutputType = GitVersionOutput.Json,
+        });
+
+        version = assertedVersions.MajorMinorPatch;
+        semVersion = assertedVersions.LegacySemVerPadded;
+        milestone = string.Concat("v", version);
+
+        context.Information("Version: {0}", version);
+        context.Information("Semantic version: {0}", semVersion);
+        context.Information("Milestone: {0}", milestone);
 
         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(semVersion))
         {

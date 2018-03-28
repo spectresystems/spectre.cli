@@ -1,21 +1,20 @@
 ﻿namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 {
-    internal sealed class Token
+    internal sealed class CommandTreeToken
     {
-        public Type TokenType { get; }
+        public Kind TokenKind { get; }
         public string Value { get; }
 
-        public enum Type
+        public enum Kind
         {
-            None = 0,
             String,
             LongOption,
             ShortOption
         }
 
-        public Token(Type type, string value)
+        public CommandTreeToken(Kind kind, string value)
         {
-            TokenType = type;
+            TokenKind = kind;
             Value = value;
         }
     }
