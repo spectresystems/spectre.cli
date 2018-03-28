@@ -163,6 +163,7 @@ namespace Spectre.CommandLine.Internal.Modelling
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
             var kind = property.PropertyType == typeof(bool)
@@ -176,20 +177,21 @@ namespace Spectre.CommandLine.Internal.Modelling
 
             return new CommandOption(property.PropertyType, kind,
                 property, description?.Description, converter,
-                attribute, defaultValue);
+                attribute, validators, defaultValue);
         }
 
         private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
 
             var kind = property.PropertyType == typeof(bool)
                 ? ParameterKind.Flag
                 : ParameterKind.Single;
 
             return new CommandArgument(property.PropertyType, kind,
-                property, description?.Description, converter, attribute);
+                property, description?.Description, converter, attribute, validators);
         }
     }
 }

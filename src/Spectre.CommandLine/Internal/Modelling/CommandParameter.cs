@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -11,17 +12,20 @@ namespace Spectre.CommandLine.Internal.Modelling
         public PropertyInfo Property { get; }
         public string Description { get; }
         public TypeConverterAttribute Converter { get; }
+        public List<ParameterValidationAttribute> Validators { get; set; }
         public bool Required { get; set; }
 
         protected CommandParameter(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property,
-            string description, TypeConverterAttribute converter, bool required)
+            string description, TypeConverterAttribute converter,
+            IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
             ParameterType = parameterType;
             ParameterKind = parameterKind;
             Property = property;
             Description = description;
             Converter = converter;
+            Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;
         }
 
@@ -33,6 +37,11 @@ namespace Spectre.CommandLine.Internal.Modelling
         public void Assign(object settings, object value)
         {
             Property.SetValue(settings, value);
+        }
+
+        public object Get(object settings)
+        {
+            return Property.GetValue(settings);
         }
     }
 }

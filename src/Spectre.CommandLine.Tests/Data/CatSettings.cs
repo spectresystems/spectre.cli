@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Spectre.CommandLine.Tests.Data.Converters;
+using Spectre.CommandLine.Tests.Data.Validators;
 
 namespace Spectre.CommandLine.Tests.Data
 {
@@ -9,6 +10,7 @@ namespace Spectre.CommandLine.Tests.Data
         [TypeConverter(typeof(CatAgilityConverter))]
         [DefaultValue(10)]
         [Description("The option description.")]
+        [PositiveNumberValidator("Agility cannot be negative.")]
         public int Agility { get; set; }
     }
 }

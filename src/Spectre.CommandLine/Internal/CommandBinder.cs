@@ -5,9 +5,9 @@ using Spectre.CommandLine.Internal.Parsing;
 
 namespace Spectre.CommandLine.Internal
 {
-    internal sealed class CommandBinder
+    internal static class CommandBinder
     {
-        public void Bind(CommandTree tree, ref object obj, ITypeResolver resolver)
+        public static void Bind(CommandTree tree, ref object obj, ITypeResolver resolver)
         {
             ValidateRequiredParameters(tree);
 
@@ -28,6 +28,7 @@ namespace Spectre.CommandLine.Internal
                 {
                     var converter = GetConverter(parameter);
                     parameter.Assign(obj, converter.ConvertFromInvariantString(value));
+                    ValidateParameter(parameter, obj);
                 }
 
                 // Process unmapped parameters.
@@ -37,6 +38,7 @@ namespace Spectre.CommandLine.Internal
                     if (parameter is CommandOption option && option.DefaultValue != null)
                     {
                         parameter.Assign(obj, option.DefaultValue.Value);
+                        ValidateParameter(parameter, obj);
                     }
                 }
 
@@ -61,6 +63,28 @@ namespace Spectre.CommandLine.Internal
                     }
                 }
                 node = node.Next;
+            }
+        }
+
+        private static void ValidateParameter(CommandParameter parameter, object settings)
+        {
+            if (settings is IValidate settingsValidator)
+            {
+                var validationResult = settingsValidator.Validate();
+                if (!validationResult.Successful)
+                {
+                    throw new CommandAppException(validationResult.Message);
+                }
+            }
+
+            var assignedValue = parameter.Get(settings);
+            foreach (var validator in parameter.Validators)
+            {
+                var validationResult = validator.Validate(assignedValue);
+                if (!validationResult.Successful)
+                {
+                    throw new CommandAppException(validator.Message ?? validationResult.Message);
+                }
             }
         }
     }

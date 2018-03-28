@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using Spectre.CommandLine.Tests.Data.Validators;
 
 namespace Spectre.CommandLine.Tests.Data
 {
-    public class AnimalSettings
+    public abstract class AnimalSettings
     {
         [CommandOption("-a|--alive")]
         [Description("Indicates whether or not the animal is alive.")]
@@ -10,6 +11,8 @@ namespace Spectre.CommandLine.Tests.Data
 
         [CommandArgument(1, "[LEGS]")]
         [Description("The number of legs.")]
+        [EvenNumberValidator("Animals must have an even number of legs.")]
+        [PositiveNumberValidator("Number of legs must be greater than 0.")]
         public int Legs { get; set; }
     }
 }

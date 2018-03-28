@@ -37,6 +37,10 @@ namespace Spectre.CommandLine
             }
             catch (CommandAppException ex)
             {
+                if (_configurator.ShouldPropagateErrors)
+                {
+                    throw;
+                }
                 Console.WriteLine($"Error: {ex.Message}");
                 return -1;
             }
