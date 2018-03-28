@@ -5,7 +5,7 @@ namespace Spectre.CommandLine
     public interface IConfigurator
     {
         void SetApplicationName(string name);
-        void PropagateErrors();
+        void PropagateExceptions();
 
         void AddCommand<TCommand>(string name) where TCommand : class, ICommand;
         void AddCommand<TSettings>(string name, Action<IConfigurator<TSettings>> action) where TSettings : CommandSettings;

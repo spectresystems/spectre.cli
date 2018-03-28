@@ -35,13 +35,19 @@ namespace Spectre.CommandLine
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
-            catch (CommandAppException ex)
+            catch (Exception ex) when (ex.GetType() != typeof(ConfigurationException))
             {
-                if (_configurator.ShouldPropagateErrors)
+                // Should we propagate exceptions?
+                if (_configurator.ShouldPropagateExceptions)
                 {
                     throw;
                 }
-                Console.WriteLine($"Error: {ex.Message}");
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Error: ");
+                Console.ResetColor();
+                Console.WriteLine(ex.Message);
+
                 return -1;
             }
         }

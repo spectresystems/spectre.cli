@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Spectre.CommandLine.Internal.Modelling;
 
@@ -27,7 +26,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             {
                 return settings;
             }
-            throw new InvalidOperationException($"Could not create settings of type '{Command.SettingsType.FullName}'.");
+            throw new CommandAppException($"Could not create settings of type '{Command.SettingsType.FullName}'.");
         }
 
         public ICommand CreateCommand(ITypeResolver resolver)
@@ -36,7 +35,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             {
                 return command;
             }
-            throw new InvalidOperationException($"Could not create command of type '{Command.CommandType.FullName}'.");
+            throw new CommandAppException($"Could not create command of type '{Command.CommandType.FullName}'.");
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 }
                 else
                 {
-                    throw new CommandAppException($"Encountered unexpected token '{current}'.");
+                    throw new ConfigurationException($"Encountered unexpected token '{current}'.");
                 }
             }
             return tokens;
@@ -104,7 +104,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (buffer.ReachedEnd)
             {
-                throw new CommandAppException($"Encountered unterminated value name '{builder}'.");
+                throw new ConfigurationException($"Encountered unterminated value name '{builder}'.");
             }
 
             // Consume end of value character (> or ]).

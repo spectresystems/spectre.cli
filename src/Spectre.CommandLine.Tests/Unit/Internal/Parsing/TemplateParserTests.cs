@@ -32,7 +32,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple values are not supported.");
                 });
@@ -45,7 +45,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("-f"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
                 });
@@ -58,7 +58,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("--foo"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
                 });
@@ -73,7 +73,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Values without name are not allowed.");
                 });
@@ -109,7 +109,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Options without name are not allowed.");
                 });
@@ -122,7 +122,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("[FOO]"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Option values cannot be optional.");
                 });
@@ -135,7 +135,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("--foo|--bar"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple long option names are not supported.");
                 });
@@ -148,7 +148,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("-f|-b"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple short option names are not supported.");
                 });
@@ -161,7 +161,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("<FOO> <BAR>"));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
                 });
@@ -176,7 +176,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Short option names can not be longer than one character.");
                 });
@@ -191,7 +191,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Option names cannot start with a digit.");
                 });
@@ -207,7 +207,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in option name.");
                 });
@@ -222,7 +222,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in value name.");
                 });
@@ -236,7 +236,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<CommandAppException>().And(e =>
+                result.ShouldBeOfType<ConfigurationException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
                 });

@@ -13,7 +13,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
 
             // Then
             result.ShouldNotBe(null);
-            result.ShouldBeOfType<CommandAppException>().And(exception =>
+            result.ShouldBeOfType<ConfigurationException>().And(exception =>
             {
                 exception.Message.ShouldBe("Option values cannot be optional.");
             });
@@ -79,7 +79,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("No long or short name for option has been specified.");
             });
@@ -93,7 +93,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("Short option names can not be longer than one character.");
             });
@@ -107,7 +107,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
             var option = Record.Exception(() => new CommandOptionAttribute(value));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("Long option names must consist of more than one character.");
             });
@@ -122,7 +122,7 @@ namespace Spectre.CommandLine.Tests.Unit.Annotations
             var option = Record.Exception(() => new CommandOptionAttribute(template));
 
             // Then
-            option.ShouldBeOfType<CommandAppException>().And(e =>
+            option.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("Options without name are not allowed.");
             });

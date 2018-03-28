@@ -85,7 +85,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
             var result = Record.Exception(() => TemplateTokenizer.Tokenize(template));
 
             // Then
-            result.ShouldBeOfType<CommandAppException>().And(e =>
+            result.ShouldBeOfType<ConfigurationException>().And(e =>
             {
                 e.Message.ShouldBe("Encountered unterminated value name 'FOO'.");
             });

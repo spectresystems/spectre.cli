@@ -25,7 +25,7 @@ namespace Spectre.CommandLine.Internal
             }
             if (configuration.Commands.Count == 0)
             {
-                throw new CommandAppException("No commands have been configured.");
+                throw new ConfigurationException("No commands have been configured.");
             }
 
             // Create the command model.

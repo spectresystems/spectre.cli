@@ -112,7 +112,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw new CommandAppException("Option does not have an identifier.");
+                throw new CommandAppException("Option does not have a name.");
             }
 
             var result = new List<CommandTreeToken>();
@@ -136,7 +136,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 }
                 else
                 {
-                    throw new CommandAppException("Option does not have a valid identifier.");
+                    throw new CommandAppException("Option does not have a valid name.");
                 }
             }
 
@@ -149,7 +149,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw new CommandAppException("Option does not have an identifier.");
+                throw new CommandAppException("Option does not have a name.");
             }
 
             var name = ScanString(reader);

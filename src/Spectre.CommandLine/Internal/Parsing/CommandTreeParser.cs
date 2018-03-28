@@ -80,7 +80,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         ParseString(context, stream, node);
                         break;
                     default:
-                        throw new InvalidOperationException("Unknown token type.");
+                        throw new CommandAppException("Encountered unknown token type.");
                 }
             }
 
