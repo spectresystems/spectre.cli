@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -14,8 +15,9 @@ namespace Spectre.CommandLine.Internal.Modelling
 
         public CommandOption(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string description,
-            TypeConverterAttribute converter, CommandOptionAttribute optionAttribute, DefaultValueAttribute defaultValue)
-                : base(parameterType, parameterKind, property, description, converter, false)
+            TypeConverterAttribute converter, CommandOptionAttribute optionAttribute,
+            IEnumerable<ParameterValidationAttribute> validators, DefaultValueAttribute defaultValue)
+                : base(parameterType, parameterKind, property, description, converter, validators, false)
         {
             LongName = optionAttribute.LongName;
             ShortName = optionAttribute.ShortName;

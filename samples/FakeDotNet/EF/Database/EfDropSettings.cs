@@ -3,7 +3,7 @@ using Spectre.CommandLine;
 
 namespace FakeDotNet.EF.Database
 {
-    public sealed class EfDropSettings : EfCommandSettings
+    public sealed class EfDropSettings : EfCommandSettings, IValidate
     {
         [CommandOption("-f|--force")]
         [Description("Don't confirm.")]
@@ -12,5 +12,14 @@ namespace FakeDotNet.EF.Database
         [CommandOption("--dry-run")]
         [Description("Show which database would be dropped, but don't drop it.")]
         public bool DryRun { get; set; }
+
+        public ValidationResult Validate()
+        {
+            if (DryRun && Force)
+            {
+                return ValidationResult.Error("Not sure how to force a dry-run...");
+            }
+            return ValidationResult.Success;
+        }
     }
 }

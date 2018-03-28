@@ -117,8 +117,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
 
                 // Bind the settings to the tree.
                 object settings = new T();
-                var binder = new CommandBinder();
-                binder.Bind(tree, ref settings, new TypeResolverAdapter(null));
+                CommandBinder.Bind(tree, ref settings, new TypeResolverAdapter(null));
 
                 // Return the settings.
                 return (T)settings;

@@ -9,16 +9,23 @@ namespace Spectre.CommandLine.Internal.Configuration
 
         public IList<ConfiguredCommand> Commands { get; }
         public string ApplicationName { get; private set; }
+        public bool ShouldPropagateErrors { get; private set; }
 
         public Configurator(ITypeRegistrar registrar)
         {
             _registrar = registrar;
             Commands = new List<ConfiguredCommand>();
+            ShouldPropagateErrors = false;
         }
 
         public void SetApplicationName(string name)
         {
             ApplicationName = name;
+        }
+
+        public void PropagateErrors()
+        {
+            ShouldPropagateErrors = true;
         }
 
         public void AddCommand<TCommand>(string name) where TCommand : class, ICommand

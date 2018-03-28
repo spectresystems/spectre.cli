@@ -10,12 +10,10 @@ namespace Spectre.CommandLine.Internal
 {
     internal sealed class CommandExecutor
     {
-        private readonly CommandBinder _binder;
         private readonly ITypeRegistrar _registrar;
 
         public CommandExecutor(ITypeRegistrar registrar)
         {
-            _binder = new CommandBinder();
             _registrar = registrar;
         }
 
@@ -74,10 +72,17 @@ namespace Spectre.CommandLine.Internal
             var settings = leaf.CreateSettings(resolver);
 
             // Bind the command tree against the settings.
-            _binder.Bind(tree, ref settings, resolver);
+            CommandBinder.Bind(tree, ref settings, resolver);
+
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(settings, remaining);
+            if (!validationResult.Successful)
+            {
+                throw new CommandAppException(validationResult.Message);
+            }
 
             // Execute the command.
-            var command = leaf.CreateCommand(resolver);
             return command.Execute(settings, remaining);
         }
     }
