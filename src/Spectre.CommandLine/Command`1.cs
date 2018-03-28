@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 namespace Spectre.CommandLine
 {
     public abstract class Command<TSettings> : ICommand<TSettings>
-        where TSettings : class
+        where TSettings : CommandSettings
     {
         public virtual ValidationResult Validate(TSettings settings, ILookup<string, string> remaining)
         {
-            return ValidationResult.Success;
+            return ValidationResult.Success();
         }
 
         public abstract int Execute(TSettings settings, ILookup<string, string> remaining);

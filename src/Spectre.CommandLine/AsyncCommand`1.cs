@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 namespace Spectre.CommandLine
 {
     public abstract class AsyncCommand<TSettings> : ICommand<TSettings>
-        where TSettings : class
+        where TSettings : CommandSettings
     {
         public virtual ValidationResult Validate(TSettings settings, ILookup<string, string> remaining)
         {
-            return ValidationResult.Success;
+            return ValidationResult.Success();
         }
 
         public abstract Task<int> Execute(TSettings settings, ILookup<string, string> remaining);
 
         ValidationResult ICommand.Validate(object settings, ILookup<string, string> remaining)
         {
-            return Validate((TSettings) settings, remaining);
+            return Validate((TSettings)settings, remaining);
         }
 
         Task<int> ICommand.Execute(object settings, ILookup<string, string> remaining)

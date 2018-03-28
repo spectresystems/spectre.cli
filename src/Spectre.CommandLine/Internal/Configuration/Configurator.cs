@@ -41,7 +41,7 @@ namespace Spectre.CommandLine.Internal.Configuration
         }
 
         public void AddCommand<TSettings>(string name, Action<IConfigurator<TSettings>> action)
-            where TSettings : class
+            where TSettings : CommandSettings
         {
             var command = new ConfiguredCommand(name, null, typeof(TSettings));
             action(new Configurator<TSettings>(command, _registrar));

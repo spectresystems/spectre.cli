@@ -7,12 +7,15 @@ namespace Spectre.CommandLine
         public bool Successful { get; }
         public string Message { get; }
 
-        public static ValidationResult Success => new ValidationResult(true, null);
-
         private ValidationResult(bool successful, string message)
         {
             Successful = successful;
             Message = message;
+        }
+
+        public static ValidationResult Success()
+        {
+            return new ValidationResult(true, null);
         }
 
         public static ValidationResult Error(string message)
@@ -21,7 +24,6 @@ namespace Spectre.CommandLine
             {
                 throw new ArgumentNullException(nameof(message));
             }
-
             return new ValidationResult(false, message);
         }
     }

@@ -3,7 +3,7 @@ using Spectre.CommandLine.Tests.Data.Validators;
 
 namespace Spectre.CommandLine.Tests.Data
 {
-    public abstract class AnimalSettings
+    public abstract class AnimalSettings : CommandSettings
     {
         [CommandOption("-a|--alive")]
         [Description("Indicates whether or not the animal is alive.")]

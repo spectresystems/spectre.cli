@@ -15,7 +15,7 @@ namespace Spectre.CommandLine.Tests.Data.Validators
         {
             if (value % 2 == 0)
             {
-                return ValidationResult.Success;
+                return ValidationResult.Success();
             }
             return ValidationResult.Error("Number is not even.");
         }

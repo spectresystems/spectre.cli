@@ -15,7 +15,7 @@ namespace Spectre.CommandLine.Tests.Data.Validators
         {
             if (value > 0)
             {
-                return ValidationResult.Success;
+                return ValidationResult.Success();
             }
             return ValidationResult.Error("Number is not greater than 0.");
         }

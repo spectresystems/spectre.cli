@@ -105,7 +105,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
         internal static class Fixture
         {
             public static T Bind<T>(IEnumerable<string> args, Action<Configurator> action)
-                where T : class, new()
+                where T : CommandSettings, new()
             {
                 // Configure
                 var configurator = new Configurator(null);
@@ -116,7 +116,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal
                 var (tree, _) = parser.Parse(args);
 
                 // Bind the settings to the tree.
-                object settings = new T();
+                CommandSettings settings = new T();
                 CommandBinder.Bind(tree, ref settings, new TypeResolverAdapter(null));
 
                 // Return the settings.

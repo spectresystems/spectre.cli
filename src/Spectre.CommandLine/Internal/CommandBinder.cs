@@ -7,7 +7,7 @@ namespace Spectre.CommandLine.Internal
 {
     internal static class CommandBinder
     {
-        public static void Bind(CommandTree tree, ref object obj, ITypeResolver resolver)
+        public static void Bind(CommandTree tree, ref CommandSettings settings, ITypeResolver resolver)
         {
             ValidateRequiredParameters(tree);
 
@@ -27,8 +27,8 @@ namespace Spectre.CommandLine.Internal
                 foreach (var (parameter, value) in tree.Mapped)
                 {
                     var converter = GetConverter(parameter);
-                    parameter.Assign(obj, converter.ConvertFromInvariantString(value));
-                    ValidateParameter(parameter, obj);
+                    parameter.Assign(settings, converter.ConvertFromInvariantString(value));
+                    ValidateParameter(parameter, settings);
                 }
 
                 // Process unmapped parameters.
@@ -37,12 +37,19 @@ namespace Spectre.CommandLine.Internal
                     // Is this an option with a default value?
                     if (parameter is CommandOption option && option.DefaultValue != null)
                     {
-                        parameter.Assign(obj, option.DefaultValue.Value);
-                        ValidateParameter(parameter, obj);
+                        parameter.Assign(settings, option.DefaultValue.Value);
+                        ValidateParameter(parameter, settings);
                     }
                 }
 
                 tree = tree.Next;
+            }
+
+            // Validate the settings.
+            var settingsValidationResult = settings.Validate();
+            if (!settingsValidationResult.Successful)
+            {
+                throw new CommandAppException(settingsValidationResult.Message);
             }
         }
 
@@ -66,24 +73,15 @@ namespace Spectre.CommandLine.Internal
             }
         }
 
-        private static void ValidateParameter(CommandParameter parameter, object settings)
+        private static void ValidateParameter(CommandParameter parameter, CommandSettings settings)
         {
-            if (settings is IValidate settingsValidator)
-            {
-                var validationResult = settingsValidator.Validate();
-                if (!validationResult.Successful)
-                {
-                    throw new CommandAppException(validationResult.Message);
-                }
-            }
-
             var assignedValue = parameter.Get(settings);
             foreach (var validator in parameter.Validators)
             {
-                var validationResult = validator.Validate(assignedValue);
-                if (!validationResult.Successful)
+                var parameterValidationResult = validator.Validate(assignedValue);
+                if (!parameterValidationResult.Successful)
                 {
-                    throw new CommandAppException(validator.Message ?? validationResult.Message);
+                    throw new CommandAppException(validator.Message ?? parameterValidationResult.Message);
                 }
             }
         }

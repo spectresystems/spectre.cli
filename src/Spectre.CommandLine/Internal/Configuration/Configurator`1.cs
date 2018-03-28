@@ -3,7 +3,7 @@
 namespace Spectre.CommandLine.Internal.Configuration
 {
     internal sealed class Configurator<TSettings> : IConfigurator<TSettings>
-        where TSettings : class
+        where TSettings : CommandSettings
     {
         private readonly ConfiguredCommand _command;
         private readonly ITypeRegistrar _registrar;
@@ -32,7 +32,7 @@ namespace Spectre.CommandLine.Internal.Configuration
         }
 
         public void AddCommand<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
-            where TDerivedSettings : class, TSettings
+            where TDerivedSettings : TSettings
         {
             var command = new ConfiguredCommand(name, null, typeof(TDerivedSettings));
             action(new Configurator<TDerivedSettings>(command, _registrar));

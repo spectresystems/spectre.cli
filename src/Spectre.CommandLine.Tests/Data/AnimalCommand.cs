@@ -4,7 +4,7 @@ using System.Linq;
 namespace Spectre.CommandLine.Tests.Data
 {
     public abstract class AnimalCommand<TSettings> : Command<TSettings>
-        where TSettings : class
+        where TSettings : CommandSettings
     {
         protected void DumpSettings(TSettings settings, ILookup<string, string> remaining)
         {

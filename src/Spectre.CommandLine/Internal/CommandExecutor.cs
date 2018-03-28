@@ -63,7 +63,7 @@ namespace Spectre.CommandLine.Internal
             return Execute(leaf, tree, remaining, resolver);
         }
 
-        private Task<int> Execute(CommandTree leaf,
+        private static Task<int> Execute(CommandTree leaf,
             CommandTree tree,
             ILookup<string, string> remaining,
             ITypeResolver resolver)

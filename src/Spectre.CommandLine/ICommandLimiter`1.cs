@@ -2,7 +2,7 @@
 {
     // ReSharper disable once UnusedTypeParameter
     public interface ICommandLimiter<out TSettings> : ICommand
-        where TSettings : class
+        where TSettings : CommandSettings
     {
     }
 }

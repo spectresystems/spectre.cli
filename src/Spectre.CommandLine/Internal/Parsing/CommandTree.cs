@@ -21,10 +21,9 @@ namespace Spectre.CommandLine.Internal.Parsing
             Unmapped = new List<CommandParameter>();
         }
 
-        public object CreateSettings(ITypeResolver resolver)
+        public CommandSettings CreateSettings(ITypeResolver resolver)
         {
-            var settings = resolver.Resolve(Command.SettingsType);
-            if (settings != null)
+            if (resolver.Resolve(Command.SettingsType) is CommandSettings settings)
             {
                 return settings;
             }
