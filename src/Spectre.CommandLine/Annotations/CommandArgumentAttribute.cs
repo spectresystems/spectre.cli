@@ -4,13 +4,39 @@ using Spectre.CommandLine.Internal.Parsing;
 // ReSharper disable once CheckNamespace
 namespace Spectre.CommandLine
 {
+    /// <summary>
+    /// An attribute representing a command argument.
+    /// </summary>
+    /// <seealso cref="Attribute" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public sealed class CommandArgumentAttribute : Attribute
     {
+        /// <summary>
+        /// Gets the argument position.
+        /// </summary>
+        /// <value>The argument position.</value>
         public int Position { get; }
-        public string Value { get; }
+
+        /// <summary>
+        /// Gets the value name of the argument.
+        /// </summary>
+        /// <value>The value name of the argument.</value>
+        public string ValueName { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the argument is required.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the argument is required; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRequired { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandArgumentAttribute"/> class.
+        /// </summary>
+        /// <param name="position">The argument position.</param>
+        /// <param name="template">The argument template.</param>
+        /// <exception cref="T:System.ArgumentNullException">template</exception>
         public CommandArgumentAttribute(int position, string template)
         {
             if (template == null)
@@ -23,7 +49,7 @@ namespace Spectre.CommandLine
 
             // Assign the result.
             Position = position;
-            Value = result.Value;
+            ValueName = result.Value;
             IsRequired = result.Required;
         }
     }

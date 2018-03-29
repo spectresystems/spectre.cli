@@ -81,7 +81,7 @@ namespace Spectre.CommandLine.Internal
                 var parameterValidationResult = validator.Validate(assignedValue);
                 if (!parameterValidationResult.Successful)
                 {
-                    throw new CommandAppException(validator.Message ?? parameterValidationResult.Message);
+                    throw new CommandAppException(validator.ErrorMessage ?? parameterValidationResult.Message);
                 }
             }
         }

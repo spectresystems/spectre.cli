@@ -15,7 +15,7 @@ namespace Spectre.CommandLine.Internal.Modelling
             TypeConverterAttribute converter, CommandArgumentAttribute argument, IEnumerable<ParameterValidationAttribute> validators)
                 : base(parameterType, parameterKind, property, description, converter, validators, argument.IsRequired)
         {
-            Value = argument.Value;
+            Value = argument.ValueName;
             Position = argument.Position;
         }
     }

@@ -1,23 +1,26 @@
 ﻿using System;
-using Spectre.CommandLine.Validators;
 
 namespace Spectre.CommandLine.Tests.Data.Validators
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class PositiveNumberValidatorAttribute : Int32Validator
+    public sealed class PositiveNumberValidatorAttribute : ParameterValidationAttribute
     {
-        public PositiveNumberValidatorAttribute(string message)
-            : base(message)
+        public PositiveNumberValidatorAttribute(string errorMessage)
+            : base(errorMessage)
         {
         }
 
-        protected override ValidationResult Validate(int value)
+        public override ValidationResult Validate(object value)
         {
-            if (value > 0)
+            if (value is int integer)
             {
-                return ValidationResult.Success();
+                if (integer > 0)
+                {
+                    return ValidationResult.Success();
+                }
+                return ValidationResult.Error("Number is not greater than 0.");
             }
-            return ValidationResult.Error("Number is not greater than 0.");
+            throw new InvalidOperationException("Parameter is not a number.");
         }
     }
 }

@@ -1,23 +1,26 @@
 ﻿using System;
-using Spectre.CommandLine.Validators;
 
 namespace Spectre.CommandLine.Tests.Data.Validators
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class EvenNumberValidatorAttribute : Int32Validator
+    public sealed class EvenNumberValidatorAttribute : ParameterValidationAttribute
     {
-        public EvenNumberValidatorAttribute(string message)
-            : base(message)
+        public EvenNumberValidatorAttribute(string errorMessage)
+            : base(errorMessage)
         {
         }
 
-        protected override ValidationResult Validate(int value)
+        public override ValidationResult Validate(object value)
         {
-            if (value % 2 == 0)
+            if (value is int integer)
             {
-                return ValidationResult.Success();
+                if (integer % 2 == 0)
+                {
+                    return ValidationResult.Success();
+                }
+                return ValidationResult.Error("Number is not even.");
             }
-            return ValidationResult.Error("Number is not even.");
+            throw new InvalidOperationException("Parameter is not a number.");
         }
     }
 }
