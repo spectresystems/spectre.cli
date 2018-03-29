@@ -46,10 +46,10 @@ namespace Spectre.CommandLine.Internal
             }
 
             // Validate the settings.
-            var settingsValidationResult = settings.Validate();
-            if (!settingsValidationResult.Successful)
+            var validationResult = settings.Validate();
+            if (!validationResult.Successful)
             {
-                throw new CommandAppException(settingsValidationResult.Message);
+                throw ExceptionHelper.ValidationFailed(validationResult);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Spectre.CommandLine.Internal
                         switch (parameter)
                         {
                             case CommandArgument argument:
-                                throw new CommandAppException($"Command '{node.Command.Name}' is missing required argument '{argument.Value}'.");
+                                throw ExceptionHelper.MissingRequiredArgument(node, argument);
                         }
                     }
                 }
@@ -78,10 +78,16 @@ namespace Spectre.CommandLine.Internal
             var assignedValue = parameter.Get(settings);
             foreach (var validator in parameter.Validators)
             {
-                var parameterValidationResult = validator.Validate(assignedValue);
-                if (!parameterValidationResult.Successful)
+                var validationResult = validator.Validate(assignedValue);
+                if (!validationResult.Successful)
                 {
-                    throw new CommandAppException(validator.ErrorMessage ?? parameterValidationResult.Message);
+                    // If there is a error message specified in the parameter validator attribute,
+                    // then use that one, otherwise use the validation result.
+                    var result = validator.ErrorMessage != null
+                        ? ValidationResult.Error(validator.ErrorMessage)
+                        : validationResult;
+
+                    throw ExceptionHelper.ValidationFailed(result);
                 }
             }
         }

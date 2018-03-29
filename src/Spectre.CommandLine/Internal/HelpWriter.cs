@@ -146,7 +146,7 @@ namespace Spectre.CommandLine.Internal
                         foreach (var argument in current.Parameters.OfType<CommandArgument>()
                             .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
                         {
-                            builder.Append($" <{argument.Value}>");
+                            builder.Append(" <").Append(argument.Value).Append(">");
                         }
                     }
 

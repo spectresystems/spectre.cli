@@ -78,7 +78,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (reader.Peek() != '\"')
             {
-                throw new CommandAppException($"Encountered unterminated quote '{builder}'.");
+                throw ExceptionHelper.Tree.Tokenization.UnterminatedQuote(builder.ToString());
             }
 
             reader.Read();
@@ -92,7 +92,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             reader.Consume('-');
             if (!reader.TryPeek(out var character))
             {
-                throw new CommandAppException("Encountered unterminated option.");
+                throw ExceptionHelper.Tree.Tokenization.UnterminatedOption();
             }
 
             switch (character)
@@ -112,7 +112,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw new CommandAppException("Option does not have a name.");
+                throw ExceptionHelper.Tree.Tokenization.OptionWithoutName();
             }
 
             var result = new List<CommandTreeToken>();
@@ -136,7 +136,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 }
                 else
                 {
-                    throw new CommandAppException("Option does not have a valid name.");
+                    throw ExceptionHelper.Tree.Tokenization.OptionWithoutValidName();
                 }
             }
 
@@ -149,7 +149,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw new CommandAppException("Option does not have a name.");
+                throw ExceptionHelper.Tree.Tokenization.OptionWithoutName();
             }
 
             var name = ScanString(reader);

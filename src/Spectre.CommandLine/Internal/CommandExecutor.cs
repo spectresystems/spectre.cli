@@ -25,7 +25,7 @@ namespace Spectre.CommandLine.Internal
             }
             if (configuration.Commands.Count == 0)
             {
-                throw new ConfigurationException("No commands have been configured.");
+                throw ExceptionHelper.NoCommandConfigured();
             }
 
             // Create the command model.
@@ -79,7 +79,7 @@ namespace Spectre.CommandLine.Internal
             var validationResult = command.Validate(settings, remaining);
             if (!validationResult.Successful)
             {
-                throw new CommandAppException(validationResult.Message);
+                throw ExceptionHelper.ValidationFailed(validationResult);
             }
 
             // Execute the command.

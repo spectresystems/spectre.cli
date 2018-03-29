@@ -58,23 +58,19 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return token;
         }
 
-        public CommandTreeToken Expect(CommandTreeToken.Kind tokenKind)
-        {
-            return Expect(new[] { tokenKind });
-        }
-
-        public CommandTreeToken Expect(params CommandTreeToken.Kind[] tokenKind)
+        public CommandTreeToken Expect(CommandTreeToken.Kind expected)
         {
             if (Current == null)
             {
-                var message = $"Expected to find token of type '{tokenKind}' but found null instead.";
-                throw new CommandAppException(message);
+                throw ExceptionHelper.Tree.Tokenization.ExpectedTokenButFoundNull(expected);
             }
-            if (Current == null || !tokenKind.Contains(Current.TokenKind))
+
+            var found = Current.TokenKind;
+            if (expected != found)
             {
-                var message = $"Expected to find token of type '{tokenKind}' but found '{Current.TokenKind}' instead.";
-                throw new CommandAppException(message);
+                throw ExceptionHelper.Tree.Tokenization.ExpectedTokenButFoundOther(expected, found);
             }
+
             return Current;
         }
 

@@ -20,7 +20,7 @@ namespace Spectre.CommandLine.Internal
                     var obj = _resolver.Resolve(type);
                     if (obj == null)
                     {
-                        throw new CommandAppException($"Could not resolve type '{type.FullName}'.");
+                        throw ExceptionHelper.CouldNotResolveType(type);
                     }
                     return obj;
                 }
@@ -34,7 +34,7 @@ namespace Spectre.CommandLine.Internal
             }
             catch (Exception ex)
             {
-                throw new CommandAppException($"Could not resolve type '{type.FullName}'.", ex);
+                throw ExceptionHelper.CouldNotResolveType(type, ex);
             }
         }
     }

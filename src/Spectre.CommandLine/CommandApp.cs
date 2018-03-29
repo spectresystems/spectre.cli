@@ -56,7 +56,7 @@ namespace Spectre.CommandLine
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
-            catch (Exception ex) when (ex.GetType() != typeof(ConfigurationException))
+            catch (Exception ex) when (!(ex is ConfigurationException))
             {
                 // Should we propagate exceptions?
                 if (_configurator.ShouldPropagateExceptions)

@@ -25,7 +25,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                 if (token.TokenKind == TemplateToken.Kind.ShortName ||
                     token.TokenKind == TemplateToken.Kind.LongName)
                 {
-                    throw new ConfigurationException("Arguments can not contain options.");
+                    throw ExceptionHelper.Template.Parsing.ArgumentCannotContainOptions();
                 }
 
                 if (token.TokenKind == TemplateToken.Kind.OptionalValue ||
@@ -33,11 +33,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.Value))
                     {
-                        throw new ConfigurationException("Multiple values are not supported.");
+                        throw ExceptionHelper.Template.Parsing.MultipleValuesAreNotSupported();
                     }
                     if (string.IsNullOrWhiteSpace(token.Value))
                     {
-                        throw new ConfigurationException("Values without name are not allowed.");
+                        throw ExceptionHelper.Template.Parsing.ValuesMustHaveName();
                     }
 
                     result.Value = token.Value;
@@ -56,18 +56,18 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (string.IsNullOrWhiteSpace(token.Value))
                     {
-                        throw new ConfigurationException("Options without name are not allowed.");
+                        throw ExceptionHelper.Template.Parsing.Options.OptionsMustHaveName();
                     }
                     if (char.IsDigit(token.Value[0]))
                     {
-                        throw new ConfigurationException("Option names cannot start with a digit.");
+                        throw ExceptionHelper.Template.Parsing.Options.OptionNamesCannotStartWithDigit();
                     }
 
                     foreach (var character in token.Value)
                     {
                         if (!char.IsLetterOrDigit(character) && character != '-')
                         {
-                            throw new ConfigurationException($"Encountered invalid character '{character}' in option name.");
+                            throw ExceptionHelper.Template.Parsing.Options.InvalidCharacterInOptionName(character);
                         }
                     }
                 }
@@ -76,11 +76,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.LongName))
                     {
-                        throw new ConfigurationException("Multiple long option names are not supported.");
+                        throw ExceptionHelper.Template.Parsing.Options.MultipleLongOptionNamesNotAllowed();
                     }
                     if (token.Value.Length == 1)
                     {
-                        throw new ConfigurationException("Long option names must consist of more than one character.");
+                        throw ExceptionHelper.Template.Parsing.Options.LongOptionMustHaveMoreThanOneCharacter();
                     }
                     result.LongName = token.Value;
                 }
@@ -89,11 +89,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.ShortName))
                     {
-                        throw new ConfigurationException("Multiple short option names are not supported.");
+                        throw ExceptionHelper.Template.Parsing.Options.MultipleShortOptionNamesNotAllowed();
                     }
                     if (token.Value.Length > 1)
                     {
-                        throw new ConfigurationException("Short option names can not be longer than one character.");
+                        throw ExceptionHelper.Template.Parsing.Options.ShortOptionMustOnlyBeOneCharacter();
                     }
                     result.ShortName = token.Value;
                 }
@@ -103,18 +103,18 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.Value))
                     {
-                        throw new ConfigurationException("Multiple option values are not supported.");
+                        throw ExceptionHelper.Template.Parsing.Options.MultipleOptionValuesAreNotSupported();
                     }
                     if (token.TokenKind == TemplateToken.Kind.OptionalValue)
                     {
-                        throw new ConfigurationException("Option values cannot be optional.");
+                        throw ExceptionHelper.Template.Parsing.Options.OptionValueCannotBeOptional();
                     }
 
                     foreach (var character in token.Value)
                     {
                         if (!char.IsLetterOrDigit(character))
                         {
-                            throw new ConfigurationException($"Encountered invalid character '{character}' in value name.");
+                            throw ExceptionHelper.Template.Parsing.Options.InvalidCharacterInValueName(character);
                         }
                     }
 
@@ -125,7 +125,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             if (string.IsNullOrWhiteSpace(result.LongName) &&
                 string.IsNullOrWhiteSpace(result.ShortName))
             {
-                throw new ConfigurationException("No long or short name for option has been specified.");
+                throw ExceptionHelper.Template.Parsing.Options.MissingLongAndShortName();
             }
 
             return result;

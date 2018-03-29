@@ -37,8 +37,10 @@ namespace Spectre.CommandLine.Internal.Parsing
                             return (null, context.GetRemainingArguments());
                         }
                     }
-                    throw new CommandAppException($"Unexpected option '{token.Value}'.");
+
+                    throw ExceptionHelper.Tree.Parsing.UnexpectedOption(token);
                 }
+
                 result = ParseCommand(context, _configuration, null, tokens);
             }
 
@@ -58,7 +60,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
-                throw new CommandAppException($"Unknown command '{commandToken.Value}'.");
+                throw ExceptionHelper.Tree.Parsing.UnknownCommand(commandToken);
             }
 
             var node = new CommandTree(parent, command);
@@ -80,7 +82,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         ParseString(context, stream, node);
                         break;
                     default:
-                        throw new CommandAppException("Encountered unknown token type.");
+                        throw ExceptionHelper.Tree.Parsing.UnknownTokenKind(token.TokenKind);
                 }
             }
 
@@ -114,14 +116,14 @@ namespace Spectre.CommandLine.Internal.Parsing
             // Current command has no arguments?
             if (!node.HasArguments())
             {
-                throw new CommandAppException($"Unknown child command '{token.Value}' of '{node.Command.Name}'.");
+                throw ExceptionHelper.Tree.Parsing.UnknownCommand(token);
             }
 
             // Argument?
             var parameter = node.FindArgument(context.CurrentArgumentPosition);
             if (parameter == null)
             {
-                throw new CommandAppException($"Could not match '{token.Value}' with an argument.");
+                throw ExceptionHelper.Tree.Parsing.CouldNotMatchArgument(token);
             }
 
             node.Mapped.Add((parameter, stream.Consume(CommandTreeToken.Kind.String).Value));
@@ -185,7 +187,8 @@ namespace Spectre.CommandLine.Internal.Parsing
                         }
                         else if (parameter.ParameterKind == ParameterKind.Flag)
                         {
-                            throw new CommandAppException("Flags cannot be assigned a value.");
+                            // Flags cannot be assigned a value.
+                            throw ExceptionHelper.Tree.Parsing.CannotAssignValueToFlag();
                         }
                     }
                     else
@@ -208,9 +211,9 @@ namespace Spectre.CommandLine.Internal.Parsing
                     switch (parameter)
                     {
                         case CommandOption option:
-                            throw new CommandAppException($"Option '{option.GetOptionName()}' is defined but no value has been provided.");
+                            throw ExceptionHelper.Tree.Parsing.NoValueForOption(option);
                         case CommandArgument argument:
-                            throw new CommandAppException($"Argument '{argument.Value}' is defined but no value has been provided.");
+                            throw ExceptionHelper.Tree.Parsing.NoValueForArgument(argument);
                     }
                 }
             }

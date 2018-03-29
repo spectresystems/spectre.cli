@@ -20,12 +20,7 @@ namespace Spectre.CommandLine.Internal.Modelling
             var options = GetDuplicates(command);
             if (options.Length > 0)
             {
-                var keys = string.Join(", ", options.Select(x => x.Length > 1 ? $"--{x}" : $"-{x}"));
-                if (options.Length > 1)
-                {
-                    throw new ConfigurationException($"Options {keys} are duplicated in command '{command.Name}'.");
-                }
-                throw new ConfigurationException($"Option {keys} is duplicated in command '{command.Name}'.");
+                throw ExceptionHelper.Model.Validation.DuplicateOption(command, options);
             }
 
             // Validate child commands.

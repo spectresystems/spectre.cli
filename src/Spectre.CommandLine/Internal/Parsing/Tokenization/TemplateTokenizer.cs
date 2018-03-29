@@ -36,7 +36,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 }
                 else
                 {
-                    throw new ConfigurationException($"Encountered unexpected token '{current}'.");
+                    throw ExceptionHelper.Template.Tokenization.UnexpectedToken(current);
                 }
             }
             return tokens;
@@ -104,7 +104,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (buffer.ReachedEnd)
             {
-                throw new ConfigurationException($"Encountered unterminated value name '{builder}'.");
+                throw ExceptionHelper.Template.Tokenization.UnterminatedValueName(builder.ToString());
             }
 
             // Consume end of value character (> or ]).
