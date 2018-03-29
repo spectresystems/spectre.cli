@@ -2,7 +2,7 @@
 
 An extremly opinionated command line parser.
 
-[NuGet](https://img.shields.io/nuget/v/Spectre.CommandLine.svg)
+[![NuGet](https://img.shields.io/nuget/v/Spectre.CommandLine.svg)](https://www.nuget.org/packages/spectre.CommandLine)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)](https://ci.appveyor.com/project/patriksvensson/spectre-commandline)
 
