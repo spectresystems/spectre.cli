@@ -104,11 +104,11 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Modelling
                 if (argument.Validators.Count > 0)
                 {
                     var validatorRootNode = document.CreateElement("validators");
-                    foreach (var validator in argument.Validators)
+                    foreach (var validator in argument.Validators.OrderBy(x => x.GetType().FullName))
                     {
                         var validatorNode = document.CreateElement("validator");
                         validatorNode.SetNullableAttribute("type", validator.GetType().FullName);
-                        validatorNode.SetNullableAttribute("message", validator.Message);
+                        validatorNode.SetNullableAttribute("message", validator.ErrorMessage);
                         validatorRootNode.AppendChild(validatorNode);
                     }
                     node.AppendChild(validatorRootNode);
