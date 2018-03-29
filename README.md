@@ -2,6 +2,10 @@
 
 An extremly opinionated command line parser.
 
+[NuGet](https://img.shields.io/nuget/v/Spectre.CommandLine.svg)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)](https://ci.appveyor.com/project/patriksvensson/spectre-commandline)
+
 ## Usage
 
 Below is a short example of how to configure the command chain.
