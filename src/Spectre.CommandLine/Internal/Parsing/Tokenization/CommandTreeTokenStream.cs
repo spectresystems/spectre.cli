@@ -62,13 +62,13 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             if (Current == null)
             {
-                throw ExceptionHelper.Tree.Tokenization.ExpectedTokenButFoundNull(expected);
+                throw ExceptionHelper.Tree.ExpectedTokenButFoundNull(expected);
             }
 
             var found = Current.TokenKind;
             if (expected != found)
             {
-                throw ExceptionHelper.Tree.Tokenization.ExpectedTokenButFoundOther(expected, found);
+                throw ExceptionHelper.Tree.ExpectedTokenButFoundOther(expected, found);
             }
 
             return Current;

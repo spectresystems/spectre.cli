@@ -62,78 +62,72 @@ namespace Spectre.CommandLine.Internal
                 return new CommandAppException($"Could not create command of type '{commandType.FullName}'.");
             }
 
-            public static class Tokenization
+            public static CommandAppException UnterminatedQuote(string quote)
             {
-                public static CommandAppException UnterminatedQuote(string quote)
-                {
-                    return new CommandAppException($"Encountered unterminated quote '{quote}'.");
-                }
-
-                public static CommandAppException UnterminatedOption()
-                {
-                    return new CommandAppException("Encountered unterminated option.");
-                }
-
-                public static CommandAppException OptionWithoutName()
-                {
-                    return new CommandAppException("Option does not have a name.");
-                }
-
-                public static CommandAppException OptionWithoutValidName()
-                {
-                    return new CommandAppException("Option does not have a valid name.");
-                }
-
-                public static CommandAppException ExpectedTokenButFoundNull(CommandTreeToken.Kind expected)
-                {
-                    var message = $"Expected to find any token of type '{expected}' but found null instead.";
-                    return new CommandAppException(message);
-                }
-
-                public static CommandAppException ExpectedTokenButFoundOther(CommandTreeToken.Kind expected, CommandTreeToken.Kind found)
-                {
-                    var message = $"Expected to find token of type '{expected}' but found '{found}' instead.";
-                    return new CommandAppException(message);
-                }
+                return new CommandAppException($"Encountered unterminated quote '{quote}'.");
             }
 
-            public static class Parsing
+            public static CommandAppException UnterminatedOption()
             {
-                public static CommandAppException UnexpectedOption(CommandTreeToken token)
-                {
-                    return new CommandAppException($"Unexpected option '{token.Value}'.");
-                }
+                return new CommandAppException("Encountered unterminated option.");
+            }
 
-                public static CommandAppException UnknownCommand(CommandTreeToken token)
-                {
-                    return new CommandAppException($"Unknown command '{token.Value}'.");
-                }
+            public static CommandAppException OptionWithoutName()
+            {
+                return new CommandAppException("Option does not have a name.");
+            }
 
-                public static IndexOutOfRangeException UnknownTokenKind(CommandTreeToken.Kind kind)
-                {
-                    // Internal exception. Shouldn't really happen.
-                    return new IndexOutOfRangeException($"Encountered unknown token kind ('{kind}').");
-                }
+            public static CommandAppException OptionWithoutValidName()
+            {
+                return new CommandAppException("Option does not have a valid name.");
+            }
 
-                public static CommandAppException CouldNotMatchArgument(CommandTreeToken token)
-                {
-                    return new CommandAppException($"Could not match '{token.Value}' with an argument.");
-                }
+            public static CommandAppException ExpectedTokenButFoundNull(CommandTreeToken.Kind expected)
+            {
+                var message = $"Expected to find any token of type '{expected}' but found null instead.";
+                return new CommandAppException(message);
+            }
 
-                public static CommandAppException CannotAssignValueToFlag()
-                {
-                    return new CommandAppException("Flags cannot be assigned a value.");
-                }
+            public static CommandAppException ExpectedTokenButFoundOther(CommandTreeToken.Kind expected, CommandTreeToken.Kind found)
+            {
+                var message = $"Expected to find token of type '{expected}' but found '{found}' instead.";
+                return new CommandAppException(message);
+            }
 
-                public static CommandAppException NoValueForOption(CommandOption option)
-                {
-                    return new CommandAppException($"Option '{option.GetOptionName()}' is defined but no value has been provided.");
-                }
+            public static CommandAppException UnexpectedOption(CommandTreeToken token)
+            {
+                return new CommandAppException($"Unexpected option '{token.Value}'.");
+            }
 
-                public static CommandAppException NoValueForArgument(CommandArgument argument)
-                {
-                    return new CommandAppException($"Argument '{argument.Value}' is defined but no value has been provided.");
-                }
+            public static CommandAppException UnknownCommand(CommandTreeToken token)
+            {
+                return new CommandAppException($"Unknown command '{token.Value}'.");
+            }
+
+            public static IndexOutOfRangeException UnknownTokenKind(CommandTreeToken.Kind kind)
+            {
+                // Internal exception. Shouldn't really happen.
+                return new IndexOutOfRangeException($"Encountered unknown token kind ('{kind}').");
+            }
+
+            public static CommandAppException CouldNotMatchArgument(CommandTreeToken token)
+            {
+                return new CommandAppException($"Could not match '{token.Value}' with an argument.");
+            }
+
+            public static CommandAppException CannotAssignValueToFlag()
+            {
+                return new CommandAppException("Flags cannot be assigned a value.");
+            }
+
+            public static CommandAppException NoValueForOption(CommandOption option)
+            {
+                return new CommandAppException($"Option '{option.GetOptionName()}' is defined but no value has been provided.");
+            }
+
+            public static CommandAppException NoValueForArgument(CommandArgument argument)
+            {
+                return new CommandAppException($"Argument '{argument.Value}' is defined but no value has been provided.");
             }
         }
     }

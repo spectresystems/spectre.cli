@@ -1,5 +1,4 @@
 ﻿using Shouldly;
-using Spectre.CommandLine.Internal;
 using Spectre.CommandLine.Internal.Templating;
 using Xunit;
 
@@ -90,8 +89,6 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
             {
                 e.Message.ShouldBe("Encountered unterminated value name 'FOO'.");
                 e.Template.ShouldBe(template);
-                e.Position.ShouldBe(7);
-                e.Summary.ShouldBe("Unterminated value name.");
             });
         }
     }

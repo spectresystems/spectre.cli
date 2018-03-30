@@ -1,9 +1,8 @@
 ﻿using Shouldly;
-using Spectre.CommandLine.Internal;
 using Spectre.CommandLine.Internal.Templating;
 using Xunit;
 
-namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
+namespace Spectre.CommandLine.Tests.Unit.Internal.Templating
 {
     public static class TemplateParserTests
     {
@@ -36,9 +35,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple values are not supported.");
-                    e.Summary.ShouldBe("Too many values.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -52,9 +49,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
-                    e.Summary.ShouldBe("Not permitted.");
                     e.Template.ShouldBe("<BAR> -f");
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -68,9 +63,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
-                    e.Summary.ShouldBe("Not permitted.");
                     e.Template.ShouldBe("<BAR> --foo");
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -86,9 +79,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Values without name are not allowed.");
-                    e.Summary.ShouldBe("Missing value name.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(0);
                 });
             }
         }
@@ -125,9 +116,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Options without name are not allowed.");
-                    e.Summary.ShouldBe("Missing option name.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -141,9 +130,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Option values cannot be optional.");
-                    e.Summary.ShouldBe("Must be required.");
                     e.Template.ShouldBe("--foo [FOO]");
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -157,9 +144,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple long option names are not supported.");
-                    e.Summary.ShouldBe("Too many long options.");
                     e.Template.ShouldBe("--foo|--bar");
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -173,9 +158,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple short option names are not supported.");
-                    e.Summary.ShouldBe("Too many short options.");
                     e.Template.ShouldBe("-f|-b");
-                    e.Position.ShouldBe(3);
                 });
             }
 
@@ -189,9 +172,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
-                    e.Summary.ShouldBe("Too many option values.");
                     e.Template.ShouldBe("<FOO> <BAR>");
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -207,16 +188,14 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Short option names can not be longer than one character.");
-                    e.Summary.ShouldBe("Invalid option name.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
                 });
             }
 
             [Theory]
-            [InlineData("--foo|-1", 6)]
-            [InlineData("-f|--1f", 3)]
-            public void Should_Throw_If_First_Letter_Of_An_Option_Name_Is_A_Digit(string template, int position)
+            [InlineData("--foo|-1")]
+            [InlineData("-f|--1f")]
+            public void Should_Throw_If_First_Letter_Of_An_Option_Name_Is_A_Digit(string template)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
@@ -225,9 +204,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Option names cannot start with a digit.");
-                    e.Summary.ShouldBe("Invalid option name.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(position);
                 });
             }
 
@@ -244,9 +221,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in option name.");
-                    e.Summary.ShouldBe("Invalid character.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -262,26 +237,35 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in value name.");
-                    e.Summary.ShouldBe("Invalid character.");
                     e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
                 });
             }
 
-            [Theory]
-            [InlineData("<FOO> <BAR>")]
-            public void Should_Throw_If_Multiple_Values_Are_Provided(string template)
+            [Fact]
+            public void Should_Throw_If_Multiple_Values_Are_Provided()
             {
                 // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
+                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("<FOO> <BAR>"));
 
                 // Then
                 result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
-                    e.Summary.ShouldBe("Too many option values.");
-                    e.Template.ShouldBe(template);
-                    e.Position.ShouldBe(6);
+                    e.Template.ShouldBe("<FOO> <BAR>");
+                });
+            }
+
+            [Fact]
+            public void Should_Throw_If_Template_Contains_Unknown_Character()
+            {
+                // Given, When
+                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("<FOO> $ <BAR>"));
+
+                // Then
+                result.ShouldBeOfType<TemplateException>().And(e =>
+                {
+                    e.Message.ShouldBe("Encountered unexpected character '$'.");
+                    e.Template.ShouldBe("<FOO> $ <BAR>");
                 });
             }
         }

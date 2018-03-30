@@ -17,6 +17,7 @@
 
         public enum Kind
         {
+            Unknown = 0,
             LongName,
             ShortName,
             RequiredValue,

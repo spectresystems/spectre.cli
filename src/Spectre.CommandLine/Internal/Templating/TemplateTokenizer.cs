@@ -36,7 +36,7 @@ namespace Spectre.CommandLine.Internal.Templating
                 }
                 else
                 {
-                    throw TemplateExceptionHelper.UnexpectedToken(buffer.Original, buffer.Position, character);
+                    throw TemplateException.UnexpectedCharacter(buffer.Original, buffer.Position, character);
                 }
             }
             return tokens;
@@ -113,18 +113,17 @@ namespace Spectre.CommandLine.Internal.Templating
             {
                 var name = builder.ToString();
                 var token = new TemplateToken(kind, position, name, $"{start}{name}");
-                throw TemplateExceptionHelper.UnterminatedValueName(buffer.Original, token);
+                throw TemplateException.UnterminatedValueName(buffer.Original, token);
             }
 
             // Consume end of value character (> or ]).
             buffer.Consume(end);
 
-            // Get the value.
+            // Get the value (the text within the brackets).
             var value = builder.ToString();
 
-            return new TemplateToken(
-                kind,
-                position, value, required ? $"<{value}>" : $"[{value}]");
+            // Create a token and return it.
+            return new TemplateToken(kind, position, value, required ? $"<{value}>" : $"[{value}]");
         }
     }
 }
