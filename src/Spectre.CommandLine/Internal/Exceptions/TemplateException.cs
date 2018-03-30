@@ -1,13 +1,14 @@
 ﻿using Spectre.CommandLine.Internal.Rendering;
+using Spectre.CommandLine.Internal.Templating;
 
-namespace Spectre.CommandLine.Internal.Templating
+namespace Spectre.CommandLine.Internal.Exceptions
 {
-    internal sealed class TemplateException : CommandAppException
+    internal class TemplateException : ConfigurationException
     {
         public string Template { get; }
         public override bool AlwaysPropagateWhenDebugging => true;
 
-        internal TemplateException(string message, string template, IRenderable pretty)
+        public TemplateException(string message, string template, IRenderable pretty)
             : base(message, pretty)
         {
             Template = template;

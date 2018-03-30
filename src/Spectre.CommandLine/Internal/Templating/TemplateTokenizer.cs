@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Spectre.CommandLine.Internal.Exceptions;
 
 namespace Spectre.CommandLine.Internal.Templating
 {

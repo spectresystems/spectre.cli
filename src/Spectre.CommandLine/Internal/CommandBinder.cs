@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
 
@@ -49,7 +50,7 @@ namespace Spectre.CommandLine.Internal
             var validationResult = settings.Validate();
             if (!validationResult.Successful)
             {
-                throw ExceptionHelper.ValidationFailed(validationResult);
+                throw RuntimeException.ValidationFailed(validationResult);
             }
         }
 
@@ -65,7 +66,7 @@ namespace Spectre.CommandLine.Internal
                         switch (parameter)
                         {
                             case CommandArgument argument:
-                                throw ExceptionHelper.MissingRequiredArgument(node, argument);
+                                throw RuntimeException.MissingRequiredArgument(node, argument);
                         }
                     }
                 }
@@ -87,7 +88,7 @@ namespace Spectre.CommandLine.Internal
                         ? ValidationResult.Error(validator.ErrorMessage)
                         : validationResult;
 
-                    throw ExceptionHelper.ValidationFailed(result);
+                    throw RuntimeException.ValidationFailed(result);
                 }
             }
         }

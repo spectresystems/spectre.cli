@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spectre.CommandLine.Internal.Exceptions;
 
 namespace Spectre.CommandLine.Internal.Modelling
 {
@@ -8,6 +9,11 @@ namespace Spectre.CommandLine.Internal.Modelling
     {
         public static void Validate(CommandModel model)
         {
+            if (model.Commands.Count == 0)
+            {
+                throw ConfigurationException.NoCommandConfigured();
+            }
+
             foreach (var command in model.Commands)
             {
                 Validate(command);
@@ -20,7 +26,7 @@ namespace Spectre.CommandLine.Internal.Modelling
             var options = GetDuplicates(command);
             if (options.Length > 0)
             {
-                throw ExceptionHelper.Model.Validation.DuplicateOption(command, options);
+                throw ConfigurationException.DuplicateOption(command, options);
             }
 
             // Validate child commands.

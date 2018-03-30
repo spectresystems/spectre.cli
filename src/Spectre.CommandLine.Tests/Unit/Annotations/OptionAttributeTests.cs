@@ -1,5 +1,5 @@
 ﻿using Shouldly;
-using Spectre.CommandLine.Internal.Templating;
+using Spectre.CommandLine.Internal.Exceptions;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Annotations

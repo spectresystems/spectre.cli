@@ -1,7 +1,8 @@
 ﻿using System;
 using Spectre.CommandLine.Internal.Rendering;
+using Spectre.CommandLine.Internal.Templating;
 
-namespace Spectre.CommandLine.Internal.Templating
+namespace Spectre.CommandLine.Internal.Exceptions
 {
     internal static class TemplateExceptionFactory
     {

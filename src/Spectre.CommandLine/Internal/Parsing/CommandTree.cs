@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Modelling;
 
 namespace Spectre.CommandLine.Internal.Parsing
@@ -27,7 +28,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                 return settings;
             }
 
-            throw ExceptionHelper.Tree.CouldNotCreateSettings(Command.SettingsType);
+            throw ParseException.CouldNotCreateSettings(Command.SettingsType);
         }
 
         public ICommand CreateCommand(ITypeResolver resolver)
@@ -37,7 +38,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                 return command;
             }
 
-            throw ExceptionHelper.Tree.CouldNotCreateCommand(Command.CommandType);
+            throw ParseException.CouldNotCreateCommand(Command.CommandType);
         }
     }
 }

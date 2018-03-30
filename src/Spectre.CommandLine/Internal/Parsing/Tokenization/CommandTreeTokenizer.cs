@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using Spectre.CommandLine.Internal.Exceptions;
 
 namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 {
@@ -78,7 +79,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (reader.Peek() != '\"')
             {
-                throw ExceptionHelper.Tree.UnterminatedQuote(builder.ToString());
+                throw ParseException.UnterminatedQuote(builder.ToString());
             }
 
             reader.Read();
@@ -92,7 +93,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             reader.Consume('-');
             if (!reader.TryPeek(out var character))
             {
-                throw ExceptionHelper.Tree.UnterminatedOption();
+                throw ParseException.UnterminatedOption();
             }
 
             switch (character)
@@ -112,7 +113,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw ExceptionHelper.Tree.OptionWithoutName();
+                throw ParseException.OptionWithoutName();
             }
 
             var result = new List<CommandTreeToken>();
@@ -136,7 +137,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 }
                 else
                 {
-                    throw ExceptionHelper.Tree.OptionWithoutValidName();
+                    throw ParseException.OptionWithoutValidName();
                 }
             }
 
@@ -149,7 +150,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (char.IsWhiteSpace(reader.Peek()))
             {
-                throw ExceptionHelper.Tree.OptionWithoutName();
+                throw ParseException.OptionWithoutName();
             }
 
             var name = ScanString(reader);

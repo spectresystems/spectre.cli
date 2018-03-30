@@ -9,7 +9,7 @@ namespace Spectre.CommandLine
     /// </summary>
     /// <seealso cref="Exception" />
     /// <seealso cref="IRenderable" />
-    public class CommandAppException : Exception, IRenderable
+    public abstract class CommandAppException : Exception, IRenderable
     {
         internal IRenderable Pretty { get; }
 

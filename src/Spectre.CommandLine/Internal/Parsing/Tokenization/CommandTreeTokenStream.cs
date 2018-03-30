@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Spectre.CommandLine.Internal.Exceptions;
 
 namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 {
@@ -62,13 +63,13 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             if (Current == null)
             {
-                throw ExceptionHelper.Tree.ExpectedTokenButFoundNull(expected);
+                throw ParseException.ExpectedTokenButFoundNull(expected);
             }
 
             var found = Current.TokenKind;
             if (expected != found)
             {
-                throw ExceptionHelper.Tree.ExpectedTokenButFoundOther(expected, found);
+                throw ParseException.ExpectedTokenButFoundOther(expected, found);
             }
 
             return Current;

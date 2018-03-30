@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Spectre.CommandLine.Internal.Configuration;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
 
@@ -22,10 +23,6 @@ namespace Spectre.CommandLine.Internal
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
-            }
-            if (configuration.Commands.Count == 0)
-            {
-                throw ExceptionHelper.NoCommandConfigured();
             }
 
             // Create the command model.
@@ -79,7 +76,7 @@ namespace Spectre.CommandLine.Internal
             var validationResult = command.Validate(settings, remaining);
             if (!validationResult.Successful)
             {
-                throw ExceptionHelper.ValidationFailed(validationResult);
+                throw RuntimeException.ValidationFailed(validationResult);
             }
 
             // Execute the command.

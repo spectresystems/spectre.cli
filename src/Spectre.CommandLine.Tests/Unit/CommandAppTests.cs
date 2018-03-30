@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Shouldly;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Tests.Data;
 using Spectre.CommandLine.Tests.Fakes;
 using Xunit;
@@ -232,7 +233,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var result = Record.Exception(() => app.Run(new[] { "animal", "3", "dog", "7", "--name", "Rufus" }));
 
             // Then
-            result.ShouldBeOfType<CommandAppException>().And(e =>
+            result.ShouldBeOfType<RuntimeException>().And(e =>
             {
                 e.Message.ShouldBe("Animals must have an even number of legs.");
             });
@@ -257,7 +258,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "7", "--name", "Tiger" }));
 
             // Then
-            result.ShouldBeOfType<CommandAppException>().And(e =>
+            result.ShouldBeOfType<RuntimeException>().And(e =>
             {
                 e.Message.ShouldBe("Tiger is not a dog name!");
             });
@@ -282,7 +283,7 @@ namespace Spectre.CommandLine.Tests.Unit
             var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" }));
 
             // Then
-            result.ShouldBeOfType<CommandAppException>().And(e =>
+            result.ShouldBeOfType<RuntimeException>().And(e =>
             {
                 e.Message.ShouldBe("Dog is too old...");
             });

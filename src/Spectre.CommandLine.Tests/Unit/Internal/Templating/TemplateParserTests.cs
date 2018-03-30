@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Templating;
 using Xunit;
 

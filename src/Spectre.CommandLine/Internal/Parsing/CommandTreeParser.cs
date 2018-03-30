@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing.Tokenization;
 
@@ -38,7 +39,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         }
                     }
 
-                    throw ExceptionHelper.Tree.UnexpectedOption(token);
+                    throw ParseException.UnexpectedOption(token);
                 }
 
                 result = ParseCommand(context, _configuration, null, tokens);
@@ -60,7 +61,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
-                throw ExceptionHelper.Tree.UnknownCommand(commandToken);
+                throw ParseException.UnknownCommand(commandToken);
             }
 
             var node = new CommandTree(parent, command);
@@ -82,7 +83,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         ParseString(context, stream, node);
                         break;
                     default:
-                        throw ExceptionHelper.Tree.UnknownTokenKind(token.TokenKind);
+                        throw ParseException.UnknownTokenKind(token.TokenKind);
                 }
             }
 
@@ -116,14 +117,14 @@ namespace Spectre.CommandLine.Internal.Parsing
             // Current command has no arguments?
             if (!node.HasArguments())
             {
-                throw ExceptionHelper.Tree.UnknownCommand(token);
+                throw ParseException.UnknownCommand(token);
             }
 
             // Argument?
             var parameter = node.FindArgument(context.CurrentArgumentPosition);
             if (parameter == null)
             {
-                throw ExceptionHelper.Tree.CouldNotMatchArgument(token);
+                throw ParseException.CouldNotMatchArgument(token);
             }
 
             node.Mapped.Add((parameter, stream.Consume(CommandTreeToken.Kind.String).Value));
@@ -188,7 +189,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         else if (parameter.ParameterKind == ParameterKind.Flag)
                         {
                             // Flags cannot be assigned a value.
-                            throw ExceptionHelper.Tree.CannotAssignValueToFlag();
+                            throw ParseException.CannotAssignValueToFlag();
                         }
                     }
                     else
@@ -211,9 +212,9 @@ namespace Spectre.CommandLine.Internal.Parsing
                     switch (parameter)
                     {
                         case CommandOption option:
-                            throw ExceptionHelper.Tree.NoValueForOption(option);
+                            throw ParseException.NoValueForOption(option);
                         case CommandArgument argument:
-                            throw ExceptionHelper.Tree.NoValueForArgument(argument);
+                            throw ParseException.NoValueForArgument(argument);
                     }
                 }
             }

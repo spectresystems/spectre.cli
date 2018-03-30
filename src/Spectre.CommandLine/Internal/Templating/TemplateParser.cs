@@ -1,4 +1,6 @@
-﻿namespace Spectre.CommandLine.Internal.Templating
+﻿using Spectre.CommandLine.Internal.Exceptions;
+
+namespace Spectre.CommandLine.Internal.Templating
 {
     internal static class TemplateParser
     {

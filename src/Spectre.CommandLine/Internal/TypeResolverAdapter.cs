@@ -1,4 +1,5 @@
 ﻿using System;
+using Spectre.CommandLine.Internal.Exceptions;
 
 namespace Spectre.CommandLine.Internal
 {
@@ -20,7 +21,7 @@ namespace Spectre.CommandLine.Internal
                     var obj = _resolver.Resolve(type);
                     if (obj == null)
                     {
-                        throw ExceptionHelper.CouldNotResolveType(type);
+                        throw RuntimeException.CouldNotResolveType(type);
                     }
                     return obj;
                 }
@@ -34,7 +35,7 @@ namespace Spectre.CommandLine.Internal
             }
             catch (Exception ex)
             {
-                throw ExceptionHelper.CouldNotResolveType(type, ex);
+                throw RuntimeException.CouldNotResolveType(type, ex);
             }
         }
     }
