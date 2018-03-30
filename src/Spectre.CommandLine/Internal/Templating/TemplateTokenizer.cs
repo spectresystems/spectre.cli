@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Spectre.CommandLine.Internal.Parsing.Tokenization
+namespace Spectre.CommandLine.Internal.Templating
 {
     internal static class TemplateTokenizer
     {
@@ -13,30 +13,30 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             {
                 EatWhitespace(buffer);
 
-                if (!buffer.TryPeek(out var current))
+                if (!buffer.TryPeek(out var character))
                 {
                     break;
                 }
 
-                if (current == '-')
+                if (character == '-')
                 {
                     tokens.Add(ReadOption(buffer));
                 }
-                else if (current == '|')
+                else if (character == '|')
                 {
                     buffer.Consume('|');
                 }
-                else if (current == '<')
+                else if (character == '<')
                 {
                     tokens.Add(ReadValue(buffer, true));
                 }
-                else if (current == '[')
+                else if (character == '[')
                 {
                     tokens.Add(ReadValue(buffer, false));
                 }
                 else
                 {
-                    throw ExceptionHelper.Template.Tokenization.UnexpectedToken(current);
+                    throw TemplateExceptionHelper.UnexpectedToken(buffer.Original, buffer.Position, character);
                 }
             }
             return tokens;
@@ -57,13 +57,17 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
         private static TemplateToken ReadOption(TextBuffer buffer)
         {
+            var position = buffer.Position;
+
             buffer.Consume('-');
             if (buffer.IsNext('-'))
             {
                 buffer.Consume('-');
-                return new TemplateToken(TemplateToken.Kind.LongName, ReadOptionName(buffer));
+                var longValue = ReadOptionName(buffer);
+                return new TemplateToken(TemplateToken.Kind.LongName, position, longValue, $"--{longValue}");
             }
-            return new TemplateToken(TemplateToken.Kind.ShortName, ReadOptionName(buffer));
+            var shortValue = ReadOptionName(buffer);
+            return new TemplateToken(TemplateToken.Kind.ShortName, position, shortValue, $"-{shortValue}");
         }
 
         private static string ReadOptionName(TextBuffer buffer)
@@ -86,6 +90,9 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             var start = required ? '<' : '[';
             var end = required ? '>' : ']';
 
+            var position = buffer.Position;
+            var kind = required ? TemplateToken.Kind.RequiredValue : TemplateToken.Kind.OptionalValue;
+
             // Consume start of value character (< or [).
             buffer.Consume(start);
 
@@ -104,15 +111,20 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (buffer.ReachedEnd)
             {
-                throw ExceptionHelper.Template.Tokenization.UnterminatedValueName(builder.ToString());
+                var name = builder.ToString();
+                var token = new TemplateToken(kind, position, name, $"{start}{name}");
+                throw TemplateExceptionHelper.UnterminatedValueName(buffer.Original, token);
             }
 
             // Consume end of value character (> or ]).
             buffer.Consume(end);
 
+            // Get the value.
+            var value = builder.ToString();
+
             return new TemplateToken(
-                required ? TemplateToken.Kind.RequiredValue : TemplateToken.Kind.OptionalValue,
-                builder.ToString());
+                kind,
+                position, value, required ? $"<{value}>" : $"[{value}]");
         }
     }
 }

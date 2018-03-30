@@ -1,41 +1,44 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using Spectre.CommandLine.Internal.Rendering;
+using Spectre.CommandLine.Internal.Rendering.Elements;
 
 namespace Spectre.CommandLine
 {
-    /// <inheritdoc />
-    [Serializable]
-    public sealed class CommandAppException : Exception
+    /// <summary>
+    /// Represents errors that occur during application execution.
+    /// </summary>
+    /// <seealso cref="Exception" />
+    /// <seealso cref="IRenderable" />
+    public class CommandAppException : Exception, IRenderable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandAppException"/> class.
-        /// </summary>
-        public CommandAppException()
-        {
-        }
+        internal IRenderable Pretty { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandAppException"/> class.
+        /// Gets a value indicating whether this exception always should
+        /// propagate if there is a debugger attached.
         /// </summary>
-        /// <param name="message">The message that describes the error.</param>
-        public CommandAppException(string message)
+        /// <value>
+        ///   <c>true</c> if this exception always should
+        ///   propagate if there is a debugger attached; otherwise, <c>false</c>.
+        /// </value>
+        public virtual bool AlwaysPropagateWhenDebugging => false;
+
+        internal CommandAppException(string message, IRenderable pretty = null)
             : base(message)
         {
+            Pretty = pretty;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandAppException"/> class.
-        /// </summary>
-        /// <param name="message">The error message that explains the reason for the exception.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
-        public CommandAppException(string message, Exception innerException)
-            : base(message, innerException)
+        internal CommandAppException(string message, Exception ex, IRenderable pretty = null)
+            : base(message, ex)
         {
+            Pretty = pretty;
         }
 
-        private CommandAppException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        void IRenderable.Render(IRenderer renderer)
         {
+            var pretty = Pretty ?? new TextElement(Message ?? "An unknown configuration exception occured.");
+            pretty.Render(renderer);
         }
     }
 }

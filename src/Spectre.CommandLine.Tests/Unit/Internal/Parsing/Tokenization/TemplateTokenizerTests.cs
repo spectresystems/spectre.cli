@@ -1,5 +1,6 @@
 ﻿using Shouldly;
-using Spectre.CommandLine.Internal.Parsing.Tokenization;
+using Spectre.CommandLine.Internal;
+using Spectre.CommandLine.Internal.Templating;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
@@ -77,17 +78,20 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing.Tokenization
         }
 
         [Theory]
-        [InlineData("[FOO")]
-        [InlineData("<FOO")]
+        [InlineData("--long [FOO")]
+        [InlineData("--long <FOO")]
         public void Should_Throw_If_Value_Is_Unterminated(string template)
         {
             // Given, When
             var result = Record.Exception(() => TemplateTokenizer.Tokenize(template));
 
             // Then
-            result.ShouldBeOfType<ConfigurationException>().And(e =>
+            result.ShouldBeOfType<TemplateException>().And(e =>
             {
                 e.Message.ShouldBe("Encountered unterminated value name 'FOO'.");
+                e.Template.ShouldBe(template);
+                e.Position.ShouldBe(7);
+                e.Summary.ShouldBe("Unterminated value name.");
             });
         }
     }

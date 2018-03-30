@@ -1,6 +1,4 @@
-﻿using Spectre.CommandLine.Internal.Parsing.Tokenization;
-
-namespace Spectre.CommandLine.Internal.Parsing
+﻿namespace Spectre.CommandLine.Internal.Templating
 {
     internal static class TemplateParser
     {
@@ -25,7 +23,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                 if (token.TokenKind == TemplateToken.Kind.ShortName ||
                     token.TokenKind == TemplateToken.Kind.LongName)
                 {
-                    throw ExceptionHelper.Template.Parsing.ArgumentCannotContainOptions();
+                    throw TemplateExceptionHelper.ArgumentCannotContainOptions(template, token);
                 }
 
                 if (token.TokenKind == TemplateToken.Kind.OptionalValue ||
@@ -33,11 +31,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.Value))
                     {
-                        throw ExceptionHelper.Template.Parsing.MultipleValuesAreNotSupported();
+                        throw TemplateExceptionHelper.MultipleValuesAreNotSupported(template, token);
                     }
                     if (string.IsNullOrWhiteSpace(token.Value))
                     {
-                        throw ExceptionHelper.Template.Parsing.ValuesMustHaveName();
+                        throw TemplateExceptionHelper.ValuesMustHaveName(template, token);
                     }
 
                     result.Value = token.Value;
@@ -56,18 +54,18 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (string.IsNullOrWhiteSpace(token.Value))
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.OptionsMustHaveName();
+                        throw TemplateExceptionHelper.OptionsMustHaveName(template, token);
                     }
                     if (char.IsDigit(token.Value[0]))
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.OptionNamesCannotStartWithDigit();
+                        throw TemplateExceptionHelper.OptionNamesCannotStartWithDigit(template, token);
                     }
 
                     foreach (var character in token.Value)
                     {
                         if (!char.IsLetterOrDigit(character) && character != '-')
                         {
-                            throw ExceptionHelper.Template.Parsing.Options.InvalidCharacterInOptionName(character);
+                            throw TemplateExceptionHelper.InvalidCharacterInOptionName(template, token, character);
                         }
                     }
                 }
@@ -76,11 +74,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.LongName))
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.MultipleLongOptionNamesNotAllowed();
+                        throw TemplateExceptionHelper.MultipleLongOptionNamesNotAllowed(template, token);
                     }
                     if (token.Value.Length == 1)
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.LongOptionMustHaveMoreThanOneCharacter();
+                        throw TemplateExceptionHelper.LongOptionMustHaveMoreThanOneCharacter(template, token);
                     }
                     result.LongName = token.Value;
                 }
@@ -89,11 +87,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.ShortName))
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.MultipleShortOptionNamesNotAllowed();
+                        throw TemplateExceptionHelper.MultipleShortOptionNamesNotAllowed(template, token);
                     }
                     if (token.Value.Length > 1)
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.ShortOptionMustOnlyBeOneCharacter();
+                        throw TemplateExceptionHelper.ShortOptionMustOnlyBeOneCharacter(template, token);
                     }
                     result.ShortName = token.Value;
                 }
@@ -103,18 +101,18 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     if (!string.IsNullOrWhiteSpace(result.Value))
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.MultipleOptionValuesAreNotSupported();
+                        throw TemplateExceptionHelper.MultipleOptionValuesAreNotSupported(template, token);
                     }
                     if (token.TokenKind == TemplateToken.Kind.OptionalValue)
                     {
-                        throw ExceptionHelper.Template.Parsing.Options.OptionValueCannotBeOptional();
+                        throw TemplateExceptionHelper.OptionValueCannotBeOptional(template, token);
                     }
 
                     foreach (var character in token.Value)
                     {
                         if (!char.IsLetterOrDigit(character))
                         {
-                            throw ExceptionHelper.Template.Parsing.Options.InvalidCharacterInValueName(character);
+                            throw TemplateExceptionHelper.InvalidCharacterInValueName(template, token, character);
                         }
                     }
 
@@ -125,7 +123,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             if (string.IsNullOrWhiteSpace(result.LongName) &&
                 string.IsNullOrWhiteSpace(result.ShortName))
             {
-                throw ExceptionHelper.Template.Parsing.Options.MissingLongAndShortName();
+                throw TemplateExceptionHelper.MissingLongAndShortName(template, null);
             }
 
             return result;

@@ -325,22 +325,5 @@ namespace Spectre.CommandLine.Tests.Unit
             // Then
             result.ShouldBe(-1);
         }
-
-        [Fact]
-        public void Should_Always_Propagate_Configuration_Errors_Even_If_Not_Explicitly_Told_To_Do_So()
-        {
-            // Given
-            var app = new CommandApp(new FakeTypeRegistrar());
-            app.Configure(config =>
-            {
-                config.AddCommand<InvalidCommand>("invalid");
-            });
-
-            // When
-            var result = Record.Exception(() => app.Run(new[] { "--foo bar" }));
-
-            // Then
-            result.ShouldBeOfType<ConfigurationException>();
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Shouldly;
-using Spectre.CommandLine.Internal.Parsing;
+using Spectre.CommandLine.Internal;
+using Spectre.CommandLine.Internal.Templating;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
@@ -32,9 +33,12 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple values are not supported.");
+                    e.Summary.ShouldBe("Too many values.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -42,12 +46,15 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             public void Should_Throw_If_Short_Option_Is_Provided()
             {
                 // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("-f"));
+                var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("<BAR> -f"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
+                    e.Summary.ShouldBe("Not permitted.");
+                    e.Template.ShouldBe("<BAR> -f");
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -55,12 +62,15 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             public void Should_Throw_If_Long_Option_Is_Provided()
             {
                 // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("--foo"));
+                var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate("<BAR> --foo"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Arguments can not contain options.");
+                    e.Summary.ShouldBe("Not permitted.");
+                    e.Template.ShouldBe("<BAR> --foo");
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -73,9 +83,12 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseArgumentTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Values without name are not allowed.");
+                    e.Summary.ShouldBe("Missing value name.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(0);
                 });
             }
         }
@@ -101,17 +114,20 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             }
 
             [Theory]
-            [InlineData("--|--foo")]
-            [InlineData("-|--foo")]
+            [InlineData("--foo|--")]
+            [InlineData("--foo|-")]
             public void Should_Throw_If_Option_Contains_No_Name(string template)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Options without name are not allowed.");
+                    e.Summary.ShouldBe("Missing option name.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -119,12 +135,15 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
             public void Should_Throw_If_Option_Value_Is_Optional()
             {
                 // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("[FOO]"));
+                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("--foo [FOO]"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Option values cannot be optional.");
+                    e.Summary.ShouldBe("Must be required.");
+                    e.Template.ShouldBe("--foo [FOO]");
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -135,9 +154,12 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("--foo|--bar"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple long option names are not supported.");
+                    e.Summary.ShouldBe("Too many long options.");
+                    e.Template.ShouldBe("--foo|--bar");
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -148,9 +170,12 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("-f|-b"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple short option names are not supported.");
+                    e.Summary.ShouldBe("Too many short options.");
+                    e.Template.ShouldBe("-f|-b");
+                    e.Position.ShouldBe(3);
                 });
             }
 
@@ -161,70 +186,85 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("<FOO> <BAR>"));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
+                    e.Summary.ShouldBe("Too many option values.");
+                    e.Template.ShouldBe("<FOO> <BAR>");
+                    e.Position.ShouldBe(6);
                 });
             }
 
             [Theory]
-            [InlineData("-foo")]
-            [InlineData("-f-b")]
+            [InlineData("--bar|-foo")]
+            [InlineData("--bar|-f-b")]
             public void Should_Throw_If_Short_Option_Is_Longer_Than_One_Character(string template)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Short option names can not be longer than one character.");
+                    e.Summary.ShouldBe("Invalid option name.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
 
             [Theory]
-            [InlineData("-1")]
-            [InlineData("--1f")]
-            public void Should_Throw_If_First_Letter_Of_An_Option_Name_Is_A_Digit(string template)
+            [InlineData("--foo|-1", 6)]
+            [InlineData("-f|--1f", 3)]
+            public void Should_Throw_If_First_Letter_Of_An_Option_Name_Is_A_Digit(string template, int position)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Option names cannot start with a digit.");
+                    e.Summary.ShouldBe("Invalid option name.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(position);
                 });
             }
 
             [Theory]
-            [InlineData("-foo[b", '[')]
-            [InlineData("-f€b", '€')]
-            [InlineData("-foo@b", '@')]
+            [InlineData("--foo|-foo[b", '[')]
+            [InlineData("--foo|-f€b", '€')]
+            [InlineData("--foo|-foo@b", '@')]
             public void Should_Throw_If_Option_Contains_Invalid_Name(string template, char invalid)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in option name.");
+                    e.Summary.ShouldBe("Invalid character.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
 
             [Theory]
-            [InlineData("<FO£O>", '£')]
-            [InlineData("<FOO BAR>", ' ')]
+            [InlineData("--foo <FO£O>", '£')]
+            [InlineData("--foo <FOO BAR>", ' ')]
             public void Should_Throw_If_Value_Contains_Invalid_Name(string template, char invalid)
             {
                 // Given, When
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe($"Encountered invalid character '{invalid}' in value name.");
+                    e.Summary.ShouldBe("Invalid character.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
 
@@ -236,9 +276,12 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Parsing
                 var result = Record.Exception(() => TemplateParser.ParseOptionTemplate(template));
 
                 // Then
-                result.ShouldBeOfType<ConfigurationException>().And(e =>
+                result.ShouldBeOfType<TemplateException>().And(e =>
                 {
                     e.Message.ShouldBe("Multiple option values are not supported.");
+                    e.Summary.ShouldBe("Too many option values.");
+                    e.Template.ShouldBe(template);
+                    e.Position.ShouldBe(6);
                 });
             }
         }

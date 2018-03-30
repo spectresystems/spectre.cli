@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Spectre.CommandLine.Internal;
 using Spectre.CommandLine.Internal.Configuration;
+using Spectre.CommandLine.Internal.Rendering;
+using Spectre.CommandLine.Internal.Rendering.Elements;
 
 namespace Spectre.CommandLine
 {
@@ -56,7 +59,7 @@ namespace Spectre.CommandLine
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
-            catch (Exception ex) when (!(ex is ConfigurationException))
+            catch (Exception ex)
             {
                 // Should we propagate exceptions?
                 if (_configurator.ShouldPropagateExceptions)
@@ -64,13 +67,31 @@ namespace Spectre.CommandLine
                     throw;
                 }
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("Error: ");
-                Console.ResetColor();
-                Console.WriteLine(ex.Message);
+                // Render the exception.
+                ConsoleRenderer.Render(GetRenderableErrorMessage(ex));
+
+                // Should we always propagate when debugging?
+                if (Debugger.IsAttached
+                    && ex is CommandAppException appException
+                    && appException.AlwaysPropagateWhenDebugging)
+                {
+                    throw;
+                }
 
                 return -1;
             }
+        }
+
+        private static IRenderable GetRenderableErrorMessage(Exception ex)
+        {
+            if (ex is CommandAppException renderable && renderable.Pretty != null)
+            {
+                return renderable.Pretty;
+            }
+
+            return new BlockElement()
+                .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
+                .Append(new TextElement(ex.Message));
         }
     }
 }

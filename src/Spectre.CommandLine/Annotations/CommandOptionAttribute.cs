@@ -1,5 +1,5 @@
 ﻿using System;
-using Spectre.CommandLine.Internal.Parsing;
+using Spectre.CommandLine.Internal.Templating;
 
 // ReSharper disable once CheckNamespace
 namespace Spectre.CommandLine

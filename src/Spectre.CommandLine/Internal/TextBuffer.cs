@@ -1,17 +1,21 @@
 ﻿using System;
 using System.IO;
 
-namespace Spectre.CommandLine.Internal.Parsing.Tokenization
+namespace Spectre.CommandLine.Internal
 {
     internal sealed class TextBuffer
     {
         private readonly StringReader _reader;
 
         public bool ReachedEnd => _reader.Peek() == -1;
+        public string Original { get; }
+        public int Position { get; private set; }
 
         public TextBuffer(string text)
         {
             _reader = new StringReader(text);
+            Original = text;
+            Position = 0;
         }
 
         public char Peek()
@@ -52,7 +56,9 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         public char Read()
         {
             EnsureNotAtEnd();
-            return (char)_reader.Read();
+            var result = (char)_reader.Read();
+            Position++;
+            return result;
         }
 
         private void EnsureNotAtEnd()
