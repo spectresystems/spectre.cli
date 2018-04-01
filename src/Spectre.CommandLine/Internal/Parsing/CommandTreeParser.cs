@@ -20,8 +20,8 @@ namespace Spectre.CommandLine.Internal.Parsing
 
         public (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args)
         {
-            var tokens = CommandTreeTokenizer.Tokenize(args);
-            var context = new CommandTreeParserContext();
+            var context = new CommandTreeParserContext(args);
+            var tokens = CommandTreeTokenizer.Tokenize(context.Arguments);
 
             var result = (CommandTree)null;
             if (tokens.Count > 0)
@@ -39,7 +39,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         }
                     }
 
-                    throw ParseException.UnexpectedOption(token);
+                    throw ParseException.UnexpectedOption(context.Arguments, token);
                 }
 
                 result = ParseCommand(context, _configuration, null, tokens);
@@ -61,7 +61,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
-                throw ParseException.UnknownCommand(commandToken);
+                throw ParseException.UnknownCommand(context.Arguments, commandToken);
             }
 
             var node = new CommandTree(parent, command);
@@ -72,18 +72,18 @@ namespace Spectre.CommandLine.Internal.Parsing
                 {
                     case CommandTreeToken.Kind.LongOption:
                         // Long option
-                        ParseOption(context, stream, node, true);
+                        ParseOption(context, stream, token, node, true);
                         break;
                     case CommandTreeToken.Kind.ShortOption:
                         // Short option
-                        ParseOption(context, stream, node, false);
+                        ParseOption(context, stream, token, node, false);
                         break;
                     case CommandTreeToken.Kind.String:
                         // Command
                         ParseString(context, stream, node);
                         break;
                     default:
-                        throw ParseException.UnknownTokenKind(token.TokenKind);
+                        throw new InvalidOperationException($"Encountered unknown token ({token.TokenKind}).");
                 }
             }
 
@@ -117,24 +117,25 @@ namespace Spectre.CommandLine.Internal.Parsing
             // Current command has no arguments?
             if (!node.HasArguments())
             {
-                throw ParseException.UnknownCommand(token);
+                throw ParseException.UnknownCommand(context.Arguments, token);
             }
 
             // Argument?
             var parameter = node.FindArgument(context.CurrentArgumentPosition);
             if (parameter == null)
             {
-                throw ParseException.CouldNotMatchArgument(token);
+                throw ParseException.CouldNotMatchArgument(context.Arguments, token);
             }
 
+            // Yes, this was an argument.
             node.Mapped.Add((parameter, stream.Consume(CommandTreeToken.Kind.String).Value));
-
             context.IncreaseArgumentPosition();
         }
 
         private void ParseOption(
             CommandTreeParserContext context,
             CommandTreeTokenStream stream,
+            CommandTreeToken owner,
             CommandTree node,
             bool isLongOption)
         {
@@ -145,7 +146,7 @@ namespace Spectre.CommandLine.Internal.Parsing
             var option = node.FindOption(token.Value, isLongOption);
             if (option != null)
             {
-                node.Mapped.Add((option, ParseParameterValue(stream, node, option)));
+                node.Mapped.Add((option, ParseOptionValue(context, stream, owner, node, option)));
                 return;
             }
 
@@ -165,11 +166,16 @@ namespace Spectre.CommandLine.Internal.Parsing
             {
                 // Add this option as an remaining argument.
                 var optionName = token.TokenKind == CommandTreeToken.Kind.LongOption ? $"--{token.Value}" : $"-{token.Value}";
-                context.AddRemainingArgument(optionName, ParseParameterValue(stream, node, null));
+                context.AddRemainingArgument(optionName, ParseOptionValue(context, stream, owner, node, null));
             }
         }
 
-        private static string ParseParameterValue(CommandTreeTokenStream stream, CommandTree current, CommandParameter parameter)
+        private static string ParseOptionValue(
+            CommandTreeParserContext context,
+            CommandTreeTokenStream stream,
+            CommandTreeToken owner,
+            CommandTree current,
+            CommandParameter parameter)
         {
             var value = (string)null;
 
@@ -189,7 +195,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                         else if (parameter.ParameterKind == ParameterKind.Flag)
                         {
                             // Flags cannot be assigned a value.
-                            throw ParseException.CannotAssignValueToFlag();
+                            throw ParseException.CannotAssignValueToFlag(context.Arguments, owner);
                         }
                     }
                     else
@@ -212,9 +218,11 @@ namespace Spectre.CommandLine.Internal.Parsing
                     switch (parameter)
                     {
                         case CommandOption option:
-                            throw ParseException.NoValueForOption(option);
-                        case CommandArgument argument:
-                            throw ParseException.NoValueForArgument(argument);
+                            throw ParseException.NoValueForOption(context.Arguments, owner, option);
+                        default:
+                            // This should not happen at all. If it does, it's because we've added a new
+                            // option typer which isn't a CommandOption for some reason.
+                            throw new InvalidOperationException($"Found invalid parameter type '{parameter.GetType().FullName}'.");
                     }
                 }
             }

@@ -10,15 +10,19 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         public static CommandTreeTokenStream Tokenize(IEnumerable<string> args)
         {
             var tokens = new List<CommandTreeToken>();
+            var position = 0;
             foreach (var arg in args)
             {
-                var reader = new TextBuffer(arg);
+                var start = position;
+                var reader = new TextBuffer(arg, position);
+
                 while (reader.Peek() != -1)
                 {
                     EatWhitespace(reader);
 
                     if (reader.ReachedEnd)
                     {
+                        position += reader.Position - start;
                         break;
                     }
 
@@ -36,6 +40,8 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                         tokens.Add(ScanString(reader));
                     }
                 }
+
+                position++;
             }
             return new CommandTreeTokenStream(tokens);
         }
@@ -54,16 +60,21 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
         private static CommandTreeToken ScanString(TextBuffer reader)
         {
+            var position = reader.Position;
             var builder = new StringBuilder();
             while (!reader.ReachedEnd)
             {
                 builder.Append(reader.Read());
             }
-            return new CommandTreeToken(CommandTreeToken.Kind.String, builder.ToString());
+
+            var value = builder.ToString();
+            return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, value);
         }
 
         private static CommandTreeToken ScanQuotedString(TextBuffer reader)
         {
+            var position = reader.Position;
+
             reader.Consume('\"');
 
             var builder = new StringBuilder();
@@ -83,12 +94,16 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
 
             reader.Read();
-            return new CommandTreeToken(CommandTreeToken.Kind.String, builder.ToString());
+
+            var value = builder.ToString();
+            return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, $"\"{value}\"");
         }
 
         private static IEnumerable<CommandTreeToken> ScanOptions(TextBuffer reader)
         {
             var result = new List<CommandTreeToken>();
+
+            var position = reader.Position;
 
             reader.Consume('-');
             if (!reader.TryPeek(out var character))
@@ -99,17 +114,17 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             switch (character)
             {
                 case '-':
-                    result.Add(ScanLongOption(reader));
+                    result.Add(ScanLongOption(reader, position));
                     break;
                 default:
-                    result.AddRange(ScanShortOptions(reader));
+                    result.AddRange(ScanShortOptions(reader, position));
                     break;
             }
 
             return result;
         }
 
-        private static IEnumerable<CommandTreeToken> ScanShortOptions(TextBuffer reader)
+        private static IEnumerable<CommandTreeToken> ScanShortOptions(TextBuffer reader, int position)
         {
             if (char.IsWhiteSpace(reader.Peek()))
             {
@@ -133,7 +148,12 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                 if (char.IsLetter(current))
                 {
                     reader.Read(); // Consume
-                    result.Add(new CommandTreeToken(CommandTreeToken.Kind.ShortOption, current.ToString(CultureInfo.InvariantCulture)));
+
+                    var value = current.ToString(CultureInfo.InvariantCulture);
+
+                    result.Add(result.Count == 0
+                        ? new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, value, $"-{value}")
+                        : new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position + result.Count, value, value));
                 }
                 else
                 {
@@ -144,7 +164,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             return result;
         }
 
-        private static CommandTreeToken ScanLongOption(TextBuffer reader)
+        private static CommandTreeToken ScanLongOption(TextBuffer reader, int position)
         {
             reader.Consume('-');
 
@@ -154,7 +174,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
 
             var name = ScanString(reader);
-            return new CommandTreeToken(CommandTreeToken.Kind.LongOption, name.Value);
+            return new CommandTreeToken(CommandTreeToken.Kind.LongOption, position, name.Value, $"--{name.Value}");
         }
     }
 }

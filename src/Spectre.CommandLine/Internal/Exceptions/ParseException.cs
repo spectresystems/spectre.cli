@@ -1,18 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing.Tokenization;
+using Spectre.CommandLine.Internal.Rendering;
 
 namespace Spectre.CommandLine.Internal.Exceptions
 {
     internal class ParseException : RuntimeException
     {
-        public ParseException(string message)
-            : base(message)
-        {
-        }
-
-        public ParseException(string message, Exception ex)
-            : base(message, ex)
+        public ParseException(string message, IRenderable pretty = null)
+            : base(message, pretty)
         {
         }
 
@@ -48,49 +45,37 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static ParseException ExpectedTokenButFoundNull(CommandTreeToken.Kind expected)
         {
-            var message = $"Expected to find any token of type '{expected}' but found null instead.";
-            return new ParseException(message);
+            return new ParseException($"Expected to find any token of type '{expected}' but found null instead.");
         }
 
         public static ParseException ExpectedTokenButFoundOther(CommandTreeToken.Kind expected, CommandTreeToken.Kind found)
         {
-            var message = $"Expected to find token of type '{expected}' but found '{found}' instead.";
-            return new ParseException(message);
+            return new ParseException($"Expected to find token of type '{expected}' but found '{found}' instead.");
         }
 
-        public static ParseException UnexpectedOption(CommandTreeToken token)
+        public static ParseException UnexpectedOption(IReadOnlyList<string> args, CommandTreeToken token)
         {
-            return new ParseException($"Unexpected option '{token.Value}'.");
+            return ParseExceptionFactory.Create(args, token, $"Unexpected option '{token.Value}'.", "Did you forget the command?");
         }
 
-        public static ParseException UnknownCommand(CommandTreeToken token)
+        public static ParseException UnknownCommand(IReadOnlyList<string> args, CommandTreeToken token)
         {
-            return new ParseException($"Unknown command '{token.Value}'.");
+            return ParseExceptionFactory.Create(args, token, $"Unknown command '{token.Value}'.", "No such command.");
         }
 
-        public static ParseException UnknownTokenKind(CommandTreeToken.Kind kind)
+        public static ParseException CouldNotMatchArgument(IReadOnlyList<string> args, CommandTreeToken token)
         {
-            return new ParseException($"Encountered unknown token kind ('{kind}').");
+            return ParseExceptionFactory.Create(args, token, $"Could not match '{token.Value}' with an argument.", "Could not match to argument.");
         }
 
-        public static ParseException CouldNotMatchArgument(CommandTreeToken token)
+        public static ParseException CannotAssignValueToFlag(IReadOnlyList<string> args, CommandTreeToken token)
         {
-            return new ParseException($"Could not match '{token.Value}' with an argument.");
+            return ParseExceptionFactory.Create(args, token, "Flags cannot be assigned a value.", "Can't assign value.");
         }
 
-        public static ParseException CannotAssignValueToFlag()
+        public static ParseException NoValueForOption(IReadOnlyList<string> args, CommandTreeToken token, CommandOption option)
         {
-            return new ParseException("Flags cannot be assigned a value.");
-        }
-
-        public static ParseException NoValueForOption(CommandOption option)
-        {
-            return new ParseException($"Option '{option.GetOptionName()}' is defined but no value has been provided.");
-        }
-
-        public static ParseException NoValueForArgument(CommandArgument argument)
-        {
-            return new ParseException($"Argument '{argument.Value}' is defined but no value has been provided.");
+            return ParseExceptionFactory.Create(args, token, $"Option '{option.GetOptionName()}' is defined but no value has been provided.", "No value provided.");
         }
     }
 }

@@ -10,4 +10,8 @@ namespace Spectre.CommandLine.Tests.Data
             throw new InvalidOperationException("W00t?");
         }
     }
+
+    public sealed class ThrowingCommandSettings : CommandSettings
+    {
+    }
 }

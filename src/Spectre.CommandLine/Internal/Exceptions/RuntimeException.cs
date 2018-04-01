@@ -1,18 +1,19 @@
 ﻿using System;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
+using Spectre.CommandLine.Internal.Rendering;
 
 namespace Spectre.CommandLine.Internal.Exceptions
 {
     internal class RuntimeException : CommandAppException
     {
-        public RuntimeException(string message)
-            : base(message)
+        public RuntimeException(string message, IRenderable pretty = null)
+            : base(message, pretty)
         {
         }
 
-        public RuntimeException(string message, Exception ex)
-            : base(message, ex)
+        public RuntimeException(string message, Exception ex, IRenderable pretty = null)
+            : base(message, ex, pretty)
         {
         }
 

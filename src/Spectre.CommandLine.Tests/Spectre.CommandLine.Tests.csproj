@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
+    <None Remove="Data\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
+    <None Remove="Data\Resources\Exceptions\Parsing\NoValueForOption_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\NoValueForOption_Short" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
     <None Remove="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
     <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
     <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
@@ -36,6 +45,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\NoValueForOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\NoValueForOption_Short" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />

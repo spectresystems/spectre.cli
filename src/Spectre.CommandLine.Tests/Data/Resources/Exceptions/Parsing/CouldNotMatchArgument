@@ -1,0 +1,4 @@
+﻿Error: Could not match 'bar' with an argument.
+
+       giraffe foo bar
+                   ^^^ Could not match to argument

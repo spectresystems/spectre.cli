@@ -1,0 +1,4 @@
+﻿Error: Flags cannot be assigned a value.
+
+       dog -a foo
+           ^^ Can't assign value

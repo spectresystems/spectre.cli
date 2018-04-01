@@ -2,7 +2,7 @@
 {
     public class MammalSettings : AnimalSettings
     {
-        [CommandOption("--name <VALUE>")]
+        [CommandOption("-n|--name <VALUE>")]
         public string Name { get; set; }
     }
 }

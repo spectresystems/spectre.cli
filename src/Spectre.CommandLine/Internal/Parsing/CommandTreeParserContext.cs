@@ -5,12 +5,15 @@ namespace Spectre.CommandLine.Internal.Parsing
 {
     internal class CommandTreeParserContext
     {
+        private readonly List<string> _args;
         private readonly List<(string name, string value)> _remainingArguments;
 
+        public IReadOnlyList<string> Arguments => _args;
         public int CurrentArgumentPosition { get; private set; }
 
-        public CommandTreeParserContext()
+        public CommandTreeParserContext(IEnumerable<string> args)
         {
+            _args = new List<string>(args);
             _remainingArguments = new List<(string, string)>();
         }
 
