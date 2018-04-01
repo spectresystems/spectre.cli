@@ -2,4 +2,4 @@
        Long option names must consist of more than one character.
 
        --f
-       ^^^ Invalid option name
+         ^ Invalid option name

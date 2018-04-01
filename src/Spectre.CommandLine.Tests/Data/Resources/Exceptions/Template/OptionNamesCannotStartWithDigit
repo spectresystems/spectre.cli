@@ -2,4 +2,4 @@
        Option names cannot start with a digit.
 
        --1foo
-       ^^^^^^ Invalid option name
+         ^^^^ Invalid option name

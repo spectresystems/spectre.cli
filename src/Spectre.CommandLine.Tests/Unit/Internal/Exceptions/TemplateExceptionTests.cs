@@ -82,7 +82,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
         public void The_InvalidCharacterInOptionName_Method_Should_Return_Correct_Text(string expected)
         {
             // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--foo$");
+            var message = Fixture.GetOptionTemplateParsingMessage("--f$oo");
 
             // Then
             message.ShouldBe(expected);
@@ -159,7 +159,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
         public void The_InvalidCharacterInValueName_Method_Should_Return_Correct_Text(string expected)
         {
             // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <FOO$>");
+            var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <F$OO>");
 
             // Then
             message.ShouldBe(expected);

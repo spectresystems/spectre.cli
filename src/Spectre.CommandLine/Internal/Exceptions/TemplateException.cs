@@ -59,6 +59,11 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static TemplateException OptionNamesCannotStartWithDigit(string template, TemplateToken token)
         {
+            // Rewrite the token to point to the option name instead of the whole string.
+            token = new TemplateToken(token.TokenKind,
+                token.TokenKind == TemplateToken.Kind.ShortName ? token.Position + 1 : token.Position + 2,
+                token.Value, token.Value);
+
             return TemplateExceptionFactory.Create(template, token,
                 "Option names cannot start with a digit.",
                 "Invalid option name.");
@@ -66,6 +71,12 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static TemplateException InvalidCharacterInOptionName(string template, TemplateToken token, char character)
         {
+            // Rewrite the token to point to the invalid character instead of the whole value.
+            token = new TemplateToken(token.TokenKind,
+                (token.TokenKind == TemplateToken.Kind.ShortName ? token.Position + 1 : token.Position + 2)
+                    + token.Value.IndexOf(character),
+                token.Value, character.ToString());
+
             return TemplateExceptionFactory.Create(template, token,
                 $"Encountered invalid character '{character}' in option name.",
                 "Invalid character.");
@@ -80,6 +91,9 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static TemplateException LongOptionMustHaveMoreThanOneCharacter(string template, TemplateToken token)
         {
+            // Rewrite the token to point to the option name instead of the whole option.
+            token = new TemplateToken(token.TokenKind, token.Position + 2, token.Value, token.Value);
+
             return TemplateExceptionFactory.Create(template, token,
                 "Long option names must consist of more than one character.",
                 "Invalid option name.");
@@ -94,6 +108,9 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static TemplateException ShortOptionMustOnlyBeOneCharacter(string template, TemplateToken token)
         {
+            // Rewrite the token to point to the option name instead of the whole option.
+            token = new TemplateToken(token.TokenKind, token.Position + 1, token.Value, token.Value);
+
             return TemplateExceptionFactory.Create(template, token,
                 "Short option names can not be longer than one character.",
                 "Invalid option name.");
@@ -115,6 +132,11 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
         public static TemplateException InvalidCharacterInValueName(string template, TemplateToken token, char character)
         {
+            // Rewrite the token to point to the invalid character instead of the whole value.
+            token = new TemplateToken(token.TokenKind,
+                token.Position + 1 + token.Value.IndexOf(character),
+                token.Value, character.ToString());
+
             return TemplateExceptionFactory.Create(template, token,
                 $"Encountered invalid character '{character}' in value name.",
                 "Invalid character.");

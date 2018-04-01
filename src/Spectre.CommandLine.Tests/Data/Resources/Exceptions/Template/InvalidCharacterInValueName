@@ -1,5 +1,5 @@
 ﻿Error: An error occured when parsing template.
        Encountered invalid character '$' in value name.
 
-       -f|--foo <FOO$>
-                ^^^^^^ Invalid character
+       -f|--foo <F$OO>
+                  ^ Invalid character

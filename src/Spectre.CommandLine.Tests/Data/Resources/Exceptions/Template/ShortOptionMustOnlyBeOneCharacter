@@ -2,4 +2,4 @@
        Short option names can not be longer than one character.
 
        --foo|-bar
-             ^^^^ Invalid option name
+              ^^^ Invalid option name
