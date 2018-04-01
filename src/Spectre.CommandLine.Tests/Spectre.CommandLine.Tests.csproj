@@ -7,6 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
+    <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
+    <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
+    <None Remove="Data\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
+    <None Remove="Data\Resources\Exceptions\Template\MissingLongAndShortName" />
+    <None Remove="Data\Resources\Exceptions\Template\MultipleLongOptionNamesNotAllowed" />
+    <None Remove="Data\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
+    <None Remove="Data\Resources\Exceptions\Template\MultipleShortOptionNamesNotAllowed" />
+    <None Remove="Data\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
+    <None Remove="Data\Resources\Exceptions\Template\OptionNamesCannotStartWithDigit" />
+    <None Remove="Data\Resources\Exceptions\Template\OptionsMustHaveName" />
+    <None Remove="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
+    <None Remove="Data\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />
+    <None Remove="Data\Resources\Exceptions\Template\UnexpectedCharacter" />
+    <None Remove="Data\Resources\Exceptions\Template\UnterminatedValueName" />
+    <None Remove="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
     <None Remove="Data\Resources\Models\case1.xml" />
     <None Remove="Data\Resources\Models\case2.xml" />
     <None Remove="Data\Resources\Models\case3.xml" />
@@ -20,6 +36,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleShortOptionNamesNotAllowed" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleLongOptionNamesNotAllowed" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionNamesCannotStartWithDigit" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\UnexpectedCharacter" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\UnterminatedValueName" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionsMustHaveName" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MissingLongAndShortName" />
     <EmbeddedResource Include="Data\Resources\Models\case1.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case3.xml" />

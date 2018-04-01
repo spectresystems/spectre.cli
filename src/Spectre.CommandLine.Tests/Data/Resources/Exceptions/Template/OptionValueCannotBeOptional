@@ -1,0 +1,5 @@
+﻿Error: An error occured when parsing template.
+       Option values cannot be optional.
+
+       -f|--foo [FOO]
+                ^^^^^ Must be required
