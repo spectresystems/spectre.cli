@@ -11,180 +11,228 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
 {
     public sealed class TemplateExceptionTests
     {
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnexpectedCharacter")]
-        public void The_UnexpectedCharacter_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheUnexpectedCharacterMethod
         {
-            // Given, When
-            var message = Fixture.GetArgumentTemplateParsingMessage("<FOO> $ <BAR>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnexpectedCharacter")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetArgumentTemplateParsingMessage("<FOO> $ <BAR>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnterminatedValueName")]
-        public void The_UnterminatedValueName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheUnterminatedValueNameMethod
         {
-            // Given, When
-            var message = Fixture.GetArgumentTemplateParsingMessage("--foo|-f <BAR");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnterminatedValueName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetArgumentTemplateParsingMessage("--foo|-f <BAR");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ArgumentCannotContainOptions")]
-        public void The_ArgumentCannotContainOptions_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheArgumentCannotContainOptionsMethod
         {
-            // Given, When
-            var message = Fixture.GetArgumentTemplateParsingMessage("--foo <BAR>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ArgumentCannotContainOptions")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetArgumentTemplateParsingMessage("--foo <BAR>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleValuesAreNotSupported")]
-        public void The_MultipleValuesAreNotSupported_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheMultipleValuesAreNotSupportedMethod
         {
-            // Given, When
-            var message = Fixture.GetArgumentTemplateParsingMessage("<FOO> <BAR>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleValuesAreNotSupported")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetArgumentTemplateParsingMessage("<FOO> <BAR>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ValuesMustHaveName")]
-        public void The_ValuesMustHaveName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheValuesMustHaveNameMethod
         {
-            // Given, When
-            var message = Fixture.GetArgumentTemplateParsingMessage("<>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ValuesMustHaveName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetArgumentTemplateParsingMessage("<>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionsMustHaveName")]
-        public void The_OptionsMustHaveName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheOptionsMustHaveNameMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--foo|-");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionsMustHaveName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--foo|-");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionNamesCannotStartWithDigit")]
-        public void The_OptionNamesCannotStartWithDigit_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheOptionNamesCannotStartWithDigitMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--1foo");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionNamesCannotStartWithDigit")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--1foo");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/InvalidCharacterInOptionName")]
-        public void The_InvalidCharacterInOptionName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheInvalidCharacterInOptionNameMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--f$oo");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/InvalidCharacterInOptionName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--f$oo");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleLongOptionNamesNotAllowed")]
-        public void The_MultipleLongOptionNamesNotAllowed_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheMultipleLongOptionNamesNotAllowedMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--foo|--bar");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleLongOptionNamesNotAllowed")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--foo|--bar");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/LongOptionMustHaveMoreThanOneCharacter")]
-        public void The_LongOptionMustHaveMoreThanOneCharacter_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheLongOptionMustHaveMoreThanOneCharacterMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--f");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/LongOptionMustHaveMoreThanOneCharacter")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--f");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleShortOptionNamesNotAllowed")]
-        public void The_MultipleShortOptionNamesNotAllowed_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheMultipleShortOptionNamesNotAllowedMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("-f|-b");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleShortOptionNamesNotAllowed")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("-f|-b");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ShortOptionMustOnlyBeOneCharacter")]
-        public void The_ShortOptionMustOnlyBeOneCharacter_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheShortOptionMustOnlyBeOneCharacterMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("--foo|-bar");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/ShortOptionMustOnlyBeOneCharacter")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("--foo|-bar");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleOptionValuesAreNotSupported")]
-        public void The_MultipleOptionValuesAreNotSupported_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheMultipleOptionValuesAreNotSupportedMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <FOO> <BAR>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MultipleOptionValuesAreNotSupported")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <FOO> <BAR>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionValueCannotBeOptional")]
-        public void The_OptionValueCannotBeOptional_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheOptionValueCannotBeOptionalMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo [FOO]");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/OptionValueCannotBeOptional")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo [FOO]");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/InvalidCharacterInValueName")]
-        public void The_InvalidCharacterInValueName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheInvalidCharacterInValueNameMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <F$OO>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/InvalidCharacterInValueName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("-f|--foo <F$OO>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
-        [Theory]
-        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MissingLongAndShortName")]
-        public void The_MissingLongAndShortName_Method_Should_Return_Correct_Text(string expected)
+        public sealed class TheMissingLongAndShortNameMethod
         {
-            // Given, When
-            var message = Fixture.GetOptionTemplateParsingMessage("<FOO>");
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/MissingLongAndShortName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given, When
+                var message = Fixture.GetOptionTemplateParsingMessage("<FOO>");
 
-            // Then
-            message.ShouldBe(expected);
+                // Then
+                message.ShouldBe(expected);
+            }
         }
 
         internal static class Fixture
