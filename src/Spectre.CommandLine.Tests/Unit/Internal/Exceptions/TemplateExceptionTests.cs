@@ -12,6 +12,17 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
     public sealed class TemplateExceptionTests
     {
         [Theory]
+        [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnexpectedCharacter")]
+        public void The_UnexpectedCharacter_Method_Should_Return_Correct_Text(string expected)
+        {
+            // Given, When
+            var message = Fixture.GetArgumentTemplateParsingMessage("<FOO> $ <BAR>");
+
+            // Then
+            message.ShouldBe(expected);
+        }
+
+        [Theory]
         [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Template/UnterminatedValueName")]
         public void The_UnterminatedValueName_Method_Should_Return_Correct_Text(string expected)
         {

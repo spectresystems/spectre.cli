@@ -1,5 +1,5 @@
 ﻿Error: An error occured when parsing template.
-       Encountered unexpected character '€'.
+       Encountered unexpected character '$'.
 
-       --foo €
+       <FOO> $ <BAR>
              ^ Unexpected character
