@@ -218,7 +218,7 @@ namespace Spectre.CommandLine.Internal.Parsing
                     switch (parameter)
                     {
                         case CommandOption option:
-                            throw ParseException.NoValueForOption(context.Arguments, owner, option);
+                            throw ParseException.OptionHasNoValue(context.Arguments, owner, option);
                         default:
                             // This should not happen at all. If it does, it's because we've added a new
                             // option typer which isn't a CommandOption for some reason.

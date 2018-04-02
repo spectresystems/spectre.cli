@@ -11,11 +11,18 @@ namespace Spectre.CommandLine.Internal
         public string Original { get; }
         public int Position { get; private set; }
 
-        public TextBuffer(string text, int position = 0)
+        public TextBuffer(string text)
         {
             _reader = new StringReader(text);
             Original = text;
-            Position = position;
+            Position = 0;
+        }
+
+        public TextBuffer(TextBuffer buffer, string text)
+        {
+            _reader = new StringReader(text);
+            Original = buffer != null ? buffer.Original + " " + text : text;
+            Position = buffer?.Position + 1 ?? 0;
         }
 
         public char Peek()

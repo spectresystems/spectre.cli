@@ -7,17 +7,22 @@ namespace Spectre.CommandLine.Internal.Exceptions
 {
     internal static class ParseExceptionFactory
     {
-        internal static ParseException Create(IReadOnlyList<string> arguments, CommandTreeToken token, string message, string details)
+        internal static ParseException Create(string arguments, CommandTreeToken token, string message, string details)
         {
             return new ParseException(message, CreatePrettyMessage(arguments, token, message, details));
         }
 
-        private static IRenderable CreatePrettyMessage(IReadOnlyList<string> arguments, CommandTreeToken token, string message, string details)
+        internal static ParseException Create(IEnumerable<string> arguments, CommandTreeToken token, string message, string details)
+        {
+            return new ParseException(message, CreatePrettyMessage(string.Join(" ", arguments), token, message, details));
+        }
+
+        private static IRenderable CreatePrettyMessage(string arguments, CommandTreeToken token, string message, string details)
         {
             var composer = new RenderableComposer();
 
             var position = token?.Position ?? 0;
-            var value = token?.Representation ?? string.Join(" ", arguments);
+            var value = token?.Representation ?? arguments;
 
             // Header
             composer.LineBreak();
@@ -27,7 +32,7 @@ namespace Spectre.CommandLine.Internal.Exceptions
 
             // Template
             composer.LineBreak();
-            composer.Spaces(7).Text(string.Join(" ", arguments));
+            composer.Spaces(7).Text(arguments);
 
             // Error
             composer.LineBreak();

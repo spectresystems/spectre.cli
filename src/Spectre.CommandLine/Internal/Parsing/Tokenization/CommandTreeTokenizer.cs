@@ -11,10 +11,11 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             var tokens = new List<CommandTreeToken>();
             var position = 0;
+            var previousReader = default(TextBuffer);
             foreach (var arg in args)
             {
                 var start = position;
-                var reader = new TextBuffer(arg, position);
+                var reader = new TextBuffer(previousReader, arg);
 
                 while (reader.Peek() != -1)
                 {
@@ -41,7 +42,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                     }
                 }
 
-                position++;
+                previousReader = reader;
             }
             return new CommandTreeTokenStream(tokens);
         }
@@ -68,7 +69,7 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             }
 
             var value = builder.ToString();
-            return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, value);
+            return new CommandTreeToken(CommandTreeToken.Kind.String, position, value.Trim(), value);
         }
 
         private static CommandTreeToken ScanQuotedString(TextBuffer reader)
@@ -90,7 +91,9 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
             if (reader.Peek() != '\"')
             {
-                throw ParseException.UnterminatedQuote(builder.ToString());
+                var unterminatedQuote = builder.ToString();
+                var token = new CommandTreeToken(CommandTreeToken.Kind.String, position, unterminatedQuote, $"\"{unterminatedQuote}");
+                throw ParseException.UnterminatedQuote(reader.Original, token);
             }
 
             reader.Read();
@@ -108,7 +111,8 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
             reader.Consume('-');
             if (!reader.TryPeek(out var character))
             {
-                throw ParseException.UnterminatedOption();
+                var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, "-", "-");
+                throw ParseException.OptionHasNoName(reader.Original, token);
             }
 
             switch (character)
@@ -126,11 +130,6 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
 
         private static IEnumerable<CommandTreeToken> ScanShortOptions(TextBuffer reader, int position)
         {
-            if (char.IsWhiteSpace(reader.Peek()))
-            {
-                throw ParseException.OptionWithoutName();
-            }
-
             var result = new List<CommandTreeToken>();
             while (true)
             {
@@ -150,14 +149,16 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
                     reader.Read(); // Consume
 
                     var value = current.ToString(CultureInfo.InvariantCulture);
-
                     result.Add(result.Count == 0
                         ? new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, value, $"-{value}")
                         : new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position + result.Count, value, value));
                 }
                 else
                 {
-                    throw ParseException.OptionWithoutValidName();
+                    // Create a token representing the short option.
+                    var tokenPosition = position + 1 + result.Count;
+                    var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, current.ToString(), current.ToString());
+                    throw ParseException.InvalidShortOptionName(reader.Original, token);
                 }
             }
 
@@ -168,12 +169,35 @@ namespace Spectre.CommandLine.Internal.Parsing.Tokenization
         {
             reader.Consume('-');
 
-            if (char.IsWhiteSpace(reader.Peek()))
+            if (reader.ReachedEnd)
             {
-                throw ParseException.OptionWithoutName();
+                var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, "--", "--");
+                throw ParseException.OptionHasNoName(reader.Original, token);
             }
 
             var name = ScanString(reader);
+
+            // Perform validation of the name.
+            if (name.Value.Length == 0)
+            {
+                throw ParseException.LongOptionNameIsMissing(reader, position);
+            }
+            if (name.Value.Length == 1)
+            {
+                throw ParseException.LongOptionNameIsOneCharacter(reader, position, name.Value);
+            }
+            if (char.IsDigit(name.Value[0]))
+            {
+                throw ParseException.LongOptionNameStartWithDigit(reader, position, name.Value);
+            }
+            for (var index = 0; index < name.Value.Length; index++)
+            {
+                if (!char.IsLetterOrDigit(name.Value[index]) && name.Value[index] != '-')
+                {
+                    throw ParseException.LongOptionNameContainSymbol(reader, position + 2 + index, name.Value[index]);
+                }
+            }
+
             return new CommandTreeToken(CommandTreeToken.Kind.LongOption, position, name.Value, $"--{name.Value}");
         }
     }

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
 {
-    public sealed class TemplateExceptionTests
+    public static class TemplateExceptionTests
     {
         public sealed class TheUnexpectedCharacterMethod
         {

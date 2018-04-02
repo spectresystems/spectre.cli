@@ -1,0 +1,4 @@
+﻿Error: Short option does not have a valid name.
+
+       dog -f0o
+             ^ Not a valid name for a short option

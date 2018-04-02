@@ -166,6 +166,147 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
             }
         }
 
+        public sealed class TheUnterminatedQuoteMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/UnterminatedQuote")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "--name", "\"Rufus" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheOptionWithoutNameMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/OptionHasNoName_Short")]
+            public void Should_Return_Correct_Text_For_Short_Option(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "-", " " }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/OptionHasNoName_Long")]
+            public void Should_Return_Correct_Text_For_Long_Option(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "--" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheInvalidShortOptionNameMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/InvalidShortOptionName")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "-f0o" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheLongOptionNameIsOneCharacterMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsOneCharacter")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "--f" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheLongOptionNameIsMissingMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsMissing")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "-- " }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheLongOptionNameStartWithDigitMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/LongOptionNameStartWithDigit")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "--1foo" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheLongOptionNameContainSymbolMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.CommandLine.Tests/Data/Resources/Exceptions/Parsing/Tokenization/LongOptionNameContainSymbol")]
+            public void Should_Return_Correct_Text(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "--f€oo" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
         internal static class Fixture
         {
             public static string GetParseMessage(IEnumerable<string> args, Configurator configurator)

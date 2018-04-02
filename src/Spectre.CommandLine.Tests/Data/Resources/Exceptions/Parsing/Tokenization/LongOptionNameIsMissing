@@ -1,0 +1,4 @@
+﻿Error: Invalid long option name.
+
+       dog -- 
+           ^^ Did you forget the option name?
