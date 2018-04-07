@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Spectre.CommandLine.Tests.Data.Settings;
 
 namespace Spectre.CommandLine.Tests.Data
 {
@@ -8,9 +9,5 @@ namespace Spectre.CommandLine.Tests.Data
         {
             return 0;
         }
-    }
-
-    public sealed class EmptySettings : CommandSettings
-    {
     }
 }

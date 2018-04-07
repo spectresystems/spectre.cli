@@ -1,6 +1,7 @@
 ﻿using Shouldly;
 using Spectre.CommandLine.Internal.Configuration;
 using Spectre.CommandLine.Tests.Data;
+using Spectre.CommandLine.Tests.Data.Settings;
 using Xunit;
 
 namespace Spectre.CommandLine.Tests.Unit.Internal.Configuration

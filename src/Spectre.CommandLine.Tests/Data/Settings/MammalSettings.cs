@@ -1,4 +1,4 @@
-﻿namespace Spectre.CommandLine.Tests.Data
+﻿namespace Spectre.CommandLine.Tests.Data.Settings
 {
     public class MammalSettings : AnimalSettings
     {

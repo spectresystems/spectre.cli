@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Spectre.CommandLine.Tests.Data.Settings;
 
 namespace Spectre.CommandLine.Tests.Data
 {

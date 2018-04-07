@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Spectre.CommandLine.Internal.Rendering.Elements;
 
 namespace Spectre.CommandLine.Internal.Rendering
@@ -20,7 +22,50 @@ namespace Spectre.CommandLine.Internal.Rendering
 
         public RenderableComposer Text(string text)
         {
-            Root.Append(new TextElement(text));
+            if (text != null)
+            {
+                Root.Append(new TextElement(text));
+            }
+            return this;
+        }
+
+        public RenderableComposer Condition(bool condition,
+            Action<RenderableComposer> @true,
+            Action<RenderableComposer> @false)
+        {
+            if (condition)
+            {
+                var block = new RenderableComposer();
+                @true(block);
+                Root.Append(block.Root);
+            }
+            else
+            {
+                var block = new RenderableComposer();
+                @false(block);
+                Root.Append(block.Root);
+            }
+
+            return this;
+        }
+
+        public RenderableComposer Raw(IRenderable renderable)
+        {
+            Root.Append(renderable);
+            return this;
+        }
+
+        public RenderableComposer Join(string separator, IEnumerable<IRenderable> items)
+        {
+            var array = items.ToArray();
+            for (var i = 0; i < array.Length; i++)
+            {
+                Root.Append(array[i]);
+                if (i != array.Length - 1)
+                {
+                    Root.Append(new TextElement(separator));
+                }
+            }
             return this;
         }
 
@@ -65,6 +110,11 @@ namespace Spectre.CommandLine.Internal.Rendering
             var content = new RenderableComposer();
             action(content);
             Root.Append(new ColorElement(color, content.Root));
+            return this;
+        }
+
+        public RenderableComposer Empty()
+        {
             return this;
         }
 

@@ -6,6 +6,7 @@ using Spectre.CommandLine.Internal.Configuration;
 using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Internal.Modelling;
 using Spectre.CommandLine.Internal.Parsing;
+using Spectre.CommandLine.Internal.Rendering;
 
 namespace Spectre.CommandLine.Internal
 {
@@ -36,7 +37,7 @@ namespace Spectre.CommandLine.Internal
             if (tree == null)
             {
                 // Display help.
-                HelpWriter.Write(model);
+                ConsoleRenderer.Render(HelpWriter.Write(model));
                 return Task.FromResult(0);
             }
 
@@ -45,7 +46,7 @@ namespace Spectre.CommandLine.Internal
             if (leaf.Command.IsProxy || leaf.ShowHelp)
             {
                 // Proxy's can't be executed. Show help.
-                HelpWriter.Write(model, leaf.Command);
+                ConsoleRenderer.Render(HelpWriter.WriteCommand(model, leaf.Command));
                 return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 

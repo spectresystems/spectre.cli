@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Spectre.CommandLine.Internal.Exceptions;
 using Spectre.CommandLine.Tests.Data;
+using Spectre.CommandLine.Tests.Data.Settings;
 using Spectre.CommandLine.Tests.Fakes;
 using Xunit;
 

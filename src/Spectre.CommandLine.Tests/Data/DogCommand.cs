@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
+using Spectre.CommandLine.Tests.Data.Settings;
 
 namespace Spectre.CommandLine.Tests.Data
 {
+    [Description("The dog command.")]
     public class DogCommand : AnimalCommand<DogSettings>
     {
         public override ValidationResult Validate(DogSettings settings, ILookup<string, string> remaining)
@@ -17,24 +20,6 @@ namespace Spectre.CommandLine.Tests.Data
         {
             DumpSettings(settings, remaining);
             return 0;
-        }
-    }
-
-    public sealed class DogSettings : MammalSettings
-    {
-        [CommandArgument(0, "<AGE>")]
-        public int Age { get; set; }
-
-        [CommandOption("-g|--good-boy")]
-        public bool GoodBoy { get; set; }
-
-        public override ValidationResult Validate()
-        {
-            if (Name == "Tiger")
-            {
-                return ValidationResult.Error("Tiger is not a dog name!");
-            }
-            return ValidationResult.Success();
         }
     }
 }

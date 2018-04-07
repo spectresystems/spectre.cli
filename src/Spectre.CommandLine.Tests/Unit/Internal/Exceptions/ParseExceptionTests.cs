@@ -126,7 +126,7 @@ namespace Spectre.CommandLine.Tests.Unit.Internal.Exceptions
                 configurator.AddCommand<GiraffeCommand>("giraffe");
 
                 // When
-                var result = Fixture.GetParseMessage(new[] { "giraffe", "foo", "bar" }, configurator);
+                var result = Fixture.GetParseMessage(new[] { "giraffe", "foo", "bar", "baz" }, configurator);
 
                 // Then
                 result.ShouldBe(expected);
