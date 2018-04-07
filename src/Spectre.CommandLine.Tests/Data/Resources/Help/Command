@@ -1,5 +1,5 @@
 ﻿USAGE:
-    myapp cat [LEGS] [OPTIONS] [COMMAND]
+    myapp cat [LEGS] [OPTIONS] <COMMAND>
 
 ARGUMENTS:
     [LEGS]    The number of legs
