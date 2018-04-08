@@ -7,6 +7,8 @@ namespace Spectre.CommandLine.Internal.Rendering.Elements
     {
         private readonly List<IRenderable> _elements;
 
+        public int Length { get; private set; }
+
         public BlockElement()
         {
             _elements = new List<IRenderable>();
@@ -15,6 +17,7 @@ namespace Spectre.CommandLine.Internal.Rendering.Elements
         public BlockElement Append(IRenderable element)
         {
             _elements.Add(element);
+            Length += element.Length;
             return this;
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using Spectre.CommandLine.Internal.Rendering;
-using Spectre.CommandLine.Internal.Rendering.Elements;
 
 namespace Spectre.CommandLine
 {
@@ -9,7 +8,7 @@ namespace Spectre.CommandLine
     /// </summary>
     /// <seealso cref="Exception" />
     /// <seealso cref="IRenderable" />
-    public abstract class CommandAppException : Exception, IRenderable
+    public abstract class CommandAppException : Exception
     {
         internal IRenderable Pretty { get; }
 
@@ -33,12 +32,6 @@ namespace Spectre.CommandLine
             : base(message, ex)
         {
             Pretty = pretty;
-        }
-
-        void IRenderable.Render(IRenderer renderer)
-        {
-            var pretty = Pretty ?? new TextElement(Message ?? "An unknown configuration exception occured.");
-            pretty.Render(renderer);
         }
     }
 }

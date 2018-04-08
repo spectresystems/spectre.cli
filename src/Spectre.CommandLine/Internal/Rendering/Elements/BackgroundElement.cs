@@ -7,6 +7,8 @@ namespace Spectre.CommandLine.Internal.Rendering.Elements
         private readonly ConsoleColor _color;
         private readonly IRenderable _element;
 
+        public int Length => _element.Length;
+
         public BackgroundElement(ConsoleColor color, IRenderable element)
         {
             _color = color;

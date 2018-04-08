@@ -5,5 +5,5 @@ ARGUMENTS:
     <TEETH>    The number of teeth the lion has
 
 OPTIONS:
-    -h, --help    Prints help information
-    -c            The number of children the lion has
+    -h, --help       Prints help information
+    -c <CHILDREN>    The number of children the lion has

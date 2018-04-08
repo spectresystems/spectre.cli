@@ -9,6 +9,8 @@ namespace Spectre.CommandLine.Internal.Rendering
     {
         private BlockElement Root { get; }
 
+        public int Length => Root.Length;
+
         public RenderableComposer()
         {
             Root = new BlockElement();
@@ -116,6 +118,14 @@ namespace Spectre.CommandLine.Internal.Rendering
         public RenderableComposer Empty()
         {
             return this;
+        }
+
+        public void Append(IEnumerable<IRenderable> source)
+        {
+            foreach (var item in source)
+            {
+                Root.Append(item);
+            }
         }
 
         public void Render(IRenderer renderer)

@@ -2,6 +2,7 @@
 {
     internal interface IRenderable
     {
+        int Length { get; }
         void Render(IRenderer renderer);
     }
 }

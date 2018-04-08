@@ -5,10 +5,10 @@ ARGUMENTS:
     [LEGS]    The number of legs
 
 OPTIONS:
-    -h, --help       Prints help information
-    -a, --alive      Indicates whether or not the animal is alive
-    -n, --name       
-        --agility    The agility between 0 and 100
+    -h, --help               Prints help information
+    -a, --alive              Indicates whether or not the animal is alive
+    -n, --name <VALUE>
+        --agility <VALUE>    The agility between 0 and 100
 
 COMMANDS:
     lion    The lion command

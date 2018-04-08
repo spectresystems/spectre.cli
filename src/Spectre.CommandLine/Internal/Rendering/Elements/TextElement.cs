@@ -4,6 +4,8 @@
     {
         private readonly string _text;
 
+        public int Length => _text.Length;
+
         public TextElement(string text)
         {
             _text = text;

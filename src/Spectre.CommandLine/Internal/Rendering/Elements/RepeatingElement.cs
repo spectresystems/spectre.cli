@@ -5,6 +5,8 @@
         private readonly int _repetitions;
         private readonly IRenderable _element;
 
+        public int Length => _element.Length * _repetitions;
+
         public RepeatingElement(int repetitions, IRenderable element)
         {
             _repetitions = repetitions;

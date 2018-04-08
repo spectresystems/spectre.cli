@@ -10,6 +10,30 @@ namespace Spectre.CommandLine.Internal
 {
     internal static class HelpWriter
     {
+        private class OptionInfo
+        {
+            public string Short { get; }
+            public string Long { get; }
+            public string Value { get; }
+            public string Description { get; }
+
+            public OptionInfo(string s, string l, string value, string description)
+            {
+                Short = s;
+                Long = l;
+                Value = value;
+                Description = description;
+            }
+
+            public OptionInfo(CommandOption option)
+            {
+                Short = option.ShortName;
+                Long = option.LongName;
+                Value = option.ValueName;
+                Description = option.Description;
+            }
+        }
+
         public static IRenderable Write(CommandModel model)
         {
             return WriteCommand(model, null);
@@ -29,7 +53,6 @@ namespace Spectre.CommandLine.Internal
 
             // Options
             WriteOptions(composer, command);
-            composer.LineBreak();
 
             // Commands
             WriteCommands(composer, (ICommandContainer)command ?? model);
@@ -98,34 +121,73 @@ namespace Spectre.CommandLine.Internal
 
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
         {
-            composer.Color(ConsoleColor.Yellow, c => c.Text("OPTIONS:")).LineBreak();
-
             // Collect all options into a single structure.
-            var options = new List<(string @short, string @long, string @description)>();
-            options.Add(("h", "help", "Prints help information"));
-            options.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(
-                x => (x.ShortName, x.LongName, x.Description))
-                ?? Array.Empty<(string, string, string)>());
+            var parameters = new List<OptionInfo>();
+            parameters.Add(new OptionInfo("h", "help", null, "Prints help information"));
+            parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o => new OptionInfo(o)) ?? Array.Empty<OptionInfo>());
 
-            var maxLongLength = options.Max(x => x.@long?.Length ?? 0);
-            foreach (var (@short, @long, description) in options)
+            var options = parameters.ToArray();
+            if (options.Length > 0)
             {
-                composer.Tab();
+                composer.Color(ConsoleColor.Yellow, c => c.Text("OPTIONS:")).LineBreak();
 
-                composer.Condition(@short != null,
-                    @true: c1 => c1.Condition(@long != null,
-                        @true: c2 => c2.Text($"-{@short},"),
-                        @false: c2 => c2.Text($"-{@short} ")),
-                    @false: c => c.Text("   "));
+                // Start with composing a list of lines.
+                var result = new List<(string description, BlockElement element)>();
+                foreach (var option in options)
+                {
+                    // Short
+                    var item = new BlockElement();
+                    item.Append(new TabElement());
 
-                composer.Space();
-                composer.Condition(@long != null,
-                    @true: c1 => c1.Text($"--{@long}"),
-                    @false: c1 => c1.Spaces(maxLongLength + 2));
+                    if (option.Short != null)
+                    {
+                        item.Append(new TextElement($"-{option.Short}"));
+                        if (option.Long != null)
+                        {
+                            item.Append(new TextElement(","));
+                        }
+                    }
+                    else
+                    {
+                        item.Append(new RepeatingElement(3, new TextElement(" ")));
+                    }
 
-                composer.Spaces(maxLongLength - @long?.Length ?? 0);
-                composer.Tab().Text(description?.TrimEnd('.'));
+                    // Long
+                    if (option.Long != null)
+                    {
+                        item.Append(new TextElement(" "));
+                        item.Append(new TextElement($"--{option.Long}"));
+                    }
 
+                    // Value
+                    if (option.Value != null)
+                    {
+                        item.Append(new TextElement(" "));
+                        item.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement($"<{option.Value}>")));
+                    }
+
+                    result.Add((option.Description, item));
+                }
+
+                // Now add the descriptions to all lines.
+                var maxLength = result.Max(x => x.element.Length);
+                foreach (var (description, element) in result)
+                {
+                    if (!string.IsNullOrWhiteSpace(description))
+                    {
+                        var neededSpaces = maxLength - element.Length;
+                        if (neededSpaces > 0)
+                        {
+                            element.Append(new RepeatingElement(neededSpaces, new TextElement(" ")));
+                        }
+                        element.Append(new TabElement());
+                        element.Append(new TextElement(description.TrimEnd('.').Trim()));
+                    }
+                    element.Append(new LineBreakElement());
+                }
+
+                // Append the items.
+                composer.Append(result.Select(x => x.element));
                 composer.LineBreak();
             }
         }
@@ -150,8 +212,8 @@ namespace Spectre.CommandLine.Internal
                 composer.Tab();
 
                 composer.Condition(required,
-                    @true: c1 => c1.Text($"<{name}>"),
-                    @false: c1 => c1.Text($"[{name}]"));
+                    @true: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"<{name}>")),
+                    @false: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"[{name}]")));
 
                 composer.Spaces(maxArgLength - name.Length);
                 composer.Tab().Text(description?.TrimEnd('.')?.Trim());
