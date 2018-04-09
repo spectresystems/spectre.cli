@@ -10,30 +10,6 @@ namespace Spectre.CommandLine.Internal
 {
     internal static class HelpWriter
     {
-        private class OptionInfo
-        {
-            public string Short { get; }
-            public string Long { get; }
-            public string Value { get; }
-            public string Description { get; }
-
-            public OptionInfo(string s, string l, string value, string description)
-            {
-                Short = s;
-                Long = l;
-                Value = value;
-                Description = description;
-            }
-
-            public OptionInfo(CommandOption option)
-            {
-                Short = option.ShortName;
-                Long = option.LongName;
-                Value = option.ValueName;
-                Description = option.Description;
-            }
-        }
-
         public static IRenderable Write(CommandModel model)
         {
             return WriteCommand(model, null);
@@ -122,9 +98,11 @@ namespace Spectre.CommandLine.Internal
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
         {
             // Collect all options into a single structure.
-            var parameters = new List<OptionInfo>();
-            parameters.Add(new OptionInfo("h", "help", null, "Prints help information"));
-            parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o => new OptionInfo(o)) ?? Array.Empty<OptionInfo>());
+            var parameters = new List<(string @short, string @long, string @value, string @description)>();
+            parameters.Add(("h", "help", null, "Prints help information"));
+            parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
+                (o.ShortName, o.LongName, o.ValueName, o.Description))
+                ?? Array.Empty<(string, string, string, string)>());
 
             var options = parameters.ToArray();
             if (options.Length > 0)
@@ -133,16 +111,16 @@ namespace Spectre.CommandLine.Internal
 
                 // Start with composing a list of lines.
                 var result = new List<(string description, BlockElement element)>();
-                foreach (var option in options)
+                foreach (var (@short, @long, value, description) in options)
                 {
-                    // Short
                     var item = new BlockElement();
                     item.Append(new TabElement());
 
-                    if (option.Short != null)
+                    // Short
+                    if (@short != null)
                     {
-                        item.Append(new TextElement($"-{option.Short}"));
-                        if (option.Long != null)
+                        item.Append(new TextElement($"-{@short}"));
+                        if (@long != null)
                         {
                             item.Append(new TextElement(","));
                         }
@@ -153,20 +131,20 @@ namespace Spectre.CommandLine.Internal
                     }
 
                     // Long
-                    if (option.Long != null)
+                    if (@long != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new TextElement($"--{option.Long}"));
+                        item.Append(new TextElement($"--{@long}"));
                     }
 
                     // Value
-                    if (option.Value != null)
+                    if (value != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement($"<{option.Value}>")));
+                        item.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement($"<{value}>")));
                     }
 
-                    result.Add((option.Description, item));
+                    result.Add((description, item));
                 }
 
                 // Now add the descriptions to all lines.
@@ -206,16 +184,19 @@ namespace Spectre.CommandLine.Internal
 
             composer.Color(ConsoleColor.Yellow, c => c.Text("ARGUMENTS:")).LineBreak();
 
-            var maxArgLength = arguments.Max(x => x.name.Length);
+            var maxLength = arguments.Max(x => x.name.Length);
+
             foreach (var (name, required, description) in arguments)
             {
                 composer.Tab();
 
+                // Argument name.
                 composer.Condition(required,
                     @true: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"<{name}>")),
                     @false: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"[{name}]")));
 
-                composer.Spaces(maxArgLength - name.Length);
+                // Description
+                composer.Spaces(maxLength - name.Length);
                 composer.Tab().Text(description?.TrimEnd('.')?.Trim());
 
                 composer.LineBreak();

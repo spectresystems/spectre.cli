@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Spectre.CommandLine.Internal.Rendering.Elements
 {
@@ -16,14 +15,11 @@ namespace Spectre.CommandLine.Internal.Rendering.Elements
 
         public BlockElement Append(IRenderable element)
         {
-            _elements.Add(element);
-            Length += element.Length;
-            return this;
-        }
-
-        public BlockElement Append(Action<BlockElement> config)
-        {
-            config(this);
+            if (element != null)
+            {
+                _elements.Add(element);
+                Length += element.Length;
+            }
             return this;
         }
 

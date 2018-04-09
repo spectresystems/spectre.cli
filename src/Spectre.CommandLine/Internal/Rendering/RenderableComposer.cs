@@ -51,10 +51,48 @@ namespace Spectre.CommandLine.Internal.Rendering
             return this;
         }
 
-        public RenderableComposer Raw(IRenderable renderable)
+        public RenderableComposer Tab()
         {
-            Root.Append(renderable);
+            return Tabs(1);
+        }
+
+        public RenderableComposer Tabs(int count)
+        {
+            Root.Append(new TabElement(count));
             return this;
+        }
+
+        public RenderableComposer Space()
+        {
+            return Spaces(1);
+        }
+
+        public RenderableComposer Spaces(int count)
+        {
+            Root.Append(new SpaceElement(count));
+            return this;
+        }
+
+        public RenderableComposer Repeat(char character, int count)
+        {
+            Root.Append(new RepeatingElement(count, new TextElement(character.ToString())));
+            return this;
+        }
+
+        public RenderableComposer Color(ConsoleColor color, Action<RenderableComposer> action)
+        {
+            var content = new RenderableComposer();
+            action(content);
+            Root.Append(new ColorElement(color, content.Root));
+            return this;
+        }
+
+        public void Append(IEnumerable<IRenderable> source)
+        {
+            foreach (var item in source)
+            {
+                Root.Append(item);
+            }
         }
 
         public RenderableComposer Join(string separator, IEnumerable<IRenderable> items)
@@ -69,63 +107,6 @@ namespace Spectre.CommandLine.Internal.Rendering
                 }
             }
             return this;
-        }
-
-        public RenderableComposer Tab()
-        {
-            return Tabs(1);
-        }
-
-        public RenderableComposer Tabs(int count)
-        {
-            Spaces(count * 4);
-            return this;
-        }
-
-        public RenderableComposer Space()
-        {
-            return Spaces(1);
-        }
-
-        public RenderableComposer Spaces(int count)
-        {
-            Repeat(' ', count);
-            return this;
-        }
-
-        public RenderableComposer Repeat(char character, int count)
-        {
-            Root.Append(new RepeatingElement(count, new TextElement(character.ToString())));
-            return this;
-        }
-
-        public RenderableComposer Block(Action<RenderableComposer> action)
-        {
-            var block = new RenderableComposer();
-            action(block);
-            Root.Append(block.Root);
-            return this;
-        }
-
-        public RenderableComposer Color(ConsoleColor color, Action<RenderableComposer> action)
-        {
-            var content = new RenderableComposer();
-            action(content);
-            Root.Append(new ColorElement(color, content.Root));
-            return this;
-        }
-
-        public RenderableComposer Empty()
-        {
-            return this;
-        }
-
-        public void Append(IEnumerable<IRenderable> source)
-        {
-            foreach (var item in source)
-            {
-                Root.Append(item);
-            }
         }
 
         public void Render(IRenderer renderer)
