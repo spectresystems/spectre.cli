@@ -21,14 +21,14 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore("./src/Spectre.CommandLine.sln");
+    DotNetCoreRestore("./src/Spectre.Cli.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {
-    DotNetCoreBuild("./src/Spectre.CommandLine.sln", new DotNetCoreBuildSettings {
+    DotNetCoreBuild("./src/Spectre.Cli.sln", new DotNetCoreBuildSettings {
         Configuration = "Release",
         MSBuildSettings = settings
     });
@@ -38,7 +38,7 @@ Task("Run-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    DotNetCoreTest("./src/Spectre.CommandLine.Tests/Spectre.CommandLine.Tests.csproj", new DotNetCoreTestSettings {
+    DotNetCoreTest("./src/Spectre.Cli.Tests/Spectre.Cli.Tests.csproj", new DotNetCoreTestSettings {
         Configuration = "Release"
     });
 });
@@ -47,7 +47,7 @@ Task("Package")
     .IsDependentOn("Run-Tests")
     .Does(() =>
 {
-    DotNetCorePack("./src/Spectre.CommandLine/Spectre.CommandLine.csproj", new DotNetCorePackSettings {
+    DotNetCorePack("./src/Spectre.Cli/Spectre.Cli.csproj", new DotNetCorePackSettings {
         Configuration = "Release",
         OutputDirectory = "./.artifacts",
         MSBuildSettings = settings
@@ -60,7 +60,7 @@ Task("Upload-AppVeyor-Artifacts")
     .Does(() => 
 {
     AppVeyor.UploadArtifact(
-        new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg")
+        new FilePath($"./.artifacts/Spectre.Cli.{version.SemVersion}.nupkg")
     );
 });
 
@@ -72,7 +72,7 @@ Task("Publish-To-NuGet")
         && !ci.IsMaintenanceBuild)
     .Does(() => 
 {
-    var path = new FilePath($"./.artifacts/Spectre.CommandLine.{version.SemVersion}.nupkg");
+    var path = new FilePath($"./.artifacts/Spectre.Cli.{version.SemVersion}.nupkg");
 
     // Get the API key.
     var apiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");

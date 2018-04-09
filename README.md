@@ -1,6 +1,10 @@
-# Spectre.CommandLine
+# Spectre.Cli
 
 An extremly opinionated command line parser.
+
+[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)](https://ci.appveyor.com/project/patriksvensson/spectre-cli)
 
 ## Usage
 
@@ -9,7 +13,7 @@ By using some clever generic constraints, the framework guarantees that all sett
 with a command is inherited from the parent commands' settings.
 
 ```csharp
-using Spectre.CommandLine;
+using Spectre.Cli;
 
 public class Program
 {

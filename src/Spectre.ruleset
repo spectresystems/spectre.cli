@@ -24,15 +24,18 @@
     <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1516" Action="None" />
     <Rule Id="SA1600" Action="None" />
-    <Rule Id="SA1602" Action="None" /> <!-- Remove to enable XML documentation warning -->
     <Rule Id="SA1625" Action="None" />
     <Rule Id="SA1633" Action="None" /> <!-- Remove to enable file headers -->
     <Rule Id="SA1636" Action="None" />
     <Rule Id="SA1649" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
+    <Rule Id="IDE0028" Action="None" />
+  </Rules>
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1029" Action="None" />
     <Rule Id="RCS1079" Action="None" />
+    <Rule Id="RCS1194" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
     <Rule Id="CA1720" Action="None" />

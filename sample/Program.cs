@@ -1,7 +1,7 @@
 ﻿using FakeDotNet.EF;
 using FakeDotNet.EF.Database;
 using FakeDotNet.EF.DbContext;
-using Spectre.CommandLine;
+using Spectre.Cli;
 
 namespace FakeDotNet
 {

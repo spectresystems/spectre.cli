@@ -1,0 +1,4 @@
+﻿Error: Invalid long option name.
+
+       dog --f€oo
+              ^ Invalid character

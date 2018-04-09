@@ -1,0 +1,4 @@
+﻿Error: Unexpected option 'foo'.
+
+       --foo
+       ^^^^^ Did you forget the command?
