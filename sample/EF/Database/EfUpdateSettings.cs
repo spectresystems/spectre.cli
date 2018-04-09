@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Spectre.CommandLine;
+using Spectre.Cli;
 
 namespace FakeDotNet.EF.Database
 {

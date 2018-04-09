@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Spectre.CommandLine;
+using Spectre.Cli;
 
 namespace FakeDotNet.EF
 {
