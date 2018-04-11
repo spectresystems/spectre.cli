@@ -4,7 +4,7 @@ An extremly opinionated command line parser.
 
 [![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)](https://ci.appveyor.com/project/patriksvensson/spectre-cli)
+![Build Status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)
 
 ## Usage
 
