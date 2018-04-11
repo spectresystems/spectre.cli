@@ -6,6 +6,9 @@
 /.artifacts/
 /[Tt]ools/
 
+# Cakeup
+cakeup-x86_64-latest.exe
+
 # .NET Core CLI
 /.dotnet/
 /.packages/
