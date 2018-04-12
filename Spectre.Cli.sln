@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Cli", "Spectre.Cli\Spectre.Cli.csproj", "{F50E199A-71E4-4724-B53D-42F25E9C1B66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Cli", "src\Spectre.Cli\Spectre.Cli.csproj", "{F50E199A-71E4-4724-B53D-42F25E9C1B66}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Cli.Tests", "Spectre.Cli.Tests\Spectre.Cli.Tests.csproj", "{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Cli.Tests", "src\Spectre.Cli.Tests\Spectre.Cli.Tests.csproj", "{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{10A85EE7-DCD2-4B11-BE48-B93B340B247B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple", "..\samples\Simple\Simple.csproj", "{71158628-01CA-423C-9579-AD9BA4A92723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple", "samples\Simple\Simple.csproj", "{71158628-01CA-423C-9579-AD9BA4A92723}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advanced", "..\samples\Advanced\Advanced.csproj", "{200D9893-8C63-4652-ADEB-7A717AD7C57F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advanced", "samples\Advanced\Advanced.csproj", "{200D9893-8C63-4652-ADEB-7A717AD7C57F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

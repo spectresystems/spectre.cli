@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Spectre.Cli;
 
-namespace Simple.Commands.Settings
+namespace Sample.Commands.Settings
 {
     public sealed class AddPackageSettings : AddSettings
     {

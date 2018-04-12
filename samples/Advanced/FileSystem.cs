@@ -1,4 +1,4 @@
-﻿namespace Advanced.Utilities
+﻿namespace Sample
 {
     public interface IFileSystem
     {

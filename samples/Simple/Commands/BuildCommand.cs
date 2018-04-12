@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-using Simple.Commands.Settings;
+using Sample.Commands.Settings;
 using Spectre.Cli;
 
-namespace Simple.Commands
+namespace Sample.Commands
 {
     [Description("Builds a project and all of its dependencies.")]
     public sealed class BuildCommand : Command<BuildSettings>

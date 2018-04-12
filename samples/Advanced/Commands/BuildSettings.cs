@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
-using Advanced.Cli.Validation;
+using Sample.Validation;
 using Spectre.Cli;
 
-namespace Advanced.Cli.Commands
+namespace Sample.Commands
 {
     public sealed class BuildSettings : CommandSettings
     {

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-using Simple.Commands.Settings;
+using Sample.Commands.Settings;
 using Spectre.Cli;
 
-namespace Simple.Commands
+namespace Sample.Commands
 {
     [Description("Adds a package reference to a project file.")]
     public sealed class AddPackageCommand : Command<AddPackageSettings>

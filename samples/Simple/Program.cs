@@ -1,8 +1,8 @@
-﻿using Simple.Commands;
-using Simple.Commands.Settings;
+﻿using Sample.Commands;
+using Sample.Commands.Settings;
 using Spectre.Cli;
 
-namespace Simple
+namespace Sample
 {
     public static class Program
     {

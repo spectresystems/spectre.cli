@@ -2,23 +2,18 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Advanced.Utilities;
 using Spectre.Cli;
 
-namespace Advanced.Cli.Commands
+namespace Sample.Commands
 {
     [Description("Builds a project and all of its dependencies.")]
     public sealed class BuildCommand : AsyncCommand<BuildSettings>
     {
         private readonly IFileSystem _fileSystem;
-        private readonly IClock _clock;
-        private readonly Random _randomizer;
 
-        public BuildCommand(IFileSystem fileSystem, IClock clock)
+        public BuildCommand(IFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
-            _clock = clock;
-            _randomizer = new Random(DateTime.Now.Millisecond);
         }
 
         // For validation that requires more logic and/or dependencies.
@@ -50,13 +45,9 @@ namespace Advanced.Cli.Commands
             }
             
             // Pretend we're building.
-            var start = _clock.Now();
             Console.WriteLine($"Building {project}...");
-            await Task.Delay(_randomizer.Next(500, 5000));
-
-            // Output some information to the user.
-            var delta = _clock.Now() - start;
-            Console.WriteLine($"Build completed in {delta.TotalSeconds} seconds.");
+            await Task.Delay(1000);
+            Console.WriteLine("Build completed!");
 
             // Return success.
             return 0;

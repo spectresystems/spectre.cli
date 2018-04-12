@@ -2,7 +2,7 @@
 using Autofac;
 using Spectre.Cli;
 
-namespace Advanced.Cli.Autofac
+namespace Sample.Autofac
 {
     public sealed class AutofacTypeResolver : ITypeResolver
     {

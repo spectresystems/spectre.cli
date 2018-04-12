@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Advanced.Cli.Autofac;
-using Advanced.Cli.Commands;
-using Advanced.Utilities;
 using Autofac;
+using Sample.Autofac;
+using Sample.Commands;
 using Spectre.Cli;
 
-namespace Advanced
+namespace Sample
 {
     public static class Program
     {
@@ -26,7 +25,6 @@ namespace Advanced
         private static ContainerBuilder BuildContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<Clock>().As<IClock>().SingleInstance();
             builder.RegisterType<FileSystem>().As<IFileSystem>().SingleInstance();
             return builder;
         }
