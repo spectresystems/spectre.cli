@@ -8,11 +8,17 @@ case "${uname_out}" in
     *)          platform=linux
 esac
 
+# Create the tools directory.
+tools="$script_dir/tools"
+if [ ! -d "$tools" ]; then
+    mkdir $tools
+fi
+
 # Make sure that cakeup exist.
-cakeup="$script_dir/cakeup-x86_64-latest"
+cakeup="$tools/cakeup-x86_64-latest"
 if [ ! -f "$cakeup" ]; then
     echo "Downloading cakeup..."
-    curl -Lsfo $cakeup "https://cakeup.blob.core.windows.net/$platform/cakeup-x86_64-v0.2.67"
+    curl -Lsfo $cakeup "https://cakeup.blob.core.windows.net/$platform/cakeup-x86_64-latest"
     if [ $? -ne 0 ]; then
         echo "An error occured while downloading cakeup."
         exit 1

@@ -2,8 +2,14 @@ if(!$PSScriptRoot){
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
+# Make sure the tool path exists.
+$Tools = Join-Path $PSScriptRoot "tools";
+if(!(Test-Path $Tools)) {
+    New-Item $Tools -ItemType Directory
+}
+
 # Make sure that cakeup is present.
-$Cakeup = Join-Path $PSScriptRoot "cakeup-x86_64-latest.exe"
+$Cakeup = Join-Path $Tools "cakeup-x86_64-latest.exe"
 if (!(Test-Path $Cakeup)) {
     Write-Verbose -Message "Downloading cakeup.exe ($CakeupVersion)..."
     try {        
