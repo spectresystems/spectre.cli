@@ -38,6 +38,11 @@ namespace Spectre.Cli.Internal.Exceptions
             return ParseExceptionFactory.Create(input, token, "Option does not have a name.", "Did you forget the option name?");
         }
 
+        public static ParseException OptionValueWasExpected(string input, CommandTreeToken token)
+        {
+            return ParseExceptionFactory.Create(input, token, "Expected an option value.", "Did you forget the option value?");
+        }
+
         public static ParseException OptionHasNoValue(IEnumerable<string> args, CommandTreeToken token, CommandOption option)
         {
             return ParseExceptionFactory.Create(args, token, $"Option '{option.GetOptionName()}' is defined but no value has been provided.", "No value provided.");

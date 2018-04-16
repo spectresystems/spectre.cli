@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Spectre.Cli.Internal.Exceptions;
 
@@ -28,17 +30,16 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
                     }
 
                     var character = reader.Peek();
-                    if (character == '\"')
+                    if (!char.IsWhiteSpace(character))
                     {
-                        tokens.Add(ScanQuotedString(reader));
-                    }
-                    else if (character == '-')
-                    {
-                        tokens.AddRange(ScanOptions(reader));
-                    }
-                    else
-                    {
-                        tokens.Add(ScanString(reader));
+                        if (character == '-')
+                        {
+                            tokens.AddRange(ScanOptions(reader));
+                        }
+                        else
+                        {
+                            tokens.Add(ScanString(reader));
+                        }
                     }
                 }
 
@@ -59,13 +60,29 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
             }
         }
 
-        private static CommandTreeToken ScanString(TextBuffer reader)
+        private static CommandTreeToken ScanString(TextBuffer reader, char[] stop = null)
         {
+            if (reader.TryPeek(out var character))
+            {
+                // Is this a quoted string?
+                if (character == '\"')
+                {
+                    return ScanQuotedString(reader);
+                }
+            }
+
             var position = reader.Position;
             var builder = new StringBuilder();
             while (!reader.ReachedEnd)
             {
-                builder.Append(reader.Read());
+                var current = reader.Peek();
+                if (stop?.Contains(current) ?? false)
+                {
+                    break;
+                }
+
+                reader.Read(); // Consume
+                builder.Append(current);
             }
 
             var value = builder.ToString();
@@ -125,6 +142,22 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
                     break;
             }
 
+            if (reader.TryPeek(out character))
+            {
+                // Encountered a separator?
+                if (character == '=' || character == ':')
+                {
+                    reader.Read(); // Consume
+                    if (!reader.TryPeek(out character))
+                    {
+                        var token = new CommandTreeToken(CommandTreeToken.Kind.String, reader.Position, "=", "=");
+                        throw ParseException.OptionValueWasExpected(reader.Original, token);
+                    }
+
+                    result.Add(ScanString(reader));
+                }
+            }
+
             return result;
         }
 
@@ -140,6 +173,12 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
 
                 var current = reader.Peek();
                 if (char.IsWhiteSpace(current))
+                {
+                    break;
+                }
+
+                // Encountered a separator?
+                if (current == '=' || current == ':')
                 {
                     break;
                 }
@@ -175,7 +214,7 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
                 throw ParseException.OptionHasNoName(reader.Original, token);
             }
 
-            var name = ScanString(reader);
+            var name = ScanString(reader, new[] { '=', ':' });
 
             // Perform validation of the name.
             if (name.Value.Length == 0)

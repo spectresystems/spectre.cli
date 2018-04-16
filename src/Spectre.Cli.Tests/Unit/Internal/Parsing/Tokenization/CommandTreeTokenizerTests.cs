@@ -34,6 +34,10 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing.Tokenization
 
         [Theory]
         [InlineData("-f", "bar")]
+        [InlineData("-f=bar")]
+        [InlineData("-f=\"bar\"")]
+        [InlineData("-f:bar")]
+        [InlineData("-f:\"bar\"")]
         public void Should_Parse_Short_Option_Correctly(params string[] args)
         {
             // Given, When
@@ -49,6 +53,10 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing.Tokenization
 
         [Theory]
         [InlineData("--foo", "bar")]
+        [InlineData("--foo=bar")]
+        [InlineData("--foo=\"bar\"")]
+        [InlineData("--foo:bar")]
+        [InlineData("--foo:\"bar\"")]
         public void Should_Parse_Long_Option_Correctly(params string[] args)
         {
             // Given, When
