@@ -1,5 +1,5 @@
 ﻿using Shouldly;
-using Spectre.Cli.Internal.Parsing.Tokenization;
+using Spectre.Cli.Internal.Parsing;
 using Xunit;
 
 namespace Spectre.Cli.Tests.Unit.Internal.Parsing.Tokenization

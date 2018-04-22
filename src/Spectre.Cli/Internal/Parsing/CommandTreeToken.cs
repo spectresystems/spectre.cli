@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Parsing.Tokenization
+﻿namespace Spectre.Cli.Internal.Parsing
 {
     internal sealed class CommandTreeToken
     {

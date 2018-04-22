@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Spectre.Cli.Internal.Parsing.Tokenization;
+using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal.Exceptions

@@ -1,6 +1,6 @@
 ﻿using Spectre.Cli.Internal.Exceptions;
 
-namespace Spectre.Cli.Internal.Templating
+namespace Spectre.Cli.Internal.Configuration
 {
     internal static class TemplateParser
     {

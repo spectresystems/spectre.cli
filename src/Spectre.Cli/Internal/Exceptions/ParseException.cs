@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing.Tokenization;
+using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal.Exceptions
 {
-    internal class ParseException : RuntimeException
+    internal sealed class ParseException : RuntimeException
     {
         public ParseException(string message, IRenderable pretty = null)
             : base(message, pretty)

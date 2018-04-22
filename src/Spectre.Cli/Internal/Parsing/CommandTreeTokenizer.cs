@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Spectre.Cli.Internal.Exceptions;
 
-namespace Spectre.Cli.Internal.Parsing.Tokenization
+namespace Spectre.Cli.Internal.Parsing
 {
     internal static class CommandTreeTokenizer
     {

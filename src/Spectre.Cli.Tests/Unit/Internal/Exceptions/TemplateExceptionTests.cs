@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using Shouldly;
+using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Rendering;
-using Spectre.Cli.Internal.Templating;
 using Spectre.Cli.Tests.Utilities;
 using Xunit;
 

@@ -1,9 +1,9 @@
-﻿using Spectre.Cli.Internal.Rendering;
-using Spectre.Cli.Internal.Templating;
+﻿using Spectre.Cli.Internal.Configuration;
+using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal.Exceptions
 {
-    internal class TemplateException : ConfigurationException
+    internal sealed class TemplateException : ConfigurationException
     {
         public string Template { get; }
         public override bool AlwaysPropagateWhenDebugging => true;

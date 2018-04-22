@@ -12,7 +12,7 @@ namespace Spectre.Cli.Internal.Modelling
         public PropertyInfo Property { get; }
         public string Description { get; }
         public TypeConverterAttribute Converter { get; }
-        public List<ParameterValidationAttribute> Validators { get; set; }
+        public List<ParameterValidationAttribute> Validators { get; }
         public bool Required { get; set; }
 
         protected CommandParameter(

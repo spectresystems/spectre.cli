@@ -1,9 +1,9 @@
 ﻿using Shouldly;
+using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
-using Spectre.Cli.Internal.Templating;
 using Xunit;
 
-namespace Spectre.Cli.Tests.Unit.Internal.Templating
+namespace Spectre.Cli.Tests.Unit.Internal.Configuration
 {
     public static class TemplateParserTests
     {

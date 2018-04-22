@@ -1,9 +1,9 @@
-﻿namespace Spectre.Cli.Internal.Templating
+﻿namespace Spectre.Cli.Internal.Configuration
 {
     internal sealed class TemplateToken
     {
         public Kind TokenKind { get; }
-        public int Position { get; set; }
+        public int Position { get; }
         public string Value { get; }
         public string Representation { get; }
 

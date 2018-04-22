@@ -98,7 +98,7 @@ namespace Spectre.Cli.Internal
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
         {
             // Collect all options into a single structure.
-            var parameters = new List<(string @short, string @long, string @value, string @description)>();
+            var parameters = new List<(string @short, string @long, string value, string description)>();
             parameters.Add(("h", "help", null, "Prints help information"));
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
                 (o.ShortName, o.LongName, o.ValueName, o.Description))

@@ -1,6 +1,6 @@
 ﻿using System;
+using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Rendering;
-using Spectre.Cli.Internal.Templating;
 
 namespace Spectre.Cli.Internal.Exceptions
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Exceptions;
 
-namespace Spectre.Cli.Internal.Parsing.Tokenization
+namespace Spectre.Cli.Internal.Parsing
 {
     internal sealed class CommandTreeTokenStream : IReadOnlyList<CommandTreeToken>
     {
@@ -32,12 +32,7 @@ namespace Spectre.Cli.Internal.Parsing.Tokenization
             _position = 0;
         }
 
-        public CommandTreeToken Peek()
-        {
-            return Peek(0);
-        }
-
-        public CommandTreeToken Peek(int index)
+        public CommandTreeToken Peek(int index = 0)
         {
             var position = _position + index;
             if (position >= Count)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing.Tokenization;
 
 namespace Spectre.Cli.Internal.Parsing
 {
