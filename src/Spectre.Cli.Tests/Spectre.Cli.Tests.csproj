@@ -125,7 +125,7 @@
     <CodeAnalysisRuleSet>../Spectre.Test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -135,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli\Spectre.Cli.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
