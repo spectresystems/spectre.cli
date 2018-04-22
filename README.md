@@ -23,10 +23,10 @@ public class Program
 
         app.Configure(config =>
         {
-            config.AddCommand<EfSettings>("ef", ef =>
+            config.AddBranch<EfSettings>("ef", ef =>
             {
                 ef.SetDescription("Fake EF Core .NET Command Line Tools");
-                ef.AddCommand<EfDatabaseSettings>("database", database =>
+                ef.AddBranch<EfDatabaseSettings>("database", database =>
                 {
                     database.AddCommand<EfUpdateCommand>("update");
                     database.AddCommand<EfDropCommand>("drop");
