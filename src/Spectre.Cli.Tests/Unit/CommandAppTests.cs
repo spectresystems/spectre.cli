@@ -204,8 +204,8 @@ namespace Spectre.Cli.Tests.Unit
             app.Run(new[] { "animal", "--foo", "f", "dog", "5", "--bar", "b", "--name", "Rufus" });
 
             // Then
-            registrar.Instances.ContainsKey(typeof(IArguments)).ShouldBeTrue();
-            registrar.Instances[typeof(IArguments)].Single().As<IArguments>(args =>
+            registrar.Instances.ContainsKey(typeof(IRemainingArguments)).ShouldBeTrue();
+            registrar.Instances[typeof(IRemainingArguments)].Single().As<IRemainingArguments>(args =>
             {
                 args.Count.ShouldBe(2);
                 args.Contains("--foo").ShouldBeTrue();

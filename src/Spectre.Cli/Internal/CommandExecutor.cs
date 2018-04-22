@@ -51,8 +51,8 @@ namespace Spectre.Cli.Internal
             }
 
             // Register the arguments with the container.
-            var arguments = new Arguments(remaining);
-            _registrar?.RegisterInstance(typeof(IArguments), arguments);
+            var arguments = new RemainingArguments(remaining);
+            _registrar?.RegisterInstance(typeof(IRemainingArguments), arguments);
 
             // Create the resolver.
             var resolver = new TypeResolverAdapter(_registrar?.Build());

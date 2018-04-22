@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Spectre.Cli.Internal
 {
-    internal sealed class Arguments : IArguments
+    internal sealed class RemainingArguments : IRemainingArguments
     {
         private readonly ILookup<string, string> _arguments;
 
         public int Count => _arguments.Count;
         public IEnumerable<string> this[string key] => _arguments[key];
 
-        public Arguments(ILookup<string, string> arguments)
+        public RemainingArguments(ILookup<string, string> arguments)
         {
             _arguments = arguments;
         }
