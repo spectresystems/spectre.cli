@@ -2,7 +2,7 @@
 
 ### Getting Started
 
-* [About this documentation](README.md)
+* [Introduction](README.md)
 
 ### Resources
 
