@@ -49,7 +49,7 @@ namespace Spectre.Cli.Internal
             else
             {
                 var current = command;
-                if (command.IsProxy)
+                if (command.IsBranch)
                 {
                     stack.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
                 }

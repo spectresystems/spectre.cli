@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using Spectre.Cli.Internal.Configuration;
+using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Tests.Data;
 using Spectre.Cli.Tests.Data.Settings;
@@ -14,9 +15,9 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddCommand<AnimalSettings>("animal", animal =>
+            configurator.AddBranch<AnimalSettings>("animal", animal =>
             {
-                animal.AddCommand<MammalSettings>("mammal", mammal =>
+                animal.AddBranch<MammalSettings>("mammal", mammal =>
                 {
                     mammal.AddCommand<DogCommand>("dog");
                     mammal.AddCommand<HorseCommand>("horse");
@@ -43,14 +44,14 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         }
 
         [Fact]
-        public void Should_Set_Descriptions_For_Proxy_Commands()
+        public void Should_Set_Descriptions_For_Branches()
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddCommand<AnimalSettings>("animal", animal =>
+            configurator.AddBranch<AnimalSettings>("animal", animal =>
             {
                 animal.SetDescription("An animal");
-                animal.AddCommand<MammalSettings>("mammal", mammal =>
+                animal.AddBranch<MammalSettings>("mammal", mammal =>
                 {
                     mammal.SetDescription("A mammal");
                     mammal.AddCommand<DogCommand>("dog");
@@ -94,7 +95,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddCommand<MammalSettings>("mammal", mammal =>
+            configurator.AddBranch<MammalSettings>("mammal", mammal =>
             {
                 mammal.AddCommand<HorseCommand>("horse");
             });
@@ -127,7 +128,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddCommand<MammalSettings>("mammal", mammal =>
+            configurator.AddBranch<MammalSettings>("mammal", mammal =>
             {
                 mammal.AddCommand<HorseCommand>("horse");
             });
@@ -175,9 +176,9 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Given, When
             var result = CommandModelSerializer.Serialize(config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<MammalSettings>("mammal", mammal =>
+                    animal.AddBranch<MammalSettings>("mammal", mammal =>
                     {
                         mammal.AddCommand<DogCommand>("dog");
                         mammal.AddCommand<HorseCommand>("horse");
@@ -216,7 +217,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Given, When
             var result = CommandModelSerializer.Serialize(config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -237,7 +238,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Given, When
             var result = CommandModelSerializer.Serialize(config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                 });
@@ -245,6 +246,25 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Then
             result.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_Throw_If_Branch_Has_No_Children()
+        {
+            // Given
+            var configurator = new Configurator(null);
+            configurator.AddBranch<AnimalSettings>("animal", animal =>
+            {
+            });
+
+            // When
+            var model = Record.Exception(() => CommandModelBuilder.Build(configurator));
+
+            // Then
+            model.ShouldBeOfType<ConfigurationException>().And(exception =>
+            {
+                exception.Message.ShouldBe("The branch 'animal' does not define any commands.");
+            });
         }
     }
 }

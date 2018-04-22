@@ -25,7 +25,7 @@ namespace Spectre.Cli.Internal.Modelling
         {
             var info = new CommandInfo(parent, command);
 
-            if (!info.IsProxy)
+            if (!info.IsBranch)
             {
                 var description = info.CommandType.GetCustomAttribute<DescriptionAttribute>();
                 if (description != null)

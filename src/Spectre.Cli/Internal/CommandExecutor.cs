@@ -43,9 +43,9 @@ namespace Spectre.Cli.Internal
 
             // Get the command to execute.
             var leaf = tree.GetLeafCommand();
-            if (leaf.Command.IsProxy || leaf.ShowHelp)
+            if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
-                // Proxy's can't be executed. Show help.
+                // Branches can't be executed. Show help.
                 ConsoleRenderer.Render(HelpWriter.WriteCommand(model, leaf.Command));
                 return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }

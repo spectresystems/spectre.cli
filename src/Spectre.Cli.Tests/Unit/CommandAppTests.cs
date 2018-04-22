@@ -23,9 +23,9 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<MammalSettings>("mammal", mammal =>
+                    animal.AddBranch<MammalSettings>("mammal", mammal =>
                     {
                         mammal.AddCommand<DogCommand>("dog");
                         mammal.AddCommand<HorseCommand>("horse");
@@ -84,7 +84,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -114,7 +114,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                 });
@@ -143,7 +143,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -168,7 +168,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -193,7 +193,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -223,7 +223,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -248,7 +248,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -273,7 +273,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -297,7 +297,7 @@ namespace Spectre.Cli.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar());
             app.Configure(config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");

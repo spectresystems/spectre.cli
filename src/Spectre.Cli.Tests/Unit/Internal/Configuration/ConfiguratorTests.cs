@@ -13,9 +13,9 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddCommand<AnimalSettings>("animal", animal =>
+            configurator.AddBranch<AnimalSettings>("animal", animal =>
             {
-                animal.AddCommand<MammalSettings>("mammal", mammal =>
+                animal.AddBranch<MammalSettings>("mammal", mammal =>
                 {
                     mammal.AddCommand<DogCommand>("dog");
                     mammal.AddCommand<HorseCommand>("horse");
@@ -29,12 +29,12 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
             commands.Count.ShouldBe(1);
             commands[0].As(animal =>
             {
-                animal.ShouldBeProxy<AnimalSettings>();
+                animal.ShouldBeBranch<AnimalSettings>();
                 animal.Children.Count.ShouldBe(1);
 
                 animal.Children[0].As(mammal =>
                 {
-                    mammal.ShouldBeProxy<MammalSettings>();
+                    mammal.ShouldBeBranch<MammalSettings>();
                     mammal.Children.Count.ShouldBe(2);
 
                     mammal.Children[0].As(dog =>

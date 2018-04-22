@@ -40,7 +40,7 @@ namespace Spectre.Cli.Internal.Configuration
             _registrar?.Register(settingsType, settingsType);
         }
 
-        public void AddCommand<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+        public void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
             where TSettings : CommandSettings
         {
             var command = new ConfiguredCommand(name, null, typeof(TSettings));

@@ -12,7 +12,7 @@ namespace Sample
             app.Configure(config =>
             {
                 config.AddCommand<BuildCommand>("build");
-                config.AddCommand<AddSettings>("add", add =>
+                config.AddBranch<AddSettings>("add", add =>
                 {
                     add.SetDescription("Add reference to the project.");
 

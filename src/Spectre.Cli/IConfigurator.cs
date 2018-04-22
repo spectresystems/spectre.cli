@@ -27,11 +27,11 @@ namespace Spectre.Cli
         void AddCommand<TCommand>(string name) where TCommand : class, ICommand;
 
         /// <summary>
-        /// Adds a proxy command to the configuration.
+        /// Adds a command branch to the configuration.
         /// </summary>
         /// <typeparam name="TSettings">The type of the settings.</typeparam>
-        /// <param name="name">The name of the command.</param>
-        /// <param name="action">The command configuration.</param>
-        void AddCommand<TSettings>(string name, Action<IConfigurator<TSettings>> action) where TSettings : CommandSettings;
+        /// <param name="name">The name of the command branch.</param>
+        /// <param name="action">The command branch configuration.</param>
+        void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action) where TSettings : CommandSettings;
     }
 }

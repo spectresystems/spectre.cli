@@ -35,7 +35,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
             // Given, When
             var (_, remaining) = Fixture.Parse(new[] { "animal", "dog", "--alive" }, config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                 });
@@ -52,7 +52,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
             // Given, When
             var (_, remaining) = Fixture.Parse(new[] { "animal", "--alive", "dog", "--alive" }, config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                 });
@@ -74,9 +74,9 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
-                        animal.AddCommand<MammalSettings>("mammal", mammal =>
+                        animal.AddBranch<MammalSettings>("mammal", mammal =>
                         {
                             mammal.AddCommand<DogCommand>("dog");
                             mammal.AddCommand<HorseCommand>("horse");
@@ -119,7 +119,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" },
                 config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -142,7 +142,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
                     });

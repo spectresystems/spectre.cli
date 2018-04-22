@@ -14,7 +14,7 @@ namespace Spectre.Cli.Internal.Modelling
         public IList<CommandInfo> Children { get; }
         public IList<CommandParameter> Parameters { get; }
 
-        public bool IsProxy => CommandType == null;
+        public bool IsBranch => CommandType == null;
         IList<CommandInfo> ICommandContainer.Commands => Children;
 
         public CommandInfo(CommandInfo parent, ConfiguredCommand prototype)

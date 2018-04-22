@@ -40,7 +40,7 @@ namespace Spectre.Cli.Tests.Unit.Internal
             // Given
             var configurator = new Configurator(new FakeTypeRegistrar());
             configurator.SetApplicationName("myapp");
-            configurator.AddCommand<CatSettings>("cat", animal =>
+            configurator.AddBranch<CatSettings>("cat", animal =>
             {
                 animal.SetDescription("Contains settings for a cat.");
                 animal.AddCommand<LionCommand>("lion");
@@ -60,7 +60,7 @@ namespace Spectre.Cli.Tests.Unit.Internal
             // Given
             var configurator = new Configurator(new FakeTypeRegistrar());
             configurator.SetApplicationName("myapp");
-            configurator.AddCommand<CatSettings>("cat", animal =>
+            configurator.AddBranch<CatSettings>("cat", animal =>
             {
                 animal.SetDescription("Contains settings for a cat.");
                 animal.AddCommand<LionCommand>("lion");

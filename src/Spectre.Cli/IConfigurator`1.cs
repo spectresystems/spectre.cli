@@ -23,11 +23,11 @@ namespace Spectre.Cli
         void AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>;
 
         /// <summary>
-        /// Adds a proxy command to the configuration.
+        /// Adds a command branch to the configuration.
         /// </summary>
         /// <typeparam name="TDerivedSettings">The type of the derived settings.</typeparam>
-        /// <param name="name">The name of the command.</param>
-        /// <param name="action">The command configuration.</param>
-        void AddCommand<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action) where TDerivedSettings : TSettings;
+        /// <param name="name">The name of the command branch.</param>
+        /// <param name="action">The command branch configuration.</param>
+        void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action) where TDerivedSettings : TSettings;
     }
 }

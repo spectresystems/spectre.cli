@@ -29,6 +29,12 @@ namespace Spectre.Cli.Internal.Modelling
                 throw ConfigurationException.DuplicateOption(command, options);
             }
 
+            // No children?
+            if (command.IsBranch && command.Children.Count == 0)
+            {
+                throw ConfigurationException.BranchHasNoChildren(command);
+            }
+
             // Validate child commands.
             foreach (var childCommand in command.Children)
             {
