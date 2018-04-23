@@ -1,12 +1,9 @@
-# Table of contents
+# Summary
+
+### Getting Started
 
 * [Introduction](README.md)
 
-## Getting Started
+### Resources
 
-* [Introduction](getting-started/introduction.md)
-
-## Resources
-
-* [Links](resources/links.md)
-
+* [Links](links.md)
