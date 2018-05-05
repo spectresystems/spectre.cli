@@ -185,7 +185,7 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
-        public void Should_Register_Remaining_Arguments()
+        public void Should_Throw_When_Encountering_Unknown_Option()
         {
             // Given
             var registrar = new FakeTypeRegistrar();
@@ -201,17 +201,12 @@ namespace Spectre.Cli.Tests.Unit
             });
 
             // When
-            app.Run(new[] { "animal", "--foo", "f", "dog", "5", "--bar", "b", "--name", "Rufus" });
+            var result = Record.Exception(() => app.Run(new[] { "animal", "--foo" }));
 
             // Then
-            registrar.Instances.ContainsKey(typeof(IRemainingArguments)).ShouldBeTrue();
-            registrar.Instances[typeof(IRemainingArguments)].Single().As<IRemainingArguments>(args =>
+            result.ShouldBeOfType<ParseException>().And(ex =>
             {
-                args.Count.ShouldBe(2);
-                args.Contains("--foo").ShouldBeTrue();
-                args["--foo"].Single().ShouldBe("f");
-                args.Contains("--bar").ShouldBeTrue();
-                args["--bar"].Single().ShouldBe("b");
+                ex.Message.ShouldBe("Unknown option 'foo'.");
             });
         }
 

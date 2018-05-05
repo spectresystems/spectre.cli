@@ -160,13 +160,7 @@ namespace Spectre.Cli.Internal.Parsing
                 }
             }
 
-            // Parent does not have this option mapped?
-            if (!node.IsMappedWithParent(token.Value, isLongOption))
-            {
-                // Add this option as an remaining argument.
-                var optionName = token.TokenKind == CommandTreeToken.Kind.LongOption ? $"--{token.Value}" : $"-{token.Value}";
-                context.AddRemainingArgument(optionName, ParseOptionValue(context, stream, owner, node, null));
-            }
+            throw ParseException.UnknownOption(context.Arguments, token);
         }
 
         private static string ParseOptionValue(

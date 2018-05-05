@@ -27,6 +27,8 @@
     <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnterminatedQuote" />
     <None Remove="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
     <None Remove="Data\Resources\Exceptions\Template\CouldNotMatchArgument" />
@@ -75,11 +77,13 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
     <EmbeddedResource Include="Data\Resources\Help\Leaf" />
     <EmbeddedResource Include="Data\Resources\Help\Root" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />

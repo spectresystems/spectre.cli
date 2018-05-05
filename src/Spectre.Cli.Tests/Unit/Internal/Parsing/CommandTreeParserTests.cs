@@ -15,53 +15,6 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 {
     public sealed class CommandTreeParserTests
     {
-        [Fact]
-        public void Should_Capture_Remaining_Arguments()
-        {
-            // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "dog", "--woof" }, config =>
-            {
-                config.AddCommand<DogCommand>("dog");
-            });
-
-            // Then
-            remaining.Count.ShouldBe(1);
-            remaining.Contains("--woof").ShouldBe(true);
-        }
-
-        [Fact]
-        public void Should_Capture_Option_Beloning_To_Parent_Commands_As_Remaining_Arguments()
-        {
-            // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "animal", "dog", "--alive" }, config =>
-            {
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
-
-            // Then
-            remaining.Count.ShouldBe(1);
-            remaining.Contains("--alive").ShouldBe(true);
-        }
-
-        [Fact]
-        public void Should_Not_Capture_Option_Belonging_To_Parent_Commands_As_Remaining_Arguments_If_Option_Was_Assigned_To_Parent_Command()
-        {
-            // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "animal", "--alive", "dog", "--alive" }, config =>
-            {
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
-
-            // Then
-            remaining.Count.ShouldBe(0);
-        }
-
         /// <summary>
         /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
         /// </summary>

@@ -103,5 +103,10 @@ namespace Spectre.Cli.Internal.Exceptions
         {
             return ParseExceptionFactory.Create(args, token, $"Could not match '{token.Value}' with an argument.", "Could not match to argument.");
         }
+
+        public static ParseException UnknownOption(IEnumerable<string> args, CommandTreeToken token)
+        {
+            return ParseExceptionFactory.Create(args, token, $"Unknown option '{token.Value}'.", "Unknown option.");
+        }
     }
 }
