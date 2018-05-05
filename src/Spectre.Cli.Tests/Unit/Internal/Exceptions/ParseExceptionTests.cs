@@ -166,6 +166,39 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             }
         }
 
+        public sealed class TheUnknownOptionMethod
+        {
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Long")]
+            public void Should_Return_Correct_Text_For_Long_Option(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "--unknown" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Short")]
+            public void Should_Return_Correct_Text_For_Short_Option(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "-u" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
         public sealed class TheUnterminatedQuoteMethod
         {
             [Theory]
@@ -196,21 +229,6 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
 
                 // When
                 var result = Fixture.GetParseMessage(new[] { "dog", "-", " " }, configurator);
-
-                // Then
-                result.ShouldBe(expected);
-            }
-
-            [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/Tokenization/OptionHasNoName_Long")]
-            public void Should_Return_Correct_Text_For_Long_Option(string expected)
-            {
-                // Given
-                var configurator = new Configurator(new FakeTypeRegistrar());
-                configurator.AddCommand<DogCommand>("dog");
-
-                // When
-                var result = Fixture.GetParseMessage(new[] { "dog", "--" }, configurator);
 
                 // Then
                 result.ShouldBe(expected);

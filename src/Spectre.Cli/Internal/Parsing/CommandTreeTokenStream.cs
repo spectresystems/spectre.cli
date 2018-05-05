@@ -42,9 +42,8 @@ namespace Spectre.Cli.Internal.Parsing
             return _tokens[position];
         }
 
-        public CommandTreeToken Consume(CommandTreeToken.Kind type)
+        public CommandTreeToken Consume()
         {
-            Expect(type);
             if (_position >= Count)
             {
                 return null;
@@ -52,6 +51,12 @@ namespace Spectre.Cli.Internal.Parsing
             var token = _tokens[_position];
             _position++;
             return token;
+        }
+
+        public CommandTreeToken Consume(CommandTreeToken.Kind type)
+        {
+            Expect(type);
+            return Consume();
         }
 
         public CommandTreeToken Expect(CommandTreeToken.Kind expected)

@@ -69,5 +69,25 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing.Tokenization
             result[1].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             result[1].Value.ShouldBe("bar");
         }
+
+        [Fact]
+        public void Should_Parse_Remaining_Parameters()
+        {
+            // Given, When
+            var result = CommandTreeTokenizer.Tokenize(new[] { "--foo", "--", "--bar", "-qux", "\"lol\"", "w00t" });
+
+            // Then
+            result.Count.ShouldBe(5);
+            result[0].TokenKind.ShouldBe(CommandTreeToken.Kind.LongOption);
+            result[0].Value.ShouldBe("foo");
+            result[1].TokenKind.ShouldBe(CommandTreeToken.Kind.Remaining);
+            result[1].Value.ShouldBe("--bar");
+            result[2].TokenKind.ShouldBe(CommandTreeToken.Kind.Remaining);
+            result[2].Value.ShouldBe("-qux");
+            result[3].TokenKind.ShouldBe(CommandTreeToken.Kind.Remaining);
+            result[3].Value.ShouldBe("\"lol\"");
+            result[4].TokenKind.ShouldBe(CommandTreeToken.Kind.Remaining);
+            result[4].Value.ShouldBe("w00t");
+        }
     }
 }

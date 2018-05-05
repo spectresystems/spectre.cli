@@ -11,7 +11,8 @@
         {
             String,
             LongOption,
-            ShortOption
+            ShortOption,
+            Remaining
         }
 
         public CommandTreeToken(Kind kind, int position, string value, string representation)

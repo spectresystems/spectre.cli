@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Spectre.Cli.Internal.Parsing
 {
     internal class CommandTreeParserContext
     {
         private readonly List<string> _args;
-        private readonly List<(string name, string value)> _remainingArguments;
+        private readonly List<string> _remaining;
 
         public IReadOnlyList<string> Arguments => _args;
+        public IReadOnlyList<string> Remaining => _remaining;
         public int CurrentArgumentPosition { get; private set; }
 
         public CommandTreeParserContext(IEnumerable<string> args)
         {
             _args = new List<string>(args);
-            _remainingArguments = new List<(string, string)>();
+            _remaining = new List<string>();
         }
 
         public void ResetArgumentPosition()
@@ -27,14 +27,9 @@ namespace Spectre.Cli.Internal.Parsing
             CurrentArgumentPosition++;
         }
 
-        public void AddRemainingArgument(string name, string value)
+        public void AddRemainingArgument(string arg)
         {
-            _remainingArguments.Add((name, value));
-        }
-
-        public ILookup<string, string> GetRemainingArguments()
-        {
-            return _remainingArguments.ToLookup(x => x.name, x => x.value);
+            _remaining.Add(arg);
         }
     }
 }

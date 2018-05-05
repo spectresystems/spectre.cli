@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Spectre.Cli
 {
@@ -13,9 +12,9 @@ namespace Spectre.Cli
         /// <summary>
         /// Executes the command.
         /// </summary>
+        /// <param name="context">The command context.</param>
         /// <param name="settings">The settings.</param>
-        /// <param name="remaining">The remaining arguments.</param>
         /// <returns>The validation result.</returns>
-        Task<int> Execute(TSettings settings, ILookup<string, string> remaining);
+        Task<int> Execute(CommandContext context, TSettings settings);
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
@@ -54,16 +53,18 @@ namespace Spectre.Cli.Internal
             var arguments = new RemainingArguments(remaining);
             _registrar?.RegisterInstance(typeof(IRemainingArguments), arguments);
 
-            // Create the resolver.
+            // Create the resolver and the context.
             var resolver = new TypeResolverAdapter(_registrar?.Build());
+            var context = new CommandContext(remaining);
 
             // Execute the command tree.
-            return Execute(leaf, tree, remaining, resolver);
+            return Execute(leaf, tree, context, resolver);
         }
 
-        private static Task<int> Execute(CommandTree leaf,
+        private static Task<int> Execute(
+            CommandTree leaf,
             CommandTree tree,
-            ILookup<string, string> remaining,
+            CommandContext context,
             ITypeResolver resolver)
         {
             // Create the command and the settings.
@@ -74,14 +75,14 @@ namespace Spectre.Cli.Internal
 
             // Create and validate the command.
             var command = leaf.CreateCommand(resolver);
-            var validationResult = command.Validate(settings, remaining);
+            var validationResult = command.Validate(context, settings);
             if (!validationResult.Successful)
             {
                 throw RuntimeException.ValidationFailed(validationResult);
             }
 
             // Execute the command.
-            return command.Execute(settings, remaining);
+            return command.Execute(context, settings);
         }
     }
 }

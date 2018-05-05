@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,43 +9,94 @@ namespace Spectre.Cli.Internal.Parsing
 {
     internal static class CommandTreeTokenizer
     {
+        public enum Mode
+        {
+            Normal = 0,
+            Remaining = 1
+        }
+
         public static CommandTreeTokenStream Tokenize(IEnumerable<string> args)
         {
             var tokens = new List<CommandTreeToken>();
             var position = 0;
             var previousReader = default(TextBuffer);
+            var context = new CommandTreeTokenizerContext();
+
             foreach (var arg in args)
             {
+                var lastToken = tokens.LastOrDefault();
+                if (lastToken?.TokenKind == CommandTreeToken.Kind.Remaining)
+                {
+                    context.Mode = Mode.Remaining;
+                }
+
                 var start = position;
                 var reader = new TextBuffer(previousReader, arg);
 
-                while (reader.Peek() != -1)
+                switch (context.Mode)
                 {
-                    EatWhitespace(reader);
-
-                    if (reader.ReachedEnd)
-                    {
-                        position += reader.Position - start;
+                    case Mode.Normal:
+                        position = ParseToken(context, reader, position, start, tokens);
                         break;
-                    }
-
-                    var character = reader.Peek();
-                    if (!char.IsWhiteSpace(character))
-                    {
-                        if (character == '-')
-                        {
-                            tokens.AddRange(ScanOptions(reader));
-                        }
-                        else
-                        {
-                            tokens.Add(ScanString(reader));
-                        }
-                    }
+                    case Mode.Remaining:
+                        position = ParseRemainingToken(reader, position, start, tokens);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unspecified tokenization mode.");
                 }
 
                 previousReader = reader;
             }
             return new CommandTreeTokenStream(tokens);
+        }
+
+        private static int ParseToken(CommandTreeTokenizerContext context, TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
+        {
+            while (reader.Peek() != -1)
+            {
+                EatWhitespace(reader);
+
+                if (reader.ReachedEnd)
+                {
+                    position += reader.Position - start;
+                    break;
+                }
+
+                var character = reader.Peek();
+                if (!char.IsWhiteSpace(character))
+                {
+                    if (character == '-')
+                    {
+                        tokens.AddRange(ScanOptions(context, reader));
+                    }
+                    else
+                    {
+                        tokens.Add(ScanString(reader));
+                    }
+                }
+            }
+
+            return position;
+        }
+
+        private static int ParseRemainingToken(TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
+        {
+            var result = new StringBuilder();
+            while (reader.Peek() != -1)
+            {
+                if (reader.ReachedEnd)
+                {
+                    position += reader.Position - start;
+                    break;
+                }
+
+                result.Append(reader.Read());
+            }
+
+            var value = result.ToString();
+            tokens.Add(new CommandTreeToken(CommandTreeToken.Kind.Remaining, position, value, value));
+
+            return position;
         }
 
         private static void EatWhitespace(TextBuffer reader)
@@ -118,7 +170,7 @@ namespace Spectre.Cli.Internal.Parsing
             return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, $"\"{value}\"");
         }
 
-        private static IEnumerable<CommandTreeToken> ScanOptions(TextBuffer reader)
+        private static IEnumerable<CommandTreeToken> ScanOptions(CommandTreeTokenizerContext context, TextBuffer reader)
         {
             var result = new List<CommandTreeToken>();
 
@@ -134,7 +186,11 @@ namespace Spectre.Cli.Internal.Parsing
             switch (character)
             {
                 case '-':
-                    result.Add(ScanLongOption(reader, position));
+                    var option = ScanLongOption(context, reader, position);
+                    if (option != null)
+                    {
+                        result.Add(option);
+                    }
                     break;
                 default:
                     result.AddRange(ScanShortOptions(reader, position));
@@ -203,14 +259,14 @@ namespace Spectre.Cli.Internal.Parsing
             return result;
         }
 
-        private static CommandTreeToken ScanLongOption(TextBuffer reader, int position)
+        private static CommandTreeToken ScanLongOption(CommandTreeTokenizerContext context, TextBuffer reader, int position)
         {
             reader.Consume('-');
 
             if (reader.ReachedEnd)
             {
-                var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, "--", "--");
-                throw ParseException.OptionHasNoName(reader.Original, token);
+                context.Mode = Mode.Remaining;
+                return null;
             }
 
             var name = ScanString(reader, new[] { '=', ':' });

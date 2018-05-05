@@ -42,7 +42,7 @@ namespace Spectre.Cli.Internal.Parsing
                 .FirstOrDefault(o => longOption ? o.LongName == name : o.ShortName == name);
         }
 
-        public static bool IsMappedWithParent(this CommandTree tree, string name, bool longOption)
+        public static bool IsOptionMappedWithParent(this CommandTree tree, string name, bool longOption)
         {
             var node = tree.Parent;
             while (node != null)
