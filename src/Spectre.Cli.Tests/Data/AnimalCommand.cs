@@ -6,7 +6,7 @@ namespace Spectre.Cli.Tests.Data
     public abstract class AnimalCommand<TSettings> : Command<TSettings>
         where TSettings : CommandSettings
     {
-        protected void DumpSettings(TSettings settings, ILookup<string, string> remaining)
+        protected void DumpSettings(CommandContext context, TSettings settings)
         {
             var properties = settings.GetType().GetProperties();
             foreach (var group in properties.GroupBy(x => x.DeclaringType).Reverse())
@@ -22,17 +22,13 @@ namespace Spectre.Cli.Tests.Data
                 }
             }
 
-            if (remaining.Count > 0)
+            if (context.Remaining.Count > 0)
             {
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Remaining:");
                 Console.ResetColor();
-                foreach (var item in remaining)
-                {
-                    var value = string.Join(",", item);
-                    Console.WriteLine(!string.IsNullOrWhiteSpace(value) ? $"  {item.Key} = {value}" : $"  {item.Key}");
-                }
+                Console.WriteLine(string.Join(", ", context.Remaining));
             }
 
             Console.WriteLine();

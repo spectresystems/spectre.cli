@@ -34,10 +34,6 @@ namespace Spectre.Cli.Tests.Fakes
             {
                 Instances.Add(service, new List<object> { implementation });
             }
-            else
-            {
-                Instances[service].Add(implementation);
-            }
         }
 
         public ITypeResolver Build()

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Cli;
 
@@ -17,7 +16,7 @@ namespace Sample.Commands
         }
 
         // For validation that requires more logic and/or dependencies.
-        public override ValidationResult Validate(BuildSettings settings, ILookup<string, string> remaining)
+        public override ValidationResult Validate(CommandContext context, BuildSettings settings)
         {
             if (!string.IsNullOrWhiteSpace(settings.Project))
             {
@@ -26,10 +25,10 @@ namespace Sample.Commands
                     return ValidationResult.Error("The specified project do not exist.");
                 }
             }
-            return base.Validate(settings, remaining);
+            return base.Validate(context, settings);
         }
 
-        public override async Task<int> Execute(BuildSettings settings, ILookup<string, string> remaining)
+        public override async Task<int> Execute(CommandContext context, BuildSettings settings)
         {
             if (!settings.NoRestore)
             {

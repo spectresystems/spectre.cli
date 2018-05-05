@@ -17,7 +17,6 @@
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Long" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
@@ -68,9 +67,8 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameContainSymbol" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\InvalidShortOptionName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />

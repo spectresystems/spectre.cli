@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using Shouldly;
 using Spectre.Cli.Internal.Configuration;
@@ -15,6 +14,23 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 {
     public sealed class CommandTreeParserTests
     {
+        [Fact]
+        public void Should_Capture_Remaining_Arguments()
+        {
+            // Given, When
+            var (_, remaining) = Fixture.Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
+            {
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // Then
+            remaining.Count.ShouldBe(4);
+            remaining[0].ShouldBe("--foo");
+            remaining[1].ShouldBe("-bar");
+            remaining[2].ShouldBe("\"baz\"");
+            remaining[3].ShouldBe("qux");
+        }
+
         /// <summary>
         /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
         /// </summary>
@@ -107,7 +123,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 
         private static class Fixture
         {
-            public static (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
+            public static (CommandTree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
             {
                 var configurator = new Configurator(null);
                 func(configurator);

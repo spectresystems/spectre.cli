@@ -17,7 +17,7 @@ namespace Spectre.Cli.Internal.Parsing
             _help = help;
         }
 
-        public (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args)
+        public (CommandTree tree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args)
         {
             var context = new CommandTreeParserContext(args);
             var tokens = CommandTreeTokenizer.Tokenize(context.Arguments);
@@ -34,7 +34,7 @@ namespace Spectre.Cli.Internal.Parsing
                             _help.LongName?.Equals(token.Value, StringComparison.Ordinal) == true)
                         {
                             // Show help
-                            return (null, context.GetRemainingArguments());
+                            return (null, context.Remaining);
                         }
                     }
 
@@ -44,7 +44,7 @@ namespace Spectre.Cli.Internal.Parsing
                 result = ParseCommand(context, _configuration, null, tokens);
             }
 
-            return (result, context.GetRemainingArguments());
+            return (result, context.Remaining);
         }
 
         private CommandTree ParseCommand(
@@ -80,6 +80,10 @@ namespace Spectre.Cli.Internal.Parsing
                     case CommandTreeToken.Kind.String:
                         // Command
                         ParseString(context, stream, node);
+                        break;
+                    case CommandTreeToken.Kind.Remaining:
+                        // Remaining
+                        ParseRemaining(context, stream);
                         break;
                     default:
                         throw new InvalidOperationException($"Encountered unknown token ({token.TokenKind}).");
@@ -214,13 +218,24 @@ namespace Spectre.Cli.Internal.Parsing
                             throw ParseException.OptionHasNoValue(context.Arguments, owner, option);
                         default:
                             // This should not happen at all. If it does, it's because we've added a new
-                            // option typer which isn't a CommandOption for some reason.
+                            // option type which isn't a CommandOption for some reason.
                             throw new InvalidOperationException($"Found invalid parameter type '{parameter.GetType().FullName}'.");
                     }
                 }
             }
 
             return value;
+        }
+
+        private static void ParseRemaining(
+            CommandTreeParserContext context,
+            CommandTreeTokenStream stream)
+        {
+            while (stream.Peek() != null)
+            {
+                var token = stream.Consume(CommandTreeToken.Kind.Remaining);
+                context.AddRemainingArgument(token.Value);
+            }
         }
     }
 }

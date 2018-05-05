@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Tests.Data;
@@ -130,6 +129,39 @@ namespace Spectre.Cli.Tests.Unit
             settings.GoodBoy.ShouldBe(true);
             settings.IsAlive.ShouldBe(false);
             settings.Name.ShouldBe("Rufus");
+        }
+
+        [Fact]
+        public void Should_Register_Remaining_Arguments_With_Context()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, settings) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                });
+            });
+
+            // When
+            app.Run(new[] { "animal", "4", "dog", "12", "--", "--foo", "-bar", "\"baz\"", "qux" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Remaining.Count.ShouldBe(4);
+            capturedContext.Remaining[0].ShouldBe("--foo");
+            capturedContext.Remaining[1].ShouldBe("-bar");
+            capturedContext.Remaining[2].ShouldBe("\"baz\"");
+            capturedContext.Remaining[3].ShouldBe("qux");
         }
 
         [Fact]

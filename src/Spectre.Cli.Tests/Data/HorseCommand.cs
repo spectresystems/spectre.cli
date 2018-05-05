@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Linq;
 using Spectre.Cli.Tests.Data.Settings;
 
 namespace Spectre.Cli.Tests.Data
@@ -7,9 +6,9 @@ namespace Spectre.Cli.Tests.Data
     [Description("The horse command.")]
     public class HorseCommand : AnimalCommand<MammalSettings>
     {
-        public override int Execute(MammalSettings settings, ILookup<string, string> remaining)
+        public override int Execute(CommandContext context, MammalSettings settings)
         {
-            DumpSettings(settings, remaining);
+            DumpSettings(context, settings);
             return 0;
         }
     }
