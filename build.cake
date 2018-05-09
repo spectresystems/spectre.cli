@@ -11,6 +11,12 @@ var ci = AppVeyorSettings.Initialize(Context);
 var version = BuildVersion.Calculate(Context, ci);
 var settings = MSBuildHelper.CreateSettings(version);
 
+Setup(context => 
+{
+    context.Information("Version: {0}", version.Version);
+    context.Information("Semantic version: {0}", version.SemVersion);
+});
+
 Task("Clean")
     .Does(() =>
 {

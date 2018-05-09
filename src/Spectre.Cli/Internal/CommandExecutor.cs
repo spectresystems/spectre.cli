@@ -29,7 +29,7 @@ namespace Spectre.Cli.Internal
             var model = CommandModelBuilder.Build(configuration);
 
             // Parse and map the model against the arguments.
-            var parser = new CommandTreeParser(model, new CommandOptionAttribute("-h|--help"));
+            var parser = new CommandTreeParser(model);
             var (tree, remaining) = parser.Parse(args);
 
             // Currently the root?
