@@ -16,7 +16,13 @@ namespace Spectre.Cli.Internal.Modelling
                 result.Add(Build(null, command));
             }
 
-            var model = new CommandModel(configuration.ApplicationName, result);
+            var defaultCommand = default(CommandInfo);
+            if (configuration.DefaultCommand != null)
+            {
+                defaultCommand = Build(null, configuration.DefaultCommand);
+            }
+
+            var model = new CommandModel(configuration.ApplicationName, defaultCommand, result);
             CommandModelValidator.Validate(model);
             return model;
         }

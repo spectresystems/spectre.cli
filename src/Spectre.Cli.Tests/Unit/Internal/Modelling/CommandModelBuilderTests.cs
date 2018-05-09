@@ -166,6 +166,29 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
                 .DefaultValue.Value.ShouldBe(10);
         }
 
+        [Fact]
+        public void Should_Generate_Correct_Model_For_Default_Command()
+        {
+            // Given
+            var configurator = new Configurator(null, typeof(DogCommand));
+
+            // When
+            var model = CommandModelBuilder.Build(configurator);
+
+            // Then
+            model.DefaultCommand.ShouldNotBeNull();
+            model.DefaultCommand.As(command =>
+            {
+                command.CommandType.ShouldBe<DogCommand>();
+                command.SettingsType.ShouldBe<DogSettings>();
+                command.Children.Count.ShouldBe(0);
+                command.Description.ShouldBe("The dog command.");
+                command.IsBranch.ShouldBeFalse();
+                command.Name.ShouldBe("__default_command");
+                command.Parent.ShouldBeNull();
+            });
+        }
+
         /// <summary>
         /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
         /// </summary>
@@ -258,13 +281,42 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             });
 
             // When
-            var model = Record.Exception(() => CommandModelBuilder.Build(configurator));
+            var result = Record.Exception(() => CommandModelBuilder.Build(configurator));
 
             // Then
-            model.ShouldBeOfType<ConfigurationException>().And(exception =>
+            result.ShouldBeOfType<ConfigurationException>().And(exception =>
             {
                 exception.Message.ShouldBe("The branch 'animal' does not define any commands.");
             });
+        }
+
+        [Fact]
+        public void Should_Throw_If_No_Commands_Not_Default_Command_Have_Been_Configured()
+        {
+            // Given
+            var configurator = new Configurator(null);
+
+            // When
+            var result = Record.Exception(() => CommandModelBuilder.Build(configurator));
+
+            // Then
+            result.ShouldBeOfType<ConfigurationException>().And(exception =>
+            {
+                exception.Message.ShouldBe("No commands have been configured.");
+            });
+        }
+
+        [Fact]
+        public void Should_Not_Throw_If_No_Commands_Have_Been_Configured_But_A_Default_Command_Has()
+        {
+            // Given
+            var configurator = new Configurator(null, typeof(DogCommand));
+
+            // When
+            var result = CommandModelBuilder.Build(configurator);
+
+            // Then
+            result.DefaultCommand.ShouldNotBeNull();
         }
     }
 }

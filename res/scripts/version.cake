@@ -4,9 +4,7 @@ public class BuildVersion
 {
     public string Version { get; private set; }
     public string SemVersion { get; private set; }
-    public string DotNetAsterix { get; private set; }
     public string Milestone { get; private set; }
-    public string CakeVersion { get; private set; }
 
     public static BuildVersion Calculate(ICakeContext context, AppVeyorSettings appVeyor)
     {
@@ -15,9 +13,17 @@ public class BuildVersion
             throw new ArgumentNullException("context");
         }
 
+        if(appVeyor.IsLocal)
+        {
+            return new BuildVersion
+            {
+                Version = "0.0.1",
+                SemVersion = "0.0.1-Local"
+            };
+        }
+
         string version = null;
         string semVersion = null;
-        string milestone = null;
 
         if (context.IsRunningOnWindows())
         {
@@ -27,8 +33,6 @@ public class BuildVersion
             {
                 // Update AppVeyor version number.
                 context.GitVersion(new GitVersionSettings{
-                    UpdateAssemblyInfoFilePath = "./src/SolutionInfo.cs",
-                    UpdateAssemblyInfo = true,
                     OutputType = GitVersionOutput.BuildServer
                 });
             }
@@ -41,29 +45,18 @@ public class BuildVersion
 
         version = assertedVersions.MajorMinorPatch;
         semVersion = assertedVersions.LegacySemVerPadded;
-        milestone = string.Concat("v", version);
-
-        context.Information("Version: {0}", version);
-        context.Information("Semantic version: {0}", semVersion);
-        context.Information("Milestone: {0}", milestone);
 
         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(semVersion))
         {
             context.Information("Fetching version from solution info...");
             version = ReadSolutionInfoVersion(context);
             semVersion = version;
-            milestone = string.Concat("v", version);
         }
-
-        var cakeVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
 
         return new BuildVersion
         {
             Version = version,
-            SemVersion = semVersion,
-            DotNetAsterix = semVersion.Substring(version.Length).TrimStart('-'),
-            Milestone = milestone,
-            CakeVersion = cakeVersion
+            SemVersion = semVersion
         };
     }
 

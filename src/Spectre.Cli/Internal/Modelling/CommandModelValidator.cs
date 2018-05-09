@@ -9,7 +9,7 @@ namespace Spectre.Cli.Internal.Modelling
     {
         public static void Validate(CommandModel model)
         {
-            if (model.Commands.Count == 0)
+            if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
                 throw ConfigurationException.NoCommandConfigured();
             }

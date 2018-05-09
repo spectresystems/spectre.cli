@@ -11,10 +11,10 @@ namespace Spectre.Cli.Internal.Parsing
         private readonly CommandModel _configuration;
         private readonly CommandOptionAttribute _help;
 
-        public CommandTreeParser(CommandModel configuration, CommandOptionAttribute help = null)
+        public CommandTreeParser(CommandModel configuration)
         {
             _configuration = configuration;
-            _help = help;
+            _help = new CommandOptionAttribute("-h|--help");
         }
 
         public (CommandTree tree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args)
@@ -25,23 +25,52 @@ namespace Spectre.Cli.Internal.Parsing
             var result = (CommandTree)null;
             if (tokens.Count > 0)
             {
+                // Not a command?
                 var token = tokens.Current;
                 if (token.TokenKind != CommandTreeToken.Kind.String)
                 {
+                    // Got a default command?
+                    if (_configuration.DefaultCommand != null)
+                    {
+                        result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                        return (result, context.Remaining);
+                    }
+
+                    // Show help?
                     if (_help != null)
                     {
                         if (_help.ShortName?.Equals(token.Value, StringComparison.Ordinal) == true ||
                             _help.LongName?.Equals(token.Value, StringComparison.Ordinal) == true)
                         {
-                            // Show help
                             return (null, context.Remaining);
                         }
                     }
 
+                    // Unexpected option.
                     throw ParseException.UnexpectedOption(context.Arguments, token);
                 }
 
+                // Does the token value match a command?
+                var command = _configuration.FindCommand(token.Value);
+                if (command == null)
+                {
+                    if (_configuration.DefaultCommand != null)
+                    {
+                        result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                        return (result, context.Remaining);
+                    }
+                }
+
+                // Parse the command.
                 result = ParseCommand(context, _configuration, null, tokens);
+            }
+            else
+            {
+                // Is there a default command?
+                if (_configuration.DefaultCommand != null)
+                {
+                    result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                }
             }
 
             return (result, context.Remaining);
@@ -53,8 +82,6 @@ namespace Spectre.Cli.Internal.Parsing
             CommandTree parent,
             CommandTreeTokenStream stream)
         {
-            context.ResetArgumentPosition();
-
             // Find the command.
             var commandToken = stream.Consume(CommandTreeToken.Kind.String);
             var command = current.FindCommand(commandToken.Value);
@@ -62,6 +89,17 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 throw ParseException.UnknownCommand(context.Arguments, commandToken);
             }
+
+            return ParseCommandParameters(context, command, parent, stream);
+        }
+
+        private CommandTree ParseCommandParameters(
+            CommandTreeParserContext context,
+            CommandInfo command,
+            CommandTree parent,
+            CommandTreeTokenStream stream)
+        {
+            context.ResetArgumentPosition();
 
             var node = new CommandTree(parent, command);
             while (stream.Peek() != null)

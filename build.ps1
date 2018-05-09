@@ -3,9 +3,9 @@ if(!$PSScriptRoot){
 }
 
 # Make sure the tool path exists.
-$Tools = Join-Path $PSScriptRoot "tools";
+$Tools = Join-Path $PSScriptRoot "tools"
 if(!(Test-Path $Tools)) {
-    New-Item $Tools -ItemType Directory
+    New-Item $Tools -ItemType Directory | Out-Null
 }
 
 # Make sure that cakeup is present.
