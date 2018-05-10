@@ -39,25 +39,29 @@ namespace Spectre.Cli.Internal
 
         private static void WriteUsage(RenderableComposer composer, CommandModel model, CommandInfo command)
         {
-            var stack = new Stack<IRenderable>();
+            var parameters = new Stack<IRenderable>();
 
             if (command == null)
             {
-                stack.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
-                stack.Push(new ColorElement(ConsoleColor.DarkGray, new TextElement("[OPTIONS]")));
+                parameters.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
+                parameters.Push(new ColorElement(ConsoleColor.DarkGray, new TextElement("[OPTIONS]")));
             }
             else
             {
                 var current = command;
                 if (command.IsBranch)
                 {
-                    stack.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
+                    parameters.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
                 }
 
                 while (current != null)
                 {
                     var builder = new BlockElement();
-                    builder.Append(new TextElement(current.Name));
+
+                    if (!current.IsDefaultCommand)
+                    {
+                        builder.Append(new TextElement(current.Name));
+                    }
 
                     if (current.Parameters.OfType<CommandArgument>().Any())
                     {
@@ -78,21 +82,31 @@ namespace Spectre.Cli.Internal
                             foreach (var optionalArgument in optionalArguments)
                             {
                                 var text = new TextElement($" [{optionalArgument.Value}]");
-                                builder.Append(new ColorElement(ConsoleColor.DarkGray, text));
+                                builder.Append(new ColorElement(ConsoleColor.Gray, text));
                             }
                         }
                     }
 
-                    builder.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement(" [OPTIONS]")));
+                    if (current == command)
+                    {
+                        builder.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement(" [OPTIONS]")));
+                    }
 
-                    stack.Push(builder);
+                    parameters.Push(builder);
                     current = current.Parent;
                 }
             }
 
             composer.Color(ConsoleColor.Yellow, c => c.Text("USAGE:")).LineBreak();
             composer.Tab().Text(model.ApplicationName ?? Assembly.GetEntryAssembly().GetName().Name);
-            composer.Space().Join(" ", stack);
+
+            // Root or not a default command?
+            if (command == null || !command.IsDefaultCommand)
+            {
+                composer.Space();
+            }
+
+            composer.Join(" ", parameters);
         }
 
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
@@ -141,7 +155,7 @@ namespace Spectre.Cli.Internal
                     if (value != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement($"<{value}>")));
+                        item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{value}>")));
                     }
 
                     result.Add((description, item));
@@ -192,8 +206,8 @@ namespace Spectre.Cli.Internal
 
                 // Argument name.
                 composer.Condition(required,
-                    @true: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"<{name}>")),
-                    @false: c1 => c1.Color(ConsoleColor.DarkGray, c => c.Text($"[{name}]")));
+                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{name}>")),
+                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{name}]")));
 
                 // Description
                 composer.Spaces(maxLength - name.Length);

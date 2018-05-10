@@ -73,6 +73,21 @@ namespace Spectre.Cli.Tests.Unit.Internal
             result.ShouldBe(expected);
         }
 
+        [Theory]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Help/Default")]
+        public void Should_Output_Default_Command_Correctly(string expected)
+        {
+            // Given
+            var configurator = new Configurator(new FakeTypeRegistrar(), typeof(LionCommand));
+            configurator.SetApplicationName("myapp");
+
+            // When
+            var result = Fixture.Write(configurator, model => model.DefaultCommand);
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
         internal static class Fixture
         {
             public static string Write(Configurator configurator)

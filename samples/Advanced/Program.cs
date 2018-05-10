@@ -11,7 +11,7 @@ namespace Sample
         public static async Task<int> Main(string[] args)
         {
             var registrar = new AutofacTypeRegistrar(BuildContainer());
-            var app = new CommandApp(registrar);
+            var app = new CommandApp<BuildCommand>(registrar);
 
             app.Configure(config =>
             {

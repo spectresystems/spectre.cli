@@ -47,6 +47,7 @@
     <None Remove="Data\Resources\Exceptions\Template\UnterminatedValueName" />
     <None Remove="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
     <None Remove="Data\Resources\Help\Command" />
+    <None Remove="Data\Resources\Help\Default" />
     <None Remove="Data\Resources\Help\Leaf" />
     <None Remove="Data\Resources\Models\case1.xml" />
     <None Remove="Data\Resources\Models\case2.xml" />
@@ -86,6 +87,7 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
+    <EmbeddedResource Include="Data\Resources\Help\Default" />
     <EmbeddedResource Include="Data\Resources\Help\Leaf" />
     <EmbeddedResource Include="Data\Resources\Help\Root" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
