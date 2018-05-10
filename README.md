@@ -1,10 +1,8 @@
 # Spectre.Cli
 
-An extremly opinionated command line parser.
+An extremly opinionated command line parser targeting [.NET Standard 2.0](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support).
 
-[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli)
-
-![Build Status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)
+[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli) ![Build Status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)
 
 ## Usage
 
