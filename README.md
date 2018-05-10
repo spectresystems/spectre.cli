@@ -1,10 +1,8 @@
 # Spectre.Cli
 
-An extremly opinionated command line parser.
+An extremly opinionated command line parser targeting [.NET Standard 2.0](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support).
 
-[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)](https://ci.appveyor.com/project/patriksvensson/spectre-cli)
+[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli) ![Build Status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)
 
 ## Usage
 
@@ -23,10 +21,10 @@ public class Program
 
         app.Configure(config =>
         {
-            config.AddCommand<EfSettings>("ef", ef =>
+            config.AddBranch<EfSettings>("ef", ef =>
             {
                 ef.SetDescription("Fake EF Core .NET Command Line Tools");
-                ef.AddCommand<EfDatabaseSettings>("database", database =>
+                ef.AddBranch<EfDatabaseSettings>("database", database =>
                 {
                     database.AddCommand<EfUpdateCommand>("update");
                     database.AddCommand<EfDropCommand>("drop");

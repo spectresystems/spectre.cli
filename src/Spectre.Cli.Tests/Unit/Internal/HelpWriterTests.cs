@@ -40,7 +40,7 @@ namespace Spectre.Cli.Tests.Unit.Internal
             // Given
             var configurator = new Configurator(new FakeTypeRegistrar());
             configurator.SetApplicationName("myapp");
-            configurator.AddCommand<CatSettings>("cat", animal =>
+            configurator.AddBranch<CatSettings>("cat", animal =>
             {
                 animal.SetDescription("Contains settings for a cat.");
                 animal.AddCommand<LionCommand>("lion");
@@ -60,7 +60,7 @@ namespace Spectre.Cli.Tests.Unit.Internal
             // Given
             var configurator = new Configurator(new FakeTypeRegistrar());
             configurator.SetApplicationName("myapp");
-            configurator.AddCommand<CatSettings>("cat", animal =>
+            configurator.AddBranch<CatSettings>("cat", animal =>
             {
                 animal.SetDescription("Contains settings for a cat.");
                 animal.AddCommand<LionCommand>("lion");
@@ -68,6 +68,21 @@ namespace Spectre.Cli.Tests.Unit.Internal
 
             // When
             var result = Fixture.Write(configurator, model => model.Commands[0].Children[0]);
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        [Theory]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Help/Default")]
+        public void Should_Output_Default_Command_Correctly(string expected)
+        {
+            // Given
+            var configurator = new Configurator(new FakeTypeRegistrar(), typeof(LionCommand));
+            configurator.SetApplicationName("myapp");
+
+            // When
+            var result = Fixture.Write(configurator, model => model.DefaultCommand);
 
             // Then
             result.ShouldBe(expected);

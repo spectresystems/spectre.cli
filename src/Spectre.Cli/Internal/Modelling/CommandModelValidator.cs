@@ -9,7 +9,7 @@ namespace Spectre.Cli.Internal.Modelling
     {
         public static void Validate(CommandModel model)
         {
-            if (model.Commands.Count == 0)
+            if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
                 throw ConfigurationException.NoCommandConfigured();
             }
@@ -27,6 +27,12 @@ namespace Spectre.Cli.Internal.Modelling
             if (options.Length > 0)
             {
                 throw ConfigurationException.DuplicateOption(command, options);
+            }
+
+            // No children?
+            if (command.IsBranch && command.Children.Count == 0)
+            {
+                throw ConfigurationException.BranchHasNoChildren(command);
             }
 
             // Validate child commands.

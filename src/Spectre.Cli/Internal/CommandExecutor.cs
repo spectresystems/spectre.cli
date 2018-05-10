@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
@@ -30,7 +29,7 @@ namespace Spectre.Cli.Internal
             var model = CommandModelBuilder.Build(configuration);
 
             // Parse and map the model against the arguments.
-            var parser = new CommandTreeParser(model, new CommandOptionAttribute("-h|--help"));
+            var parser = new CommandTreeParser(model);
             var (tree, remaining) = parser.Parse(args);
 
             // Currently the root?
@@ -43,27 +42,29 @@ namespace Spectre.Cli.Internal
 
             // Get the command to execute.
             var leaf = tree.GetLeafCommand();
-            if (leaf.Command.IsProxy || leaf.ShowHelp)
+            if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
-                // Proxy's can't be executed. Show help.
+                // Branches can't be executed. Show help.
                 ConsoleRenderer.Render(HelpWriter.WriteCommand(model, leaf.Command));
                 return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 
             // Register the arguments with the container.
-            var arguments = new Arguments(remaining);
-            _registrar?.RegisterInstance(typeof(IArguments), arguments);
+            var arguments = new RemainingArguments(remaining);
+            _registrar?.RegisterInstance(typeof(IRemainingArguments), arguments);
 
-            // Create the resolver.
+            // Create the resolver and the context.
             var resolver = new TypeResolverAdapter(_registrar?.Build());
+            var context = new CommandContext(remaining);
 
             // Execute the command tree.
-            return Execute(leaf, tree, remaining, resolver);
+            return Execute(leaf, tree, context, resolver);
         }
 
-        private static Task<int> Execute(CommandTree leaf,
+        private static Task<int> Execute(
+            CommandTree leaf,
             CommandTree tree,
-            ILookup<string, string> remaining,
+            CommandContext context,
             ITypeResolver resolver)
         {
             // Create the command and the settings.
@@ -74,14 +75,14 @@ namespace Spectre.Cli.Internal
 
             // Create and validate the command.
             var command = leaf.CreateCommand(resolver);
-            var validationResult = command.Validate(settings, remaining);
+            var validationResult = command.Validate(context, settings);
             if (!validationResult.Successful)
             {
                 throw RuntimeException.ValidationFailed(validationResult);
             }
 
             // Execute the command.
-            return command.Execute(settings, remaining);
+            return command.Execute(context, settings);
         }
     }
 }

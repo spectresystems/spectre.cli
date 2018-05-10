@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing.Tokenization;
 
 namespace Spectre.Cli.Internal.Parsing
 {
@@ -12,13 +11,13 @@ namespace Spectre.Cli.Internal.Parsing
         private readonly CommandModel _configuration;
         private readonly CommandOptionAttribute _help;
 
-        public CommandTreeParser(CommandModel configuration, CommandOptionAttribute help = null)
+        public CommandTreeParser(CommandModel configuration)
         {
             _configuration = configuration;
-            _help = help;
+            _help = new CommandOptionAttribute("-h|--help");
         }
 
-        public (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args)
+        public (CommandTree tree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args)
         {
             var context = new CommandTreeParserContext(args);
             var tokens = CommandTreeTokenizer.Tokenize(context.Arguments);
@@ -26,26 +25,55 @@ namespace Spectre.Cli.Internal.Parsing
             var result = (CommandTree)null;
             if (tokens.Count > 0)
             {
+                // Not a command?
                 var token = tokens.Current;
                 if (token.TokenKind != CommandTreeToken.Kind.String)
                 {
+                    // Got a default command?
+                    if (_configuration.DefaultCommand != null)
+                    {
+                        result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                        return (result, context.Remaining);
+                    }
+
+                    // Show help?
                     if (_help != null)
                     {
                         if (_help.ShortName?.Equals(token.Value, StringComparison.Ordinal) == true ||
                             _help.LongName?.Equals(token.Value, StringComparison.Ordinal) == true)
                         {
-                            // Show help
-                            return (null, context.GetRemainingArguments());
+                            return (null, context.Remaining);
                         }
                     }
 
+                    // Unexpected option.
                     throw ParseException.UnexpectedOption(context.Arguments, token);
                 }
 
+                // Does the token value match a command?
+                var command = _configuration.FindCommand(token.Value);
+                if (command == null)
+                {
+                    if (_configuration.DefaultCommand != null)
+                    {
+                        result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                        return (result, context.Remaining);
+                    }
+                }
+
+                // Parse the command.
                 result = ParseCommand(context, _configuration, null, tokens);
             }
+            else
+            {
+                // Is there a default command?
+                if (_configuration.DefaultCommand != null)
+                {
+                    result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
+                }
+            }
 
-            return (result, context.GetRemainingArguments());
+            return (result, context.Remaining);
         }
 
         private CommandTree ParseCommand(
@@ -54,8 +82,6 @@ namespace Spectre.Cli.Internal.Parsing
             CommandTree parent,
             CommandTreeTokenStream stream)
         {
-            context.ResetArgumentPosition();
-
             // Find the command.
             var commandToken = stream.Consume(CommandTreeToken.Kind.String);
             var command = current.FindCommand(commandToken.Value);
@@ -63,6 +89,17 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 throw ParseException.UnknownCommand(context.Arguments, commandToken);
             }
+
+            return ParseCommandParameters(context, command, parent, stream);
+        }
+
+        private CommandTree ParseCommandParameters(
+            CommandTreeParserContext context,
+            CommandInfo command,
+            CommandTree parent,
+            CommandTreeTokenStream stream)
+        {
+            context.ResetArgumentPosition();
 
             var node = new CommandTree(parent, command);
             while (stream.Peek() != null)
@@ -81,6 +118,10 @@ namespace Spectre.Cli.Internal.Parsing
                     case CommandTreeToken.Kind.String:
                         // Command
                         ParseString(context, stream, node);
+                        break;
+                    case CommandTreeToken.Kind.Remaining:
+                        // Remaining
+                        ParseRemaining(context, stream);
                         break;
                     default:
                         throw new InvalidOperationException($"Encountered unknown token ({token.TokenKind}).");
@@ -161,13 +202,7 @@ namespace Spectre.Cli.Internal.Parsing
                 }
             }
 
-            // Parent does not have this option mapped?
-            if (!node.IsMappedWithParent(token.Value, isLongOption))
-            {
-                // Add this option as an remaining argument.
-                var optionName = token.TokenKind == CommandTreeToken.Kind.LongOption ? $"--{token.Value}" : $"-{token.Value}";
-                context.AddRemainingArgument(optionName, ParseOptionValue(context, stream, owner, node, null));
-            }
+            throw ParseException.UnknownOption(context.Arguments, token);
         }
 
         private static string ParseOptionValue(
@@ -221,13 +256,24 @@ namespace Spectre.Cli.Internal.Parsing
                             throw ParseException.OptionHasNoValue(context.Arguments, owner, option);
                         default:
                             // This should not happen at all. If it does, it's because we've added a new
-                            // option typer which isn't a CommandOption for some reason.
+                            // option type which isn't a CommandOption for some reason.
                             throw new InvalidOperationException($"Found invalid parameter type '{parameter.GetType().FullName}'.");
                     }
                 }
             }
 
             return value;
+        }
+
+        private static void ParseRemaining(
+            CommandTreeParserContext context,
+            CommandTreeTokenStream stream)
+        {
+            while (stream.Peek() != null)
+            {
+                var token = stream.Consume(CommandTreeToken.Kind.Remaining);
+                context.AddRemainingArgument(token.Value);
+            }
         }
     }
 }

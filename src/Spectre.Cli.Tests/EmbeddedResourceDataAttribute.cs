@@ -9,19 +9,22 @@ namespace Spectre.Cli.Tests
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class EmbeddedResourceDataAttribute : DataAttribute
     {
-        private readonly string[] _args;
+        private readonly string _resource;
+        private readonly object[] _args;
 
-        public EmbeddedResourceDataAttribute(params string[] args)
+        public EmbeddedResourceDataAttribute(string resource, params object[] args)
         {
+            _resource = resource;
             _args = args;
         }
 
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
-            var result = new object[_args.Length];
+            var result = new object[_args.Length + 1];
+            result[0] = ReadManifestData(_resource);
             for (var index = 0; index < _args.Length; index++)
             {
-                result[index] = ReadManifestData(_args[index]);
+                result[index + 1] = _args[index];
             }
             return new[] { result };
         }

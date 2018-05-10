@@ -7,18 +7,18 @@ namespace Spectre.Cli.Tests.Data
     [Description("The dog command.")]
     public class DogCommand : AnimalCommand<DogSettings>
     {
-        public override ValidationResult Validate(DogSettings settings, ILookup<string, string> remaining)
+        public override ValidationResult Validate(CommandContext context, DogSettings settings)
         {
-            if (settings.Age > 100 && !remaining.Contains("zombie"))
+            if (settings.Age > 100 && !context.Remaining.Contains("zombie"))
             {
                 return ValidationResult.Error("Dog is too old...");
             }
-            return base.Validate(settings, remaining);
+            return base.Validate(context, settings);
         }
 
-        public override int Execute(DogSettings settings, ILookup<string, string> remaining)
+        public override int Execute(CommandContext context, DogSettings settings)
         {
-            DumpSettings(settings, remaining);
+            DumpSettings(context, settings);
             return 0;
         }
     }

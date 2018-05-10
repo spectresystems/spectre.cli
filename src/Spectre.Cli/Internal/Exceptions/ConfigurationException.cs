@@ -34,5 +34,10 @@ namespace Spectre.Cli.Internal.Exceptions
 
             return new ConfigurationException($"Option {keys} is duplicated in command '{command.Name}'.");
         }
+
+        public static ConfigurationException BranchHasNoChildren(CommandInfo command)
+        {
+            throw new ConfigurationException($"The branch '{command.Name}' does not define any commands.");
+        }
     }
 }

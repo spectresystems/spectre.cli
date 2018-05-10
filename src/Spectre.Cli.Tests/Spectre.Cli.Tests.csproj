@@ -17,12 +17,17 @@
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Long" />
     <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
+    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
+    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnterminatedQuote" />
     <None Remove="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
     <None Remove="Data\Resources\Exceptions\Template\CouldNotMatchArgument" />
@@ -42,6 +47,7 @@
     <None Remove="Data\Resources\Exceptions\Template\UnterminatedValueName" />
     <None Remove="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
     <None Remove="Data\Resources\Help\Command" />
+    <None Remove="Data\Resources\Help\Default" />
     <None Remove="Data\Resources\Help\Leaf" />
     <None Remove="Data\Resources\Models\case1.xml" />
     <None Remove="Data\Resources\Models\case2.xml" />
@@ -51,6 +57,10 @@
     <None Remove="Data\Resources\Parsing\case2.xml" />
     <None Remove="Data\Resources\Parsing\case3.xml" />
     <None Remove="Data\Resources\Parsing\case4.xml" />
+    <None Remove="Data\Resources\Parsing\default1.xml" />
+    <None Remove="Data\Resources\Parsing\default2.xml" />
+    <None Remove="Data\Resources\Parsing\default3.xml" />
+    <None Remove="Data\Resources\Parsing\default4.xml" />
     <None Remove="Spectre.Cli.Tests.v3.ncrunchproject" />
   </ItemGroup>
 
@@ -63,15 +73,21 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameContainSymbol" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\InvalidShortOptionName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
+    <EmbeddedResource Include="Data\Resources\Help\Default" />
     <EmbeddedResource Include="Data\Resources\Help\Leaf" />
     <EmbeddedResource Include="Data\Resources\Help\Root" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
@@ -95,6 +111,10 @@
     <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case3.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case4.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\default4.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\default3.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\default2.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\default1.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\case1.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\case3.xml" />
@@ -117,7 +137,7 @@
     <CodeAnalysisRuleSet>../Spectre.Test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -127,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli\Spectre.Cli.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

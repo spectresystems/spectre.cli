@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using Shouldly;
 using Spectre.Cli.Internal.Configuration;
@@ -19,47 +18,17 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Capture_Remaining_Arguments()
         {
             // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "dog", "--woof" }, config =>
+            var (_, remaining) = new Fixture().Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
             {
                 config.AddCommand<DogCommand>("dog");
             });
 
             // Then
-            remaining.Count.ShouldBe(1);
-            remaining.Contains("--woof").ShouldBe(true);
-        }
-
-        [Fact]
-        public void Should_Capture_Option_Beloning_To_Parent_Commands_As_Remaining_Arguments()
-        {
-            // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "animal", "dog", "--alive" }, config =>
-            {
-                config.AddCommand<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
-
-            // Then
-            remaining.Count.ShouldBe(1);
-            remaining.Contains("--alive").ShouldBe(true);
-        }
-
-        [Fact]
-        public void Should_Not_Capture_Option_Belonging_To_Parent_Commands_As_Remaining_Arguments_If_Option_Was_Assigned_To_Parent_Command()
-        {
-            // Given, When
-            var (_, remaining) = Fixture.Parse(new[] { "animal", "--alive", "dog", "--alive" }, config =>
-            {
-                config.AddCommand<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
-
-            // Then
-            remaining.Count.ShouldBe(0);
+            remaining.Count.ShouldBe(4);
+            remaining[0].ShouldBe("--foo");
+            remaining[1].ShouldBe("-bar");
+            remaining[2].ShouldBe("\"baz\"");
+            remaining[3].ShouldBe("qux");
         }
 
         /// <summary>
@@ -70,13 +39,13 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Parse_Correct_Tree_For_Case_1(string expected)
         {
             // Given, When
-            var result = Fixture.Serialize(
+            var result = new Fixture().Serialize(
                 new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
-                        animal.AddCommand<MammalSettings>("mammal", mammal =>
+                        animal.AddBranch<MammalSettings>("mammal", mammal =>
                         {
                             mammal.AddCommand<DogCommand>("dog");
                             mammal.AddCommand<HorseCommand>("horse");
@@ -96,7 +65,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Parse_Correct_Tree_For_Case_2(string expected)
         {
             // Given, When
-            var result = Fixture.Serialize(
+            var result = new Fixture().Serialize(
                 new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" },
                 config =>
                 {
@@ -115,11 +84,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Parse_Correct_Tree_For_Case_3(string expected)
         {
             // Given, When
-            var result = Fixture.Serialize(
+            var result = new Fixture().Serialize(
                 new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" },
                 config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -138,11 +107,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Parse_Correct_Tree_For_Case_4(string expected)
         {
             // Given, When
-            var result = Fixture.Serialize(
+            var result = new Fixture().Serialize(
                 new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
                     });
@@ -152,18 +121,62 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
             result.ShouldBe(expected);
         }
 
-        private static class Fixture
+        [Theory]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default1.xml")]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default2.xml", "--good-boy")]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default3.xml", "--help")]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default4.xml", "4", "12", "--good-boy")]
+        public void Should_Use_Default_Command_If_No_Command_Was_Specified(string expected, params string[] args)
         {
-            public static (CommandTree tree, ILookup<string, string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
+            // Given, When
+            var result = new Fixture()
+                .WithDefaultCommand<DogCommand>()
+                .Serialize(
+                    args, config =>
+                    {
+                        config.AddCommand<CatCommand>("cat");
+                    });
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_Not_Use_Default_Command_If_Command_Was_Specified()
+        {
+            // Given, When
+            var (tree, _) = new Fixture()
+                .WithDefaultCommand<DogCommand>()
+                .Parse(new[] { "cat" }, config =>
             {
-                var configurator = new Configurator(null);
+                config.AddCommand<CatCommand>("cat");
+            });
+
+            // Then
+            tree.Command.CommandType.ShouldBe<CatCommand>();
+            tree.Command.SettingsType.ShouldBe<CatSettings>();
+        }
+
+        private sealed class Fixture
+        {
+            private Type _defaultCommand;
+
+            public Fixture WithDefaultCommand<TCommand>()
+            {
+                _defaultCommand = typeof(TCommand);
+                return this;
+            }
+
+            public (CommandTree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
+            {
+                var configurator = new Configurator(null, _defaultCommand);
                 func(configurator);
 
                 var model = CommandModelBuilder.Build(configurator);
                 return new CommandTreeParser(model).Parse(args);
             }
 
-            public static string Serialize(IEnumerable<string> args, Action<Configurator> func)
+            public string Serialize(IEnumerable<string> args, Action<Configurator> func)
             {
                 var (tree, _) = Parse(args, func);
 

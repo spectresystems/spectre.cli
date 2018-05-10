@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Spectre.Cli
@@ -14,10 +13,10 @@ namespace Spectre.Cli
         /// <summary>
         /// Validates the specified settings and remaining arguments.
         /// </summary>
+        /// <param name="context">The command context.</param>
         /// <param name="settings">The settings.</param>
-        /// <param name="remaining">The remaining arguments.</param>
         /// <returns>The validation result.</returns>
-        public virtual ValidationResult Validate(TSettings settings, ILookup<string, string> remaining)
+        public virtual ValidationResult Validate(CommandContext context, TSettings settings)
         {
             return ValidationResult.Success();
         }
@@ -25,25 +24,25 @@ namespace Spectre.Cli
         /// <summary>
         /// Executes the command.
         /// </summary>
+        /// <param name="context">The command context.</param>
         /// <param name="settings">The settings.</param>
-        /// <param name="remaining">The remaining arguments.</param>
         /// <returns>The validation result.</returns>
-        public abstract int Execute(TSettings settings, ILookup<string, string> remaining);
+        public abstract int Execute(CommandContext context, TSettings settings);
 
-        ValidationResult ICommand.Validate(object settings, ILookup<string, string> remaining)
+        ValidationResult ICommand.Validate(CommandContext context, object settings)
         {
-            return Validate((TSettings)settings, remaining);
+            return Validate(context, (TSettings)settings);
         }
 
-        Task<int> ICommand.Execute(object settings, ILookup<string, string> remaining)
+        Task<int> ICommand.Execute(CommandContext context, object settings)
         {
             Debug.Assert(settings is TSettings, "Command settings is of unexpected type.");
-            return Task.FromResult(Execute((TSettings)settings, remaining));
+            return Task.FromResult(Execute(context, (TSettings)settings));
         }
 
-        Task<int> ICommand<TSettings>.Execute(TSettings settings, ILookup<string, string> remaining)
+        Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings)
         {
-            return Task.FromResult(Execute(settings, remaining));
+            return Task.FromResult(Execute(context, settings));
         }
     }
 }

@@ -1,126 +1,28 @@
-<#
-.SYNOPSIS
-This is a Powershell script to bootstrap a Cake build.
-.DESCRIPTION
-This Powershell script will download NuGet if missing, restore NuGet tools (including Cake)
-and execute your Cake build script with the parameters you provide.
-.PARAMETER Target
-The build script target to run.
-.PARAMETER Configuration
-The build configuration to use.
-.PARAMETER Verbosity
-Specifies the amount of information to be displayed.
-.PARAMETER WhatIf
-Performs a dry run of the build script.
-No tasks will be executed.
-.PARAMETER ScriptArgs
-Remaining arguments are added here.
-.LINK
-http://cakebuild.net
-#>
-
-[CmdletBinding()]
-Param(
-    [string]$Target = "Default",
-    [ValidateSet("Release", "Debug")]
-    [string]$Configuration = "Release",
-    [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
-    [string]$Verbosity = "Verbose",
-    [switch]$WhatIf,
-    [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
-    [string[]]$ScriptArgs
-)
-
-$CakeVersion = "0.26.0"
-$DotNetVersion = "2.1.4"
-$DotNetInstallerUri = "https://dot.net/v1/dotnet-install.ps1";
-$NugetUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-
-# Make sure tools folder exists
-$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-$ToolPath = Join-Path $PSScriptRoot "tools"
-if (!(Test-Path $ToolPath)) {
-    Write-Verbose "Creating tools directory..."
-    New-Item -Path $ToolPath -Type directory | out-null
+if(!$PSScriptRoot){
+    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-###########################################################################
-# INSTALL .NET CORE CLI
-###########################################################################
-
-Function Remove-PathVariable([string]$VariableToRemove, [string]$Scope)
-{
-  $path = [Environment]::GetEnvironmentVariable("PATH", $Scope)
-  $newItems = $path -Split ';' | Where-Object { $_.ToString() -inotlike $VariableToRemove }
-  [Environment]::SetEnvironmentVariable("PATH", [System.String]::Join(';', $newItems), $Scope)
+# Make sure the tool path exists.
+$Tools = Join-Path $PSScriptRoot "tools"
+if(!(Test-Path $Tools)) {
+    New-Item $Tools -ItemType Directory | Out-Null
 }
 
-# Get .NET Core CLI path if installed.
-$FoundDotNetCliVersion = $null;
-if (Get-Command dotnet -ErrorAction SilentlyContinue) 
-{
-    $FoundDotNetCliVersion = dotnet --version;
-}
-
-# Is the version we want installed?
-if($FoundDotNetCliVersion -ne $DotNetVersion) 
-{
-    $InstallPath = Join-Path $PSScriptRoot ".dotnet"
-    if (!(Test-Path $InstallPath)) {
-        mkdir -Force $InstallPath | Out-Null;
-    }
-
-    (New-Object System.Net.WebClient).DownloadFile($DotNetInstallerUri, "$InstallPath\dotnet-install.ps1");
-    & $InstallPath\dotnet-install.ps1 -Version $DotNetVersion -InstallDir $InstallPath;
-
-    Remove-PathVariable -VariableToRemove "$InstallPath" -Scope "User"
-    Remove-PathVariable -VariableToRemove "$InstallPath" -Scope "Process"
-
-    $env:PATH = "$InstallPath;$env:PATH"
-    $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-}
-
-# Opt out from telemetry.
-$env:DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-###########################################################################
-# INSTALL NUGET
-###########################################################################
-
-# Make sure nuget.exe exists.
-$NugetPath = Join-Path $ToolPath "nuget.exe"
-if (!(Test-Path $NugetPath)) {
-    Write-Output "Downloading NuGet.exe..."
-    (New-Object System.Net.WebClient).DownloadFile($NugetUrl, $NugetPath);
-}
-
-###########################################################################
-# INSTALL CAKE
-###########################################################################
-
-# Make sure Cake has been installed.
-$CakePath = Join-Path $ToolPath "Cake.$CakeVersion/Cake.exe"
-if (!(Test-Path $CakePath)) {
-    Write-Output "Installing Cake..."
-    Invoke-Expression "&`"$NugetPath`" install Cake -Version $CakeVersion -OutputDirectory `"$ToolPath`"" | Out-Null;
-    if ($LASTEXITCODE -ne 0) {
-        Throw "An error occured while restoring Cake from NuGet."
+# Make sure that cakeup is present.
+$Cakeup = Join-Path $Tools "cakeup-x86_64-latest.exe"
+if (!(Test-Path $Cakeup)) {
+    Write-Verbose -Message "Downloading cakeup.exe ($CakeupVersion)..."
+    try {        
+        $wc = (New-Object System.Net.WebClient);
+        $wc.DownloadFile("https://cakeup.blob.core.windows.net/windows/cakeup-x86_64-latest.exe", $Cakeup) } catch {
+            Throw "Could not download cakeup.exe."
     }
 }
 
-###########################################################################
-# RUN BUILD SCRIPT
-###########################################################################
+# Execute Cakeup
+&$Cakeup run "--cake=0.26.1" "--sdk=2.1.4" `
+             "--bootstrap" "--execute" `
+             "--" "$args"
 
-# Build the argument list.
-$Arguments = @{
-    target=$Target;
-    configuration=$Configuration;
-    verbosity=$Verbosity;
-    dryrun=$WhatIf;
-}.GetEnumerator() | %{"--{0}=`"{1}`"" -f $_.key, $_.value };
-
-# Start Cake
-Write-Output "Running build script..."
-Invoke-Expression "&`"$CakePath`" `"$Script`" $Arguments $ScriptArgs"
-exit $LASTEXITCODE
+# Return the exit code from Cakeup.
+exit $LASTEXITCODE;

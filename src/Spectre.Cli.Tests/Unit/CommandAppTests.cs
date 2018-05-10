@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Tests.Data;
@@ -23,9 +22,9 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<MammalSettings>("mammal", mammal =>
+                    animal.AddBranch<MammalSettings>("mammal", mammal =>
                     {
                         mammal.AddCommand<DogCommand>("dog");
                         mammal.AddCommand<HorseCommand>("horse");
@@ -84,7 +83,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -114,7 +113,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                 });
@@ -133,6 +132,39 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
+        public void Should_Register_Remaining_Arguments_With_Context()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, settings) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                });
+            });
+
+            // When
+            app.Run(new[] { "animal", "4", "dog", "12", "--", "--foo", "-bar", "\"baz\"", "qux" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Remaining.Count.ShouldBe(4);
+            capturedContext.Remaining[0].ShouldBe("--foo");
+            capturedContext.Remaining[1].ShouldBe("-bar");
+            capturedContext.Remaining[2].ShouldBe("\"baz\"");
+            capturedContext.Remaining[3].ShouldBe("qux");
+        }
+
+        [Fact]
         public void Should_Register_Commands_When_Configuring_Application()
         {
             // Given
@@ -143,7 +175,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -168,7 +200,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -185,7 +217,7 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
-        public void Should_Register_Remaining_Arguments()
+        public void Should_Throw_When_Encountering_Unknown_Option()
         {
             // Given
             var registrar = new FakeTypeRegistrar();
@@ -193,7 +225,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -201,17 +233,12 @@ namespace Spectre.Cli.Tests.Unit
             });
 
             // When
-            app.Run(new[] { "animal", "--foo", "f", "dog", "5", "--bar", "b", "--name", "Rufus" });
+            var result = Record.Exception(() => app.Run(new[] { "animal", "--foo" }));
 
             // Then
-            registrar.Instances.ContainsKey(typeof(IArguments)).ShouldBeTrue();
-            registrar.Instances[typeof(IArguments)].Single().As<IArguments>(args =>
+            result.ShouldBeOfType<ParseException>().And(ex =>
             {
-                args.Count.ShouldBe(2);
-                args.Contains("--foo").ShouldBeTrue();
-                args["--foo"].Single().ShouldBe("f");
-                args.Contains("--bar").ShouldBeTrue();
-                args["--bar"].Single().ShouldBe("b");
+                ex.Message.ShouldBe("Unknown option 'foo'.");
             });
         }
 
@@ -223,7 +250,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -248,7 +275,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -273,7 +300,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
@@ -297,7 +324,7 @@ namespace Spectre.Cli.Tests.Unit
             var app = new CommandApp(new FakeTypeRegistrar());
             app.Configure(config =>
             {
-                config.AddCommand<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");

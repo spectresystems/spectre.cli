@@ -12,7 +12,7 @@ namespace Spectre.Cli.Tests
             command.SettingsType.ShouldBe<TSettings>();
         }
 
-        public static void ShouldBeProxy<TSettings>(this ConfiguredCommand command)
+        public static void ShouldBeBranch<TSettings>(this ConfiguredCommand command)
         {
             command.CommandType.ShouldBeNull();
             command.SettingsType.ShouldBe<TSettings>();

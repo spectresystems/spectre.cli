@@ -12,7 +12,7 @@ namespace Spectre.Cli
     /// <summary>
     /// The entry point for a command line application.
     /// </summary>
-    public sealed class CommandApp
+    public sealed class CommandApp : ICommandApp
     {
         private readonly Configurator _configurator;
         private readonly CommandExecutor _executor;
@@ -22,8 +22,18 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="registrar">The registrar.</param>
         public CommandApp(ITypeRegistrar registrar = null)
+            : this(registrar, null)
         {
-            _configurator = new Configurator(registrar);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandApp"/> class.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="defaultCommand">The default command type.</param>
+        internal CommandApp(ITypeRegistrar registrar = null, Type defaultCommand = null)
+        {
+            _configurator = new Configurator(registrar, defaultCommand);
             _executor = new CommandExecutor(registrar);
         }
 

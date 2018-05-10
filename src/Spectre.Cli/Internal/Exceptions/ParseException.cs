@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing.Tokenization;
+using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal.Exceptions
 {
-    internal class ParseException : RuntimeException
+    internal sealed class ParseException : RuntimeException
     {
         public ParseException(string message, IRenderable pretty = null)
             : base(message, pretty)
@@ -36,6 +36,11 @@ namespace Spectre.Cli.Internal.Exceptions
         public static ParseException OptionHasNoName(string input, CommandTreeToken token)
         {
             return ParseExceptionFactory.Create(input, token, "Option does not have a name.", "Did you forget the option name?");
+        }
+
+        public static ParseException OptionValueWasExpected(string input, CommandTreeToken token)
+        {
+            return ParseExceptionFactory.Create(input, token, "Expected an option value.", "Did you forget the option value?");
         }
 
         public static ParseException OptionHasNoValue(IEnumerable<string> args, CommandTreeToken token, CommandOption option)
@@ -97,6 +102,11 @@ namespace Spectre.Cli.Internal.Exceptions
         public static ParseException CouldNotMatchArgument(IEnumerable<string> args, CommandTreeToken token)
         {
             return ParseExceptionFactory.Create(args, token, $"Could not match '{token.Value}' with an argument.", "Could not match to argument.");
+        }
+
+        public static ParseException UnknownOption(IEnumerable<string> args, CommandTreeToken token)
+        {
+            return ParseExceptionFactory.Create(args, token, $"Unknown option '{token.Value}'.", "Unknown option.");
         }
     }
 }

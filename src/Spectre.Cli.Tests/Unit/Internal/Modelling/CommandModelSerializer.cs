@@ -54,7 +54,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Attributes
             node.SetNullableAttribute("name", command.Name);
-            node.SetBooleanAttribute("isproxy", command.IsProxy);
+            node.SetBooleanAttribute("isbranch", command.IsBranch);
             if (command.CommandType != null)
             {
                 node.SetNullableAttribute("type", command.CommandType?.FullName);

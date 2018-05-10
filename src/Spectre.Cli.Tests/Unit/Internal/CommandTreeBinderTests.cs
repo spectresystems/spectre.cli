@@ -24,9 +24,9 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 new[] { "animal", "--alive", "mammal", "--name", "Rufus", "dog", "12", "--good-boy" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
-                        animal.AddCommand<MammalSettings>("mammal", mammal =>
+                        animal.AddBranch<MammalSettings>("mammal", mammal =>
                         {
                             mammal.AddCommand<DogCommand>("dog");
                             mammal.AddCommand<HorseCommand>("horse");
@@ -74,7 +74,7 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" },
                 config =>
                 {
-                    config.AddCommand<AnimalSettings>("animal", animal =>
+                    config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
                         animal.AddCommand<HorseCommand>("horse");
