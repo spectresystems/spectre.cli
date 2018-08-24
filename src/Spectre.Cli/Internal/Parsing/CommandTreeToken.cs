@@ -6,6 +6,7 @@
         public int Position { get; }
         public string Value { get; }
         public string Representation { get; }
+        public bool IsGrouped { get; set; }
 
         public enum Kind
         {

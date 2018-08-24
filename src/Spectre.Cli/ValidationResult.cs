@@ -30,7 +30,7 @@ namespace Spectre.Cli
         /// <summary>
         /// Returns a successful validation result.
         /// </summary>
-        /// <returns>A successful validation result</returns>
+        /// <returns>A successful validation result.</returns>
         public static ValidationResult Success()
         {
             return new ValidationResult(true, null);
@@ -39,7 +39,7 @@ namespace Spectre.Cli
         /// <summary>
         /// Returns a validation error.
         /// </summary>
-        /// <param name="message">The error message</param>
+        /// <param name="message">The error message.</param>
         /// <returns>A validation error.</returns>
         public static ValidationResult Error(string message)
         {

@@ -18,17 +18,17 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Capture_Remaining_Arguments()
         {
             // Given, When
-            var (_, remaining) = new Fixture().Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
+            var (tree, remaining) = new Fixture().Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
             {
                 config.AddCommand<DogCommand>("dog");
             });
 
             // Then
-            remaining.Count.ShouldBe(4);
-            remaining[0].ShouldBe("--foo");
-            remaining[1].ShouldBe("-bar");
-            remaining[2].ShouldBe("\"baz\"");
-            remaining[3].ShouldBe("qux");
+            remaining.Raw.Count.ShouldBe(4);
+            remaining.Raw[0].ShouldBe("--foo");
+            remaining.Raw[1].ShouldBe("-bar");
+            remaining.Raw[2].ShouldBe("\"baz\"");
+            remaining.Raw[3].ShouldBe("qux");
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 return this;
             }
 
-            public (CommandTree, IReadOnlyList<string> remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
+            public (CommandTree, IRemainingArguments remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
             {
                 var configurator = new Configurator(null, _defaultCommand);
                 func(configurator);

@@ -20,7 +20,7 @@ if (!(Test-Path $Cakeup)) {
 }
 
 # Execute Cakeup
-&$Cakeup run "--cake=0.26.1" "--sdk=2.1.4" `
+&$Cakeup run "--cake=0.30.0" "--sdk=2.1.400" `
              "--bootstrap" "--execute" `
              "--" "$args"
 

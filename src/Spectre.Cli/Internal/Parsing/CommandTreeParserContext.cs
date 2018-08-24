@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Spectre.Cli.Internal.Parsing
 {
     internal class CommandTreeParserContext
     {
         private readonly List<string> _args;
-        private readonly List<string> _remaining;
+        private readonly Dictionary<string, List<string>> _remaining;
 
         public IReadOnlyList<string> Arguments => _args;
-        public IReadOnlyList<string> Remaining => _remaining;
         public int CurrentArgumentPosition { get; private set; }
+        public CommandTreeParser.Mode Mode { get; set; }
 
         public CommandTreeParserContext(IEnumerable<string> args)
         {
             _args = new List<string>(args);
-            _remaining = new List<string>();
+            _remaining = new Dictionary<string, List<string>>(StringComparer.Ordinal);
         }
 
         public void ResetArgumentPosition()
@@ -27,9 +29,23 @@ namespace Spectre.Cli.Internal.Parsing
             CurrentArgumentPosition++;
         }
 
-        public void AddRemainingArgument(string arg)
+        public void AddRemainingArgument(string key, string value)
         {
-            _remaining.Add(arg);
+            if (Mode == CommandTreeParser.Mode.Remaining)
+            {
+                if (!_remaining.ContainsKey(key))
+                {
+                    _remaining.Add(key, new List<string>());
+                }
+                _remaining[key].Add(value);
+            }
+        }
+
+        public ILookup<string, string> GetRemainingArguments()
+        {
+            return _remaining
+                .SelectMany(pair => pair.Value, (pair, value) => new { pair.Key, value })
+                .ToLookup(pair => pair.Key, pair => pair.value);
         }
     }
 }
