@@ -1,28 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Spectre.Cli.Internal
 {
     internal sealed class RemainingArguments : IRemainingArguments
     {
-        private readonly IReadOnlyList<string> _remaining;
+        public IReadOnlyList<string> Raw { get; }
+        public ILookup<string, string> Parsed { get; }
 
-        public int Count => _remaining.Count;
-        public string this[int index] => _remaining[index];
-
-        public RemainingArguments(IReadOnlyList<string> remaining)
+        public RemainingArguments(
+            ILookup<string, string> remaining,
+            IReadOnlyList<string> raw)
         {
-            _remaining = remaining;
-        }
-
-        public IEnumerator<string> GetEnumerator()
-        {
-            return _remaining.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            Parsed = remaining;
+            Raw = raw;
         }
     }
 }

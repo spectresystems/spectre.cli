@@ -29,6 +29,10 @@ namespace Spectre.Cli.Internal.Exceptions
 
         public static RuntimeException MissingRequiredArgument(CommandTree node, CommandArgument argument)
         {
+            if (node.Command.Name == Constants.DefaultCommandName)
+            {
+                return new RuntimeException($"Missing required argument '{argument.Value}'.");
+            }
             return new RuntimeException($"Command '{node.Command.Name}' is missing required argument '{argument.Value}'.");
         }
 

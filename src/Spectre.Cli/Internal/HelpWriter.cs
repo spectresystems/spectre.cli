@@ -31,7 +31,7 @@ namespace Spectre.Cli.Internal
             WriteOptions(composer, command);
 
             // Commands
-            WriteCommands(composer, (ICommandContainer)command ?? model);
+            WriteCommands(composer, model, (ICommandContainer)command ?? model, command?.IsDefaultCommand ?? false);
 
             composer.LineBreak();
             return composer;
@@ -219,14 +219,29 @@ namespace Spectre.Cli.Internal
             composer.LineBreak();
         }
 
-        private static void WriteCommands(RenderableComposer composer, ICommandContainer command)
+        private static void WriteCommands(
+            RenderableComposer composer,
+            CommandModel model,
+            ICommandContainer command,
+            bool isDefaultCommand)
         {
-            if (command.Commands.Count > 0)
+            var commands = isDefaultCommand ? model.Commands : command.Commands;
+            if (isDefaultCommand && commands.Count <= 1)
+            {
+                return;
+            }
+
+            if (commands.Count > 0)
             {
                 composer.Color(ConsoleColor.Yellow, c => c.Text("COMMANDS:")).LineBreak();
-                var maxCommandLength = command.Commands.Max(x => x.Name.Length);
-                foreach (var child in command.Commands)
+                var maxCommandLength = commands.Max(x => x.Name.Length);
+                foreach (var child in commands)
                 {
+                    if (isDefaultCommand && child.CommandType == model.DefaultCommand.CommandType)
+                    {
+                        continue;
+                    }
+
                     composer.Tab().Text(child.Name);
                     composer.Spaces(maxCommandLength - child.Name.Length);
                     composer.Tab().Text(child.Description?.TrimEnd('.') ?? string.Empty);

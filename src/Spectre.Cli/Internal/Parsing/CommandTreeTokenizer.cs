@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -15,7 +14,7 @@ namespace Spectre.Cli.Internal.Parsing
             Remaining = 1
         }
 
-        public static CommandTreeTokenStream Tokenize(IEnumerable<string> args)
+        public static (CommandTreeTokenStream, IReadOnlyList<string>) Tokenize(IEnumerable<string> args)
         {
             var tokens = new List<CommandTreeToken>();
             var position = 0;
@@ -24,38 +23,23 @@ namespace Spectre.Cli.Internal.Parsing
 
             foreach (var arg in args)
             {
-                var lastToken = tokens.LastOrDefault();
-                if (lastToken?.TokenKind == CommandTreeToken.Kind.Remaining)
-                {
-                    context.Mode = Mode.Remaining;
-                }
-
                 var start = position;
                 var reader = new TextBuffer(previousReader, arg);
 
-                switch (context.Mode)
-                {
-                    case Mode.Normal:
-                        position = ParseToken(context, reader, position, start, tokens);
-                        break;
-                    case Mode.Remaining:
-                        position = ParseRemainingToken(reader, position, start, tokens);
-                        break;
-                    default:
-                        throw new InvalidOperationException("Unspecified tokenization mode.");
-                }
+                // Parse the token.
+                position = ParseToken(context, reader, position, start, tokens);
+                context.FlushRemaining();
 
                 previousReader = reader;
             }
-            return new CommandTreeTokenStream(tokens);
+
+            return (new CommandTreeTokenStream(tokens), context.Remaining);
         }
 
         private static int ParseToken(CommandTreeTokenizerContext context, TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
         {
             while (reader.Peek() != -1)
             {
-                EatWhitespace(reader);
-
                 if (reader.ReachedEnd)
                 {
                     position += reader.Position - start;
@@ -71,7 +55,7 @@ namespace Spectre.Cli.Internal.Parsing
                     }
                     else
                     {
-                        tokens.Add(ScanString(reader));
+                        tokens.Add(ScanString(context, reader));
                     }
                 }
             }
@@ -79,46 +63,14 @@ namespace Spectre.Cli.Internal.Parsing
             return position;
         }
 
-        private static int ParseRemainingToken(TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
-        {
-            var result = new StringBuilder();
-            while (reader.Peek() != -1)
-            {
-                if (reader.ReachedEnd)
-                {
-                    position += reader.Position - start;
-                    break;
-                }
-
-                result.Append(reader.Read());
-            }
-
-            var value = result.ToString();
-            tokens.Add(new CommandTreeToken(CommandTreeToken.Kind.Remaining, position, value, value));
-
-            return position;
-        }
-
-        private static void EatWhitespace(TextBuffer reader)
-        {
-            while (!reader.ReachedEnd)
-            {
-                if (!char.IsWhiteSpace(reader.Peek()))
-                {
-                    break;
-                }
-                reader.Read();
-            }
-        }
-
-        private static CommandTreeToken ScanString(TextBuffer reader, char[] stop = null)
+        private static CommandTreeToken ScanString(CommandTreeTokenizerContext context, TextBuffer reader, char[] stop = null)
         {
             if (reader.TryPeek(out var character))
             {
                 // Is this a quoted string?
                 if (character == '\"')
                 {
-                    return ScanQuotedString(reader);
+                    return ScanQuotedString(context, reader);
                 }
             }
 
@@ -133,6 +85,7 @@ namespace Spectre.Cli.Internal.Parsing
                 }
 
                 reader.Read(); // Consume
+                context.AddRemaining(current);
                 builder.Append(current);
             }
 
@@ -140,11 +93,12 @@ namespace Spectre.Cli.Internal.Parsing
             return new CommandTreeToken(CommandTreeToken.Kind.String, position, value.Trim(), value);
         }
 
-        private static CommandTreeToken ScanQuotedString(TextBuffer reader)
+        private static CommandTreeToken ScanQuotedString(CommandTreeTokenizerContext context, TextBuffer reader)
         {
             var position = reader.Position;
 
             reader.Consume('\"');
+            context.AddRemaining('\"');
 
             var builder = new StringBuilder();
             while (!reader.ReachedEnd)
@@ -154,6 +108,8 @@ namespace Spectre.Cli.Internal.Parsing
                 {
                     break;
                 }
+
+                context.AddRemaining(character);
                 builder.Append(reader.Read());
             }
 
@@ -165,6 +121,7 @@ namespace Spectre.Cli.Internal.Parsing
             }
 
             reader.Read();
+            context.AddRemaining('\"');
 
             var value = builder.ToString();
             return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, $"\"{value}\"");
@@ -177,6 +134,8 @@ namespace Spectre.Cli.Internal.Parsing
             var position = reader.Position;
 
             reader.Consume('-');
+            context.AddRemaining('-');
+
             if (!reader.TryPeek(out var character))
             {
                 var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, "-", "-");
@@ -193,7 +152,7 @@ namespace Spectre.Cli.Internal.Parsing
                     }
                     break;
                 default:
-                    result.AddRange(ScanShortOptions(reader, position));
+                    result.AddRange(ScanShortOptions(context, reader, position));
                     break;
             }
 
@@ -203,29 +162,26 @@ namespace Spectre.Cli.Internal.Parsing
                 if (character == '=' || character == ':')
                 {
                     reader.Read(); // Consume
+                    context.AddRemaining(character);
+
                     if (!reader.TryPeek(out character))
                     {
                         var token = new CommandTreeToken(CommandTreeToken.Kind.String, reader.Position, "=", "=");
                         throw ParseException.OptionValueWasExpected(reader.Original, token);
                     }
 
-                    result.Add(ScanString(reader));
+                    result.Add(ScanString(context, reader));
                 }
             }
 
             return result;
         }
 
-        private static IEnumerable<CommandTreeToken> ScanShortOptions(TextBuffer reader, int position)
+        private static IEnumerable<CommandTreeToken> ScanShortOptions(CommandTreeTokenizerContext context, TextBuffer reader, int position)
         {
             var result = new List<CommandTreeToken>();
-            while (true)
+            while (!reader.ReachedEnd)
             {
-                if (reader.ReachedEnd)
-                {
-                    break;
-                }
-
                 var current = reader.Peek();
                 if (char.IsWhiteSpace(current))
                 {
@@ -240,6 +196,7 @@ namespace Spectre.Cli.Internal.Parsing
 
                 if (char.IsLetter(current))
                 {
+                    context.AddRemaining(current);
                     reader.Read(); // Consume
 
                     var value = current.ToString(CultureInfo.InvariantCulture);
@@ -256,20 +213,30 @@ namespace Spectre.Cli.Internal.Parsing
                 }
             }
 
+            if (result.Count > 1)
+            {
+                foreach (var item in result)
+                {
+                    item.IsGrouped = true;
+                }
+            }
+
             return result;
         }
 
         private static CommandTreeToken ScanLongOption(CommandTreeTokenizerContext context, TextBuffer reader, int position)
         {
             reader.Consume('-');
+            context.AddRemaining('-');
 
             if (reader.ReachedEnd)
             {
+                // Rest of the arguments are remaining ones.
                 context.Mode = Mode.Remaining;
-                return null;
+                return new CommandTreeToken(CommandTreeToken.Kind.Remaining, position, "--", "--");
             }
 
-            var name = ScanString(reader, new[] { '=', ':' });
+            var name = ScanString(context, reader, new[] { '=', ':' });
 
             // Perform validation of the name.
             if (name.Value.Length == 0)

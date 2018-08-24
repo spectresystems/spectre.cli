@@ -27,7 +27,7 @@ namespace Spectre.Cli.Internal.Configuration
                 }
 
                 var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);
-                DefaultCommand = new ConfiguredCommand("__default_command", defaultCommand, settingsType, true);
+                DefaultCommand = new ConfiguredCommand(Constants.DefaultCommandName, defaultCommand, settingsType, true);
             }
         }
 

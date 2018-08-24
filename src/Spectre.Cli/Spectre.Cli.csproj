@@ -24,7 +24,7 @@
 
   <!-- Packages -->
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <!-- Static analysis -->
@@ -36,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="1.6.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="1.9.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
