@@ -9,7 +9,7 @@ namespace Spectre.Cli.Tests.Data
     {
         public override ValidationResult Validate(CommandContext context, DogSettings settings)
         {
-            if (settings.Age > 100 && !context.Remaining.Contains("zombie"))
+            if (settings.Age > 100 && !context.Remaining.Raw.Contains("zombie"))
             {
                 return ValidationResult.Error("Dog is too old...");
             }

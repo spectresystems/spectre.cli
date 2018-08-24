@@ -27,5 +27,5 @@ if [ ! -f "$cakeup" ]; then
 fi
 
 # Start Cake
-exec $cakeup run --cake="0.26.1" --sdk="2.1.4" \
+exec $cakeup run --cake="0.30.0" --sdk="2.1.400" \
                  --bootstrap --execute -- $@

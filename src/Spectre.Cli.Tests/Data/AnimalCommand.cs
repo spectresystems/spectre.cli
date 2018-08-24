@@ -13,7 +13,7 @@ namespace Spectre.Cli.Tests.Data
             {
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{group.Key.FullName}");
+                Console.WriteLine(group.Key.FullName);
                 Console.ResetColor();
 
                 foreach (var property in group)
@@ -22,7 +22,7 @@ namespace Spectre.Cli.Tests.Data
                 }
             }
 
-            if (context.Remaining.Count > 0)
+            if (context.Remaining.Raw.Count > 0)
             {
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;

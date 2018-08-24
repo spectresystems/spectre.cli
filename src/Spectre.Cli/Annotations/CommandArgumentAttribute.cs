@@ -36,7 +36,6 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="position">The argument position.</param>
         /// <param name="template">The argument template.</param>
-        /// <exception cref="T:System.ArgumentNullException">template</exception>
         public CommandArgumentAttribute(int position, string template)
         {
             if (template == null)

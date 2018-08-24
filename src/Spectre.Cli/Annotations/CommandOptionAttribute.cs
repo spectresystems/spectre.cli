@@ -33,7 +33,6 @@ namespace Spectre.Cli
         /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.
         /// </summary>
         /// <param name="template">The option template.</param>
-        /// <exception cref="ArgumentNullException">template</exception>
         public CommandOptionAttribute(string template)
         {
             if (template == null)

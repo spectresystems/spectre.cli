@@ -7,7 +7,7 @@ namespace Sample.Commands
     public sealed class BuildSettings : CommandSettings
     {
         [ValidateProjectName] // For validating an argument in isolation.
-        [CommandArgument(0, "[PROJECT]")]
+        [CommandArgument(0, "<PROJECT>")]
         [Description("Specifies the project file.")]
         public string Project { get; set; }
 
