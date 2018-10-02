@@ -93,7 +93,7 @@ namespace Spectre.Cli.Internal.Parsing
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
-                throw ParseException.UnknownCommand(context.Arguments, commandToken);
+                throw ParseException.UnknownCommand(_configuration, parent, context.Arguments, commandToken);
             }
 
             return ParseCommandParameters(context, command, parent, stream);
@@ -174,13 +174,19 @@ namespace Spectre.Cli.Internal.Parsing
             // Current command has no arguments?
             if (!node.HasArguments())
             {
-                throw ParseException.UnknownCommand(context.Arguments, token);
+                throw ParseException.UnknownCommand(_configuration, node, context.Arguments, token);
             }
 
             // Argument?
             var parameter = node.FindArgument(context.CurrentArgumentPosition);
             if (parameter == null)
             {
+                // No parameters left. Any commands after this?
+                if (node.Command.Children.Count > 0)
+                {
+                    throw ParseException.UnknownCommand(_configuration, node, context.Arguments, token);
+                }
+
                 throw ParseException.CouldNotMatchArgument(context.Arguments, token);
             }
 

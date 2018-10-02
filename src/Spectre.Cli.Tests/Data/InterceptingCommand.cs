@@ -3,7 +3,7 @@
 namespace Spectre.Cli.Tests.Data
 {
     public sealed class InterceptingCommand<TSettings> : Command<TSettings>
-        where TSettings : CommandSettings
+    where TSettings : CommandSettings
     {
         private readonly Action<CommandContext, TSettings> _action;
 

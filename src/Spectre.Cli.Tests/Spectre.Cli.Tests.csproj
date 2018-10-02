@@ -26,6 +26,9 @@
     <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
+    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
     <None Remove="Data\Resources\Exceptions\Parsing\UnterminatedQuote" />
@@ -80,6 +83,9 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />
