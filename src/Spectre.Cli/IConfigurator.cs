@@ -14,6 +14,11 @@ namespace Spectre.Cli
         void SetApplicationName(string name);
 
         /// <summary>
+        /// Sets the parsing mode to strict.
+        /// </summary>
+        void UseStrictParsing();
+
+        /// <summary>
         /// Tells the command line application to propagate all
         /// exceptions to the user.
         /// </summary>

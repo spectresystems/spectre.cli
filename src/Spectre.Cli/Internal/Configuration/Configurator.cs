@@ -11,6 +11,7 @@ namespace Spectre.Cli.Internal.Configuration
         public ConfiguredCommand DefaultCommand { get; }
         public string ApplicationName { get; private set; }
         public bool ShouldPropagateExceptions { get; private set; }
+        public ParsingMode ParsingMode { get; private set; }
 
         public Configurator(ITypeRegistrar registrar, Type defaultCommand = null)
         {
@@ -18,6 +19,7 @@ namespace Spectre.Cli.Internal.Configuration
 
             Commands = new List<ConfiguredCommand>();
             ShouldPropagateExceptions = false;
+            ParsingMode = ParsingMode.Relaxed;
 
             if (defaultCommand != null)
             {
@@ -34,6 +36,11 @@ namespace Spectre.Cli.Internal.Configuration
         public void SetApplicationName(string name)
         {
             ApplicationName = name;
+        }
+
+        public void UseStrictParsing()
+        {
+            ParsingMode = ParsingMode.Strict;
         }
 
         public void PropagateExceptions()

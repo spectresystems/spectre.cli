@@ -184,7 +184,7 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
-        public void Should_Throw_When_Encountering_Unknown_Option()
+        public void Should_Throw_When_Encountering_Unknown_Option_In_Strict_Mode()
         {
             // Given
             var registrar = new FakeTypeRegistrar();
@@ -192,21 +192,82 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                    animal.AddCommand<HorseCommand>("horse");
-                });
+                config.UseStrictParsing();
+                config.AddCommand<DogCommand>("dog");
             });
 
             // When
-            var result = Record.Exception(() => app.Run(new[] { "animal", "--foo" }));
+            var result = Record.Exception(() => app.Run(new[] { "dog", "--foo" }));
 
             // Then
             result.ShouldBeOfType<ParseException>().And(ex =>
             {
                 ex.Message.ShouldBe("Unknown option 'foo'.");
             });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Option_To_Remaining_Arguments_In_Relaxed_Mode()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var registrar = new FakeTypeRegistrar(resolver);
+            var app = new CommandApp(registrar);
+
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "12", "--foo", "bar" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Remaining.Parsed.Count.ShouldBe(1);
+            capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Boolean_Option_To_Remaining_Arguments_In_Relaxed_Mode()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var registrar = new FakeTypeRegistrar(resolver);
+            var app = new CommandApp(registrar);
+
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "12", "--foo" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Remaining.Parsed.Count.ShouldBe(1);
+            capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
         }
 
         public sealed class Remaining_Arguments

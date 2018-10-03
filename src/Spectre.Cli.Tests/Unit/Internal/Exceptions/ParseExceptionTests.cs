@@ -225,10 +225,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
         {
             [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Long")]
-            public void Should_Return_Correct_Text_For_Long_Option(string expected)
+            public void Should_Return_Correct_Text_For_Long_Option_If_Strict_Mode_Is_Enabled(string expected)
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.UseStrictParsing();
                 configurator.AddCommand<DogCommand>("dog");
 
                 // When
@@ -240,10 +241,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
 
             [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Short")]
-            public void Should_Return_Correct_Text_For_Short_Option(string expected)
+            public void Should_Return_Correct_Text_For_Short_Option_If_Strict_Mode_Is_Enabled(string expected)
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.UseStrictParsing();
                 configurator.AddCommand<DogCommand>("dog");
 
                 // When
