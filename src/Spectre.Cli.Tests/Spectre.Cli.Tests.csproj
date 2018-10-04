@@ -1,68 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Features>IOperation</Features>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
-    <None Remove="Data\Resources\Exceptions\Parsing\NoValueForOption_Long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\NoValueForOption_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\InvalidShortOptionName" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameContainSymbol" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
-    <None Remove="Data\Resources\Exceptions\Parsing\UnterminatedQuote" />
-    <None Remove="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
-    <None Remove="Data\Resources\Exceptions\Template\CouldNotMatchArgument" />
-    <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
-    <None Remove="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
-    <None Remove="Data\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
-    <None Remove="Data\Resources\Exceptions\Template\MissingLongAndShortName" />
-    <None Remove="Data\Resources\Exceptions\Template\MultipleLongOptionNamesNotAllowed" />
-    <None Remove="Data\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
-    <None Remove="Data\Resources\Exceptions\Template\MultipleShortOptionNamesNotAllowed" />
-    <None Remove="Data\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
-    <None Remove="Data\Resources\Exceptions\Template\OptionNamesCannotStartWithDigit" />
-    <None Remove="Data\Resources\Exceptions\Template\OptionsMustHaveName" />
-    <None Remove="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
-    <None Remove="Data\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />
-    <None Remove="Data\Resources\Exceptions\Template\UnexpectedCharacter" />
-    <None Remove="Data\Resources\Exceptions\Template\UnterminatedValueName" />
-    <None Remove="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
-    <None Remove="Data\Resources\Help\Command" />
-    <None Remove="Data\Resources\Help\Default" />
-    <None Remove="Data\Resources\Help\Leaf" />
-    <None Remove="Data\Resources\Models\case1.xml" />
-    <None Remove="Data\Resources\Models\case2.xml" />
-    <None Remove="Data\Resources\Models\case3.xml" />
-    <None Remove="Data\Resources\Models\case4.xml" />
-    <None Remove="Data\Resources\Parsing\case1.xml" />
-    <None Remove="Data\Resources\Parsing\case2.xml" />
-    <None Remove="Data\Resources\Parsing\case3.xml" />
-    <None Remove="Data\Resources\Parsing\case4.xml" />
-    <None Remove="Data\Resources\Parsing\default1.xml" />
-    <None Remove="Data\Resources\Parsing\default2.xml" />
-    <None Remove="Data\Resources\Parsing\default3.xml" />
-    <None Remove="Data\Resources\Parsing\default4.xml" />
-    <None Remove="Spectre.Cli.Tests.v3.ncrunchproject" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
@@ -80,6 +22,9 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />

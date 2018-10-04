@@ -11,7 +11,7 @@ namespace Spectre.Cli.Internal.Parsing
         private readonly CommandModel _configuration;
         private readonly CommandOptionAttribute _help;
 
-        public enum Mode
+        public enum State
         {
             Normal = 0,
             Remaining = 1
@@ -25,7 +25,7 @@ namespace Spectre.Cli.Internal.Parsing
 
         public (CommandTree tree, IRemainingArguments remaining) Parse(IEnumerable<string> args)
         {
-            var context = new CommandTreeParserContext(args);
+            var context = new CommandTreeParserContext(args, _configuration.ParsingMode);
             var (tokens, rawRemaining) = CommandTreeTokenizer.Tokenize(context.Arguments);
 
             var result = (CommandTree)null;
@@ -93,7 +93,7 @@ namespace Spectre.Cli.Internal.Parsing
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
-                throw ParseException.UnknownCommand(context.Arguments, commandToken);
+                throw ParseException.UnknownCommand(_configuration, parent, context.Arguments, commandToken);
             }
 
             return ParseCommandParameters(context, command, parent, stream);
@@ -128,7 +128,7 @@ namespace Spectre.Cli.Internal.Parsing
                     case CommandTreeToken.Kind.Remaining:
                         // Remaining
                         stream.Consume(CommandTreeToken.Kind.Remaining);
-                        context.Mode = Mode.Remaining;
+                        context.State = State.Remaining;
                         break;
                     default:
                         throw new InvalidOperationException($"Encountered unknown token ({token.TokenKind}).");
@@ -152,7 +152,7 @@ namespace Spectre.Cli.Internal.Parsing
             CommandTreeTokenStream stream,
             CommandTree node)
         {
-            if (context.Mode == Mode.Remaining)
+            if (context.State == State.Remaining)
             {
                 stream.Consume(CommandTreeToken.Kind.String);
                 return;
@@ -164,7 +164,7 @@ namespace Spectre.Cli.Internal.Parsing
             var command = node.Command.FindCommand(token.Value);
             if (command != null)
             {
-                if (context.Mode == Mode.Normal)
+                if (context.State == State.Normal)
                 {
                     node.Next = ParseCommand(context, node.Command, node, stream);
                 }
@@ -174,13 +174,19 @@ namespace Spectre.Cli.Internal.Parsing
             // Current command has no arguments?
             if (!node.HasArguments())
             {
-                throw ParseException.UnknownCommand(context.Arguments, token);
+                throw ParseException.UnknownCommand(_configuration, node, context.Arguments, token);
             }
 
             // Argument?
             var parameter = node.FindArgument(context.CurrentArgumentPosition);
             if (parameter == null)
             {
+                // No parameters left. Any commands after this?
+                if (node.Command.Children.Count > 0)
+                {
+                    throw ParseException.UnknownCommand(_configuration, node, context.Arguments, token);
+                }
+
                 throw ParseException.CouldNotMatchArgument(context.Arguments, token);
             }
 
@@ -200,7 +206,7 @@ namespace Spectre.Cli.Internal.Parsing
             // Consume the option token.
             stream.Consume(isLongOption ? CommandTreeToken.Kind.LongOption : CommandTreeToken.Kind.ShortOption);
 
-            if (context.Mode == Mode.Normal)
+            if (context.State == State.Normal)
             {
                 // Find the option.
                 var option = node.FindOption(token.Value, isLongOption);
@@ -222,13 +228,21 @@ namespace Spectre.Cli.Internal.Parsing
                 }
             }
 
-            if (context.Mode == Mode.Remaining)
+            if (context.State == State.Remaining)
             {
                 ParseOptionValue(context, stream, token, node, null);
                 return;
             }
 
-            throw ParseException.UnknownOption(context.Arguments, token);
+            if (context.ParsingMode == ParsingMode.Strict)
+            {
+                throw ParseException.UnknownOption(context.Arguments, token);
+            }
+            else
+            {
+                ParseOptionValue(context, stream, token, node, null);
+                return;
+            }
         }
 
         private static string ParseOptionValue(
@@ -250,7 +264,7 @@ namespace Spectre.Cli.Internal.Parsing
                     parseValue = false;
                 }
 
-                if (context.Mode == Mode.Normal && parseValue)
+                if (context.State == State.Normal && parseValue)
                 {
                     // Is this a command?
                     if (current.Command.FindCommand(valueToken.Value) == null)
@@ -271,6 +285,12 @@ namespace Spectre.Cli.Internal.Parsing
                         {
                             // Unknown parameter value.
                             value = stream.Consume(CommandTreeToken.Kind.String).Value;
+
+                            // In relaxed parsing mode?
+                            if (context.ParsingMode == ParsingMode.Relaxed)
+                            {
+                                context.AddRemainingArgument(token.Value, value);
+                            }
                         }
                     }
                 }
@@ -281,14 +301,14 @@ namespace Spectre.Cli.Internal.Parsing
             }
             else
             {
-                if (context.Mode == Mode.Remaining)
+                if (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed)
                 {
                     context.AddRemainingArgument(token.Value, null);
                 }
             }
 
             // No value?
-            if (context.Mode == Mode.Normal)
+            if (context.State == State.Normal)
             {
                 if (value == null && parameter != null)
                 {

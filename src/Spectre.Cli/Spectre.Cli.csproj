@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Features>IOperation</Features>
@@ -31,7 +31,7 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Spectre.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <DocumentationFile>bin\Debug\netstandard2.0\Spectre.Cli.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>

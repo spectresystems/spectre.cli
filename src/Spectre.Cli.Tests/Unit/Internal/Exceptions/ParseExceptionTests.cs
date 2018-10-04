@@ -8,6 +8,7 @@ using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
 using Spectre.Cli.Tests.Data;
+using Spectre.Cli.Tests.Data.Settings;
 using Spectre.Cli.Tests.Fakes;
 using Spectre.Cli.Tests.Utilities;
 using Xunit;
@@ -20,7 +21,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
         {
             [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand")]
-            public void Should_Return_Correct_Text_When_First_Command_Is_Unknown(string expected)
+            public void Should_Return_Correct_Text_When_Command_Is_Unknown(string expected)
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
@@ -28,6 +29,60 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
 
                 // When
                 var result = Fixture.GetParseMessage(new[] { "cat", "14" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentAfter")]
+            public void Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddBranch<CommandSettings>("dog", a =>
+                {
+                    a.AddCommand<CatCommand>("cat");
+                });
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "bat", "14" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_NoArguments")]
+            public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Command_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddBranch<CommandSettings>("dog", a =>
+                {
+                    a.AddCommand<CatCommand>("cat");
+                });
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", "bat" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentBefore")]
+            public void Should_Return_Correct_Text_With_Suggestion_When_Command_After_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddBranch<FooCommandSettings>("foo", a =>
+                {
+                    a.AddCommand<GenericCommand<BarCommandSettings>>("bar");
+                });
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "foo", "qux", "bat" }, configurator);
 
                 // Then
                 result.ShouldBe(expected);
@@ -170,10 +225,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
         {
             [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Long")]
-            public void Should_Return_Correct_Text_For_Long_Option(string expected)
+            public void Should_Return_Correct_Text_For_Long_Option_If_Strict_Mode_Is_Enabled(string expected)
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.UseStrictParsing();
                 configurator.AddCommand<DogCommand>("dog");
 
                 // When
@@ -185,10 +241,11 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
 
             [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownOption_Short")]
-            public void Should_Return_Correct_Text_For_Short_Option(string expected)
+            public void Should_Return_Correct_Text_For_Short_Option_If_Strict_Mode_Is_Enabled(string expected)
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.UseStrictParsing();
                 configurator.AddCommand<DogCommand>("dog");
 
                 // When

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
@@ -94,9 +95,13 @@ namespace Spectre.Cli.Internal.Exceptions
             return ParseExceptionFactory.Create(input, token, $"Encountered unterminated quoted string '{token.Value}'.", "Did you forget the closing quotation mark?");
         }
 
-        public static ParseException UnknownCommand(IEnumerable<string> args, CommandTreeToken token)
+        public static ParseException UnknownCommand(CommandModel model, CommandTree node, IEnumerable<string> args, CommandTreeToken token)
         {
-            return ParseExceptionFactory.Create(args, token, $"Unknown command '{token.Value}'.", "No such command.");
+            var availableCommands = node?.Command ?? (ICommandContainer)model;
+            var suggestion = CommandSuggestor.Suggest(availableCommands, token.Value);
+
+            var text = suggestion != null ? $"Did you mean '{suggestion.Name}'?" : "No such command.";
+            return ParseExceptionFactory.Create(args, token, $"Unknown command '{token.Value}'.", text);
         }
 
         public static ParseException CouldNotMatchArgument(IEnumerable<string> args, CommandTreeToken token)

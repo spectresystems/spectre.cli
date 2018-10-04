@@ -7,5 +7,6 @@ namespace Spectre.Cli.Internal.Configuration
         ConfiguredCommand DefaultCommand { get; }
         IList<ConfiguredCommand> Commands { get; }
         string ApplicationName { get; }
+        ParsingMode ParsingMode { get; }
     }
 }
