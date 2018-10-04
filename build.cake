@@ -106,9 +106,8 @@ Task("Upload-AppVeyor-Artifacts")
 });
 
 Task("Create-Release")
-    .WithCriteria<BuildData>((context, data) => !data.Server.IsRunningOnAppVeyor, "Not running on AppVeyor")
+    .WithCriteria<BuildData>((context, data) => !data.Server.IsRunningOnAppVeyor, "Not running locally")
     .WithCriteria<BuildData>((context, data) => !data.Server.IsPullRequest, "Won't publish pull requests")
-    .WithCriteria<BuildData>((context, data) => data.Server.IsReleaseBranch, "Not on a release branch")
     .Does<BuildData>((context, data) =>
 {
     CreateGitHubRelease(context, data);

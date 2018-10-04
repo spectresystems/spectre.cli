@@ -24,7 +24,7 @@ public static void CreateGitHubRelease(ICakeContext context, BuildData data)
     context.GitReleaseManagerCreate(
         data.Credentials.Username,
         data.Credentials.Password,
-        "spectresystems", "spectre.query", 
+        "spectresystems", "spectre.cli", 
         new GitReleaseManagerCreateSettings {
             Milestone = data.Versioning.Milestone,
             Name = data.Versioning.Milestone,
