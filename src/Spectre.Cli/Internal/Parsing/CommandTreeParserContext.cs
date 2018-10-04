@@ -11,12 +11,15 @@ namespace Spectre.Cli.Internal.Parsing
 
         public IReadOnlyList<string> Arguments => _args;
         public int CurrentArgumentPosition { get; private set; }
-        public CommandTreeParser.Mode Mode { get; set; }
+        public CommandTreeParser.State State { get; set; }
+        public ParsingMode ParsingMode { get; }
 
-        public CommandTreeParserContext(IEnumerable<string> args)
+        public CommandTreeParserContext(IEnumerable<string> args, ParsingMode parsingMode)
         {
             _args = new List<string>(args);
             _remaining = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+
+            ParsingMode = parsingMode;
         }
 
         public void ResetArgumentPosition()
@@ -31,7 +34,7 @@ namespace Spectre.Cli.Internal.Parsing
 
         public void AddRemainingArgument(string key, string value)
         {
-            if (Mode == CommandTreeParser.Mode.Remaining)
+            if (State == CommandTreeParser.State.Remaining || ParsingMode == ParsingMode.Relaxed)
             {
                 if (!_remaining.ContainsKey(key))
                 {
