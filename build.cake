@@ -1,26 +1,44 @@
 #tool nuget:?package=GitVersion.CommandLine&version=3.6.2
 
-#load "./res/scripts/version.cake"
-#load "./res/scripts/msbuild.cake"
-#load "./res/scripts/appveyor.cake"
+#load "./res/scripts/data.cake"
+#load "./res/scripts/versioning.cake"
+#load "./res/scripts/buildserver.cake"
 
-var configuration = Argument("configuration", "Release");
+////////////////////////////////////////////////////////
+// ARGUMENTS
+////////////////////////////////////////////////////////
+
 var target = Argument("target", "Default");
 
-var ci = AppVeyorSettings.Initialize(Context);
-var version = BuildVersion.Calculate(Context, ci);
-var settings = MSBuildHelper.CreateSettings(version);
+////////////////////////////////////////////////////////
+// SETUP
+////////////////////////////////////////////////////////
 
-Setup(context => 
+Setup<BuildData>(context => 
 {
-    context.Information("Version: {0}", version.Version);
-    context.Information("Semantic version: {0}", version.SemVersion);
+    var server = BuildServer.Initialize(context);
+    var versioning = BuildVersion.Calculate(context, server);
+
+    context.Information("Version: {0}", versioning.Version);
+
+    return new BuildData {
+        Configuration = context.Argument<string>("configuration", "Release"),
+        Credentials = new GitHubCredentials(context),
+        Versioning = versioning,
+        Server = server,
+    };
 });
 
+////////////////////////////////////////////////////////
+// TASKS
+////////////////////////////////////////////////////////
+
 Task("Clean")
-    .Does(() =>
+    .Does<BuildData>(data =>
 {
     CleanDirectory("./.artifacts");
+    CleanDirectories($"./src/**/bin/{data.Configuration}");
+    CleanDirectories($"./src/**/obj/{data.Configuration}");
 });
 
 Task("Restore")
@@ -32,11 +50,18 @@ Task("Restore")
 
 Task("Build")
     .IsDependentOn("Restore")
-    .Does(() =>
+    .Does<BuildData>(data =>
 {
     DotNetCoreBuild("./src/Spectre.Cli.sln", new DotNetCoreBuildSettings {
         Configuration = "Release",
-        MSBuildSettings = settings
+        Verbosity = DotNetCoreVerbosity.Minimal,
+        NoRestore = true,
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
+            .WithProperty("Version", data.Versioning.SemVersion)
+            .WithProperty("AssemblyVersion", data.Versioning.Version)
+            .WithProperty("FileVersion", data.Versioning.Version)
+            .WithProperty("PackageVersion", data.Versioning.SemVersion)
     });
 });
 
@@ -45,41 +70,58 @@ Task("Run-Tests")
     .Does(() =>
 {
     DotNetCoreTest("./src/Spectre.Cli.Tests/Spectre.Cli.Tests.csproj", new DotNetCoreTestSettings {
+        NoBuild = true,
+        NoRestore = true,
         Configuration = "Release"
     });
 });
 
 Task("Package")
     .IsDependentOn("Run-Tests")
-    .Does(() =>
+    .Does<BuildData>(data =>
 {
     DotNetCorePack("./src/Spectre.Cli/Spectre.Cli.csproj", new DotNetCorePackSettings {
         Configuration = "Release",
         OutputDirectory = "./.artifacts",
-        MSBuildSettings = settings
+        NoRestore = true,
+        NoBuild = true,
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .WithProperty("Version", data.Versioning.SemVersion)
+            .WithProperty("AssemblyVersion", data.Versioning.Version)
+            .WithProperty("FileVersion", data.Versioning.Version)
+            .WithProperty("PackageVersion", data.Versioning.SemVersion)
     });
 });
 
 Task("Upload-AppVeyor-Artifacts")
     .IsDependentOn("Package")
-    .WithCriteria(() => ci.IsRunningOnAppVeyor)
-    .Does(() => 
+    .WithCriteria<BuildData>((context, data) => data.Server.IsRunningOnAppVeyor, "Not running on AppVeyor")
+    .Does<BuildData>(data => 
 {
-    AppVeyor.UploadArtifact(
-        new FilePath($"./.artifacts/Spectre.Cli.{version.SemVersion}.nupkg")
-    );
+    var files = GetFiles("./.artifacts/*.nupkg");
+    foreach(var file in files)
+    {
+        AppVeyor.UploadArtifact(file);
+    }
+});
+
+Task("Create-Release")
+    .WithCriteria<BuildData>((context, data) => !data.Server.IsRunningOnAppVeyor, "Not running on AppVeyor")
+    .WithCriteria<BuildData>((context, data) => !data.Server.IsPullRequest, "Won't publish pull requests")
+    .WithCriteria<BuildData>((context, data) => data.Server.IsReleaseBranch, "Not on a release branch")
+    .Does<BuildData>((context, data) =>
+{
+    CreateGitHubRelease(context, data);
 });
 
 Task("Publish-To-NuGet")
     .IsDependentOn("Package")
-    .WithCriteria(() => ci.IsRunningOnAppVeyor 
-        && !ci.IsPullRequest
-        && (ci.IsDevelopBranch || ci.IsMasterBranch)
-        && !ci.IsMaintenanceBuild)
-    .Does(() => 
+    .WithCriteria<BuildData>((context, data) => data.Server.IsRunningOnAppVeyor, "Not running on AppVeyor")
+    .WithCriteria<BuildData>((context, data) => !data.Server.IsPullRequest, "Won't publish pull requests")
+    .WithCriteria<BuildData>((context, data) => data.Server.IsMasterBranch, "Not on master branch")
+    .WithCriteria<BuildData>((context, data) => data.Server.IsTaggedBuild, "Won't published untagged builds")
+    .Does<BuildData>(data => 
 {
-    var path = new FilePath($"./.artifacts/Spectre.Cli.{version.SemVersion}.nupkg");
-
     // Get the API key.
     var apiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");
     if(string.IsNullOrWhiteSpace(apiKey)) {
@@ -87,11 +129,20 @@ Task("Publish-To-NuGet")
     }
 
     // Push the package.
-    NuGetPush(path, new NuGetPushSettings {
-        ApiKey = apiKey,
-        Source = "https://nuget.org/api/v2/package"
-    });
+    var files = GetFiles("./.artifacts/*.nupkg");
+    foreach(var file in files)
+    {
+        Information(file.FullPath);
+        NuGetPush(file, new NuGetPushSettings {
+            ApiKey = apiKey,
+            Source = "https://nuget.org/api/v2/package"
+        });
+    }
 });
+
+////////////////////////////////////////////////////////
+// TARGETS
+////////////////////////////////////////////////////////
 
 Task("Default")
     .IsDependentOn("Package");
