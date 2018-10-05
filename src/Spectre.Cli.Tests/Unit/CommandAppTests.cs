@@ -142,6 +142,7 @@ namespace Spectre.Cli.Tests.Unit
             app.Configure(config =>
             {
                 config.PropagateExceptions();
+                config.AddCommand<GenericCommand<FooCommandSettings>>("foo");
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.AddCommand<DogCommand>("dog");
@@ -151,9 +152,49 @@ namespace Spectre.Cli.Tests.Unit
 
             // Then
             registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
-            registrar.Registrations[typeof(ICommand)].Count.ShouldBe(2);
+            registrar.Registrations[typeof(ICommand)].Count.ShouldBe(3);
+            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(GenericCommand<FooCommandSettings>));
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(HorseCommand));
+        }
+
+        [Fact]
+        public void Should_Register_Default_Command_When_Configuring_Application()
+        {
+            // Given
+            var registrar = new FakeTypeRegistrar();
+            var app = new CommandApp<DogCommand>(registrar);
+
+            // When
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // Then
+            registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
+            registrar.Registrations.ContainsKey(typeof(DogSettings));
+            registrar.Registrations[typeof(ICommand)].Count.ShouldBe(1);
+            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
+        }
+
+        [Fact]
+        public void Should_Register_Default_Command_Settings_When_Configuring_Application()
+        {
+            // Given
+            var registrar = new FakeTypeRegistrar();
+            var app = new CommandApp<DogCommand>(registrar);
+
+            // When
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // Then
+            registrar.Registrations.ContainsKey(typeof(DogSettings));
+            registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
+            registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         }
 
         [Fact]
