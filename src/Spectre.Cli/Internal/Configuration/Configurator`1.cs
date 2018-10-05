@@ -23,12 +23,9 @@ namespace Spectre.Cli.Internal.Configuration
         {
             var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
             var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
-            _command.Children.Add(command);
 
-            // Register the command and the settings.
-            _registrar?.Register(typeof(ICommand), typeof(TCommand));
-            _registrar?.Register(typeof(TCommand), typeof(TCommand));
-            _registrar?.Register(settingsType, settingsType);
+            _command.Children.Add(command);
+            _registrar.RegisterCommand(typeof(TCommand), settingsType);
         }
 
         public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)

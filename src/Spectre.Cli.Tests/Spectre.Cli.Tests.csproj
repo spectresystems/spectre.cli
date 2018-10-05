@@ -22,6 +22,9 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentBefore" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_NoArguments" />
+    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentAfter" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />

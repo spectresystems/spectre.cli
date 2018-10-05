@@ -182,7 +182,7 @@ namespace Spectre.Cli.Internal.Parsing
             if (parameter == null)
             {
                 // No parameters left. Any commands after this?
-                if (node.Command.Children.Count > 0)
+                if (node.Command.Children.Count > 0 || node.Command.IsDefaultCommand)
                 {
                     throw ParseException.UnknownCommand(_configuration, node, context.Arguments, token);
                 }
