@@ -28,8 +28,12 @@ namespace Spectre.Cli.Internal.Configuration
                     throw new ArgumentException($"The specified default command type '{defaultCommand}' is not a command.", nameof(defaultCommand));
                 }
 
+                // Initialize the default command.
                 var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);
                 DefaultCommand = new ConfiguredCommand(Constants.DefaultCommandName, defaultCommand, settingsType, true);
+
+                // Register the default command.
+                _registrar.RegisterCommand(defaultCommand, settingsType);
             }
         }
 
@@ -54,10 +58,7 @@ namespace Spectre.Cli.Internal.Configuration
             var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
             Commands.Add(command);
 
-            // Register the command and the settings.
-            _registrar?.Register(typeof(ICommand), typeof(TCommand));
-            _registrar?.Register(typeof(TCommand), typeof(TCommand));
-            _registrar?.Register(settingsType, settingsType);
+            _registrar.RegisterCommand(typeof(TCommand), settingsType);
         }
 
         public void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
