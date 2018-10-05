@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Spectre.Cli.Internal.Modelling;
 
@@ -8,18 +8,26 @@ namespace Spectre.Cli.Internal
     {
         private const float _smallestDistance = 2f;
 
-        public static CommandInfo Suggest(ICommandContainer container, string name)
+        public static CommandInfo Suggest(CommandModel model, CommandInfo command, string name)
         {
             var result = (CommandInfo)null;
 
-            var score = float.MaxValue;
-            foreach (var command in container.Commands)
+            var container = command ?? (ICommandContainer)model;
+            if (command?.IsDefaultCommand ?? false)
             {
-                var temp = Score(command.Name, name);
+                // Default commands have no children,
+                // so use the root commands here.
+                container = model;
+            }
+
+            var score = float.MaxValue;
+            foreach (var child in container.Commands)
+            {
+                var temp = Score(child.Name, name);
                 if (temp < score)
                 {
                     score = temp;
-                    result = command;
+                    result = child;
                 }
             }
 

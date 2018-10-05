@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Shouldly;
@@ -35,6 +35,21 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             }
 
             [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentAfter")]
+            public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<EmptySettings>));
+                configurator.AddCommand<CatCommand>("cat");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "bat", "14" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentAfter")]
             public void Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
             {
@@ -53,6 +68,21 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             }
 
             [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_NoArguments")]
+            public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<EmptySettings>));
+                configurator.AddCommand<GenericCommand<EmptySettings>>("cat");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "bat" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
             [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_NoArguments")]
             public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Command_Is_Unknown_And_Distance_Is_Small(string expected)
             {
@@ -65,6 +95,21 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
 
                 // When
                 var result = Fixture.GetParseMessage(new[] { "dog", "bat" }, configurator);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentBefore")]
+            public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<FooCommandSettings>));
+                configurator.AddCommand<GenericCommand<BarCommandSettings>>("bar");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "qux", "bat" }, configurator);
 
                 // Then
                 result.ShouldBe(expected);

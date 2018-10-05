@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -226,22 +226,12 @@ namespace Spectre.Cli.Internal
             bool isDefaultCommand)
         {
             var commands = isDefaultCommand ? model.Commands : command.Commands;
-            if (isDefaultCommand && commands.Count <= 1)
-            {
-                return;
-            }
-
             if (commands.Count > 0)
             {
                 composer.Color(ConsoleColor.Yellow, c => c.Text("COMMANDS:")).LineBreak();
                 var maxCommandLength = commands.Max(x => x.Name.Length);
                 foreach (var child in commands)
                 {
-                    if (isDefaultCommand && child.CommandType == model.DefaultCommand.CommandType)
-                    {
-                        continue;
-                    }
-
                     composer.Tab().Text(child.Name);
                     composer.Spaces(maxCommandLength - child.Name.Length);
                     composer.Tab().Text(child.Description?.TrimEnd('.') ?? string.Empty);
