@@ -1,4 +1,4 @@
-﻿using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Internal.Exceptions;
 
 namespace Spectre.Cli.Internal.Configuration
 {
@@ -65,7 +65,7 @@ namespace Spectre.Cli.Internal.Configuration
 
                     foreach (var character in token.Value)
                     {
-                        if (!char.IsLetterOrDigit(character) && character != '-')
+                        if (!char.IsLetterOrDigit(character) && character != '-' && character != '_')
                         {
                             throw TemplateException.InvalidCharacterInOptionName(template, token, character);
                         }

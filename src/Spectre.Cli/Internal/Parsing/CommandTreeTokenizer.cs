@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -253,7 +253,7 @@ namespace Spectre.Cli.Internal.Parsing
             }
             for (var index = 0; index < name.Value.Length; index++)
             {
-                if (!char.IsLetterOrDigit(name.Value[index]) && name.Value[index] != '-')
+                if (!char.IsLetterOrDigit(name.Value[index]) && name.Value[index] != '-' && name.Value[index] != '_')
                 {
                     throw ParseException.LongOptionNameContainSymbol(reader, position + 2 + index, name.Value[index]);
                 }
