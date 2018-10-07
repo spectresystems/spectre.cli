@@ -457,11 +457,29 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
                 // Then
                 result.ShouldBe(expected);
             }
+
+            [Theory]
+            [InlineData("--f-oo")]
+            [InlineData("--f-o-o")]
+            [InlineData("--f_oo")]
+            [InlineData("--f_o_o")]
+            public void Should_Allow_Special_Symbols_In_Name(string option)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.AddCommand<DogCommand>("dog");
+
+                // When
+                var result = Fixture.GetParseMessage(new[] { "dog", option }, configurator, shouldThrowOnSuccess: false);
+
+                // Then
+                result.ShouldBeNull();
+            }
         }
 
         internal static class Fixture
         {
-            public static string GetParseMessage(IEnumerable<string> args, Configurator configurator)
+            public static string GetParseMessage(IEnumerable<string> args, Configurator configurator, bool shouldThrowOnSuccess = true)
             {
                 try
                 {
@@ -473,7 +491,12 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
                     parser.Parse(args);
 
                     // If we get here, something is wrong.
-                    throw new InvalidOperationException("Expected a parse exception.");
+                    if (shouldThrowOnSuccess)
+                    {
+                        throw new InvalidOperationException("Expected a parse exception.");
+                    }
+
+                    return null;
                 }
                 catch (ParseException ex)
                 {
