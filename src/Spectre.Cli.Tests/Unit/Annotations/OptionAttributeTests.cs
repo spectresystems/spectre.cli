@@ -25,7 +25,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("-o|--option <VALUE>");
 
             // Then
-            option.ShortName.ShouldBe("o");
+            option.ShortNames.ShouldContain("o");
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("-o");
 
             // Then
-            option.ShortName.ShouldBe("o");
+            option.ShortNames.ShouldContain("o");
         }
 
         [Fact]

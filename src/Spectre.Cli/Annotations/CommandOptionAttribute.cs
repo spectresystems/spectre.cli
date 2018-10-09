@@ -14,21 +14,21 @@ namespace Spectre.Cli
     public sealed class CommandOptionAttribute : Attribute
     {
         /// <summary>
-        /// Gets the long name of the option.
+        /// Gets the long names of the option.
         /// </summary>
-        /// <value>The long name of the option.</value>
+        /// <value>The option's long names.</value>
         public IReadOnlyList<string> LongNames { get; }
 
         /// <summary>
-        /// Gets the short name of the option.
+        /// Gets the short names of the option.
         /// </summary>
-        /// <value>The short name of the option.</value>
-        public string ShortName { get; }
+        /// <value>The option's short names.</value>
+        public IReadOnlyList<string> ShortNames { get; }
 
         /// <summary>
         /// Gets the value name of the option.
         /// </summary>
-        /// <value>The value name of the option.</value>
+        /// <value>The option's value name.</value>
         public string ValueName { get; }
 
         /// <summary>
@@ -47,14 +47,14 @@ namespace Spectre.Cli
 
             // Assign the result.
             LongNames = result.LongNames;
-            ShortName = result.ShortName;
+            ShortNames = result.ShortNames;
             ValueName = result.Value;
         }
 
         internal bool IsMatch(string name)
         {
             return
-                ShortName?.Equals(name, StringComparison.Ordinal) == true ||
+                ShortNames.Contains(name, StringComparer.Ordinal) ||
                 LongNames.Contains(name, StringComparer.Ordinal);
         }
     }

@@ -1,8 +1,8 @@
-﻿namespace Spectre.Cli.Tests.Data.Settings
+namespace Spectre.Cli.Tests.Data.Settings
 {
     public class MammalSettings : AnimalSettings
     {
-        [CommandOption("-n|--name <VALUE>")]
+        [CommandOption("-n|-p|--name|--pet-name <VALUE>")]
         public string Name { get; set; }
     }
 }

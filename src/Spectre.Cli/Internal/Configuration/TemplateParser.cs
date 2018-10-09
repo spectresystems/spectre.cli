@@ -15,11 +15,12 @@ namespace Spectre.Cli.Internal.Configuration
         public sealed class OptionResult
         {
             public List<string> LongNames { get; set; }
-            public string ShortName { get; set; }
+            public List<string> ShortNames { get; set; }
             public string Value { get; set; }
 
             public OptionResult()
             {
+                ShortNames = new List<string>();
                 LongNames = new List<string>();
             }
         }
@@ -90,15 +91,11 @@ namespace Spectre.Cli.Internal.Configuration
 
                 if (token.TokenKind == TemplateToken.Kind.ShortName)
                 {
-                    if (!string.IsNullOrWhiteSpace(result.ShortName))
-                    {
-                        throw TemplateException.MultipleShortOptionNamesNotAllowed(template, token);
-                    }
                     if (token.Value.Length > 1)
                     {
                         throw TemplateException.ShortOptionMustOnlyBeOneCharacter(template, token);
                     }
-                    result.ShortName = token.Value;
+                    result.ShortNames.Add(token.Value);
                 }
 
                 if (token.TokenKind == TemplateToken.Kind.RequiredValue ||
@@ -126,7 +123,7 @@ namespace Spectre.Cli.Internal.Configuration
             }
 
             if (result.LongNames.Count == 0 &&
-                string.IsNullOrWhiteSpace(result.ShortName))
+                result.ShortNames.Count == 0)
             {
                 throw TemplateException.MissingLongAndShortName(template, null);
             }

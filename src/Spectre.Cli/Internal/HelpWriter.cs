@@ -118,7 +118,7 @@ namespace Spectre.Cli.Internal
             };
 
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
-                (o.ShortName, o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
+                (o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
                 ?? Array.Empty<(string, string, string, string)>());
 
             var options = parameters.ToArray();

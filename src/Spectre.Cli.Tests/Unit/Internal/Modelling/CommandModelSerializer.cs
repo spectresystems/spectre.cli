@@ -120,7 +120,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Options
             foreach (var option in command.Parameters.OfType<CommandOption>()
                 .OrderBy(x => string.Join(",", x.LongNames))
-                .ThenBy(x => x.ShortName))
+                .ThenBy(x => string.Join(",", x.ShortNames)))
             {
                 var node = document.CreateElement("option");
 
@@ -129,7 +129,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
                     node.SetBooleanAttribute("shadowed", true);
                 }
 
-                node.SetNullableAttribute("short", option.ShortName);
+                node.SetNullableAttribute("short", option.ShortNames);
                 node.SetNullableAttribute("long", option.LongNames);
                 node.SetNullableAttribute("value", option.ValueName);
                 node.SetBooleanAttribute("required", option.Required);

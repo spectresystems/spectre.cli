@@ -137,20 +137,6 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             }
         }
 
-        public sealed class TheMultipleShortOptionNamesNotAllowedMethod
-        {
-            [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Exceptions/Template/MultipleShortOptionNamesNotAllowed")]
-            public void Should_Return_Correct_Text(string expected)
-            {
-                // Given, When
-                var message = Fixture.GetOptionTemplateParsingMessage("-f|-b");
-
-                // Then
-                message.ShouldBe(expected);
-            }
-        }
-
         public sealed class TheShortOptionMustOnlyBeOneCharacterMethod
         {
             [Theory]

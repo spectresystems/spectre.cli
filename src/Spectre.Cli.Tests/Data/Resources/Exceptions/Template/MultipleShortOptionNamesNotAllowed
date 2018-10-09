@@ -1,5 +1,0 @@
-﻿Error: An error occured when parsing template.
-       Multiple short option names are not supported.
-
-       -f|-b
-          ^^ Too many short options
