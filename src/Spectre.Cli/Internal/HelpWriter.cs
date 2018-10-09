@@ -101,7 +101,7 @@ namespace Spectre.Cli.Internal
             composer.Tab().Text(model.ApplicationName ?? Assembly.GetEntryAssembly().GetName().Name);
 
             // Root or not a default command?
-            if (command == null || !command.IsDefaultCommand)
+            if (command?.IsDefaultCommand != true)
             {
                 composer.Space();
             }
@@ -112,10 +112,13 @@ namespace Spectre.Cli.Internal
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
         {
             // Collect all options into a single structure.
-            var parameters = new List<(string @short, string @long, string value, string description)>();
-            parameters.Add(("h", "help", null, "Prints help information"));
+            var parameters = new List<(string @short, string @long, string value, string description)>
+            {
+                ("h", "help", null, "Prints help information")
+            };
+
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
-                (o.ShortName, o.LongName, o.ValueName, o.Description))
+                (o.ShortName, o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
                 ?? Array.Empty<(string, string, string, string)>());
 
             var options = parameters.ToArray();

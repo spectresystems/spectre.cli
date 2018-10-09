@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Spectre.Cli.Internal.Configuration;
 
 // ReSharper disable once CheckNamespace
@@ -15,7 +17,7 @@ namespace Spectre.Cli
         /// Gets the long name of the option.
         /// </summary>
         /// <value>The long name of the option.</value>
-        public string LongName { get; }
+        public IReadOnlyList<string> LongNames { get; }
 
         /// <summary>
         /// Gets the short name of the option.
@@ -44,9 +46,16 @@ namespace Spectre.Cli
             var result = TemplateParser.ParseOptionTemplate(template);
 
             // Assign the result.
-            LongName = result.LongName;
+            LongNames = result.LongNames;
             ShortName = result.ShortName;
             ValueName = result.Value;
+        }
+
+        internal bool IsMatch(string name)
+        {
+            return
+                ShortName?.Equals(name, StringComparison.Ordinal) == true ||
+                LongNames.Contains(name, StringComparer.Ordinal);
         }
     }
 }

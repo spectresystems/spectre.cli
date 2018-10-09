@@ -82,13 +82,6 @@ namespace Spectre.Cli.Internal.Exceptions
                 "Invalid character.");
         }
 
-        public static TemplateException MultipleLongOptionNamesNotAllowed(string template, TemplateToken token)
-        {
-            return TemplateExceptionFactory.Create(template, token,
-                "Multiple long option names are not supported.",
-                "Too many long options.");
-        }
-
         public static TemplateException LongOptionMustHaveMoreThanOneCharacter(string template, TemplateToken token)
         {
             // Rewrite the token to point to the option name instead of the whole option.

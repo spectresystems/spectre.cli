@@ -43,7 +43,6 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleShortOptionNamesNotAllowed" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleLongOptionNamesNotAllowed" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />

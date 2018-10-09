@@ -61,7 +61,11 @@ namespace Spectre.Cli.Internal.Modelling
             foreach (var option in command.Parameters.OfType<CommandOption>())
             {
                 AddToResult(option.ShortName);
-                AddToResult(option.LongName);
+
+                foreach (var longName in option.LongNames)
+                {
+                    AddToResult(longName);
+                }
             }
 
             return result.Where(x => x.Value > 1)

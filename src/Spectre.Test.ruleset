@@ -39,9 +39,11 @@
     <Rule Id="SA1625" Action="None" /> <!-- ElementDocumentationMustNotBeCopiedAndPasted -->
     <Rule Id="SA1633" Action="None" /> <!-- FileMustHaveHeader -->
     <Rule Id="SA1649" Action="None" /> <!-- FileNameMustMatchTypeName -->
-    <Rule Id="xUnit1012" Action="None" /> <!-- Null should not be used for value type parameters -->
-    <Rule Id="xUnit1013" Action="None" /> <!-- Public method should be marked as test -->
-    <Rule Id="xUnit2000" Action="None" /> <!-- Constants and literals should be the expected argument -->
-    <Rule Id="xUnit2002" Action="None" /> <!-- Do not use null check on value type -->
+  </Rules>
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1021" Action="None" /> <!-- Simplify lambda expression -->
+    <Rule Id="RCS1029" Action="None" /> <!-- Format binary operator on next line -->
+    <Rule Id="RCS1090" Action="None" /> <!-- Call ConfigureAwait(false) -->
+    <Rule Id="RCS1141" Action="None" /> <!-- Remove empty initializer -->
   </Rules>
 </RuleSet>

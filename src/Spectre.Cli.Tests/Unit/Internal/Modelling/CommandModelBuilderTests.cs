@@ -1,4 +1,6 @@
-﻿using Shouldly;
+using System;
+using System.Linq;
+using Shouldly;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
@@ -66,10 +68,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             model.Commands[0].As(animal =>
             {
                 animal.Description.ShouldBe("An animal");
-                animal.Children[0].As(mammal =>
-                {
-                    mammal.Description.ShouldBe("A mammal");
-                });
+                animal.Children[0].As(mammal => mammal.Description.ShouldBe("A mammal"));
             });
         }
 
@@ -85,7 +84,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Then
             model.Commands[0]
-                .GetOption(option => option.LongName == "agility")
+                .GetOption(option => option.LongNames.Contains("agility", StringComparer.Ordinal))
                 .Converter.ConverterTypeName
                 .ShouldStartWith("Spectre.Cli.Tests.Data.Converters.CatAgilityConverter");
         }
@@ -106,7 +105,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Then
             model.Commands[0].As(mammal =>
             {
-                mammal.GetOption(option => option.LongName == "name").As(o1 =>
+                mammal.GetOption(option => option.LongNames.Contains("name", StringComparer.Ordinal)).As(o1 =>
                 {
                     o1.ShouldNotBeNull();
                     o1.IsShadowed.ShouldBe(false);
@@ -114,7 +113,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
                 mammal.Children[0].As(horse =>
                 {
-                    horse.GetOption(option => option.LongName == "name").As(o2 =>
+                    horse.GetOption(option => option.LongNames.Contains("name", StringComparer.Ordinal)).As(o2 =>
                     {
                         o2.ShouldNotBeNull();
                         o2.IsShadowed.ShouldBe(true);
@@ -141,7 +140,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             {
                 mammal.Children[0].As(horse =>
                 {
-                    horse.GetOption(option => option.LongName == "name").As(o2 =>
+                    horse.GetOption(option => option.LongNames.Contains("name", StringComparer.Ordinal)).As(o2 =>
                     {
                         o2.ShouldNotBeNull();
                         o2.Required.ShouldBe(false);
@@ -162,7 +161,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Then
             model.Commands[0]
-                .GetOption(option => option.LongName == "agility")
+                .GetOption(option => option.LongNames.Contains("agility", StringComparer.Ordinal))
                 .DefaultValue.Value.ShouldBe(10);
         }
 
@@ -276,7 +275,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         {
             // Given
             var configurator = new Configurator(null);
-            configurator.AddBranch<AnimalSettings>("animal", animal =>
+            configurator.AddBranch<AnimalSettings>("animal", _ =>
             {
             });
 
@@ -285,9 +284,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Then
             result.ShouldBeOfType<ConfigurationException>().And(exception =>
-            {
-                exception.Message.ShouldBe("The branch 'animal' does not define any commands.");
-            });
+                exception.Message.ShouldBe("The branch 'animal' does not define any commands."));
         }
 
         [Fact]
@@ -301,9 +298,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Then
             result.ShouldBeOfType<ConfigurationException>().And(exception =>
-            {
-                exception.Message.ShouldBe("No commands have been configured.");
-            });
+                exception.Message.ShouldBe("No commands have been configured."));
         }
 
         [Fact]
