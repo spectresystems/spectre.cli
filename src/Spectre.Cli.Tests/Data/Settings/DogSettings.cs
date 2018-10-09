@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Tests.Data.Settings
+namespace Spectre.Cli.Tests.Data.Settings
 {
     public sealed class DogSettings : MammalSettings
     {

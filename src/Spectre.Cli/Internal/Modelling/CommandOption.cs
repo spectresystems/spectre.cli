@@ -7,8 +7,8 @@ namespace Spectre.Cli.Internal.Modelling
 {
     internal sealed class CommandOption : CommandParameter
     {
-        public string LongName { get; }
-        public string ShortName { get; }
+        public IReadOnlyList<string> LongNames { get; }
+        public IReadOnlyList<string> ShortNames { get; }
         public string ValueName { get; }
         public DefaultValueAttribute DefaultValue { get; }
         public bool IsShadowed { get; set; }
@@ -19,15 +19,15 @@ namespace Spectre.Cli.Internal.Modelling
             IEnumerable<ParameterValidationAttribute> validators, DefaultValueAttribute defaultValue)
                 : base(parameterType, parameterKind, property, description, converter, validators, false)
         {
-            LongName = optionAttribute.LongName;
-            ShortName = optionAttribute.ShortName;
+            LongNames = optionAttribute.LongNames;
+            ShortNames = optionAttribute.ShortNames;
             ValueName = optionAttribute.ValueName;
             DefaultValue = defaultValue;
         }
 
         public string GetOptionName()
         {
-            return !string.IsNullOrWhiteSpace(LongName) ? $"{LongName}" : $"{ShortName}";
+            return LongNames.Count > 0 ? LongNames[0] : ShortNames[0];
         }
     }
 }

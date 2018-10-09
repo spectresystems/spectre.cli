@@ -1,5 +1,0 @@
-﻿Error: An error occured when parsing template.
-       Multiple long option names are not supported.
-
-       --foo|--bar
-             ^^^^^ Too many long options

@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Spectre.Cli.Tests.Data.Validators;
 
 namespace Spectre.Cli.Tests.Data.Settings
 {
     public abstract class AnimalSettings : CommandSettings
     {
-        [CommandOption("-a|--alive")]
+        [CommandOption("-a|--alive|--not-dead")]
         [Description("Indicates whether or not the animal is alive.")]
         public bool IsAlive { get; set; }
 

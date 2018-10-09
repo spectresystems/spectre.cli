@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Spectre.Cli.Internal.Configuration;
 
 // ReSharper disable once CheckNamespace
@@ -12,21 +14,21 @@ namespace Spectre.Cli
     public sealed class CommandOptionAttribute : Attribute
     {
         /// <summary>
-        /// Gets the long name of the option.
+        /// Gets the long names of the option.
         /// </summary>
-        /// <value>The long name of the option.</value>
-        public string LongName { get; }
+        /// <value>The option's long names.</value>
+        public IReadOnlyList<string> LongNames { get; }
 
         /// <summary>
-        /// Gets the short name of the option.
+        /// Gets the short names of the option.
         /// </summary>
-        /// <value>The short name of the option.</value>
-        public string ShortName { get; }
+        /// <value>The option's short names.</value>
+        public IReadOnlyList<string> ShortNames { get; }
 
         /// <summary>
         /// Gets the value name of the option.
         /// </summary>
-        /// <value>The value name of the option.</value>
+        /// <value>The option's value name.</value>
         public string ValueName { get; }
 
         /// <summary>
@@ -44,9 +46,16 @@ namespace Spectre.Cli
             var result = TemplateParser.ParseOptionTemplate(template);
 
             // Assign the result.
-            LongName = result.LongName;
-            ShortName = result.ShortName;
+            LongNames = result.LongNames;
+            ShortNames = result.ShortNames;
             ValueName = result.Value;
+        }
+
+        internal bool IsMatch(string name)
+        {
+            return
+                ShortNames.Contains(name, StringComparer.Ordinal) ||
+                LongNames.Contains(name, StringComparer.Ordinal);
         }
     }
 }

@@ -46,22 +46,25 @@ namespace Spectre.Cli.Internal.Modelling
         {
             var result = new Dictionary<string, int>(StringComparer.Ordinal);
 
-            void AddToResult(string key)
+            void AddToResult(IEnumerable<string> keys)
             {
-                if (!string.IsNullOrWhiteSpace(key))
+                foreach (var key in keys)
                 {
-                    if (!result.ContainsKey(key))
+                    if (!string.IsNullOrWhiteSpace(key))
                     {
-                        result.Add(key, 0);
+                        if (!result.ContainsKey(key))
+                        {
+                            result.Add(key, 0);
+                        }
+                        result[key]++;
                     }
-                    result[key]++;
                 }
             }
 
             foreach (var option in command.Parameters.OfType<CommandOption>())
             {
-                AddToResult(option.ShortName);
-                AddToResult(option.LongName);
+                AddToResult(option.ShortNames);
+                AddToResult(option.LongNames);
             }
 
             return result.Where(x => x.Value > 1)

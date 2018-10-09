@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -119,8 +119,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
 
             // Options
             foreach (var option in command.Parameters.OfType<CommandOption>()
-                .OrderBy(x => x.LongName)
-                .ThenBy(x => x.ShortName))
+                .OrderBy(x => string.Join(",", x.LongNames))
+                .ThenBy(x => string.Join(",", x.ShortNames)))
             {
                 var node = document.CreateElement("option");
 
@@ -129,8 +129,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
                     node.SetBooleanAttribute("shadowed", true);
                 }
 
-                node.SetNullableAttribute("short", option.ShortName);
-                node.SetNullableAttribute("long", option.LongName);
+                node.SetNullableAttribute("short", option.ShortNames);
+                node.SetNullableAttribute("long", option.LongNames);
                 node.SetNullableAttribute("value", option.ValueName);
                 node.SetBooleanAttribute("required", option.Required);
                 node.SetEnumAttribute("kind", option.ParameterKind);

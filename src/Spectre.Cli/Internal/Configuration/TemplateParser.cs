@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Spectre.Cli.Internal.Exceptions;
 
 namespace Spectre.Cli.Internal.Configuration
@@ -12,9 +14,15 @@ namespace Spectre.Cli.Internal.Configuration
 
         public sealed class OptionResult
         {
-            public string LongName { get; set; }
-            public string ShortName { get; set; }
+            public List<string> LongNames { get; set; }
+            public List<string> ShortNames { get; set; }
             public string Value { get; set; }
+
+            public OptionResult()
+            {
+                ShortNames = new List<string>();
+                LongNames = new List<string>();
+            }
         }
 
         public static ArgumentResult ParseArgumentTemplate(string template)
@@ -74,28 +82,20 @@ namespace Spectre.Cli.Internal.Configuration
 
                 if (token.TokenKind == TemplateToken.Kind.LongName)
                 {
-                    if (!string.IsNullOrWhiteSpace(result.LongName))
-                    {
-                        throw TemplateException.MultipleLongOptionNamesNotAllowed(template, token);
-                    }
                     if (token.Value.Length == 1)
                     {
                         throw TemplateException.LongOptionMustHaveMoreThanOneCharacter(template, token);
                     }
-                    result.LongName = token.Value;
+                    result.LongNames.Add(token.Value);
                 }
 
                 if (token.TokenKind == TemplateToken.Kind.ShortName)
                 {
-                    if (!string.IsNullOrWhiteSpace(result.ShortName))
-                    {
-                        throw TemplateException.MultipleShortOptionNamesNotAllowed(template, token);
-                    }
                     if (token.Value.Length > 1)
                     {
                         throw TemplateException.ShortOptionMustOnlyBeOneCharacter(template, token);
                     }
-                    result.ShortName = token.Value;
+                    result.ShortNames.Add(token.Value);
                 }
 
                 if (token.TokenKind == TemplateToken.Kind.RequiredValue ||
@@ -122,8 +122,8 @@ namespace Spectre.Cli.Internal.Configuration
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(result.LongName) &&
-                string.IsNullOrWhiteSpace(result.ShortName))
+            if (result.LongNames.Count == 0 &&
+                result.ShortNames.Count == 0)
             {
                 throw TemplateException.MissingLongAndShortName(template, null);
             }

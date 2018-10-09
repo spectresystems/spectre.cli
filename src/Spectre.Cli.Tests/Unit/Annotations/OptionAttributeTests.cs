@@ -1,4 +1,4 @@
-﻿using Shouldly;
+using Shouldly;
 using Spectre.Cli.Internal.Exceptions;
 using Xunit;
 
@@ -15,9 +15,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             // Then
             result.ShouldNotBe(null);
             result.ShouldBeOfType<TemplateException>().And(exception =>
-            {
-                exception.Message.ShouldBe("Option values cannot be optional.");
-            });
+                exception.Message.ShouldBe("Option values cannot be optional."));
         }
 
         [Fact]
@@ -27,7 +25,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("-o|--option <VALUE>");
 
             // Then
-            option.ShortName.ShouldBe("o");
+            option.ShortNames.ShouldContain("o");
         }
 
         [Fact]
@@ -37,7 +35,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("-o|--option <VALUE>");
 
             // Then
-            option.LongName.ShouldBe("option");
+            option.LongNames.ShouldContain("option");
         }
 
         [Theory]
@@ -58,7 +56,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("-o");
 
             // Then
-            option.ShortName.ShouldBe("o");
+            option.ShortNames.ShouldContain("o");
         }
 
         [Fact]
@@ -68,7 +66,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
             var option = new CommandOptionAttribute("--option");
 
             // Then
-            option.LongName.ShouldBe("option");
+            option.LongNames.ShouldContain("option");
         }
 
         [Theory]
@@ -81,9 +79,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
 
             // Then
             option.ShouldBeOfType<TemplateException>().And(e =>
-            {
-                e.Message.ShouldBe("No long or short name for option has been specified.");
-            });
+                e.Message.ShouldBe("No long or short name for option has been specified."));
         }
 
         [Theory]
@@ -95,9 +91,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
 
             // Then
             option.ShouldBeOfType<TemplateException>().And(e =>
-            {
-                e.Message.ShouldBe("Short option names can not be longer than one character.");
-            });
+                e.Message.ShouldBe("Short option names can not be longer than one character."));
         }
 
         [Theory]
@@ -109,9 +103,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
 
             // Then
             option.ShouldBeOfType<TemplateException>().And(e =>
-            {
-                e.Message.ShouldBe("Long option names must consist of more than one character.");
-            });
+                e.Message.ShouldBe("Long option names must consist of more than one character."));
         }
 
         [Theory]
@@ -124,9 +116,7 @@ namespace Spectre.Cli.Tests.Unit.Annotations
 
             // Then
             option.ShouldBeOfType<TemplateException>().And(e =>
-            {
-                e.Message.ShouldBe("Options without name are not allowed.");
-            });
+                e.Message.ShouldBe("Options without name are not allowed."));
         }
     }
 }

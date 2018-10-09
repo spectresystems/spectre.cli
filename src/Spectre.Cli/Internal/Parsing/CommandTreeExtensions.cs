@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Spectre.Cli.Internal.Modelling;
 
@@ -39,7 +40,9 @@ namespace Spectre.Cli.Internal.Parsing
         {
             return tree.Command.Parameters
                 .OfType<CommandOption>()
-                .FirstOrDefault(o => longOption ? o.LongName == name : o.ShortName == name);
+                .FirstOrDefault(o => longOption
+                    ? o.LongNames.Contains(name, StringComparer.Ordinal)
+                    : o.ShortNames.Contains(name, StringComparer.Ordinal));
         }
 
         public static bool IsOptionMappedWithParent(this CommandTree tree, string name, bool longOption)
@@ -48,15 +51,13 @@ namespace Spectre.Cli.Internal.Parsing
             while (node != null)
             {
                 var option = node.Command?.Parameters.OfType<CommandOption>()
-                    .FirstOrDefault(o => longOption ? o.LongName == name : o.ShortName == name);
+                    .FirstOrDefault(o => longOption
+                        ? o.LongNames.Contains(name, StringComparer.Ordinal)
+                        : o.ShortNames.Contains(name, StringComparer.Ordinal));
 
                 if (option != null)
                 {
-                    if (node.Mapped.Any(p => p.Item1 == option))
-                    {
-                        return true;
-                    }
-                    return false;
+                    return node.Mapped.Any(p => p.Item1 == option);
                 }
 
                 node = node.Parent;

@@ -1,4 +1,4 @@
-﻿using Shouldly;
+using Shouldly;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
 using Xunit;
@@ -100,9 +100,33 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
                 var result = TemplateParser.ParseOptionTemplate(template);
 
                 // Then
-                result.LongName.ShouldBe("foo");
-                result.ShortName.ShouldBe("f");
+                result.LongNames.ShouldContain("foo");
+                result.ShortNames.ShouldContain("f");
                 result.Value.ShouldBe("BAR");
+            }
+
+            [Fact]
+            public void Multiple_Long_Options_Are_Supported()
+            {
+                // Given, When
+                var result = TemplateParser.ParseOptionTemplate("--foo|--bar");
+
+                // Then
+                result.LongNames.Count.ShouldBe(2);
+                result.LongNames.ShouldContain("foo");
+                result.LongNames.ShouldContain("bar");
+            }
+
+            [Fact]
+            public void Multiple_Short_Options_Are_Supported()
+            {
+                // Given, When
+                var result = TemplateParser.ParseOptionTemplate("-f|-b");
+
+                // Then
+                result.ShortNames.Count.ShouldBe(2);
+                result.ShortNames.ShouldContain("f");
+                result.ShortNames.ShouldContain("b");
             }
 
             [Theory]
@@ -132,34 +156,6 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
                 {
                     e.Message.ShouldBe("Option values cannot be optional.");
                     e.Template.ShouldBe("--foo [FOO]");
-                });
-            }
-
-            [Fact]
-            public void Should_Throw_If_Multiple_Long_Options_Are_Provided()
-            {
-                // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("--foo|--bar"));
-
-                // Then
-                result.ShouldBeOfType<TemplateException>().And(e =>
-                {
-                    e.Message.ShouldBe("Multiple long option names are not supported.");
-                    e.Template.ShouldBe("--foo|--bar");
-                });
-            }
-
-            [Fact]
-            public void Should_Throw_If_Multiple_Short_Options_Are_Provided()
-            {
-                // Given, When
-                var result = Record.Exception(() => TemplateParser.ParseOptionTemplate("-f|-b"));
-
-                // Then
-                result.ShouldBeOfType<TemplateException>().And(e =>
-                {
-                    e.Message.ShouldBe("Multiple short option names are not supported.");
-                    e.Template.ShouldBe("-f|-b");
                 });
             }
 

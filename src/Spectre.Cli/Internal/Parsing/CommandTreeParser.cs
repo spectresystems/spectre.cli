@@ -43,13 +43,9 @@ namespace Spectre.Cli.Internal.Parsing
                     }
 
                     // Show help?
-                    if (_help != null)
+                    if (_help?.IsMatch(token.Value) == true)
                     {
-                        if (_help.ShortName?.Equals(token.Value, StringComparison.Ordinal) == true ||
-                            _help.LongName?.Equals(token.Value, StringComparison.Ordinal) == true)
-                        {
-                            return (null, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
-                        }
+                        return (null, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
                     }
 
                     // Unexpected option.
@@ -217,14 +213,10 @@ namespace Spectre.Cli.Internal.Parsing
                 }
 
                 // Help?
-                if (_help != null)
+                if (_help?.IsMatch(token.Value) == true)
                 {
-                    if (_help.ShortName?.Equals(token.Value, StringComparison.Ordinal) == true ||
-                        _help.LongName?.Equals(token.Value, StringComparison.Ordinal) == true)
-                    {
-                        node.ShowHelp = true;
-                        return;
-                    }
+                    node.ShowHelp = true;
+                    return;
                 }
             }
 
@@ -241,7 +233,6 @@ namespace Spectre.Cli.Internal.Parsing
             else
             {
                 ParseOptionValue(context, stream, token, node, null);
-                return;
             }
         }
 

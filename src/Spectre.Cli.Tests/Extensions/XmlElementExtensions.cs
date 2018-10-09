@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 
@@ -11,6 +13,15 @@ namespace Spectre.Cli.Tests
         public static void SetNullableAttribute(this XmlElement element, string name, string value)
         {
             element.SetAttribute(name, value ?? "NULL");
+        }
+
+        public static void SetNullableAttribute(this XmlElement element, string name, IEnumerable<string> values)
+        {
+            if (values?.Any() != true)
+            {
+                element.SetAttribute(name, "NULL");
+            }
+            element.SetAttribute(name, string.Join(",", values));
         }
 
         public static void SetBooleanAttribute(this XmlElement element, string name, bool value)

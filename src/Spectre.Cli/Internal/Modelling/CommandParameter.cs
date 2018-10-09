@@ -34,12 +34,12 @@ namespace Spectre.Cli.Internal.Modelling
             return CommandParameterComparer.ByBackingProperty.Equals(this, other);
         }
 
-        public void Assign(object settings, object value)
+        public void Assign(CommandSettings settings, object value)
         {
             Property.SetValue(settings, value);
         }
 
-        public object Get(object settings)
+        public object Get(CommandSettings settings)
         {
             return Property.GetValue(settings);
         }
