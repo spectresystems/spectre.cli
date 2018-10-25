@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal.Configuration
@@ -12,6 +12,7 @@ namespace Spectre.Cli.Internal.Configuration
         public string ApplicationName { get; private set; }
         public bool ShouldPropagateExceptions { get; private set; }
         public ParsingMode ParsingMode { get; private set; }
+        public IList<string[]> Examples { get; set; }
 
         public Configurator(ITypeRegistrar registrar, Type defaultCommand = null)
         {
@@ -20,6 +21,7 @@ namespace Spectre.Cli.Internal.Configuration
             Commands = new List<ConfiguredCommand>();
             ShouldPropagateExceptions = false;
             ParsingMode = ParsingMode.Relaxed;
+            Examples = new List<string[]>();
 
             if (defaultCommand != null)
             {
@@ -52,13 +54,21 @@ namespace Spectre.Cli.Internal.Configuration
             ShouldPropagateExceptions = true;
         }
 
-        public void AddCommand<TCommand>(string name) where TCommand : class, ICommand
+        public void AddExample(params string[] args)
+        {
+            Examples.Add(args);
+        }
+
+        public ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommand
         {
             var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
             var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
-            Commands.Add(command);
+            var configurator = new CommandConfigurator(command);
 
+            Commands.Add(command);
             _registrar.RegisterCommand(typeof(TCommand), settingsType);
+
+            return configurator;
         }
 
         public void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)

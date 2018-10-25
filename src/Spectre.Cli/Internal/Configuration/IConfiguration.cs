@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal.Configuration
 {
@@ -8,5 +8,6 @@ namespace Spectre.Cli.Internal.Configuration
         IList<ConfiguredCommand> Commands { get; }
         string ApplicationName { get; }
         ParsingMode ParsingMode { get; }
+        IList<string[]> Examples { get; }
     }
 }

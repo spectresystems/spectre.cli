@@ -14,6 +14,7 @@ namespace Spectre.Cli.Internal.Modelling
         public CommandInfo Parent { get; }
         public IList<CommandInfo> Children { get; }
         public IList<CommandParameter> Parameters { get; }
+        public IList<string[]> Examples { get; }
 
         public bool IsBranch => CommandType == null;
         IList<CommandInfo> ICommandContainer.Commands => Children;
@@ -30,6 +31,7 @@ namespace Spectre.Cli.Internal.Modelling
 
             Children = new List<CommandInfo>();
             Parameters = new List<CommandParameter>();
+            Examples = prototype.Examples ?? new List<string[]>();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli.Internal.Configuration
 {
@@ -19,13 +19,21 @@ namespace Spectre.Cli.Internal.Configuration
             _command.Description = description;
         }
 
-        public void AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>
+        public void AddExample(params string[] args)
+        {
+            _command.Examples.Add(args);
+        }
+
+        public ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>
         {
             var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
             var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
+            var configurator = new CommandConfigurator(command);
 
             _command.Children.Add(command);
             _registrar.RegisterCommand(typeof(TCommand), settingsType);
+
+            return configurator;
         }
 
         public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
