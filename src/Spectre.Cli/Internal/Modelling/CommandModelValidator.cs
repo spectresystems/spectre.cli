@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Internal.Parsing;
 
 namespace Spectre.Cli.Internal.Modelling
 {
     internal static class CommandModelValidator
     {
-        public static void Validate(CommandModel model)
+        public static void Validate(CommandModel model, bool validateExamples)
         {
             if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
@@ -17,6 +18,11 @@ namespace Spectre.Cli.Internal.Modelling
             foreach (var command in model.Commands)
             {
                 Validate(command);
+            }
+
+            if (validateExamples)
+            {
+                ValidateExamples(model);
             }
         }
 
@@ -39,6 +45,39 @@ namespace Spectre.Cli.Internal.Modelling
             foreach (var childCommand in command.Children)
             {
                 Validate(childCommand);
+            }
+        }
+
+        private static void ValidateExamples(CommandModel model)
+        {
+            var examples = new List<string[]>();
+            examples.AddRangeIfNotNull(model.Examples);
+
+            // Get all examples.
+            var queue = new Queue<ICommandContainer>(new[] { model });
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+
+                foreach (var command in current.Commands)
+                {
+                    examples.AddRangeIfNotNull(command.Examples);
+                    queue.Enqueue(command);
+                }
+            }
+
+            // Validate all examples.
+            foreach (var example in examples)
+            {
+                try
+                {
+                    var parser = new CommandTreeParser(model);
+                    parser.Parse(example);
+                }
+                catch (Exception ex)
+                {
+                    throw new ConfigurationException("Validation of examples failed.", ex);
+                }
             }
         }
 

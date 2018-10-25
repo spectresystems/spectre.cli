@@ -13,7 +13,7 @@ namespace Spectre.Cli.Internal.Configuration
             Command = command;
         }
 
-        public ICommandConfigurator WithExample(params string[] args)
+        public ICommandConfigurator WithExample(string[] args)
         {
             Command.Examples.Add(args);
             return this;

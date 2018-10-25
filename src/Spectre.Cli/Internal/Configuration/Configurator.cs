@@ -11,6 +11,7 @@ namespace Spectre.Cli.Internal.Configuration
         public ConfiguredCommand DefaultCommand { get; }
         public string ApplicationName { get; private set; }
         public bool ShouldPropagateExceptions { get; private set; }
+        public bool ShouldValidateExamples { get; private set; }
         public ParsingMode ParsingMode { get; private set; }
         public IList<string[]> Examples { get; set; }
 
@@ -54,7 +55,12 @@ namespace Spectre.Cli.Internal.Configuration
             ShouldPropagateExceptions = true;
         }
 
-        public void AddExample(params string[] args)
+        public void ValidateExamples()
+        {
+            ShouldValidateExamples = true;
+        }
+
+        public void AddExample(string[] args)
         {
             Examples.Add(args);
         }

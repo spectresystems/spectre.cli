@@ -19,7 +19,7 @@ namespace Spectre.Cli
         /// Adds an example of how to use the branch.
         /// </summary>
         /// <param name="args">The example arguments.</param>
-        void AddExample(params string[] args);
+        void AddExample(string[] args);
 
         /// <summary>
         /// Adds a command.

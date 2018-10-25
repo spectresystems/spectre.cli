@@ -10,6 +10,6 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="args">The example arguments.</param>
         /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
-        ICommandConfigurator WithExample(params string[] args);
+        ICommandConfigurator WithExample(string[] args);
     }
 }

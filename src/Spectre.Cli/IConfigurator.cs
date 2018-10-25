@@ -25,10 +25,16 @@ namespace Spectre.Cli
         void PropagateExceptions();
 
         /// <summary>
+        /// Tells the command line application to validate all
+        /// examples before running the application.
+        /// </summary>
+        void ValidateExamples();
+
+        /// <summary>
         /// Adds an example of how to use the application.
         /// </summary>
         /// <param name="args">The example arguments.</param>
-        void AddExample(params string[] args);
+        void AddExample(string[] args);
 
         /// <summary>
         /// Adds a command.

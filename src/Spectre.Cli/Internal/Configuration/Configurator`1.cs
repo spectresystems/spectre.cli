@@ -19,7 +19,7 @@ namespace Spectre.Cli.Internal.Configuration
             _command.Description = description;
         }
 
-        public void AddExample(params string[] args)
+        public void AddExample(string[] args)
         {
             _command.Examples.Add(args);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -92,16 +92,39 @@ namespace Spectre.Cli
             }
         }
 
-        private static IRenderable GetRenderableErrorMessage(Exception ex)
+        private static IRenderable GetRenderableErrorMessage(Exception ex, bool convert = true)
         {
             if (ex is CommandAppException renderable && renderable.Pretty != null)
             {
                 return renderable.Pretty;
             }
 
-            return new BlockElement()
-                .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
-                .Append(new TextElement(ex.Message));
+            if (convert)
+            {
+                // Convert the exception.
+                var converted = new BlockElement()
+                    .Append(new LineBreakElement())
+                    .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
+                    .Append(new TextElement(ex.Message));
+
+                // Got a renderable inner exception?
+                if (ex.InnerException != null)
+                {
+                    var innerRenderable = GetRenderableErrorMessage(ex.InnerException, convert: false);
+                    if (innerRenderable != null)
+                    {
+                        if (innerRenderable.StartsWithLineBreak())
+                        {
+                            converted.Append(new LineBreakElement());
+                        }
+                        converted.Append(innerRenderable);
+                    }
+                }
+
+                return converted;
+            }
+
+            return null;
         }
     }
 }

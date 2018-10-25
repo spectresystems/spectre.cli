@@ -97,8 +97,8 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
                 configurator.SetApplicationName("myapp");
-                configurator.AddExample("dog --name Rufus --age 12 --good-boy");
-                configurator.AddExample("horse --name Brutus");
+                configurator.AddExample(new[] { "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
+                configurator.AddExample(new[] { "horse", "--name", "Brutus" });
                 configurator.AddCommand<DogCommand>("dog");
                 configurator.AddCommand<HorseCommand>("horse");
 
@@ -117,9 +117,9 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 var configurator = new Configurator(new FakeTypeRegistrar());
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<DogCommand>("dog")
-                    .WithExample("dog --name Rufus --age 12 --good-boy");
+                    .WithExample(new[] { "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
                 configurator.AddCommand<HorseCommand>("horse")
-                    .WithExample("horse --name Brutus");
+                    .WithExample(new[] { "horse", "--name", "Brutus" });
 
                 // When
                 var result = Fixture.Write(configurator);
@@ -140,9 +140,9 @@ namespace Spectre.Cli.Tests.Unit.Internal
                     animal.SetDescription("The animal command.");
 
                     animal.AddCommand<DogCommand>("dog")
-                        .WithExample("animal dog --name Rufus --age 12 --good-boy");
+                        .WithExample(new[] { "animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
                     animal.AddCommand<HorseCommand>("horse")
-                        .WithExample("animal horse --name Brutus");
+                        .WithExample(new[] { "animal", "horse", "--name", "Brutus" });
                 });
 
                 // When
@@ -162,12 +162,12 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 configurator.AddBranch<AnimalSettings>("animal", animal =>
                 {
                     animal.SetDescription("The animal command.");
-                    animal.AddExample("animal --help");
+                    animal.AddExample(new[] { "animal", "--help" });
 
                     animal.AddCommand<DogCommand>("dog")
-                        .WithExample("animal dog --name Rufus --age 12 --good-boy");
+                        .WithExample(new[] { "animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
                     animal.AddCommand<HorseCommand>("horse")
-                        .WithExample("animal horse --name Brutus");
+                        .WithExample(new[] { "animal", "horse", "--name", "Brutus" });
                 });
 
                 // When
