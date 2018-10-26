@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli
 {
@@ -25,14 +25,27 @@ namespace Spectre.Cli
         void PropagateExceptions();
 
         /// <summary>
-        /// Adds a command to the configuration.
+        /// Tells the command line application to validate all
+        /// examples before running the application.
+        /// </summary>
+        void ValidateExamples();
+
+        /// <summary>
+        /// Adds an example of how to use the application.
+        /// </summary>
+        /// <param name="args">The example arguments.</param>
+        void AddExample(string[] args);
+
+        /// <summary>
+        /// Adds a command.
         /// </summary>
         /// <typeparam name="TCommand">The command type.</typeparam>
         /// <param name="name">The name of the command.</param>
-        void AddCommand<TCommand>(string name) where TCommand : class, ICommand;
+        /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+        ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommand;
 
         /// <summary>
-        /// Adds a command branch to the configuration.
+        /// Adds a command branch.
         /// </summary>
         /// <typeparam name="TSettings">The type of the settings.</typeparam>
         /// <param name="name">The name of the command branch.</param>

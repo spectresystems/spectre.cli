@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
+    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
+    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
+    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\NoValueForOption_Long" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
@@ -35,8 +42,11 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
+    <EmbeddedResource Include="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
     <EmbeddedResource Include="Data\Resources\Help\Default" />
     <EmbeddedResource Include="Data\Resources\Help\Leaf" />
+    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
+    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
     <EmbeddedResource Include="Data\Resources\Help\Root" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
@@ -53,6 +63,7 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionsMustHaveName" />
     <EmbeddedResource Include="Data\Resources\Exceptions\Template\MissingLongAndShortName" />
     <EmbeddedResource Include="Data\Resources\Help\Command" />
+    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
     <EmbeddedResource Include="Data\Resources\Models\case1.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case3.xml" />

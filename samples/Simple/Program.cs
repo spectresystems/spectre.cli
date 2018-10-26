@@ -1,4 +1,4 @@
-﻿using Sample.Commands;
+using Sample.Commands;
 using Sample.Commands.Settings;
 using Spectre.Cli;
 
@@ -11,13 +11,24 @@ namespace Sample
             var app = new CommandApp();
             app.Configure(config =>
             {
-                config.AddCommand<BuildCommand>("build");
+                config.ValidateExamples();
+
+                // Build
+                config.AddCommand<BuildCommand>("build")
+                    .WithExample(new[] { "build", "--no-restore" });
+
+                // Add
                 config.AddBranch<AddSettings>("add", add =>
                 {
                     add.SetDescription("Add reference to the project.");
 
-                    add.AddCommand<AddPackageCommand>("package");
-                    add.AddCommand<AddReferenceCommand>("reference");
+                    // Package
+                    add.AddCommand<AddPackageCommand>("package")
+                        .WithExample(new[] { "add", "package", "Spectre.Cli" });
+
+                    // Reference
+                    add.AddCommand<AddReferenceCommand>("reference")
+                        .WithExample(new[] { "add", "reference", "MyProject.csproj" });
                 });
             });
 

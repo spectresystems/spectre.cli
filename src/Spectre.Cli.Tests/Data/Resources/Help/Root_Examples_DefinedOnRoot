@@ -1,0 +1,13 @@
+USAGE:
+    myapp [OPTIONS] <COMMAND>
+
+EXAMPLES:
+    myapp dog --name Rufus --age 12 --good-boy
+    myapp horse --name Brutus
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    dog      The dog command
+    horse    The horse command

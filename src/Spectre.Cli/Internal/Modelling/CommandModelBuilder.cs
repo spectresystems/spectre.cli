@@ -22,8 +22,10 @@ namespace Spectre.Cli.Internal.Modelling
                 defaultCommand = Build(null, configuration.DefaultCommand);
             }
 
-            var model = new CommandModel(configuration.ApplicationName, configuration.ParsingMode, defaultCommand, result);
-            CommandModelValidator.Validate(model);
+            var model = new CommandModel(configuration.ApplicationName, configuration.ParsingMode, defaultCommand, result, configuration.Examples);
+
+            CommandModelValidator.Validate(model, configuration.ShouldValidateExamples);
+
             return model;
         }
 
