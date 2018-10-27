@@ -4,11 +4,9 @@ namespace Spectre.Cli.Internal.Configuration
 {
     internal interface IConfiguration
     {
-        ConfiguredCommand DefaultCommand { get; }
         IList<ConfiguredCommand> Commands { get; }
-        string ApplicationName { get; }
-        bool ShouldValidateExamples { get; }
-        ParsingMode ParsingMode { get; }
+        ConfigurationSettings Settings { get; }
+        ConfiguredCommand DefaultCommand { get; }
         IList<string[]> Examples { get; }
     }
 }

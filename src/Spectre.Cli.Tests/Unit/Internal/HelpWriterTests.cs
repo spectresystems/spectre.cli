@@ -78,7 +78,8 @@ namespace Spectre.Cli.Tests.Unit.Internal
         public void Should_Output_Default_Command_Correctly(string expected)
         {
             // Given
-            var configurator = new Configurator(new FakeTypeRegistrar(), typeof(LionCommand));
+            var configurator = new Configurator(new FakeTypeRegistrar());
+            configurator.SetDefaultCommand<LionCommand>();
             configurator.SetApplicationName("myapp");
 
             // When

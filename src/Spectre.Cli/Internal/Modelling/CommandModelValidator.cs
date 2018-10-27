@@ -8,7 +8,7 @@ namespace Spectre.Cli.Internal.Modelling
 {
     internal static class CommandModelValidator
     {
-        public static void Validate(CommandModel model, bool validateExamples)
+        public static void Validate(CommandModel model, ConfigurationSettings settings)
         {
             if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
@@ -20,7 +20,7 @@ namespace Spectre.Cli.Internal.Modelling
                 Validate(command);
             }
 
-            if (validateExamples)
+            if (settings.ValidateExamples)
             {
                 ValidateExamples(model);
             }

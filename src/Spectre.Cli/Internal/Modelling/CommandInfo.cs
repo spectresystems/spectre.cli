@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using Spectre.Cli.Internal.Configuration;
 
 namespace Spectre.Cli.Internal.Modelling
@@ -7,7 +9,7 @@ namespace Spectre.Cli.Internal.Modelling
     internal sealed class CommandInfo : ICommandContainer
     {
         public string Name { get; }
-        public string Description { get; set; }
+        public string Description { get; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
         public bool IsDefaultCommand { get; }
@@ -32,6 +34,15 @@ namespace Spectre.Cli.Internal.Modelling
             Children = new List<CommandInfo>();
             Parameters = new List<CommandParameter>();
             Examples = prototype.Examples ?? new List<string[]>();
+
+            if (!IsBranch)
+            {
+                var description = CommandType.GetCustomAttribute<DescriptionAttribute>();
+                if (description != null)
+                {
+                    Description = description.Description;
+                }
+            }
         }
     }
 }
