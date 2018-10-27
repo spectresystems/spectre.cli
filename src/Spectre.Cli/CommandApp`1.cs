@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,7 +19,8 @@ namespace Spectre.Cli
         /// <param name="registrar">The registrar.</param>
         public CommandApp(ITypeRegistrar registrar = null)
         {
-            _app = new CommandApp(registrar, typeof(TDefaultCommand));
+            _app = new CommandApp(registrar);
+            _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();
         }
 
         /// <summary>

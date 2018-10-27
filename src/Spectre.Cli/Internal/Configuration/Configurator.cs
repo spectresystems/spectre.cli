@@ -8,61 +8,55 @@ namespace Spectre.Cli.Internal.Configuration
         private readonly ITypeRegistrar _registrar;
 
         public IList<ConfiguredCommand> Commands { get; }
-        public ConfiguredCommand DefaultCommand { get; }
-        public string ApplicationName { get; private set; }
-        public bool ShouldPropagateExceptions { get; private set; }
-        public bool ShouldValidateExamples { get; private set; }
-        public ParsingMode ParsingMode { get; private set; }
-        public IList<string[]> Examples { get; set; }
+        public ConfigurationSettings Settings { get; }
+        public ConfiguredCommand DefaultCommand { get; private set; }
+        public IList<string[]> Examples { get; }
 
-        public Configurator(ITypeRegistrar registrar, Type defaultCommand = null)
+        public Configurator(ITypeRegistrar registrar)
         {
             _registrar = registrar;
 
             Commands = new List<ConfiguredCommand>();
-            ShouldPropagateExceptions = false;
-            ParsingMode = ParsingMode.Relaxed;
+            Settings = new ConfigurationSettings();
             Examples = new List<string[]>();
-
-            if (defaultCommand != null)
-            {
-                if (!typeof(ICommand).IsAssignableFrom(defaultCommand))
-                {
-                    throw new ArgumentException($"The specified default command type '{defaultCommand}' is not a command.", nameof(defaultCommand));
-                }
-
-                // Initialize the default command.
-                var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);
-                DefaultCommand = new ConfiguredCommand(Constants.DefaultCommandName, defaultCommand, settingsType, true);
-
-                // Register the default command.
-                _registrar.RegisterCommand(defaultCommand, settingsType);
-            }
         }
 
         public void SetApplicationName(string name)
         {
-            ApplicationName = name;
+            Settings.ApplicationName = name;
         }
 
         public void UseStrictParsing()
         {
-            ParsingMode = ParsingMode.Strict;
+            Settings.ParsingMode = ParsingMode.Strict;
         }
 
         public void PropagateExceptions()
         {
-            ShouldPropagateExceptions = true;
+            Settings.PropagateExceptions = true;
         }
 
         public void ValidateExamples()
         {
-            ShouldValidateExamples = true;
+            Settings.ValidateExamples = true;
         }
 
         public void AddExample(string[] args)
         {
             Examples.Add(args);
+        }
+
+        public void SetDefaultCommand<TDefaultCommand>()
+            where TDefaultCommand : class, ICommand
+        {
+            var defaultCommand = typeof(TDefaultCommand);
+
+            // Initialize the default command.
+            var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);
+            DefaultCommand = new ConfiguredCommand(Constants.DefaultCommandName, defaultCommand, settingsType, true);
+
+            // Register the default command.
+            _registrar.RegisterCommand(defaultCommand, settingsType);
         }
 
         public ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommand

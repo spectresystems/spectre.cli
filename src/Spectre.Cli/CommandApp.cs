@@ -22,18 +22,8 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="registrar">The registrar.</param>
         public CommandApp(ITypeRegistrar registrar = null)
-            : this(registrar, null)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandApp"/> class.
-        /// </summary>
-        /// <param name="registrar">The registrar.</param>
-        /// <param name="defaultCommand">The default command type.</param>
-        internal CommandApp(ITypeRegistrar registrar = null, Type defaultCommand = null)
-        {
-            _configurator = new Configurator(registrar, defaultCommand);
+            _configurator = new Configurator(registrar);
             _executor = new CommandExecutor(registrar);
         }
 
@@ -72,7 +62,7 @@ namespace Spectre.Cli
             catch (Exception ex)
             {
                 // Should we propagate exceptions?
-                if (_configurator.ShouldPropagateExceptions)
+                if (_configurator.Settings.PropagateExceptions)
                 {
                     throw;
                 }
@@ -90,6 +80,11 @@ namespace Spectre.Cli
 
                 return -1;
             }
+        }
+
+        internal Configurator GetConfigurator()
+        {
+            return _configurator;
         }
 
         private static IRenderable GetRenderableErrorMessage(Exception ex, bool convert = true)
