@@ -1,3 +1,8 @@
+### New in 0.18.0 (Released 2018/11/02)
+
+- [__#52__](https://github.com/spectresystems/spectre.cli/issues/52) Remove dependency on System.ValueTuple package
+- [__#46__](https://github.com/spectresystems/spectre.cli/issues/46) Add way of specifying examples for commands
+
 ### New in 0.17.0 (Released 2018/10/09)
 
 - [__#43__](https://github.com/spectresystems/spectre.cli/issues/43) Should allow "_" in long option names
