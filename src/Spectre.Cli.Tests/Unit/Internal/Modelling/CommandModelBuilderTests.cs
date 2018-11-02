@@ -169,7 +169,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         public void Should_Generate_Correct_Model_For_Default_Command()
         {
             // Given
-            var configurator = new Configurator(null, typeof(DogCommand));
+            var configurator = new Configurator(null);
+            configurator.SetDefaultCommand<DogCommand>();
 
             // When
             var model = CommandModelBuilder.Build(configurator);
@@ -305,7 +306,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
         public void Should_Not_Throw_If_No_Commands_Have_Been_Configured_But_A_Default_Command_Has()
         {
             // Given
-            var configurator = new Configurator(null, typeof(DogCommand));
+            var configurator = new Configurator(null);
+            configurator.SetDefaultCommand<DogCommand>();
 
             // When
             var result = CommandModelBuilder.Build(configurator);

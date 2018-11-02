@@ -22,23 +22,14 @@ namespace Spectre.Cli.Internal.Modelling
                 defaultCommand = Build(null, configuration.DefaultCommand);
             }
 
-            var model = new CommandModel(configuration.ApplicationName, configuration.ParsingMode, defaultCommand, result);
-            CommandModelValidator.Validate(model);
+            var model = new CommandModel(configuration.Settings, defaultCommand, result, configuration.Examples);
+            CommandModelValidator.Validate(model, configuration.Settings);
             return model;
         }
 
         private static CommandInfo Build(CommandInfo parent, ConfiguredCommand command)
         {
             var info = new CommandInfo(parent, command);
-
-            if (!info.IsBranch)
-            {
-                var description = info.CommandType.GetCustomAttribute<DescriptionAttribute>();
-                if (description != null)
-                {
-                    info.Description = description.Description;
-                }
-            }
 
             foreach (var parameter in GetParameters(info))
             {

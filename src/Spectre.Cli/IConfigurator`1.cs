@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli
 {
@@ -10,20 +10,27 @@ namespace Spectre.Cli
         where TSettings : CommandSettings
     {
         /// <summary>
-        /// Sets the description of the command.
+        /// Sets the description of the branch.
         /// </summary>
-        /// <param name="description">The description of the command.</param>
+        /// <param name="description">The description of the branch.</param>
         void SetDescription(string description);
 
         /// <summary>
-        /// Adds a command to the configuration.
+        /// Adds an example of how to use the branch.
+        /// </summary>
+        /// <param name="args">The example arguments.</param>
+        void AddExample(string[] args);
+
+        /// <summary>
+        /// Adds a command.
         /// </summary>
         /// <typeparam name="TCommand">The command type.</typeparam>
         /// <param name="name">The name of the command.</param>
-        void AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>;
+        /// <returns>A command configurator that can be used to configure the command further.</returns>
+        ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>;
 
         /// <summary>
-        /// Adds a command branch to the configuration.
+        /// Adds a command branch.
         /// </summary>
         /// <typeparam name="TDerivedSettings">The type of the derived settings.</typeparam>
         /// <param name="name">The name of the command branch.</param>

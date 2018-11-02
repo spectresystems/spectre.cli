@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -22,18 +22,8 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="registrar">The registrar.</param>
         public CommandApp(ITypeRegistrar registrar = null)
-            : this(registrar, null)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandApp"/> class.
-        /// </summary>
-        /// <param name="registrar">The registrar.</param>
-        /// <param name="defaultCommand">The default command type.</param>
-        internal CommandApp(ITypeRegistrar registrar = null, Type defaultCommand = null)
-        {
-            _configurator = new Configurator(registrar, defaultCommand);
+            _configurator = new Configurator(registrar);
             _executor = new CommandExecutor(registrar);
         }
 
@@ -72,7 +62,7 @@ namespace Spectre.Cli
             catch (Exception ex)
             {
                 // Should we propagate exceptions?
-                if (_configurator.ShouldPropagateExceptions)
+                if (_configurator.Settings.PropagateExceptions)
                 {
                     throw;
                 }
@@ -92,16 +82,44 @@ namespace Spectre.Cli
             }
         }
 
-        private static IRenderable GetRenderableErrorMessage(Exception ex)
+        internal Configurator GetConfigurator()
+        {
+            return _configurator;
+        }
+
+        private static IRenderable GetRenderableErrorMessage(Exception ex, bool convert = true)
         {
             if (ex is CommandAppException renderable && renderable.Pretty != null)
             {
                 return renderable.Pretty;
             }
 
-            return new BlockElement()
-                .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
-                .Append(new TextElement(ex.Message));
+            if (convert)
+            {
+                // Convert the exception.
+                var converted = new BlockElement()
+                    .Append(new LineBreakElement())
+                    .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
+                    .Append(new TextElement(ex.Message));
+
+                // Got a renderable inner exception?
+                if (ex.InnerException != null)
+                {
+                    var innerRenderable = GetRenderableErrorMessage(ex.InnerException, convert: false);
+                    if (innerRenderable != null)
+                    {
+                        if (innerRenderable.StartsWithLineBreak())
+                        {
+                            converted.Append(new LineBreakElement());
+                        }
+                        converted.Append(innerRenderable);
+                    }
+                }
+
+                return converted;
+            }
+
+            return null;
         }
     }
 }

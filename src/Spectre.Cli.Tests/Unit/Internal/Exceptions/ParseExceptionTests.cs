@@ -39,7 +39,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
             {
                 // Given
-                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<EmptySettings>));
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.SetDefaultCommand<GenericCommand<EmptySettings>>();
                 configurator.AddCommand<CatCommand>("cat");
 
                 // When
@@ -72,7 +73,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small(string expected)
             {
                 // Given
-                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<EmptySettings>));
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.SetDefaultCommand<GenericCommand<EmptySettings>>();
                 configurator.AddCommand<GenericCommand<EmptySettings>>("cat");
 
                 // When
@@ -105,7 +107,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
             {
                 // Given
-                var configurator = new Configurator(new FakeTypeRegistrar(), typeof(GenericCommand<FooCommandSettings>));
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.SetDefaultCommand<GenericCommand<FooCommandSettings>>();
                 configurator.AddCommand<GenericCommand<BarCommandSettings>>("bar");
 
                 // When

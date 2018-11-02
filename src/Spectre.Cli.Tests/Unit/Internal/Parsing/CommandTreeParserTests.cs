@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -159,20 +159,25 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 
         private sealed class Fixture
         {
-            private Type _defaultCommand;
+            private readonly Configurator _configurator;
+
+            public Fixture()
+            {
+                _configurator = new Configurator(null);
+            }
 
             public Fixture WithDefaultCommand<TCommand>()
+                where TCommand : class, ICommand
             {
-                _defaultCommand = typeof(TCommand);
+                _configurator.SetDefaultCommand<TCommand>();
                 return this;
             }
 
             public (CommandTree, IRemainingArguments remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
             {
-                var configurator = new Configurator(null, _defaultCommand);
-                func(configurator);
+                func(_configurator);
 
-                var model = CommandModelBuilder.Build(configurator);
+                var model = CommandModelBuilder.Build(_configurator);
                 return new CommandTreeParser(model).Parse(args);
             }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Spectre.Cli.Internal.Modelling;
@@ -23,6 +24,9 @@ namespace Spectre.Cli.Internal
             // Usage
             WriteUsage(composer, model, command);
             composer.LineBreak().LineBreak();
+
+            // Examples
+            WriteExamples(composer, model, command);
 
             // Arguments
             WriteArguments(composer, command);
@@ -98,7 +102,7 @@ namespace Spectre.Cli.Internal
             }
 
             composer.Color(ConsoleColor.Yellow, c => c.Text("USAGE:")).LineBreak();
-            composer.Tab().Text(model.ApplicationName ?? Assembly.GetEntryAssembly().GetName().Name);
+            composer.Tab().Text(model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly().Location));
 
             // Root or not a default command?
             if (command?.IsDefaultCommand != true)
@@ -107,6 +111,96 @@ namespace Spectre.Cli.Internal
             }
 
             composer.Join(" ", parameters);
+        }
+
+        private static void WriteExamples(RenderableComposer composer, CommandModel model, CommandInfo command)
+        {
+            var maxExamples = int.MaxValue;
+
+            var examples = command?.Examples ?? model.Examples ?? new List<string[]>();
+            if (examples.Count == 0)
+            {
+                // Since we're not checking direct examples,
+                // make sure that we limit the number of examples.
+                maxExamples = 5;
+
+                // Get the current root command.
+                var root = command ?? (ICommandContainer)model;
+                var queue = new Queue<ICommandContainer>(new[] { root });
+
+                // Traverse the command tree and look for examples.
+                // As soon as a node contains commands, bail.
+                while (queue.Count > 0)
+                {
+                    var current = queue.Dequeue();
+
+                    foreach (var cmd in current.Commands)
+                    {
+                        if (cmd.Examples.Count > 0)
+                        {
+                            examples.AddRange(cmd.Examples);
+                        }
+                        queue.Enqueue(cmd);
+                    }
+
+                    if (examples.Count >= maxExamples)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (examples.Count > 0)
+            {
+                var prefix = model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly().Location);
+
+                composer.Color(ConsoleColor.Yellow, c => c.Text("EXAMPLES:")).LineBreak();
+                for (int index = 0; index < Math.Min(maxExamples, examples.Count); index++)
+                {
+                    var args = string.Join(" ", examples[index]);
+
+                    composer.Tab().Text(prefix);
+                    composer.Space().Color(ConsoleColor.DarkGray, c => c.Text(args));
+                    composer.LineBreak();
+                }
+
+                composer.LineBreak();
+            }
+        }
+
+        private static void WriteArguments(RenderableComposer composer, CommandInfo command)
+        {
+            var arguments = new List<(string name, bool required, string description)>();
+            arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
+                x => (x.Value, x.Required, x.Description))
+                ?? Array.Empty<(string, bool, string)>());
+
+            if (arguments.Count == 0)
+            {
+                return;
+            }
+
+            composer.Color(ConsoleColor.Yellow, c => c.Text("ARGUMENTS:")).LineBreak();
+
+            var maxLength = arguments.Max(x => x.name.Length);
+
+            foreach (var (name, required, description) in arguments)
+            {
+                composer.Tab();
+
+                // Argument name.
+                composer.Condition(required,
+                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{name}>")),
+                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{name}]")));
+
+                // Description
+                composer.Spaces(maxLength - name.Length);
+                composer.Tab().Text(description?.TrimEnd('.')?.Trim());
+
+                composer.LineBreak();
+            }
+
+            composer.LineBreak();
         }
 
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
@@ -185,41 +279,6 @@ namespace Spectre.Cli.Internal
                 composer.Append(result.Select(x => x.element));
                 composer.LineBreak();
             }
-        }
-
-        private static void WriteArguments(RenderableComposer composer, CommandInfo command)
-        {
-            var arguments = new List<(string name, bool required, string description)>();
-            arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
-                x => (x.Value, x.Required, x.Description))
-                ?? Array.Empty<(string, bool, string)>());
-
-            if (arguments.Count == 0)
-            {
-                return;
-            }
-
-            composer.Color(ConsoleColor.Yellow, c => c.Text("ARGUMENTS:")).LineBreak();
-
-            var maxLength = arguments.Max(x => x.name.Length);
-
-            foreach (var (name, required, description) in arguments)
-            {
-                composer.Tab();
-
-                // Argument name.
-                composer.Condition(required,
-                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{name}>")),
-                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{name}]")));
-
-                // Description
-                composer.Spaces(maxLength - name.Length);
-                composer.Tab().Text(description?.TrimEnd('.')?.Trim());
-
-                composer.LineBreak();
-            }
-
-            composer.LineBreak();
         }
 
         private static void WriteCommands(

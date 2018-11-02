@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Shouldly;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Tests.Data;
@@ -13,7 +13,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
         public void Should_Create_Configured_Default_Command_If_Specified()
         {
             // Given, When
-            var configurator = new Configurator(null, typeof(DogCommand));
+            var configurator = new Configurator(null);
+            configurator.SetDefaultCommand<DogCommand>();
 
             // Then
             configurator.DefaultCommand.ShouldNotBeNull();
@@ -24,20 +25,6 @@ namespace Spectre.Cli.Tests.Unit.Internal.Configuration
                 command.SettingsType.ShouldBe<DogSettings>();
                 command.Children.Count.ShouldBe(0);
                 command.Description.ShouldBe(null);
-            });
-        }
-
-        [Fact]
-        public void Should_Throw_If_Default_Command_Type_Is_Not_A_Command()
-        {
-            // Given, When
-            var result = Record.Exception(() => new Configurator(null, typeof(DateTime)));
-
-            // Then
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<ArgumentException>().And(ex =>
-            {
-                ex.Message.ShouldStartWith("The specified default command type 'System.DateTime' is not a command.");
             });
         }
 

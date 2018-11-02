@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Spectre.Cli.Internal.Rendering.Elements
 {
@@ -7,6 +8,7 @@ namespace Spectre.Cli.Internal.Rendering.Elements
         private readonly List<IRenderable> _elements;
 
         public int Length { get; private set; }
+        public IReadOnlyList<IRenderable> Elements => _elements;
 
         public BlockElement()
         {

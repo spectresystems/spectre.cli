@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal.Configuration
@@ -12,14 +12,16 @@ namespace Spectre.Cli.Internal.Configuration
         public bool IsDefaultCommand { get; }
 
         public IList<ConfiguredCommand> Children { get; }
+        public IList<string[]> Examples { get; }
 
         public ConfiguredCommand(string name, Type commandType, Type settingsType, bool defaultCommand = false)
         {
             Name = name;
             CommandType = commandType;
             SettingsType = settingsType;
-            Children = new List<ConfiguredCommand>();
             IsDefaultCommand = defaultCommand;
+            Children = new List<ConfiguredCommand>();
+            Examples = new List<string[]>();
         }
     }
 }
