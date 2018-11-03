@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using Spectre.Cli.Internal.Modelling;
@@ -57,22 +58,22 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
             return node;
         }
 
-        private static IEnumerable<XmlNode> CreateMappedParameterNodes(XmlDocument document, List<(CommandParameter param, string value)> parameters)
+        private static IEnumerable<XmlNode> CreateMappedParameterNodes(XmlDocument document, List<MappedCommandParameter> parameters)
         {
-            foreach (var (param, value) in parameters)
+            foreach (var parameter in parameters)
             {
-                if (param is CommandOption option)
+                if (parameter.Parameter is CommandOption option)
                 {
                     var node = document.CreateElement("option");
                     node.SetNullableAttribute("name", option.GetOptionName());
-                    node.SetNullableAttribute("assigned", value);
+                    node.SetNullableAttribute("assigned", parameter.Value);
                     yield return node;
                 }
-                else if (param is CommandArgument argument)
+                else if (parameter.Parameter is CommandArgument argument)
                 {
                     var node = document.CreateElement("argument");
                     node.SetNullableAttribute("name", argument.Value);
-                    node.SetNullableAttribute("assigned", value);
+                    node.SetNullableAttribute("assigned", parameter.Value);
                     yield return node;
                 }
             }

@@ -11,6 +11,38 @@ namespace Spectre.Cli.Internal
 {
     internal static class HelpWriter
     {
+        // Consider removing this in favor for value tuples at some point.
+        private sealed class HelpArgument
+        {
+            public string Name { get; }
+            public bool Required { get; }
+            public string Description { get; }
+
+            public HelpArgument(string name, bool required, string description)
+            {
+                Name = name;
+                Required = required;
+                Description = description;
+            }
+        }
+
+        // Consider removing this in favor for value tuples at some point.
+        private sealed class HelpOption
+        {
+            public string Short { get; }
+            public string Long { get; }
+            public string Value { get; }
+            public string Description { get; }
+
+            public HelpOption(string @short, string @long, string @value, string @description)
+            {
+                Short = @short;
+                Long = @long;
+                Value = value;
+                Description = description;
+            }
+        }
+
         public static IRenderable Write(CommandModel model)
         {
             return WriteCommand(model, null);
@@ -170,10 +202,10 @@ namespace Spectre.Cli.Internal
 
         private static void WriteArguments(RenderableComposer composer, CommandInfo command)
         {
-            var arguments = new List<(string name, bool required, string description)>();
+            var arguments = new List<HelpArgument>();
             arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
-                x => (x.Value, x.Required, x.Description))
-                ?? Array.Empty<(string, bool, string)>());
+                x => new HelpArgument(x.Value, x.Required, x.Description))
+                ?? Array.Empty<HelpArgument>());
 
             if (arguments.Count == 0)
             {
@@ -182,20 +214,20 @@ namespace Spectre.Cli.Internal
 
             composer.Color(ConsoleColor.Yellow, c => c.Text("ARGUMENTS:")).LineBreak();
 
-            var maxLength = arguments.Max(x => x.name.Length);
+            var maxLength = arguments.Max(arg => arg.Name.Length);
 
-            foreach (var (name, required, description) in arguments)
+            foreach (var argument in arguments)
             {
                 composer.Tab();
 
                 // Argument name.
-                composer.Condition(required,
-                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{name}>")),
-                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{name}]")));
+                composer.Condition(argument.Required,
+                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{argument.Name}>")),
+                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{argument.Name}]")));
 
                 // Description
-                composer.Spaces(maxLength - name.Length);
-                composer.Tab().Text(description?.TrimEnd('.')?.Trim());
+                composer.Spaces(maxLength - argument.Name.Length);
+                composer.Tab().Text(argument.Description?.TrimEnd('.')?.Trim());
 
                 composer.LineBreak();
             }
@@ -206,14 +238,14 @@ namespace Spectre.Cli.Internal
         private static void WriteOptions(RenderableComposer composer, CommandInfo command)
         {
             // Collect all options into a single structure.
-            var parameters = new List<(string @short, string @long, string value, string description)>
+            var parameters = new List<HelpOption>
             {
-                ("h", "help", null, "Prints help information")
+                new HelpOption("h", "help", (string)null, "Prints help information")
             };
 
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
-                (o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
-                ?? Array.Empty<(string, string, string, string)>());
+                new HelpOption(o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
+                ?? Array.Empty<HelpOption>());
 
             var options = parameters.ToArray();
             if (options.Length > 0)
@@ -221,17 +253,17 @@ namespace Spectre.Cli.Internal
                 composer.Color(ConsoleColor.Yellow, c => c.Text("OPTIONS:")).LineBreak();
 
                 // Start with composing a list of lines.
-                var result = new List<(string description, BlockElement element)>();
-                foreach (var (@short, @long, value, description) in options)
+                var result = new List<Tuple<string, BlockElement>>();
+                foreach (var option in options)
                 {
                     var item = new BlockElement();
                     item.Append(new TabElement());
 
                     // Short
-                    if (@short != null)
+                    if (option.Short != null)
                     {
-                        item.Append(new TextElement($"-{@short}"));
-                        if (@long != null)
+                        item.Append(new TextElement($"-{option.Short}"));
+                        if (option.Long != null)
                         {
                             item.Append(new TextElement(","));
                         }
@@ -242,26 +274,29 @@ namespace Spectre.Cli.Internal
                     }
 
                     // Long
-                    if (@long != null)
+                    if (option.Long != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new TextElement($"--{@long}"));
+                        item.Append(new TextElement($"--{option.Long}"));
                     }
 
                     // Value
-                    if (value != null)
+                    if (option.Value != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{value}>")));
+                        item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{option.Value}>")));
                     }
 
-                    result.Add((description, item));
+                    result.Add(Tuple.Create(option.Description, item));
                 }
 
                 // Now add the descriptions to all lines.
-                var maxLength = result.Max(x => x.element.Length);
-                foreach (var (description, element) in result)
+                var maxLength = result.Max(x => x.Item2.Length);
+                foreach (var item in result)
                 {
+                    var description = item.Item1;
+                    var element = item.Item2;
+
                     if (!string.IsNullOrWhiteSpace(description))
                     {
                         var neededSpaces = maxLength - element.Length;
@@ -276,7 +311,7 @@ namespace Spectre.Cli.Internal
                 }
 
                 // Append the items.
-                composer.Append(result.Select(x => x.element));
+                composer.Append(result.Select(x => x.Item2));
                 composer.LineBreak();
             }
         }

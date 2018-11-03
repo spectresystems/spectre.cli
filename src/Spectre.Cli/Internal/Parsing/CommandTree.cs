@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
@@ -7,7 +8,7 @@ namespace Spectre.Cli.Internal.Parsing
     internal sealed class CommandTree
     {
         public CommandInfo Command { get; }
-        public List<(CommandParameter, string)> Mapped { get; }
+        public List<MappedCommandParameter> Mapped { get; }
         public List<CommandParameter> Unmapped { get; }
         public CommandTree Parent { get; }
         public CommandTree Next { get; set; }
@@ -17,7 +18,7 @@ namespace Spectre.Cli.Internal.Parsing
         {
             Parent = parent;
             Command = command;
-            Mapped = new List<(CommandParameter, string)>();
+            Mapped = new List<MappedCommandParameter>();
             Unmapped = new List<CommandParameter>();
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,6 +9,21 @@ namespace Spectre.Cli.Internal.Modelling
 {
     internal static class CommandModelBuilder
     {
+        // Consider removing this in favor for value tuples at some point.
+        private sealed class OrderedProperties
+        {
+            public int Level { get; }
+            public int SortOrder { get; }
+            public PropertyInfo[] Properties { get; }
+
+            public OrderedProperties(int level, int sortOrder, PropertyInfo[] properties)
+            {
+                Level = level;
+                SortOrder = sortOrder;
+                Properties = properties;
+            }
+        }
+
         public static CommandModel Build(IConfiguration configuration)
         {
             var result = new List<CommandInfo>();
@@ -62,14 +78,14 @@ namespace Spectre.Cli.Internal.Modelling
             // We need to get parameters in order of the class where they were defined.
             // We assign each inheritance level a value that is used to properly sort the
             // arguments when iterating over them.
-            IEnumerable<(int level, int sortOrder, PropertyInfo[] properties)> GetPropertiesInOrder()
+            IEnumerable<OrderedProperties> GetPropertiesInOrder()
             {
                 var current = command.SettingsType;
                 var level = 0;
                 var sortOrder = 0;
                 while (current.BaseType != null)
                 {
-                    yield return (level, sortOrder, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
+                    yield return new OrderedProperties(level, sortOrder, current.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
                     current = current.BaseType;
 
                     // Things get a little bit complicated now.
@@ -92,11 +108,11 @@ namespace Spectre.Cli.Internal.Modelling
             }
 
             var groups = GetPropertiesInOrder();
-            foreach (var (_, _, properties) in groups.OrderBy(x => x.level).ThenBy(x => x.sortOrder))
+            foreach (var group in groups.OrderBy(x => x.Level).ThenBy(x => x.SortOrder))
             {
                 var parameters = new List<CommandParameter>();
 
-                foreach (var property in properties)
+                foreach (var property in group.Properties)
                 {
                     if (property.IsDefined(typeof(CommandOptionAttribute)))
                     {

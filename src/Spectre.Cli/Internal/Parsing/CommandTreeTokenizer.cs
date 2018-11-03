@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +15,20 @@ namespace Spectre.Cli.Internal.Parsing
             Remaining = 1
         }
 
-        public static (CommandTreeTokenStream, IReadOnlyList<string>) Tokenize(IEnumerable<string> args)
+        // Consider removing this in favor for value tuples at some point.
+        public sealed class CommandTreeTokenizerResult
+        {
+            public CommandTreeTokenStream Tokens { get; }
+            public IReadOnlyList<string> Remaining { get; }
+
+            public CommandTreeTokenizerResult(CommandTreeTokenStream tokens, IReadOnlyList<string> remaining)
+            {
+                Tokens = tokens;
+                Remaining = remaining;
+            }
+        }
+
+        public static CommandTreeTokenizerResult Tokenize(IEnumerable<string> args)
         {
             var tokens = new List<CommandTreeToken>();
             var position = 0;
@@ -33,7 +47,9 @@ namespace Spectre.Cli.Internal.Parsing
                 previousReader = reader;
             }
 
-            return (new CommandTreeTokenStream(tokens), context.Remaining);
+            return new CommandTreeTokenizerResult(
+                new CommandTreeTokenStream(tokens),
+                context.Remaining);
         }
 
         private static int ParseToken(CommandTreeTokenizerContext context, TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
