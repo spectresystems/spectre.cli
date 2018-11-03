@@ -1,4 +1,5 @@
 #load nuget:?package=Spectre.Build&version=0.3.0
+#tool "nuget:https://api.nuget.org/v3/index.json?package=gitreleasemanager&version=0.7.1"
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
