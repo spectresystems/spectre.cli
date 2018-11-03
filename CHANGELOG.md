@@ -1,3 +1,5 @@
+### New in 0.19.0 (Released 2018/11/03)
+
 ### New in 0.18.0 (Released 2018/11/02)
 
 - [__#52__](https://github.com/spectresystems/spectre.cli/issues/52) Remove dependency on System.ValueTuple package

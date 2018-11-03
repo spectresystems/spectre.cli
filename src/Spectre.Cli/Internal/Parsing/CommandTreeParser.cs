@@ -17,16 +17,32 @@ namespace Spectre.Cli.Internal.Parsing
             Remaining = 1
         }
 
+        // // Consider removing this in favor for value tuples at some point.
+        public sealed class CommandTreeParserResult
+        {
+            public CommandTree Tree { get; }
+            public IRemainingArguments Remaining { get; }
+
+            public CommandTreeParserResult(CommandTree tree, IRemainingArguments remaining)
+            {
+                Tree = tree;
+                Remaining = remaining;
+            }
+        }
+
         public CommandTreeParser(CommandModel configuration)
         {
             _configuration = configuration;
             _help = new CommandOptionAttribute("-h|--help");
         }
 
-        public (CommandTree tree, IRemainingArguments remaining) Parse(IEnumerable<string> args)
+        public CommandTreeParserResult Parse(IEnumerable<string> args)
         {
             var context = new CommandTreeParserContext(args, _configuration.ParsingMode);
-            var (tokens, rawRemaining) = CommandTreeTokenizer.Tokenize(context.Arguments);
+
+            var tokenizerResult = CommandTreeTokenizer.Tokenize(context.Arguments);
+            var tokens = tokenizerResult.Tokens;
+            var rawRemaining = tokenizerResult.Remaining;
 
             var result = (CommandTree)null;
             if (tokens.Count > 0)
@@ -39,13 +55,15 @@ namespace Spectre.Cli.Internal.Parsing
                     if (_configuration.DefaultCommand != null)
                     {
                         result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
-                        return (result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
+                        return new CommandTreeParserResult(
+                            result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
                     }
 
                     // Show help?
                     if (_help?.IsMatch(token.Value) == true)
                     {
-                        return (null, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
+                        return new CommandTreeParserResult(
+                            null, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
                     }
 
                     // Unexpected option.
@@ -59,7 +77,8 @@ namespace Spectre.Cli.Internal.Parsing
                     if (_configuration.DefaultCommand != null)
                     {
                         result = ParseCommandParameters(context, _configuration.DefaultCommand, null, tokens);
-                        return (result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
+                        return new CommandTreeParserResult(
+                            result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
                     }
                 }
 
@@ -75,7 +94,8 @@ namespace Spectre.Cli.Internal.Parsing
                 }
             }
 
-            return (result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
+            return new CommandTreeParserResult(
+                result, new RemainingArguments(context.GetRemainingArguments(), rawRemaining));
         }
 
         private CommandTree ParseCommand(
@@ -134,7 +154,7 @@ namespace Spectre.Cli.Internal.Parsing
             // Add unmapped parameters.
             foreach (var parameter in node.Command.Parameters)
             {
-                if (node.Mapped.All(m => m.Item1 != parameter))
+                if (node.Mapped.All(m => m.Parameter != parameter))
                 {
                     node.Unmapped.Add(parameter);
                 }
@@ -188,7 +208,7 @@ namespace Spectre.Cli.Internal.Parsing
 
             // Yes, this was an argument.
             var value = stream.Consume(CommandTreeToken.Kind.String).Value;
-            node.Mapped.Add((parameter, value));
+            node.Mapped.Add(new MappedCommandParameter(parameter, value));
             context.IncreaseArgumentPosition();
         }
 
@@ -208,7 +228,9 @@ namespace Spectre.Cli.Internal.Parsing
                 var option = node.FindOption(token.Value, isLongOption);
                 if (option != null)
                 {
-                    node.Mapped.Add((option, ParseOptionValue(context, stream, token, node, option)));
+                    node.Mapped.Add(new MappedCommandParameter(
+                        option, ParseOptionValue(context, stream, token, node, option)));
+
                     return;
                 }
 

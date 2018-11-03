@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Features>IOperation</Features>
     <LangVersion>7.2</LangVersion>
     <Description>An extremly opinionated command line parser.</Description>
@@ -20,11 +20,6 @@
 
   <ItemGroup>
     <None Remove="Spectre.Cli.net451.v3.ncrunchproject" />
-  </ItemGroup>
-
-  <!-- Packages -->
-  <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework) != 'netstandard2.0'" />
   </ItemGroup>
 
   <!-- Static analysis -->
