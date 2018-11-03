@@ -30,10 +30,10 @@ namespace Spectre.Cli.Internal
 
             // Parse and map the model against the arguments.
             var parser = new CommandTreeParser(model);
-            var (tree, remaining) = parser.Parse(args);
+            var parsedResult = parser.Parse(args);
 
             // Currently the root?
-            if (tree == null)
+            if (parsedResult.Tree == null)
             {
                 // Display help.
                 ConsoleRenderer.Render(HelpWriter.Write(model));
@@ -41,7 +41,7 @@ namespace Spectre.Cli.Internal
             }
 
             // Get the command to execute.
-            var leaf = tree.GetLeafCommand();
+            var leaf = parsedResult.Tree.GetLeafCommand();
             if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
                 // Branches can't be executed. Show help.
@@ -50,14 +50,14 @@ namespace Spectre.Cli.Internal
             }
 
             // Register the arguments with the container.
-            _registrar?.RegisterInstance(typeof(IRemainingArguments), remaining);
+            _registrar?.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
             // Create the resolver and the context.
             var resolver = new TypeResolverAdapter(_registrar?.Build());
-            var context = new CommandContext(remaining);
+            var context = new CommandContext(parsedResult.Remaining);
 
             // Execute the command tree.
-            return Execute(leaf, tree, context, resolver);
+            return Execute(leaf, parsedResult.Tree, context, resolver);
         }
 
         private static Task<int> Execute(

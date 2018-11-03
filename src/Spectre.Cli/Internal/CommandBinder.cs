@@ -25,11 +25,11 @@ namespace Spectre.Cli.Internal
             while (tree != null)
             {
                 // Process mapped parameters.
-                foreach (var (parameter, value) in tree.Mapped)
+                foreach (var mapped in tree.Mapped)
                 {
-                    var converter = GetConverter(parameter);
-                    parameter.Assign(settings, converter.ConvertFromInvariantString(value));
-                    ValidateParameter(parameter, settings);
+                    var converter = GetConverter(mapped.Parameter);
+                    mapped.Parameter.Assign(settings, converter.ConvertFromInvariantString(mapped.Value));
+                    ValidateParameter(mapped.Parameter, settings);
                 }
 
                 // Process unmapped parameters.

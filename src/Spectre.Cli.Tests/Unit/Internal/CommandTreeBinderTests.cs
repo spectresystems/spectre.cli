@@ -114,11 +114,11 @@ namespace Spectre.Cli.Tests.Unit.Internal
 
                 // Parse command tree.
                 var parser = new CommandTreeParser(CommandModelBuilder.Build(configurator));
-                var (tree, _) = parser.Parse(args);
+                var result = parser.Parse(args);
 
                 // Bind the settings to the tree.
                 CommandSettings settings = new T();
-                CommandBinder.Bind(tree, ref settings, new TypeResolverAdapter(null));
+                CommandBinder.Bind(result.Tree, ref settings, new TypeResolverAdapter(null));
 
                 // Return the settings.
                 return (T)settings;

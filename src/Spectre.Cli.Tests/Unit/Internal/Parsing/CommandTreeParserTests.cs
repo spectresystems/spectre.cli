@@ -9,6 +9,7 @@ using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Tests.Data;
 using Spectre.Cli.Tests.Data.Settings;
 using Xunit;
+using static Spectre.Cli.Internal.Parsing.CommandTreeParser;
 
 namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 {
@@ -18,17 +19,17 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Capture_Remaining_Arguments()
         {
             // Given, When
-            var (tree, remaining) = new Fixture().Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
+            var result = new Fixture().Parse(new[] { "dog", "--", "--foo", "-bar", "\"baz\"", "qux" }, config =>
             {
                 config.AddCommand<DogCommand>("dog");
             });
 
             // Then
-            remaining.Raw.Count.ShouldBe(4);
-            remaining.Raw[0].ShouldBe("--foo");
-            remaining.Raw[1].ShouldBe("-bar");
-            remaining.Raw[2].ShouldBe("\"baz\"");
-            remaining.Raw[3].ShouldBe("qux");
+            result.Remaining.Raw.Count.ShouldBe(4);
+            result.Remaining.Raw[0].ShouldBe("--foo");
+            result.Remaining.Raw[1].ShouldBe("-bar");
+            result.Remaining.Raw[2].ShouldBe("\"baz\"");
+            result.Remaining.Raw[3].ShouldBe("qux");
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         public void Should_Not_Use_Default_Command_If_Command_Was_Specified()
         {
             // Given, When
-            var (tree, _) = new Fixture()
+            var result = new Fixture()
                 .WithDefaultCommand<DogCommand>()
                 .Parse(new[] { "cat" }, config =>
             {
@@ -153,8 +154,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
             });
 
             // Then
-            tree.Command.CommandType.ShouldBe<CatCommand>();
-            tree.Command.SettingsType.ShouldBe<CatSettings>();
+            result.Tree.Command.CommandType.ShouldBe<CatCommand>();
+            result.Tree.Command.SettingsType.ShouldBe<CatSettings>();
         }
 
         private sealed class Fixture
@@ -173,7 +174,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 return this;
             }
 
-            public (CommandTree, IRemainingArguments remaining) Parse(IEnumerable<string> args, Action<Configurator> func)
+            public CommandTreeParserResult Parse(IEnumerable<string> args, Action<Configurator> func)
             {
                 func(_configurator);
 
@@ -183,7 +184,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
 
             public string Serialize(IEnumerable<string> args, Action<Configurator> func)
             {
-                var (tree, _) = Parse(args, func);
+                var result = Parse(args, func);
 
                 var settings = new XmlWriterSettings
                 {
@@ -196,7 +197,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 using (var buffer = new StringWriter())
                 using (var xmlWriter = XmlWriter.Create(buffer, settings))
                 {
-                    CommandTreeSerializer.Serialize(tree).WriteTo(xmlWriter);
+                    CommandTreeSerializer.Serialize(result.Tree).WriteTo(xmlWriter);
                     xmlWriter.Flush();
                     return buffer.GetStringBuilder().ToString().NormalizeLineEndings();
                 }

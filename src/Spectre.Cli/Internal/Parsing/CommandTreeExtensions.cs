@@ -57,7 +57,7 @@ namespace Spectre.Cli.Internal.Parsing
 
                 if (option != null)
                 {
-                    return node.Mapped.Any(p => p.Item1 == option);
+                    return node.Mapped.Any(p => p.Parameter == option);
                 }
 
                 node = node.Parent;
