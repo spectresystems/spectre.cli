@@ -1,4 +1,10 @@
+### New in 0.20.0 (Released 2018/11/05)
+
+- [__#56__](https://github.com/spectresystems/spectre.cli/issues/56) Examples are not shown for default command
+
 ### New in 0.19.0 (Released 2018/11/03)
+
+- [__#54__](https://github.com/spectresystems/spectre.cli/issues/54) Completely remove references to System.ValueTuple
 
 ### New in 0.18.0 (Released 2018/11/02)
 
