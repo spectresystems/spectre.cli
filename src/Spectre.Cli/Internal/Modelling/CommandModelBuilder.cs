@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -35,11 +34,17 @@ namespace Spectre.Cli.Internal.Modelling
             var defaultCommand = default(CommandInfo);
             if (configuration.DefaultCommand != null)
             {
+                // Add the examples from the configuration to the default command.
+                configuration.DefaultCommand.Examples.AddRange(configuration.Examples);
+
+                // Build the default command.
                 defaultCommand = Build(null, configuration.DefaultCommand);
             }
 
+            // Create the command model and validate it.
             var model = new CommandModel(configuration.Settings, defaultCommand, result, configuration.Examples);
             CommandModelValidator.Validate(model, configuration.Settings);
+
             return model;
         }
 

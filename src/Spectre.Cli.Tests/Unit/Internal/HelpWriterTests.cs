@@ -177,6 +177,23 @@ namespace Spectre.Cli.Tests.Unit.Internal
                 // Then
                 result.ShouldBe(expected);
             }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Help/Default_Examples_DefinedOnRoot")]
+            public void Should_Output_Root_Examples_If_Default_Command_Is_Specified(string expected)
+            {
+                // Given
+                var configurator = new Configurator(new FakeTypeRegistrar());
+                configurator.SetDefaultCommand<LionCommand>();
+                configurator.SetApplicationName("myapp");
+                configurator.AddExample(new[] { "12", "-c", "3" });
+
+                // When
+                var result = Fixture.Write(configurator, model => model.DefaultCommand);
+
+                // Then
+                result.ShouldBe(expected);
+            }
         }
 
         internal static class Fixture

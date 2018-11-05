@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
+    <None Remove="Data\Resources\Help\Default_Examples_DefinedOnRoot" />
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
@@ -44,6 +45,7 @@
     <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
     <EmbeddedResource Include="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
     <EmbeddedResource Include="Data\Resources\Help\Default" />
+    <EmbeddedResource Include="Data\Resources\Help\Default_Examples_DefinedOnRoot" />
     <EmbeddedResource Include="Data\Resources\Help\Leaf" />
     <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
     <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
