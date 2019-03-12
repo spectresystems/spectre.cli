@@ -16,6 +16,12 @@ namespace Spectre.Cli.Internal
             {
                 if (parameter.Converter == null)
                 {
+                    if (parameter.ParameterType.IsArray)
+                    {
+                        // Return a converter for each array item (not the whole array)
+                        return TypeDescriptor.GetConverter(parameter.ParameterType.GetElementType());
+                    }
+
                     return TypeDescriptor.GetConverter(parameter.ParameterType);
                 }
                 var type = Type.GetType(parameter.Converter.ConverterTypeName);

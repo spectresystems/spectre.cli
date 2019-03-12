@@ -12,6 +12,8 @@
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
     <None Remove="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
+    <None Remove="Data\Resources\Models\case5.xml" />
+    <None Remove="Data\Resources\Parsing\case5.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +71,9 @@
     <EmbeddedResource Include="Data\Resources\Models\case1.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case3.xml" />
+    <EmbeddedResource Include="Data\Resources\Models\case5.xml" />
     <EmbeddedResource Include="Data\Resources\Models\case4.xml" />
+    <EmbeddedResource Include="Data\Resources\Parsing\case5.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\default4.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\default3.xml" />
     <EmbeddedResource Include="Data\Resources\Parsing\default2.xml" />
