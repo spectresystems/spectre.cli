@@ -49,7 +49,15 @@ namespace Spectre.Cli.Internal.Configuration
         public void SetDefaultCommand<TDefaultCommand>()
             where TDefaultCommand : class, ICommand
         {
-            var defaultCommand = typeof(TDefaultCommand);
+            SetDefaultCommand(typeof(TDefaultCommand));
+        }
+
+        public void SetDefaultCommand(Type defaultCommand)
+        {
+            if (!typeof(ICommand).IsAssignableFrom(defaultCommand))
+            {
+                throw new ArgumentException("The default command must implement " + nameof(ICommand), nameof(defaultCommand));
+            }
 
             // Initialize the default command.
             var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);

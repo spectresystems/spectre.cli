@@ -20,7 +20,7 @@ namespace Spectre.Cli
         public CommandApp(ITypeRegistrar registrar = null)
         {
             _app = new CommandApp(registrar);
-            _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();
+            _app.SetDefaultCommand(typeof(TDefaultCommand));
         }
 
         /// <summary>

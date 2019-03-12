@@ -28,6 +28,15 @@ namespace Spectre.Cli
         }
 
         /// <summary>
+        /// Sets the default command type.
+        /// </summary>
+        /// <param name="defaultCommand">The default command type. Must implement <see cref="ICommand"/>.</param>
+        public void SetDefaultCommand(Type defaultCommand)
+        {
+            _configurator.SetDefaultCommand(defaultCommand);
+        }
+
+        /// <summary>
         /// Configures the command line application.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
@@ -80,11 +89,6 @@ namespace Spectre.Cli
 
                 return -1;
             }
-        }
-
-        internal Configurator GetConfigurator()
-        {
-            return _configurator;
         }
 
         private static IRenderable GetRenderableErrorMessage(Exception ex, bool convert = true)
