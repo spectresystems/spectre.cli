@@ -9,6 +9,7 @@ namespace Spectre.Cli.Internal.Modelling
     internal sealed class CommandInfo : ICommandContainer
     {
         public string Name { get; }
+        public HashSet<string> Aliases { get; }
         public string Description { get; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
@@ -26,6 +27,7 @@ namespace Spectre.Cli.Internal.Modelling
             Parent = parent;
 
             Name = prototype.Name;
+            Aliases = new HashSet<string>(prototype.Aliases);
             Description = prototype.Description;
             CommandType = prototype.CommandType;
             SettingsType = prototype.SettingsType;

@@ -1,3 +1,9 @@
+### New in 0.21.0 (Released 2019/03/13)
+
+- [__#61__](https://github.com/spectresystems/spectre.cli/issues/61) Add support for command aliases
+- [__#60__](https://github.com/spectresystems/spectre.cli/issues/60) Add support for abstract commands without settings
+- [__#3__](https://github.com/spectresystems/spectre.cli/issues/3) Add support for non-scalar values
+
 ### New in 0.20.0 (Released 2018/11/05)
 
 - [__#56__](https://github.com/spectresystems/spectre.cli/issues/56) Examples are not shown for default command

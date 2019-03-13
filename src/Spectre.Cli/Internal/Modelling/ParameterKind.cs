@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace Spectre.Cli.Internal.Modelling
 {
@@ -7,6 +7,8 @@ namespace Spectre.Cli.Internal.Modelling
         [Description("flag")]
         Flag = 0,
         [Description("single")]
-        Single = 1
+        Single = 1,
+        [Description("multiple")]
+        Multiple = 2
     }
 }

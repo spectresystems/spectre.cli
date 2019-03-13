@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Rendering;
@@ -22,6 +22,11 @@ namespace Spectre.Cli.Internal.Exceptions
         public static ConfigurationException NoCommandConfigured()
         {
             return new ConfigurationException("No commands have been configured.");
+        }
+
+        public static ConfigurationException CommandNameConflict(CommandInfo command, string alias)
+        {
+            return new ConfigurationException($"The alias '{alias}' for '{command.Name}' conflicts with another command.");
         }
 
         public static ConfigurationException DuplicateOption(CommandInfo command, string[] options)

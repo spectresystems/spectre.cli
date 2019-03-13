@@ -36,6 +36,24 @@ namespace Spectre.Cli.Internal.Modelling
 
         public void Assign(CommandSettings settings, object value)
         {
+            if (Property.PropertyType.IsArray)
+            {
+                // Add a new item to the array
+                Array array = (Array)Property.GetValue(settings);
+                Array newArray;
+                if (array == null)
+                {
+                    newArray = Array.CreateInstance(Property.PropertyType.GetElementType(), 1);
+                }
+                else
+                {
+                    newArray = Array.CreateInstance(Property.PropertyType.GetElementType(), array.Length + 1);
+                    array.CopyTo(newArray, 0);
+                }
+                newArray.SetValue(value, newArray.Length - 1);
+                value = newArray;
+            }
+
             Property.SetValue(settings, value);
         }
 

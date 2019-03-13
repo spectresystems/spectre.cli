@@ -7,7 +7,12 @@ namespace Spectre.Cli.Internal.Modelling
     {
         public static CommandInfo FindCommand(this ICommandContainer root, string name)
         {
-            return root.Commands.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var result = root.Commands.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            if (result == null)
+            {
+                result = root.Commands.FirstOrDefault(c => c.Aliases.Contains(name, StringComparer.OrdinalIgnoreCase));
+            }
+            return result;
         }
     }
 }

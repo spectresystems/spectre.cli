@@ -132,6 +132,78 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
+        public void Should_Pass_Case_5()
+        {
+            // Given
+            var resolver = new FakeTypeResolver();
+            var settings = new MultipleOptionsSettings();
+            resolver.Register(settings);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<MultipleOptionsCommand>("multi");
+            });
+
+            // When
+            var result = app.Run(new[] { "multi", "--foo", "a", "--foo", "b", "--bar", "1", "--foo", "c", "--bar", "2" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Foo.Length.ShouldBe(3);
+            settings.Foo.ShouldBe(new[] { "a", "b", "c" });
+            settings.Bar.Length.ShouldBe(2);
+            settings.Bar.ShouldBe(new[] { 1, 2 });
+        }
+
+        [Fact]
+        public void Should_Be_Able_To_Use_Command_Alias()
+        {
+            // Given
+            var resolver = new FakeTypeResolver();
+            var settings = new MultipleOptionsSettings();
+            resolver.Register(settings);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<MultipleOptionsCommand>("multi").WithAlias("multiple");
+            });
+
+            // When
+            var result = app.Run(new[] { "multiple", "--foo", "a" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Foo.Length.ShouldBe(1);
+            settings.Foo.ShouldBe(new[] { "a" });
+        }
+
+        [Fact]
+        public void Should_Throw_If_Alias_Conflicts_With_Another_Command()
+        {
+            // Given
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog").WithAlias("cat");
+                config.AddCommand<CatCommand>("cat");
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "dog", "4", "12" }));
+
+            // Then
+            result.ShouldBeOfType<ConfigurationException>().And(ex =>
+            {
+                ex.Message.ShouldBe("The alias 'cat' for 'dog' conflicts with another command.");
+            });
+        }
+
+        [Fact]
         public void Should_Register_Commands_When_Configuring_Application()
         {
             // Given

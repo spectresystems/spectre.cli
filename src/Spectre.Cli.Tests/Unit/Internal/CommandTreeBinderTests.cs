@@ -89,6 +89,22 @@ namespace Spectre.Cli.Tests.Unit.Internal
         }
 
         [Fact]
+        public void Should_Bind_Multiple_Options()
+        {
+            // Given, When
+            var settings = Fixture.Bind<MultipleOptionsSettings>(
+                new[] { "cmd", "--foo", "red", "--bar", "4", "--foo", "blue" },
+                config =>
+                {
+                    config.AddCommand<MultipleOptionsCommand>("cmd");
+                });
+
+            // Then
+            settings.Foo.ShouldBe(new string[] { "red", "blue" });
+            settings.Bar.ShouldBe(new int[] { 4 });
+        }
+
+        [Fact]
         public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
         {
             // Given, When

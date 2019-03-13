@@ -271,6 +271,20 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             result.ShouldBe(expected);
         }
 
+        [Theory]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Models/case5.xml")]
+        public void Should_Generate_Correct_Model_For_Case_5(string expected)
+        {
+            // Given, When
+            var result = CommandModelSerializer.Serialize(config =>
+            {
+                config.AddCommand<MultipleOptionsCommand>("cmd");
+            });
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Throw_If_Branch_Has_No_Children()
         {
