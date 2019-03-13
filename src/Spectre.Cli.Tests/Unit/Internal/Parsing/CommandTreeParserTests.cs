@@ -123,6 +123,22 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
         }
 
         [Theory]
+        [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/case5.xml")]
+        public void Should_Parse_Correct_Tree_For_Case_5(string expected)
+        {
+            // Given, When
+            var result = new Fixture().Serialize(
+                new[] { "cmd", "--foo", "red", "--bar", "4", "--foo", "blue" },
+                config =>
+                {
+                    config.AddCommand<MultipleOptionsCommand>("cmd");
+                });
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        [Theory]
         [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default1.xml")]
         [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default2.xml", "--good-boy")]
         [EmbeddedResourceData("Spectre.Cli.Tests/Data/Resources/Parsing/default3.xml", "--help")]

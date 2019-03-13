@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -184,9 +185,7 @@ namespace Spectre.Cli.Internal.Modelling
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
-            var kind = property.PropertyType == typeof(bool)
-                ? ParameterKind.Flag
-                : ParameterKind.Single;
+            var kind = GetParameterKind(property.PropertyType);
 
             if (defaultValue == null && property.PropertyType == typeof(bool))
             {
@@ -204,12 +203,23 @@ namespace Spectre.Cli.Internal.Modelling
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
 
-            var kind = property.PropertyType == typeof(bool)
-                ? ParameterKind.Flag
-                : ParameterKind.Single;
+            var kind = GetParameterKind(property.PropertyType);
 
             return new CommandArgument(property.PropertyType, kind,
                 property, description?.Description, converter, attribute, validators);
+        }
+
+        private static ParameterKind GetParameterKind(Type type)
+        {
+            if (type == typeof(bool))
+            {
+                return ParameterKind.Flag;
+            }
+            if (type.IsArray)
+            {
+                return ParameterKind.Multiple;
+            }
+            return ParameterKind.Single;
         }
     }
 }

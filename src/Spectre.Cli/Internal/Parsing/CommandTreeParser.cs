@@ -284,15 +284,13 @@ namespace Spectre.Cli.Internal.Parsing
                     {
                         if (parameter != null)
                         {
-                            if (parameter.ParameterKind == ParameterKind.Single)
-                            {
-                                value = stream.Consume(CommandTreeToken.Kind.String).Value;
-                            }
-                            else if (parameter.ParameterKind == ParameterKind.Flag)
+                            if (parameter.ParameterKind == ParameterKind.Flag)
                             {
                                 // Flags cannot be assigned a value.
                                 throw ParseException.CannotAssignValueToFlag(context.Arguments, token);
                             }
+
+                            value = stream.Consume(CommandTreeToken.Kind.String).Value;
                         }
                         else
                         {
