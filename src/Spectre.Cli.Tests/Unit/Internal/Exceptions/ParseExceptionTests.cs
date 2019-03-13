@@ -40,7 +40,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
-                configurator.SetDefaultCommand<GenericCommand<EmptySettings>>();
+                configurator.SetDefaultCommand<GenericCommand<EmptyCommandSettings>>();
                 configurator.AddCommand<CatCommand>("cat");
 
                 // When
@@ -74,8 +74,8 @@ namespace Spectre.Cli.Tests.Unit.Internal.Exceptions
             {
                 // Given
                 var configurator = new Configurator(new FakeTypeRegistrar());
-                configurator.SetDefaultCommand<GenericCommand<EmptySettings>>();
-                configurator.AddCommand<GenericCommand<EmptySettings>>("cat");
+                configurator.SetDefaultCommand<GenericCommand<EmptyCommandSettings>>();
+                configurator.AddCommand<GenericCommand<EmptyCommandSettings>>("cat");
 
                 // When
                 var result = Fixture.GetParseMessage(new[] { "bat" }, configurator);

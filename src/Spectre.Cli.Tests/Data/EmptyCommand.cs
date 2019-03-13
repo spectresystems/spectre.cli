@@ -2,9 +2,9 @@
 
 namespace Spectre.Cli.Tests.Data
 {
-    public sealed class EmptyCommand : Command<EmptySettings>
+    public sealed class EmptyCommand : Command<EmptyCommandSettings>
     {
-        public override int Execute(CommandContext context, EmptySettings settings)
+        public override int Execute(CommandContext context, EmptyCommandSettings settings)
         {
             return 0;
         }

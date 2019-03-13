@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Spectre.Cli
 {
     /// <summary>
-    /// Base class for a command that work with async/await.
+    /// Base class for an asynchronous command.
     /// </summary>
     /// <typeparam name="TSettings">The settings type.</typeparam>
     public abstract class AsyncCommand<TSettings> : ICommand<TSettings>
@@ -26,7 +26,7 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="context">The command context.</param>
         /// <param name="settings">The settings.</param>
-        /// <returns>The validation result.</returns>
+        /// <returns>An integer indicating whether or not the command executed successfully.</returns>
         public abstract Task<int> Execute(CommandContext context, TSettings settings);
 
         ValidationResult ICommand.Validate(CommandContext context, object settings)
