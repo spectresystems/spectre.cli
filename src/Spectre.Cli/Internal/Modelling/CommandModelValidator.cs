@@ -17,6 +17,17 @@ namespace Spectre.Cli.Internal.Modelling
 
             foreach (var command in model.Commands)
             {
+                foreach (var alias in command.Aliases)
+                {
+                    if (model.Commands.Any(x => x.Name.Equals(alias, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        throw ConfigurationException.CommandNameConflict(command, alias);
+                    }
+                }
+            }
+
+            foreach (var command in model.Commands)
+            {
                 Validate(command);
             }
 

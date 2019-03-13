@@ -18,5 +18,11 @@ namespace Spectre.Cli.Internal.Configuration
             Command.Examples.Add(args);
             return this;
         }
+
+        public ICommandConfigurator WithAlias(string alias)
+        {
+            Command.Aliases.Add(alias);
+            return this;
+        }
     }
 }

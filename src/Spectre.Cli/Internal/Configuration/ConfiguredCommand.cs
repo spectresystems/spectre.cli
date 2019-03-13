@@ -6,6 +6,7 @@ namespace Spectre.Cli.Internal.Configuration
     internal sealed class ConfiguredCommand
     {
         public string Name { get; }
+        public HashSet<string> Aliases { get; set; }
         public string Description { get; set; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
@@ -17,6 +18,7 @@ namespace Spectre.Cli.Internal.Configuration
         public ConfiguredCommand(string name, Type commandType, Type settingsType, bool defaultCommand = false)
         {
             Name = name;
+            Aliases = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             CommandType = commandType;
             SettingsType = settingsType;
             IsDefaultCommand = defaultCommand;
