@@ -17,6 +17,7 @@ namespace Spectre.Cli.Internal.Modelling
 
             foreach (var command in model.Commands)
             {
+                // Alias collision?
                 foreach (var alias in command.Aliases)
                 {
                     if (model.Commands.Any(x => x.Name.Equals(alias, StringComparison.OrdinalIgnoreCase)))
@@ -50,6 +51,23 @@ namespace Spectre.Cli.Internal.Modelling
             if (command.IsBranch && command.Children.Count == 0)
             {
                 throw ConfigurationException.BranchHasNoChildren(command);
+            }
+
+            // Multiple vector arguments?
+            var arguments = command.Parameters.OfType<CommandArgument>();
+            if (arguments.Any(x => x.ParameterKind == ParameterKind.Vector))
+            {
+                // Multiple vector arguments for command?
+                if (arguments.Count(x => x.ParameterKind == ParameterKind.Vector) > 1)
+                {
+                    throw ConfigurationException.TooManyVectorArguments(command);
+                }
+
+                // Make sure that vector arguments are specified last.
+                if (arguments.Last().ParameterKind != ParameterKind.Vector)
+                {
+                    throw ConfigurationException.VectorArgumentNotSpecifiedLast(command);
+                }
             }
 
             // Validate child commands.
