@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Spectre.Cli;
@@ -28,7 +28,7 @@ namespace Sample.Commands
             return base.Validate(context, settings);
         }
 
-        public override async Task<int> Execute(CommandContext context, BuildSettings settings)
+        public override async Task<int> ExecuteAsync(CommandContext context, BuildSettings settings)
         {
             if (!settings.NoRestore)
             {
