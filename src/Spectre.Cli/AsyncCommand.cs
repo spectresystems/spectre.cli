@@ -12,16 +12,16 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="context">The command context.</param>
         /// <returns>An integer indicating whether or not the command executed successfully.</returns>
-        public abstract Task<int> Execute(CommandContext context);
+        public abstract Task<int> ExecuteAsync(CommandContext context);
 
         Task<int> ICommand<EmptyCommandSettings>.Execute(CommandContext context, EmptyCommandSettings settings)
         {
-            return Execute(context);
+            return ExecuteAsync(context);
         }
 
         Task<int> ICommand.Execute(CommandContext context, object settings)
         {
-            return Execute(context);
+            return ExecuteAsync(context);
         }
 
         ValidationResult ICommand.Validate(CommandContext context, object settings)

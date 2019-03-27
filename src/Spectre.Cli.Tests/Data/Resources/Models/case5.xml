@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-16"?>
 <model>
   <!--CMD-->
-  <command name="cmd" isbranch="false" type="Spectre.Cli.Tests.Data.MultipleOptionsCommand" settings="Spectre.Cli.Tests.Data.Settings.MultipleOptionsSettings">
+  <command name="cmd" isbranch="false" type="Spectre.Cli.Tests.Data.OptionVectorCommand" settings="Spectre.Cli.Tests.Data.Settings.OptionVectorSettings">
     <parameters>
-      <option short="" long="bar" value="NULL" required="false" kind="multiple" type="System.Int32[]" />
-      <option short="" long="foo" value="NULL" required="false" kind="multiple" type="System.String[]" />
+      <option short="" long="bar" value="NULL" required="false" kind="vector" type="System.Int32[]" />
+      <option short="" long="foo" value="NULL" required="false" kind="vector" type="System.String[]" />
     </parameters>
   </command>
 </model>

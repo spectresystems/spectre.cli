@@ -217,9 +217,9 @@ namespace Spectre.Cli.Internal.Modelling
             }
             if (type.IsArray)
             {
-                return ParameterKind.Multiple;
+                return ParameterKind.Vector;
             }
-            return ParameterKind.Single;
+            return ParameterKind.Scalar;
         }
     }
 }

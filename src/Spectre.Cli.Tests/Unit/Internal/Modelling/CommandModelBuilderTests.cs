@@ -278,7 +278,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Modelling
             // Given, When
             var result = CommandModelSerializer.Serialize(config =>
             {
-                config.AddCommand<MultipleOptionsCommand>("cmd");
+                config.AddCommand<OptionVectorCommand>("cmd");
             });
 
             // Then

@@ -207,9 +207,25 @@ namespace Spectre.Cli.Internal.Parsing
             }
 
             // Yes, this was an argument.
-            var value = stream.Consume(CommandTreeToken.Kind.String).Value;
-            node.Mapped.Add(new MappedCommandParameter(parameter, value));
-            context.IncreaseArgumentPosition();
+            if (parameter.ParameterKind == ParameterKind.Vector)
+            {
+                // Vector
+                var current = stream.Current;
+                var aggregator = new List<string>(); // TODO: Allocations
+                while (current?.TokenKind == CommandTreeToken.Kind.String)
+                {
+                    var value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                    node.Mapped.Add(new MappedCommandParameter(parameter, value));
+                    current = stream.Current;
+                }
+            }
+            else
+            {
+                // Scalar
+                var value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                node.Mapped.Add(new MappedCommandParameter(parameter, value));
+                context.IncreaseArgumentPosition();
+            }
         }
 
         private void ParseOption(

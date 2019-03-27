@@ -92,11 +92,11 @@ namespace Spectre.Cli.Tests.Unit.Internal
         public void Should_Bind_Multiple_Options()
         {
             // Given, When
-            var settings = Fixture.Bind<MultipleOptionsSettings>(
+            var settings = Fixture.Bind<OptionVectorSettings>(
                 new[] { "cmd", "--foo", "red", "--bar", "4", "--foo", "blue" },
                 config =>
                 {
-                    config.AddCommand<MultipleOptionsCommand>("cmd");
+                    config.AddCommand<OptionVectorCommand>("cmd");
                 });
 
             // Then

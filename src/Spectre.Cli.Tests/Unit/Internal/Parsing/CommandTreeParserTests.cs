@@ -131,7 +131,7 @@ namespace Spectre.Cli.Tests.Unit.Internal.Parsing
                 new[] { "cmd", "--foo", "red", "--bar", "4", "--foo", "blue" },
                 config =>
                 {
-                    config.AddCommand<MultipleOptionsCommand>("cmd");
+                    config.AddCommand<OptionVectorCommand>("cmd");
                 });
 
             // Then
