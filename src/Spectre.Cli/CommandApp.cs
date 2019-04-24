@@ -37,6 +37,15 @@ namespace Spectre.Cli
         }
 
         /// <summary>
+        /// Sets the default command.
+        /// </summary>
+        /// <typeparam name="TCommand">The command type.</typeparam>
+        public void SetDefaultCommand<TCommand>() where TCommand : class, ICommand
+        {
+            GetConfigurator().SetDefaultCommand<TCommand>();
+        }
+
+        /// <summary>
         /// Runs the command line application with specified arguments.
         /// </summary>
         /// <param name="args">The arguments.</param>

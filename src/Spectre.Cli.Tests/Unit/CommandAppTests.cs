@@ -449,6 +449,28 @@ namespace Spectre.Cli.Tests.Unit
             capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
         }
 
+        [Fact]
+        public void Should_Be_Able_To_Set_The_Default_Command()
+        {
+            // Given
+            var resolver = new FakeTypeResolver();
+            var settings = new DogSettings();
+            resolver.Register(settings);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.SetDefaultCommand<DogCommand>();
+
+            // When
+            var result = app.Run(new[] { "4", "12", "--good-boy", "--name", "Rufus" });
+
+            // Then
+            result.ShouldBe(0);
+            settings.Legs.ShouldBe(4);
+            settings.Age.ShouldBe(12);
+            settings.GoodBoy.ShouldBe(true);
+            settings.Name.ShouldBe("Rufus");
+        }
+
         public sealed class Remaining_Arguments
         {
             [Fact]

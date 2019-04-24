@@ -49,6 +49,7 @@ namespace Spectre.Cli.Internal.Configuration
         public void SetDefaultCommand<TDefaultCommand>()
             where TDefaultCommand : class, ICommand
         {
+            // Get the type.
             var defaultCommand = typeof(TDefaultCommand);
 
             // Initialize the default command.
