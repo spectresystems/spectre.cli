@@ -54,7 +54,7 @@ namespace Spectre.Cli.Internal
 
             // Create the resolver and the context.
             var resolver = new TypeResolverAdapter(_registrar?.Build());
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Data);
+            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
             // Execute the command tree.
             return Execute(leaf, parsedResult.Tree, context, resolver);

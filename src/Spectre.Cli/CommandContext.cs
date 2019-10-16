@@ -16,6 +16,14 @@ namespace Spectre.Cli
         public IRemainingArguments Remaining { get; }
 
         /// <summary>
+        /// Gets the name of the command.
+        /// </summary>
+        /// <value>
+        /// The name of the command.
+        /// </value>
+        public string Name { get; }
+
+        /// <summary>
         /// Gets the data that was passed to the command during registration (if any).
         /// </summary>
         /// <value>
@@ -27,10 +35,12 @@ namespace Spectre.Cli
         /// Initializes a new instance of the <see cref="CommandContext"/> class.
         /// </summary>
         /// <param name="remaining">The remaining arguments.</param>
+        /// <param name="name">The command name.</param>
         /// <param name="data">The command data.</param>
-        internal CommandContext(IRemainingArguments remaining, object data)
+        internal CommandContext(IRemainingArguments remaining, string name, object data)
         {
             Remaining = remaining;
+            Name = name;
             Data = data;
         }
     }
