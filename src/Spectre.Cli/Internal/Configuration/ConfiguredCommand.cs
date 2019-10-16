@@ -8,6 +8,7 @@ namespace Spectre.Cli.Internal.Configuration
         public string Name { get; }
         public HashSet<string> Aliases { get; set; }
         public string Description { get; set; }
+        public object Data { get; set; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
         public bool IsDefaultCommand { get; }

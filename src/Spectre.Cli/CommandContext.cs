@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Spectre.Cli
 {
@@ -16,12 +16,22 @@ namespace Spectre.Cli
         public IRemainingArguments Remaining { get; }
 
         /// <summary>
+        /// Gets the data that was passed to the command during registration (if any).
+        /// </summary>
+        /// <value>
+        /// The command data.
+        /// </value>
+        public object Data { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CommandContext"/> class.
         /// </summary>
         /// <param name="remaining">The remaining arguments.</param>
-        internal CommandContext(IRemainingArguments remaining)
+        /// <param name="data">The command data.</param>
+        internal CommandContext(IRemainingArguments remaining, object data)
         {
             Remaining = remaining;
+            Data = data;
         }
     }
 }
