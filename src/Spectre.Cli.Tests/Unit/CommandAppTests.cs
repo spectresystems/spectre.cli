@@ -471,6 +471,37 @@ namespace Spectre.Cli.Tests.Unit
             settings.Name.ShouldBe("Rufus");
         }
 
+        [Fact]
+        public void Should_Pass_Command_Data_In_Context()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var registrar = new FakeTypeRegistrar(resolver);
+            var app = new CommandApp(registrar);
+
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog").WithData(123);
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "12" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Data.ShouldBe(123);
+        }
+
         public sealed class Remaining_Arguments
         {
             [Fact]

@@ -24,5 +24,11 @@ namespace Spectre.Cli.Internal.Configuration
             Command.Aliases.Add(alias);
             return this;
         }
+
+        public ICommandConfigurator WithData(object data)
+        {
+            Command.Data = data;
+            return this;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Spectre.Cli.Internal.Modelling
         public string Name { get; }
         public HashSet<string> Aliases { get; }
         public string Description { get; }
+        public object Data { get; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
         public bool IsDefaultCommand { get; }
@@ -29,6 +30,7 @@ namespace Spectre.Cli.Internal.Modelling
             Name = prototype.Name;
             Aliases = new HashSet<string>(prototype.Aliases);
             Description = prototype.Description;
+            Data = prototype.Data;
             CommandType = prototype.CommandType;
             SettingsType = prototype.SettingsType;
             IsDefaultCommand = prototype.IsDefaultCommand;
