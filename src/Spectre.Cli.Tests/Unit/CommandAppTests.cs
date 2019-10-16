@@ -472,6 +472,37 @@ namespace Spectre.Cli.Tests.Unit
         }
 
         [Fact]
+        public void Should_Set_Command_Name_In_Context()
+        {
+            // Given
+            var capturedContext = default(CommandContext);
+
+            var resolver = new FakeTypeResolver();
+            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
+            resolver.Register(new DogSettings());
+            resolver.Register(command);
+
+            var registrar = new FakeTypeRegistrar(resolver);
+            var app = new CommandApp(registrar);
+
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "animal", "4", "dog", "12" });
+
+            // Then
+            capturedContext.ShouldNotBeNull();
+            capturedContext.Name.ShouldBe("dog");
+        }
+
+        [Fact]
         public void Should_Pass_Command_Data_In_Context()
         {
             // Given
