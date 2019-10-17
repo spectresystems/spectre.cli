@@ -27,7 +27,7 @@ if (!(Test-Path $Cakeup)) {
 }
 
 # Execute Cakeup
-&$Cakeup "run" "--cake=0.30.0" "--sdk=2.1.400" `
+&$Cakeup "run" "--cake=0.35.0" "--sdk=3.0.100" `
         "--execute" "--" $ScriptArgs
 
 # Return the exit code from Cakeup.
