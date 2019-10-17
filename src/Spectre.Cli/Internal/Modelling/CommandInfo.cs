@@ -42,7 +42,7 @@ namespace Spectre.Cli.Internal.Modelling
             Parameters = new List<CommandParameter>();
             Examples = prototype.Examples ?? new List<string[]>();
 
-            if (!IsBranch && !IsDelegate)
+            if (CommandType != null && string.IsNullOrWhiteSpace(Description))
             {
                 var description = CommandType.GetCustomAttribute<DescriptionAttribute>();
                 if (description != null)

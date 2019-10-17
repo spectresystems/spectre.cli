@@ -25,6 +25,12 @@ namespace Spectre.Cli.Internal.Configuration
             return this;
         }
 
+        public ICommandConfigurator WithDescription(string description)
+        {
+            Command.Description = description;
+            return this;
+        }
+
         public ICommandConfigurator WithData(object data)
         {
             Command.Data = data;
