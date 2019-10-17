@@ -20,6 +20,13 @@ namespace Spectre.Cli
         ICommandConfigurator WithAlias(string alias);
 
         /// <summary>
+        /// Sets the description of the command.
+        /// </summary>
+        /// <param name="description">The command description.</param>
+        /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+        ICommandConfigurator WithDescription(string description);
+
+        /// <summary>
         /// Sets data that will be passed to the command via the <see cref="CommandContext"/>.
         /// </summary>
         /// <param name="data">The data to pass to the command.</param>

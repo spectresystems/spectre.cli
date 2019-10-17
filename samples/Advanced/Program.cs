@@ -12,14 +12,16 @@ namespace Sample
         public static async Task<int> Main(string[] args)
         {
             var registrar = new AutofacTypeRegistrar(BuildContainer());
-            var app = new CommandApp<BuildCommand>(registrar);
+            var app = new CommandApp(registrar);
 
             app.Configure(config =>
             {
                 config.SetApplicationName("advanced");
+                config.ValidateExamples();
 
                 // You can add the command directly.
-                config.AddCommand<BuildCommand>("build");
+                config.AddCommand<BuildCommand>("build")
+                    .WithExample(new[] { "build", "test.csproj" });
 
                 // Add a branched command hierarchy.
                 config.AddBranch("foo", foo =>
@@ -30,7 +32,7 @@ namespace Sample
                     foo.AddCommand<BuildCommand>("build");
 
                     // Create a new branch based on BuildSettings.
-                    config.AddBranch<BuildSettings>("bar", bar =>
+                    foo.AddBranch<BuildSettings>("bar", bar =>
                     {
                         // We're now forced to use commands that
                         // inherit its settings from BuildSettings.
@@ -41,7 +43,9 @@ namespace Sample
                         {
                             Console.WriteLine("Project:", s.Project);
                             return 0; // Exit code
-                        });
+                        })
+                        // Add an example to the configured command.
+                        .WithDescription("Print project name.");
                     });
                 });
             });
