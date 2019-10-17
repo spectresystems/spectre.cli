@@ -1,4 +1,4 @@
-#load nuget:?package=Spectre.Build&version=0.3.0
+#load nuget:?package=Spectre.Build&version=0.6.1
 #tool "nuget:https://api.nuget.org/v3/index.json?package=gitreleasemanager&version=0.7.1"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Pack-NuGet")
-    .PartOf(SpectreTasks.Pack)
+    .PartOf(Spectre.Tasks.Pack)
     .Does<SpectreData>(data =>
 {
     DotNetCorePack("./src/Spectre.Cli/Spectre.Cli.csproj", new DotNetCorePackSettings {

@@ -5,15 +5,15 @@ namespace Spectre.Cli.Internal.Modelling
 {
     internal sealed class CommandModel : ICommandContainer
     {
-        public string ApplicationName { get; }
+        public string? ApplicationName { get; }
         public ParsingMode ParsingMode { get; }
-        public CommandInfo DefaultCommand { get; }
+        public CommandInfo? DefaultCommand { get; }
         public IList<CommandInfo> Commands { get; }
         public IList<string[]> Examples { get; }
 
         public CommandModel(
             ConfigurationSettings settings,
-            CommandInfo defaultCommand,
+            CommandInfo? defaultCommand,
             IEnumerable<CommandInfo> commands,
             IEnumerable<string[]> examples)
         {

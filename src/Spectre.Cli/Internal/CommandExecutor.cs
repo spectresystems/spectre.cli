@@ -11,9 +11,9 @@ namespace Spectre.Cli.Internal
 {
     internal sealed class CommandExecutor
     {
-        private readonly ITypeRegistrar _registrar;
+        private readonly ITypeRegistrar? _registrar;
 
-        public CommandExecutor(ITypeRegistrar registrar)
+        public CommandExecutor(ITypeRegistrar? registrar)
         {
             _registrar = registrar;
         }

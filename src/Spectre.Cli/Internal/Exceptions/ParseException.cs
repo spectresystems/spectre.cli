@@ -9,7 +9,7 @@ namespace Spectre.Cli.Internal.Exceptions
 {
     internal sealed class ParseException : RuntimeException
     {
-        public ParseException(string message, IRenderable pretty = null)
+        public ParseException(string message, IRenderable? pretty = null)
             : base(message, pretty)
         {
         }
@@ -19,8 +19,12 @@ namespace Spectre.Cli.Internal.Exceptions
             return new ParseException($"Could not create settings of type '{settingsType.FullName}'.");
         }
 
-        public static ParseException CouldNotCreateCommand(Type commandType)
+        public static ParseException CouldNotCreateCommand(Type? commandType)
         {
+            if (commandType == null)
+            {
+                return new ParseException($"Could not create command. Command type is unknown.");
+            }
             return new ParseException($"Could not create command of type '{commandType.FullName}'.");
         }
 
@@ -95,7 +99,7 @@ namespace Spectre.Cli.Internal.Exceptions
             return ParseExceptionFactory.Create(input, token, $"Encountered unterminated quoted string '{token.Value}'.", "Did you forget the closing quotation mark?");
         }
 
-        public static ParseException UnknownCommand(CommandModel model, CommandTree node, IEnumerable<string> args, CommandTreeToken token)
+        public static ParseException UnknownCommand(CommandModel model, CommandTree? node, IEnumerable<string> args, CommandTreeToken token)
         {
             var availableCommands = node?.Command ?? (ICommandContainer)model;
             var suggestion = CommandSuggestor.Suggest(model, node?.Command, token.Value);

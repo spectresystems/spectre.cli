@@ -10,13 +10,19 @@ namespace Spectre.Cli.Internal.Configuration
         {
             public string Value { get; set; }
             public bool Required { get; set; }
+
+            public ArgumentResult(string value, bool required)
+            {
+                Value = value;
+                Required = required;
+            }
         }
 
         public sealed class OptionResult
         {
             public List<string> LongNames { get; set; }
             public List<string> ShortNames { get; set; }
-            public string Value { get; set; }
+            public string? Value { get; set; }
 
             public OptionResult()
             {
@@ -27,7 +33,8 @@ namespace Spectre.Cli.Internal.Configuration
 
         public static ArgumentResult ParseArgumentTemplate(string template)
         {
-            var result = new ArgumentResult();
+            var valueName = default(string);
+            var required = false;
             foreach (var token in TemplateTokenizer.Tokenize(template))
             {
                 if (token.TokenKind == TemplateToken.Kind.ShortName ||
@@ -39,7 +46,7 @@ namespace Spectre.Cli.Internal.Configuration
                 if (token.TokenKind == TemplateToken.Kind.OptionalValue ||
                     token.TokenKind == TemplateToken.Kind.RequiredValue)
                 {
-                    if (!string.IsNullOrWhiteSpace(result.Value))
+                    if (!string.IsNullOrWhiteSpace(valueName))
                     {
                         throw TemplateException.MultipleValuesAreNotSupported(template, token);
                     }
@@ -48,11 +55,17 @@ namespace Spectre.Cli.Internal.Configuration
                         throw TemplateException.ValuesMustHaveName(template, token);
                     }
 
-                    result.Value = token.Value;
-                    result.Required = token.TokenKind == TemplateToken.Kind.RequiredValue;
+                    valueName = token.Value;
+                    required = token.TokenKind == TemplateToken.Kind.RequiredValue;
                 }
             }
-            return result;
+
+            if (valueName == null)
+            {
+                throw TemplateException.ArgumentsMustHaveValueName(template);
+            }
+
+            return new ArgumentResult(valueName, required);
         }
 
         public static OptionResult ParseOptionTemplate(string template)

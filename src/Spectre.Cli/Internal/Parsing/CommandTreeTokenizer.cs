@@ -79,7 +79,10 @@ namespace Spectre.Cli.Internal.Parsing
             return position;
         }
 
-        private static CommandTreeToken ScanString(CommandTreeTokenizerContext context, TextBuffer reader, char[] stop = null)
+        private static CommandTreeToken ScanString(
+            CommandTreeTokenizerContext context,
+            TextBuffer reader,
+            char[]? stop = null)
         {
             if (reader.TryPeek(out var character))
             {

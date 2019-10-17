@@ -6,9 +6,9 @@ namespace Spectre.Cli.Internal.Parsing
     internal sealed class MappedCommandParameter
     {
         public CommandParameter Parameter { get; }
-        public string Value { get; }
+        public string? Value { get; }
 
-        public MappedCommandParameter(CommandParameter parameter, string value)
+        public MappedCommandParameter(CommandParameter parameter, string? value)
         {
             Parameter = parameter;
             Value = value;

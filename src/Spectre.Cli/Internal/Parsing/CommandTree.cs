@@ -10,11 +10,11 @@ namespace Spectre.Cli.Internal.Parsing
         public CommandInfo Command { get; }
         public List<MappedCommandParameter> Mapped { get; }
         public List<CommandParameter> Unmapped { get; }
-        public CommandTree Parent { get; }
-        public CommandTree Next { get; set; }
+        public CommandTree? Parent { get; }
+        public CommandTree? Next { get; set; }
         public bool ShowHelp { get; set; }
 
-        public CommandTree(CommandTree parent, CommandInfo command)
+        public CommandTree(CommandTree? parent, CommandInfo command)
         {
             Parent = parent;
             Command = command;
@@ -34,7 +34,7 @@ namespace Spectre.Cli.Internal.Parsing
 
         public ICommand CreateCommand(ITypeResolver resolver)
         {
-            if (Command.IsDelegate)
+            if (Command.Delegate != null)
             {
                 return new DelegateCommand(Command.Delegate);
             }

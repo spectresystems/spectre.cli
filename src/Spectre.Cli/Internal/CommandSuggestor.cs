@@ -8,9 +8,9 @@ namespace Spectre.Cli.Internal
     {
         private const float _smallestDistance = 2f;
 
-        public static CommandInfo Suggest(CommandModel model, CommandInfo command, string name)
+        public static CommandInfo? Suggest(CommandModel model, CommandInfo? command, string name)
         {
-            var result = (CommandInfo)null;
+            var result = (CommandInfo?)null;
 
             var container = command ?? (ICommandContainer)model;
             if (command?.IsDefaultCommand ?? false)

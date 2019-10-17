@@ -21,7 +21,7 @@ namespace Spectre.Cli
         /// Initializes a new instance of the <see cref="CommandApp"/> class.
         /// </summary>
         /// <param name="registrar">The registrar.</param>
-        public CommandApp(ITypeRegistrar registrar = null)
+        public CommandApp(ITypeRegistrar? registrar = null)
         {
             _configurator = new Configurator(registrar);
             _executor = new CommandExecutor(registrar);
@@ -77,7 +77,11 @@ namespace Spectre.Cli
                 }
 
                 // Render the exception.
-                ConsoleRenderer.Render(GetRenderableErrorMessage(ex));
+                var pretty = GetRenderableErrorMessage(ex);
+                if (pretty != null)
+                {
+                    ConsoleRenderer.Render(pretty);
+                }
 
                 // Should we always propagate when debugging?
                 if (Debugger.IsAttached
@@ -96,7 +100,7 @@ namespace Spectre.Cli
             return _configurator;
         }
 
-        private static IRenderable GetRenderableErrorMessage(Exception ex, bool convert = true)
+        private static IRenderable? GetRenderableErrorMessage(Exception ex, bool convert = true)
         {
             if (ex is CommandAppException renderable && renderable.Pretty != null)
             {

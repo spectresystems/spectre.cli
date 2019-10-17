@@ -29,7 +29,7 @@ namespace Spectre.Cli
         /// Gets the value name of the option.
         /// </summary>
         /// <value>The option's value name.</value>
-        public string ValueName { get; }
+        public string? ValueName { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.

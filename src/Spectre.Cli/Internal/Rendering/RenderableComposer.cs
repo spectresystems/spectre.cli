@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Rendering.Elements;
@@ -22,7 +22,7 @@ namespace Spectre.Cli.Internal.Rendering
             return this;
         }
 
-        public RenderableComposer Text(string text)
+        public RenderableComposer Text(string? text)
         {
             if (text != null)
             {

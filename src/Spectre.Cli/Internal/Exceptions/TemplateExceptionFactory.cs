@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Rendering;
 
@@ -6,12 +6,12 @@ namespace Spectre.Cli.Internal.Exceptions
 {
     internal static class TemplateExceptionFactory
     {
-        internal static TemplateException Create(string template, TemplateToken token, string message, string details)
+        internal static TemplateException Create(string template, TemplateToken? token, string message, string details)
         {
             return new TemplateException(message, template, CreatePrettyMessage(template, token, message, details));
         }
 
-        private static IRenderable CreatePrettyMessage(string template, TemplateToken token, string message, string details)
+        private static IRenderable CreatePrettyMessage(string template, TemplateToken? token, string message, string details)
         {
             var composer = new RenderableComposer();
 

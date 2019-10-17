@@ -7,14 +7,11 @@ namespace Spectre.Cli.Internal
         public static T AddAndReturn<T>(this IList<T> source, T item)
             where T : class
         {
-            if (item != null)
-            {
-                source.Add(item);
-            }
+            source.Add(item);
             return item;
         }
 
-        public static void AddIfNotNull<T>(this IList<T> source, T item)
+        public static void AddIfNotNull<T>(this IList<T> source, T? item)
             where T : class
         {
             if (item != null)
@@ -23,7 +20,7 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        public static void AddRangeIfNotNull<T>(this IList<T> source, IEnumerable<T> items)
+        public static void AddRangeIfNotNull<T>(this IList<T> source, IEnumerable<T?> items)
             where T : class
         {
             foreach (var item in items)

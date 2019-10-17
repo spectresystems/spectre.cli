@@ -10,22 +10,21 @@ namespace Spectre.Cli.Internal.Modelling
     {
         public string Name { get; }
         public HashSet<string> Aliases { get; }
-        public string Description { get; }
-        public object Data { get; }
-        public Type CommandType { get; }
+        public string? Description { get; }
+        public object? Data { get; }
+        public Type? CommandType { get; }
         public Type SettingsType { get; }
-        public Func<CommandContext, CommandSettings, int> Delegate { get; }
+        public Func<CommandContext, CommandSettings, int>? Delegate { get; }
         public bool IsDefaultCommand { get; }
-        public CommandInfo Parent { get; }
+        public CommandInfo? Parent { get; }
         public IList<CommandInfo> Children { get; }
         public IList<CommandParameter> Parameters { get; }
         public IList<string[]> Examples { get; }
 
-        public bool IsDelegate => Delegate != null;
-        public bool IsBranch => CommandType == null && !IsDelegate;
+        public bool IsBranch => CommandType == null && Delegate == null;
         IList<CommandInfo> ICommandContainer.Commands => Children;
 
-        public CommandInfo(CommandInfo parent, ConfiguredCommand prototype)
+        public CommandInfo(CommandInfo? parent, ConfiguredCommand prototype)
         {
             Parent = parent;
 

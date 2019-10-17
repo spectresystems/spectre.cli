@@ -49,7 +49,7 @@ namespace Spectre.Cli.Internal.Modelling
             return model;
         }
 
-        private static CommandInfo Build(CommandInfo parent, ConfiguredCommand command)
+        private static CommandInfo Build(CommandInfo? parent, ConfiguredCommand command)
         {
             var info = new CommandInfo(parent, command);
 

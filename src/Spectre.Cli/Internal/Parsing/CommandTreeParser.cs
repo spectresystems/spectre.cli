@@ -20,10 +20,10 @@ namespace Spectre.Cli.Internal.Parsing
         // // Consider removing this in favor for value tuples at some point.
         public sealed class CommandTreeParserResult
         {
-            public CommandTree Tree { get; }
+            public CommandTree? Tree { get; }
             public IRemainingArguments Remaining { get; }
 
-            public CommandTreeParserResult(CommandTree tree, IRemainingArguments remaining)
+            public CommandTreeParserResult(CommandTree? tree, IRemainingArguments remaining)
             {
                 Tree = tree;
                 Remaining = remaining;
@@ -44,11 +44,18 @@ namespace Spectre.Cli.Internal.Parsing
             var tokens = tokenizerResult.Tokens;
             var rawRemaining = tokenizerResult.Remaining;
 
-            var result = (CommandTree)null;
+            var result = default(CommandTree);
             if (tokens.Count > 0)
             {
                 // Not a command?
                 var token = tokens.Current;
+                if (token == null)
+                {
+                    // Should not happen, but the compiler isn't
+                    // smart enough to realize this...
+                    throw new RuntimeException("Could not get current token.");
+                }
+
                 if (token.TokenKind != CommandTreeToken.Kind.String)
                 {
                     // Got a default command?
@@ -101,11 +108,16 @@ namespace Spectre.Cli.Internal.Parsing
         private CommandTree ParseCommand(
             CommandTreeParserContext context,
             ICommandContainer current,
-            CommandTree parent,
+            CommandTree? parent,
             CommandTreeTokenStream stream)
         {
             // Find the command.
             var commandToken = stream.Consume(CommandTreeToken.Kind.String);
+            if (commandToken == null)
+            {
+                throw new RuntimeException("Could not consume token when parsing command.");
+            }
+
             var command = current.FindCommand(commandToken.Value);
             if (command == null)
             {
@@ -118,7 +130,7 @@ namespace Spectre.Cli.Internal.Parsing
         private CommandTree ParseCommandParameters(
             CommandTreeParserContext context,
             CommandInfo command,
-            CommandTree parent,
+            CommandTree? parent,
             CommandTreeTokenStream stream)
         {
             context.ResetArgumentPosition();
@@ -127,6 +139,13 @@ namespace Spectre.Cli.Internal.Parsing
             while (stream.Peek() != null)
             {
                 var token = stream.Peek();
+                if (token == null)
+                {
+                    // Should not happen, but the compiler isn't
+                    // smart enough to realize this...
+                    throw new RuntimeException("Could not get the next token.");
+                }
+
                 switch (token.TokenKind)
                 {
                     case CommandTreeToken.Kind.LongOption:
@@ -214,7 +233,7 @@ namespace Spectre.Cli.Internal.Parsing
                 var aggregator = new List<string>(); // TODO: Allocations
                 while (current?.TokenKind == CommandTreeToken.Kind.String)
                 {
-                    var value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                    var value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
                     node.Mapped.Add(new MappedCommandParameter(parameter, value));
                     current = stream.Current;
                 }
@@ -222,7 +241,7 @@ namespace Spectre.Cli.Internal.Parsing
             else
             {
                 // Scalar
-                var value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                var value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
                 node.Mapped.Add(new MappedCommandParameter(parameter, value));
                 context.IncreaseArgumentPosition();
             }
@@ -274,14 +293,14 @@ namespace Spectre.Cli.Internal.Parsing
             }
         }
 
-        private static string ParseOptionValue(
+        private static string? ParseOptionValue(
             CommandTreeParserContext context,
             CommandTreeTokenStream stream,
             CommandTreeToken token,
             CommandTree current,
-            CommandParameter parameter)
+            CommandParameter? parameter)
         {
-            var value = (string)null;
+            var value = default(string);
 
             // Parse the value of the token (if any).
             var valueToken = stream.Peek();
@@ -306,12 +325,12 @@ namespace Spectre.Cli.Internal.Parsing
                                 throw ParseException.CannotAssignValueToFlag(context.Arguments, token);
                             }
 
-                            value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                            value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
                         }
                         else
                         {
                             // Unknown parameter value.
-                            value = stream.Consume(CommandTreeToken.Kind.String).Value;
+                            value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
 
                             // In relaxed parsing mode?
                             if (context.ParsingMode == ParsingMode.Relaxed)
