@@ -533,6 +533,82 @@ namespace Spectre.Cli.Tests.Unit
             capturedContext.Data.ShouldBe(123);
         }
 
+        public sealed class Delegate_Commands
+        {
+            [Fact]
+            public void Should_Execute_Delegate_Command_At_Root_Level()
+            {
+                // Given
+                var intercepted = false;
+                var age = 0;
+                var legs = 0;
+                var data = 0;
+
+                var app = new CommandApp();
+                app.Configure(config =>
+                {
+                    config.PropagateExceptions();
+                    config.AddDelegate<DogSettings>("foo",
+                        (context, settings) =>
+                        {
+                            intercepted = true;
+                            age = settings.Age;
+                            legs = settings.Legs;
+                            data = (int)context.Data;
+                            return 1;
+                        }).WithData(2);
+                });
+
+                // When
+                var result = app.Run(new[] { "foo", "4", "12" });
+
+                // Then
+                result.ShouldBe(1);
+                intercepted.ShouldBeTrue();
+                age.ShouldBe(12);
+                legs.ShouldBe(4);
+                data.ShouldBe(2);
+            }
+
+            [Fact]
+            public void Should_Execute_Nested_Delegate_Command()
+            {
+                // Given
+                var intercepted = false;
+                var age = 0;
+                var legs = 0;
+                var data = 0;
+
+                var app = new CommandApp();
+                app.Configure(config =>
+                {
+                    config.PropagateExceptions();
+                    config.AddBranch<AnimalSettings>("foo", foo =>
+                    {
+                        foo.AddDelegate<DogSettings>("bar",
+                            (context, settings) =>
+                            {
+                                intercepted = true;
+                                age = settings.Age;
+                                legs = settings.Legs;
+                                data = (int)context.Data;
+                                return 1;
+                            }).WithData(2);
+                    });
+                });
+
+                // When
+                var result = app.Run(new[] { "foo", "4", "bar", "12" });
+
+                // Then
+                result.ShouldBe(1);
+                intercepted.ShouldBeTrue();
+                age.ShouldBe(12);
+                legs.ShouldBe(4);
+                data.ShouldBe(2);
+            }
+        }
+
         public sealed class Remaining_Arguments
         {
             [Fact]

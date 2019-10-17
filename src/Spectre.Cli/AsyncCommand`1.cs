@@ -29,12 +29,12 @@ namespace Spectre.Cli
         /// <returns>An integer indicating whether or not the command executed successfully.</returns>
         public abstract Task<int> ExecuteAsync(CommandContext context, TSettings settings);
 
-        ValidationResult ICommand.Validate(CommandContext context, object settings)
+        ValidationResult ICommand.Validate(CommandContext context, CommandSettings settings)
         {
             return Validate(context, (TSettings)settings);
         }
 
-        Task<int> ICommand.Execute(CommandContext context, object settings)
+        Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
         {
             Debug.Assert(settings is TSettings, "Command settings is of unexpected type.");
             return ExecuteAsync(context, (TSettings)settings);

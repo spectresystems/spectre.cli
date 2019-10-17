@@ -34,6 +34,11 @@ namespace Spectre.Cli.Internal.Parsing
 
         public ICommand CreateCommand(ITypeResolver resolver)
         {
+            if (Command.IsDelegate)
+            {
+                return new DelegateCommand(Command.Delegate);
+            }
+
             if (resolver.Resolve(Command.CommandType) is ICommand command)
             {
                 return command;

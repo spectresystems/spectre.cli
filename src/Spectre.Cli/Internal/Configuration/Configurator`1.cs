@@ -24,14 +24,26 @@ namespace Spectre.Cli.Internal.Configuration
             _command.Examples.Add(args);
         }
 
-        public ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>
+        public ICommandConfigurator AddCommand<TCommand>(string name)
+            where TCommand : class, ICommandLimiter<TSettings>
         {
-            var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
-            var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
+            var command = ConfiguredCommand.FromType<TCommand>(name);
             var configurator = new CommandConfigurator(command);
 
             _command.Children.Add(command);
-            _registrar.RegisterCommand(typeof(TCommand), settingsType);
+            _registrar.RegisterCommand(command);
+
+            return configurator;
+        }
+
+        public ICommandConfigurator AddDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+            where TDerivedSettings : TSettings
+        {
+            var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
+                name, (context, settings) => func(context, (TDerivedSettings)settings));
+
+            _command.Children.Add(command);
+            var configurator = new CommandConfigurator(command);
 
             return configurator;
         }
@@ -39,7 +51,7 @@ namespace Spectre.Cli.Internal.Configuration
         public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
             where TDerivedSettings : TSettings
         {
-            var command = new ConfiguredCommand(name, null, typeof(TDerivedSettings));
+            var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
             action(new Configurator<TDerivedSettings>(command, _registrar));
             _command.Children.Add(command);
         }

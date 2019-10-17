@@ -49,33 +49,33 @@ namespace Spectre.Cli.Internal.Configuration
         public void SetDefaultCommand<TDefaultCommand>()
             where TDefaultCommand : class, ICommand
         {
-            // Get the type.
-            var defaultCommand = typeof(TDefaultCommand);
+            DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
+                Constants.DefaultCommandName, isDefaultCommand: true);
 
-            // Initialize the default command.
-            var settingsType = ConfigurationHelper.GetSettingsType(defaultCommand);
-            DefaultCommand = new ConfiguredCommand(Constants.DefaultCommandName, defaultCommand, settingsType, true);
-
-            // Register the default command.
-            _registrar.RegisterCommand(defaultCommand, settingsType);
+            _registrar.RegisterCommand(DefaultCommand);
         }
 
-        public ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommand
+        public ICommandConfigurator AddCommand<TCommand>(string name)
+            where TCommand : class, ICommand
         {
-            var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
-            var command = new ConfiguredCommand(name, typeof(TCommand), settingsType);
-            var configurator = new CommandConfigurator(command);
+            var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
+            _registrar.RegisterCommand(command);
+            return new CommandConfigurator(command);
+        }
 
-            Commands.Add(command);
-            _registrar.RegisterCommand(typeof(TCommand), settingsType);
+        public ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+            where TSettings : CommandSettings
+        {
+            var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
+                name, (context, settings) => func(context, (TSettings)settings)));
 
-            return configurator;
+            return new CommandConfigurator(command);
         }
 
         public void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
             where TSettings : CommandSettings
         {
-            var command = new ConfiguredCommand(name, null, typeof(TSettings));
+            var command = ConfiguredCommand.FromBranch<TSettings>(name);
             action(new Configurator<TSettings>(command, _registrar));
             Commands.Add(command);
         }

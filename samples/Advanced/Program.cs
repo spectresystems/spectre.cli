@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 using Autofac;
 using Sample.Autofac;
 using Sample.Commands;
@@ -16,7 +17,33 @@ namespace Sample
             app.Configure(config =>
             {
                 config.SetApplicationName("advanced");
+
+                // You can add the command directly.
                 config.AddCommand<BuildCommand>("build");
+
+                // Add a branched command hierarchy.
+                config.AddBranch("foo", foo =>
+                {
+                    // Since we've created a branch without
+                    // specifying what settings the branch should
+                    // be based on, we can put anything in this level.
+                    foo.AddCommand<BuildCommand>("build");
+
+                    // Create a new branch based on BuildSettings.
+                    config.AddBranch<BuildSettings>("bar", bar =>
+                    {
+                        // We're now forced to use commands that
+                        // inherit its settings from BuildSettings.
+                        bar.AddCommand<BuildCommand>("build");
+
+                        // Add a delegate command based on BuildSettings.
+                        bar.AddDelegate<BuildSettings>("qux", (c, s) =>
+                        {
+                            Console.WriteLine("Project:", s.Project);
+                            return 0; // Exit code
+                        });
+                    });
+                });
             });
 
             return await app.RunAsync(args);
