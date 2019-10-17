@@ -14,13 +14,15 @@ namespace Spectre.Cli.Internal.Modelling
         public object Data { get; }
         public Type CommandType { get; }
         public Type SettingsType { get; }
+        public Func<CommandContext, CommandSettings, int> Delegate { get; }
         public bool IsDefaultCommand { get; }
         public CommandInfo Parent { get; }
         public IList<CommandInfo> Children { get; }
         public IList<CommandParameter> Parameters { get; }
         public IList<string[]> Examples { get; }
 
-        public bool IsBranch => CommandType == null;
+        public bool IsDelegate => Delegate != null;
+        public bool IsBranch => CommandType == null && !IsDelegate;
         IList<CommandInfo> ICommandContainer.Commands => Children;
 
         public CommandInfo(CommandInfo parent, ConfiguredCommand prototype)
@@ -33,13 +35,14 @@ namespace Spectre.Cli.Internal.Modelling
             Data = prototype.Data;
             CommandType = prototype.CommandType;
             SettingsType = prototype.SettingsType;
+            Delegate = prototype.Delegate;
             IsDefaultCommand = prototype.IsDefaultCommand;
 
             Children = new List<CommandInfo>();
             Parameters = new List<CommandParameter>();
             Examples = prototype.Examples ?? new List<string[]>();
 
-            if (!IsBranch)
+            if (!IsBranch && !IsDelegate)
             {
                 var description = CommandType.GetCustomAttribute<DescriptionAttribute>();
                 if (description != null)

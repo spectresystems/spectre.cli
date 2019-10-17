@@ -4,6 +4,16 @@ namespace Spectre.Cli.Internal
 {
     internal static class ListExtensions
     {
+        public static T AddAndReturn<T>(this IList<T> source, T item)
+            where T : class
+        {
+            if (item != null)
+            {
+                source.Add(item);
+            }
+            return item;
+        }
+
         public static void AddIfNotNull<T>(this IList<T> source, T item)
             where T : class
         {

@@ -19,12 +19,12 @@ namespace Spectre.Cli
             return ExecuteAsync(context);
         }
 
-        Task<int> ICommand.Execute(CommandContext context, object settings)
+        Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
         {
             return ExecuteAsync(context);
         }
 
-        ValidationResult ICommand.Validate(CommandContext context, object settings)
+        ValidationResult ICommand.Validate(CommandContext context, CommandSettings settings)
         {
             return ValidationResult.Success();
         }

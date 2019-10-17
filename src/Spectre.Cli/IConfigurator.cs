@@ -42,14 +42,26 @@ namespace Spectre.Cli
         /// <typeparam name="TCommand">The command type.</typeparam>
         /// <param name="name">The name of the command.</param>
         /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
-        ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommand;
+        ICommandConfigurator AddCommand<TCommand>(string name)
+            where TCommand : class, ICommand;
+
+        /// <summary>
+        /// Adds a command that executes a delegate.
+        /// </summary>
+        /// <typeparam name="TSettings">The command setting type.</typeparam>
+        /// <param name="name">The name of the command.</param>
+        /// <param name="func">The delegate to execute as part of command execution.</param>
+        /// <returns>A command configurator that can be used to configure the command further.</returns>
+        ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+            where TSettings : CommandSettings;
 
         /// <summary>
         /// Adds a command branch.
         /// </summary>
-        /// <typeparam name="TSettings">The type of the settings.</typeparam>
+        /// <typeparam name="TSettings">The command setting type.</typeparam>
         /// <param name="name">The name of the command branch.</param>
         /// <param name="action">The command branch configuration.</param>
-        void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action) where TSettings : CommandSettings;
+        void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+            where TSettings : CommandSettings;
     }
 }

@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Features>IOperation</Features>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
     <Description>An extremly opinionated command line parser.</Description>
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>

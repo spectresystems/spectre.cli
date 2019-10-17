@@ -5,7 +5,7 @@ namespace Spectre.Cli
     /// <summary>
     /// Represents a configurator for specific settings.
     /// </summary>
-    /// <typeparam name="TSettings">The type of the settings.</typeparam>
+    /// <typeparam name="TSettings">The command setting type.</typeparam>
     public interface IConfigurator<in TSettings>
         where TSettings : CommandSettings
     {
@@ -27,14 +27,26 @@ namespace Spectre.Cli
         /// <typeparam name="TCommand">The command type.</typeparam>
         /// <param name="name">The name of the command.</param>
         /// <returns>A command configurator that can be used to configure the command further.</returns>
-        ICommandConfigurator AddCommand<TCommand>(string name) where TCommand : class, ICommandLimiter<TSettings>;
+        ICommandConfigurator AddCommand<TCommand>(string name)
+            where TCommand : class, ICommandLimiter<TSettings>;
+
+        /// <summary>
+        /// Adds a command that executes a delegate.
+        /// </summary>
+        /// <typeparam name="TDerivedSettings">The derived command setting type.</typeparam>
+        /// <param name="name">The name of the command.</param>
+        /// <param name="func">The delegate to execute as part of command execution.</param>
+        /// <returns>A command configurator that can be used to configure the command further.</returns>
+        ICommandConfigurator AddDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+            where TDerivedSettings : TSettings;
 
         /// <summary>
         /// Adds a command branch.
         /// </summary>
-        /// <typeparam name="TDerivedSettings">The type of the derived settings.</typeparam>
+        /// <typeparam name="TDerivedSettings">The derived command setting type.</typeparam>
         /// <param name="name">The name of the command branch.</param>
         /// <param name="action">The command branch configuration.</param>
-        void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action) where TDerivedSettings : TSettings;
+        void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+            where TDerivedSettings : TSettings;
     }
 }
