@@ -16,9 +16,9 @@ namespace Spectre.Cli.Internal
         {
             public string Name { get; }
             public bool Required { get; }
-            public string Description { get; }
+            public string? Description { get; }
 
-            public HelpArgument(string name, bool required, string description)
+            public HelpArgument(string name, bool required, string? description)
             {
                 Name = name;
                 Required = required;
@@ -31,10 +31,10 @@ namespace Spectre.Cli.Internal
         {
             public string Short { get; }
             public string Long { get; }
-            public string Value { get; }
-            public string Description { get; }
+            public string? Value { get; }
+            public string? Description { get; }
 
-            public HelpOption(string @short, string @long, string @value, string @description)
+            public HelpOption(string @short, string @long, string? @value, string? description)
             {
                 Short = @short;
                 Long = @long;
@@ -48,7 +48,7 @@ namespace Spectre.Cli.Internal
             return WriteCommand(model, null);
         }
 
-        public static IRenderable WriteCommand(CommandModel model, CommandInfo command)
+        public static IRenderable WriteCommand(CommandModel model, CommandInfo? command)
         {
             var composer = new RenderableComposer();
             composer.LineBreak();
@@ -67,13 +67,16 @@ namespace Spectre.Cli.Internal
             WriteOptions(composer, command);
 
             // Commands
-            WriteCommands(composer, model, (ICommandContainer)command ?? model, command?.IsDefaultCommand ?? false);
+            WriteCommands(
+                composer, model,
+                command as ICommandContainer ?? model,
+                command?.IsDefaultCommand ?? false);
 
             composer.LineBreak();
             return composer;
         }
 
-        private static void WriteUsage(RenderableComposer composer, CommandModel model, CommandInfo command)
+        private static void WriteUsage(RenderableComposer composer, CommandModel model, CommandInfo? command)
         {
             var parameters = new Stack<IRenderable>();
 
@@ -84,7 +87,7 @@ namespace Spectre.Cli.Internal
             }
             else
             {
-                var current = command;
+                CommandInfo? current = command;
                 if (command.IsBranch)
                 {
                     parameters.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
@@ -134,7 +137,7 @@ namespace Spectre.Cli.Internal
             }
 
             composer.Color(ConsoleColor.Yellow, c => c.Text("USAGE:")).LineBreak();
-            composer.Tab().Text(model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly().Location));
+            composer.Tab().Text(model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location));
 
             // Root or not a default command?
             if (command?.IsDefaultCommand != true)
@@ -145,7 +148,7 @@ namespace Spectre.Cli.Internal
             composer.Join(" ", parameters);
         }
 
-        private static void WriteExamples(RenderableComposer composer, CommandModel model, CommandInfo command)
+        private static void WriteExamples(RenderableComposer composer, CommandModel model, CommandInfo? command)
         {
             var maxExamples = int.MaxValue;
 
@@ -184,7 +187,7 @@ namespace Spectre.Cli.Internal
 
             if (examples.Count > 0)
             {
-                var prefix = model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly().Location);
+                var prefix = model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location);
 
                 composer.Color(ConsoleColor.Yellow, c => c.Text("EXAMPLES:")).LineBreak();
                 for (int index = 0; index < Math.Min(maxExamples, examples.Count); index++)
@@ -200,7 +203,7 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        private static void WriteArguments(RenderableComposer composer, CommandInfo command)
+        private static void WriteArguments(RenderableComposer composer, CommandInfo? command)
         {
             var arguments = new List<HelpArgument>();
             arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
@@ -235,16 +238,18 @@ namespace Spectre.Cli.Internal
             composer.LineBreak();
         }
 
-        private static void WriteOptions(RenderableComposer composer, CommandInfo command)
+        private static void WriteOptions(RenderableComposer composer, CommandInfo? command)
         {
             // Collect all options into a single structure.
             var parameters = new List<HelpOption>
             {
-                new HelpOption("h", "help", (string)null, "Prints help information")
+                new HelpOption("h", "help", null, "Prints help information")
             };
 
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
-                new HelpOption(o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(), o.ValueName, o.Description))
+                new HelpOption(
+                    o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
+                    o.ValueName, o.Description))
                 ?? Array.Empty<HelpOption>());
 
             var options = parameters.ToArray();
@@ -253,7 +258,7 @@ namespace Spectre.Cli.Internal
                 composer.Color(ConsoleColor.Yellow, c => c.Text("OPTIONS:")).LineBreak();
 
                 // Start with composing a list of lines.
-                var result = new List<Tuple<string, BlockElement>>();
+                var result = new List<Tuple<string?, BlockElement>>();
                 foreach (var option in options)
                 {
                     var item = new BlockElement();

@@ -6,7 +6,7 @@ namespace Spectre.Cli.Internal.Parsing
 {
     internal static class CommandTreeExtensions
     {
-        public static CommandTree GetRootCommand(this CommandTree node)
+        public static CommandTree? GetRootCommand(this CommandTree node)
         {
             while (node.Parent != null)
             {

@@ -1,19 +1,24 @@
-﻿using System;
+using System;
 using Spectre.Cli.Internal.Exceptions;
 
 namespace Spectre.Cli.Internal
 {
     internal sealed class TypeResolverAdapter : ITypeResolver
     {
-        private readonly ITypeResolver _resolver;
+        private readonly ITypeResolver? _resolver;
 
-        public TypeResolverAdapter(ITypeResolver resolver)
+        public TypeResolverAdapter(ITypeResolver? resolver)
         {
             _resolver = resolver;
         }
 
-        public object Resolve(Type type)
+        public object? Resolve(Type? type)
         {
+            if (type == null)
+            {
+                throw new RuntimeException("Cannot resolve null type.");
+            }
+
             try
             {
                 if (_resolver != null)

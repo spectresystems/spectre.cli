@@ -9,12 +9,12 @@ namespace Spectre.Cli.Internal.Exceptions
     {
         public override bool AlwaysPropagateWhenDebugging => true;
 
-        public ConfigurationException(string message, IRenderable pretty = null)
+        public ConfigurationException(string message, IRenderable? pretty = null)
             : base(message, pretty)
         {
         }
 
-        public ConfigurationException(string message, Exception ex, IRenderable pretty = null)
+        public ConfigurationException(string message, Exception ex, IRenderable? pretty = null)
             : base(message, ex, pretty)
         {
         }

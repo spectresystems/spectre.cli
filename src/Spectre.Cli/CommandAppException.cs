@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli
@@ -10,7 +10,7 @@ namespace Spectre.Cli
     /// <seealso cref="IRenderable" />
     public abstract class CommandAppException : Exception
     {
-        internal IRenderable Pretty { get; }
+        internal IRenderable? Pretty { get; }
 
         /// <summary>
         /// Gets a value indicating whether this exception always should
@@ -22,13 +22,13 @@ namespace Spectre.Cli
         /// </value>
         public virtual bool AlwaysPropagateWhenDebugging => false;
 
-        internal CommandAppException(string message, IRenderable pretty = null)
+        internal CommandAppException(string message, IRenderable? pretty = null)
             : base(message)
         {
             Pretty = pretty;
         }
 
-        internal CommandAppException(string message, Exception ex, IRenderable pretty = null)
+        internal CommandAppException(string message, Exception ex, IRenderable? pretty = null)
             : base(message, ex)
         {
             Pretty = pretty;

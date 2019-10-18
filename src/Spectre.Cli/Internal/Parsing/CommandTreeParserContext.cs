@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace Spectre.Cli.Internal.Parsing
     internal class CommandTreeParserContext
     {
         private readonly List<string> _args;
-        private readonly Dictionary<string, List<string>> _remaining;
+        private readonly Dictionary<string, List<string?>> _remaining;
 
         public IReadOnlyList<string> Arguments => _args;
         public int CurrentArgumentPosition { get; private set; }
@@ -17,7 +17,7 @@ namespace Spectre.Cli.Internal.Parsing
         public CommandTreeParserContext(IEnumerable<string> args, ParsingMode parsingMode)
         {
             _args = new List<string>(args);
-            _remaining = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            _remaining = new Dictionary<string, List<string?>>(StringComparer.Ordinal);
 
             ParsingMode = parsingMode;
         }
@@ -32,19 +32,19 @@ namespace Spectre.Cli.Internal.Parsing
             CurrentArgumentPosition++;
         }
 
-        public void AddRemainingArgument(string key, string value)
+        public void AddRemainingArgument(string key, string? value)
         {
             if (State == CommandTreeParser.State.Remaining || ParsingMode == ParsingMode.Relaxed)
             {
                 if (!_remaining.ContainsKey(key))
                 {
-                    _remaining.Add(key, new List<string>());
+                    _remaining.Add(key, new List<string?>());
                 }
                 _remaining[key].Add(value);
             }
         }
 
-        public ILookup<string, string> GetRemainingArguments()
+        public ILookup<string, string?> GetRemainingArguments()
         {
             return _remaining
                 .SelectMany(pair => pair.Value, (pair, value) => new { pair.Key, value })

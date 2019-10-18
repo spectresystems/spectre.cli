@@ -17,7 +17,7 @@ namespace Spectre.Cli
         /// Initializes a new instance of the <see cref="CommandApp{TDefaultCommand}"/> class.
         /// </summary>
         /// <param name="registrar">The registrar.</param>
-        public CommandApp(ITypeRegistrar registrar = null)
+        public CommandApp(ITypeRegistrar? registrar = null)
         {
             _app = new CommandApp(registrar);
             _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();

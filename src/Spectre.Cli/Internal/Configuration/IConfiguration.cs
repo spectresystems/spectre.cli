@@ -6,7 +6,7 @@ namespace Spectre.Cli.Internal.Configuration
     {
         IList<ConfiguredCommand> Commands { get; }
         ConfigurationSettings Settings { get; }
-        ConfiguredCommand DefaultCommand { get; }
+        ConfiguredCommand? DefaultCommand { get; }
         IList<string[]> Examples { get; }
     }
 }

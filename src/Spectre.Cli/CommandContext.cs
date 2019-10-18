@@ -29,7 +29,7 @@ namespace Spectre.Cli
         /// <value>
         /// The command data.
         /// </value>
-        public object Data { get; }
+        public object? Data { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandContext"/> class.
@@ -37,7 +37,7 @@ namespace Spectre.Cli
         /// <param name="remaining">The remaining arguments.</param>
         /// <param name="name">The command name.</param>
         /// <param name="data">The command data.</param>
-        internal CommandContext(IRemainingArguments remaining, string name, object data)
+        internal CommandContext(IRemainingArguments remaining, string name, object? data)
         {
             Remaining = remaining;
             Name = name;

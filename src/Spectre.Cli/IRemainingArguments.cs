@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Spectre.Cli
@@ -11,7 +11,7 @@ namespace Spectre.Cli
         /// <summary>
         /// Gets the parsed remaining arguments.
         /// </summary>
-        ILookup<string, string> Parsed { get; }
+        ILookup<string, string?> Parsed { get; }
 
         /// <summary>
         /// Gets the raw, non-parsed remaining arguments.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli
 {
@@ -12,6 +12,6 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="type">The type to resolve.</param>
         /// <returns>An instance of the specified type.</returns>
-        object Resolve(Type type);
+        object? Resolve(Type? type);
     }
 }

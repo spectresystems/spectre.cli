@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 // ReSharper disable once CheckNamespace
 namespace Spectre.Cli
@@ -30,6 +30,6 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="value">The parameter value.</param>
         /// <returns>The validation result.</returns>
-        public abstract ValidationResult Validate(object value);
+        public abstract ValidationResult Validate(object? value);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Internal.Exceptions;
@@ -14,7 +14,7 @@ namespace Spectre.Cli.Internal.Parsing
 
         public CommandTreeToken this[int index] => _tokens[index];
 
-        public CommandTreeToken Current
+        public CommandTreeToken? Current
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Spectre.Cli.Internal.Parsing
             _position = 0;
         }
 
-        public CommandTreeToken Peek(int index = 0)
+        public CommandTreeToken? Peek(int index = 0)
         {
             var position = _position + index;
             if (position >= Count)
@@ -42,7 +42,7 @@ namespace Spectre.Cli.Internal.Parsing
             return _tokens[position];
         }
 
-        public CommandTreeToken Consume()
+        public CommandTreeToken? Consume()
         {
             if (_position >= Count)
             {
@@ -53,7 +53,7 @@ namespace Spectre.Cli.Internal.Parsing
             return token;
         }
 
-        public CommandTreeToken Consume(CommandTreeToken.Kind type)
+        public CommandTreeToken? Consume(CommandTreeToken.Kind type)
         {
             Expect(type);
             return Consume();

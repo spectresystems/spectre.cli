@@ -8,11 +8,11 @@ namespace Spectre.Cli.Internal
 {
     internal static class CommandBinder
     {
-        public static void Bind(CommandTree tree, ref CommandSettings settings, ITypeResolver resolver)
+        public static void Bind(CommandTree? tree, ref CommandSettings settings, ITypeResolver resolver)
         {
             ValidateRequiredParameters(tree);
 
-            TypeConverter GetConverter(CommandParameter parameter)
+            TypeConverter? GetConverter(CommandParameter parameter)
             {
                 if (parameter.Converter == null)
                 {
@@ -34,6 +34,11 @@ namespace Spectre.Cli.Internal
                 foreach (var mapped in tree.Mapped)
                 {
                     var converter = GetConverter(mapped.Parameter);
+                    if (converter == null)
+                    {
+                        throw RuntimeException.NoConverterFound(mapped.Parameter);
+                    }
+
                     mapped.Parameter.Assign(settings, converter.ConvertFromInvariantString(mapped.Value));
                     ValidateParameter(mapped.Parameter, settings);
                 }
@@ -44,7 +49,7 @@ namespace Spectre.Cli.Internal
                     // Is this an option with a default value?
                     if (parameter is CommandOption option && option.DefaultValue != null)
                     {
-                        parameter.Assign(settings, option.DefaultValue.Value);
+                        parameter.Assign(settings, option.DefaultValue?.Value);
                         ValidateParameter(parameter, settings);
                     }
                 }
@@ -60,9 +65,9 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        private static void ValidateRequiredParameters(CommandTree tree)
+        private static void ValidateRequiredParameters(CommandTree? tree)
         {
-            var node = tree.GetRootCommand();
+            var node = tree?.GetRootCommand();
             while (node != null)
             {
                 foreach (var parameter in node.Unmapped)

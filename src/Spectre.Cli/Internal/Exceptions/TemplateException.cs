@@ -1,4 +1,4 @@
-﻿using Spectre.Cli.Internal.Configuration;
+using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal.Exceptions
@@ -135,11 +135,18 @@ namespace Spectre.Cli.Internal.Exceptions
                 "Invalid character.");
         }
 
-        public static TemplateException MissingLongAndShortName(string template, TemplateToken token)
+        public static TemplateException MissingLongAndShortName(string template, TemplateToken? token)
         {
             return TemplateExceptionFactory.Create(template, token,
                 "No long or short name for option has been specified.",
                 "Missing option. Was this meant to be an argument?");
+        }
+
+        public static TemplateException ArgumentsMustHaveValueName(string template)
+        {
+            return TemplateExceptionFactory.Create(template, null,
+                "Arguments must have a value name.",
+                "Missing value name.");
         }
     }
 }

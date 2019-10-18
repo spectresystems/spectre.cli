@@ -6,9 +6,9 @@ namespace Spectre.Cli.Internal.Configuration
         where TSettings : CommandSettings
     {
         private readonly ConfiguredCommand _command;
-        private readonly ITypeRegistrar _registrar;
+        private readonly ITypeRegistrar? _registrar;
 
-        public Configurator(ConfiguredCommand command, ITypeRegistrar registrar)
+        public Configurator(ConfiguredCommand command, ITypeRegistrar? registrar)
         {
             _command = command;
             _registrar = registrar;
@@ -31,7 +31,7 @@ namespace Spectre.Cli.Internal.Configuration
             var configurator = new CommandConfigurator(command);
 
             _command.Children.Add(command);
-            _registrar.RegisterCommand(command);
+            _registrar?.RegisterCommand(command);
 
             return configurator;
         }

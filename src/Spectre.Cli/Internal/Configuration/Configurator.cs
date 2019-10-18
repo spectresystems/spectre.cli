@@ -5,14 +5,14 @@ namespace Spectre.Cli.Internal.Configuration
 {
     internal sealed class Configurator : IConfigurator, IConfiguration
     {
-        private readonly ITypeRegistrar _registrar;
+        private readonly ITypeRegistrar? _registrar;
 
         public IList<ConfiguredCommand> Commands { get; }
         public ConfigurationSettings Settings { get; }
-        public ConfiguredCommand DefaultCommand { get; private set; }
+        public ConfiguredCommand? DefaultCommand { get; private set; }
         public IList<string[]> Examples { get; }
 
-        public Configurator(ITypeRegistrar registrar)
+        public Configurator(ITypeRegistrar? registrar)
         {
             _registrar = registrar;
 
@@ -52,14 +52,14 @@ namespace Spectre.Cli.Internal.Configuration
             DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
                 Constants.DefaultCommandName, isDefaultCommand: true);
 
-            _registrar.RegisterCommand(DefaultCommand);
+            _registrar?.RegisterCommand(DefaultCommand);
         }
 
         public ICommandConfigurator AddCommand<TCommand>(string name)
             where TCommand : class, ICommand
         {
             var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
-            _registrar.RegisterCommand(command);
+            _registrar?.RegisterCommand(command);
             return new CommandConfigurator(command);
         }
 

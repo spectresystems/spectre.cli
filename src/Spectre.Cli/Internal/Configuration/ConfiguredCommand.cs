@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Cli.Internal.Exceptions;
 
 namespace Spectre.Cli.Internal.Configuration
 {
@@ -7,11 +8,11 @@ namespace Spectre.Cli.Internal.Configuration
     {
         public string Name { get; }
         public HashSet<string> Aliases { get; }
-        public string Description { get; set; }
-        public object Data { get; set; }
-        public Type CommandType { get; }
+        public string? Description { get; set; }
+        public object? Data { get; set; }
+        public Type? CommandType { get; }
         public Type SettingsType { get; }
-        public Func<CommandContext, CommandSettings, int> Delegate { get; }
+        public Func<CommandContext, CommandSettings, int>? Delegate { get; }
         public bool IsDefaultCommand { get; }
 
         public IList<ConfiguredCommand> Children { get; }
@@ -19,9 +20,9 @@ namespace Spectre.Cli.Internal.Configuration
 
         private ConfiguredCommand(
             string name,
-            Type commandType,
+            Type? commandType,
             Type settingsType,
-            Func<CommandContext, CommandSettings, int> @delegate,
+            Func<CommandContext, CommandSettings, int>? @delegate,
             bool isDefaultCommand)
         {
             Name = name;
@@ -45,11 +46,15 @@ namespace Spectre.Cli.Internal.Configuration
             where TCommand : class, ICommand
         {
             var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
+            if (settingsType == null)
+            {
+                throw RuntimeException.CouldNotGetSettingsType(typeof(TCommand));
+            }
             return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand);
         }
 
         public static ConfiguredCommand FromDelegate<TSettings>(
-            string name, Func<CommandContext, CommandSettings, int> @delegate = null)
+            string name, Func<CommandContext, CommandSettings, int>? @delegate = null)
                 where TSettings : CommandSettings
         {
             return new ConfiguredCommand(name, null, typeof(TSettings), @delegate, false);

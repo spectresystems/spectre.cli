@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli
 {
@@ -19,9 +19,9 @@ namespace Spectre.Cli
         /// Gets the validation message.
         /// </summary>
         /// <value>The validation message.</value>
-        public string Message { get; }
+        public string? Message { get; }
 
-        private ValidationResult(bool successful, string message)
+        private ValidationResult(bool successful, string? message)
         {
             Successful = successful;
             Message = message;

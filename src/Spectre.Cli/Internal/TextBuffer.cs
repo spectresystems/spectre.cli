@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace Spectre.Cli.Internal
@@ -18,7 +18,7 @@ namespace Spectre.Cli.Internal
             Position = 0;
         }
 
-        public TextBuffer(TextBuffer buffer, string text)
+        public TextBuffer(TextBuffer? buffer, string text)
         {
             _reader = new StringReader(text);
             Original = buffer != null ? buffer.Original + " " + text : text;

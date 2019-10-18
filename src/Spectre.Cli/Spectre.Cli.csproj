@@ -1,42 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Features>IOperation</Features>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
     <Description>An extremly opinionated command line parser.</Description>
     <Company>Spectre Systems AB</Company>
     <Copyright>Spectre Systems AB</Copyright>
     <Authors>Patrik Svensson</Authors>
-    <AssemblyVersion>0.0.10.0</AssemblyVersion>
-    <FileVersion>0.0.10.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/spectresystems/spectre.cli</PackageProjectUrl>
     <PackageIcon>small-logo.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>0.0.10</Version>
-    <Product>Spectre.Cli</Product>
+    <DocumentationFile>bin\Debug\netstandard2.0\Spectre.Cli.xml</DocumentationFile>
   </PropertyGroup>
 
+  <!-- NuGet icon -->
   <ItemGroup>
-    <None Remove="Spectre.Cli.net451.v3.ncrunchproject" />
-    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\"/>
+    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- C# 8.0 polyfill -->
+  <ItemGroup>
+    <PackageReference Include="Nullable" Version="1.1.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
+    <GenerateNullableAttributes>False</GenerateNullableAttributes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.77" PrivateAssets="all" />
+    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
   </ItemGroup>
 
   <!-- Static analysis -->
   <PropertyGroup>
+    <Features>IOperation</Features>
     <CodeAnalysisRuleSet>../Spectre.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DocumentationFile>bin\Debug\netstandard2.0\Spectre.Cli.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.66">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="1.9.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="2.1.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
