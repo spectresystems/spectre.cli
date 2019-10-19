@@ -335,6 +335,33 @@ namespace Spectre.Cli.Tests.Unit
             registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         }
 
+        [Theory]
+        [InlineData("true", true)]
+        [InlineData("True", true)]
+        [InlineData("false", false)]
+        [InlineData("False", false)]
+        public void Should_Accept_Explicit_Boolan_Flag(string value, bool expected)
+        {
+            // Given
+            var resolver = new FakeTypeResolver();
+            var settings = new DogSettings();
+            resolver.Register(settings);
+
+            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[] { "dog", "12", "4", "--alive", value });
+
+            // Then
+            result.ShouldBe(0);
+            settings.IsAlive.ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Register_Command_Settings_When_Configuring_Application()
         {
