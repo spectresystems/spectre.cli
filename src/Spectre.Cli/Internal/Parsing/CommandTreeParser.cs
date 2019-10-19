@@ -302,8 +302,11 @@ namespace Spectre.Cli.Internal.Parsing
                         {
                             if (parameter.ParameterKind == ParameterKind.Flag)
                             {
-                                // Flags cannot be assigned a value.
-                                throw ParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                if (!Constants.AcceptedBooleanValues.Contains(valueToken.Value, StringComparer.OrdinalIgnoreCase))
+                                {
+                                    // Flags cannot be assigned a value.
+                                    throw ParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                }
                             }
 
                             value = stream.Consume(CommandTreeToken.Kind.String).Value;
