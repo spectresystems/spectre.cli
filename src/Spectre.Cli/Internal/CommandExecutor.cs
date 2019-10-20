@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
@@ -12,6 +13,13 @@ namespace Spectre.Cli.Internal
     internal sealed class CommandExecutor
     {
         private readonly ITypeRegistrar? _registrar;
+
+        private enum Switch
+        {
+            None = 0,
+            Dump = 1,
+            Debug = 2,
+        }
 
         public CommandExecutor(ITypeRegistrar? registrar)
         {
@@ -25,18 +33,57 @@ namespace Spectre.Cli.Internal
                 throw new ArgumentNullException(nameof(configuration));
             }
 
+            // TODO: Hack
+            var @switch = Switch.None;
+            if (args.Count() > 0)
+            {
+                if (args.ElementAt(0).Equals("__xmldoc", StringComparison.OrdinalIgnoreCase))
+                {
+                    @switch = Switch.Dump;
+                    args = args.Skip(1);
+                }
+                else if (args.ElementAt(0).Equals("__debug", StringComparison.OrdinalIgnoreCase))
+                {
+                    @switch = Switch.Debug;
+                    args = args.Skip(1);
+                }
+            }
+
+            return Execute(configuration, args, @switch);
+        }
+
+        private Task<int> Execute(IConfiguration configuration, IEnumerable<string> args, Switch @switch)
+        {
             // Create the command model.
             var model = CommandModelBuilder.Build(configuration);
+
+            if (@switch == Switch.Dump)
+            {
+                var xml = CommandModelSerializer.Serialize(model);
+                var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
+                writer.Write(xml);
+                return Task.FromResult(0);
+            }
 
             // Parse and map the model against the arguments.
             var parser = new CommandTreeParser(model);
             var parsedResult = parser.Parse(args);
 
+            if (@switch == Switch.Debug)
+            {
+                var xml = CommandTreeSerializer.Serialize(parsedResult);
+                var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
+                writer.Write(xml);
+                return Task.FromResult(0);
+            }
+
             // Currently the root?
             if (parsedResult.Tree == null)
             {
                 // Display help.
-                ConsoleRenderer.Render(HelpWriter.Write(model));
+                ConsoleRenderer.Render(
+                    HelpWriter.Write(model),
+                    configuration.Settings.Console);
                 return Task.FromResult(0);
             }
 
@@ -45,7 +92,9 @@ namespace Spectre.Cli.Internal
             if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
                 // Branches can't be executed. Show help.
-                ConsoleRenderer.Render(HelpWriter.WriteCommand(model, leaf.Command));
+                ConsoleRenderer.Render(
+                    HelpWriter.WriteCommand(model, leaf.Command),
+                    configuration.Settings.Console);
                 return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 

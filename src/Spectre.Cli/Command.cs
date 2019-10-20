@@ -8,6 +8,13 @@ namespace Spectre.Cli
     public abstract class Command : ICommand<EmptyCommandSettings>
     {
         /// <summary>
+        /// The settings for the <see cref="Command"/> instance.
+        /// </summary>
+        public sealed class Settings : CommandSettings
+        {
+        }
+
+        /// <summary>
         /// Executes the command.
         /// </summary>
         /// <param name="context">The command context.</param>

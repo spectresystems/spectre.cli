@@ -1,98 +1,101 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <Features>IOperation</Features>
     <LangVersion>latest</LangVersion>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
-    <None Remove="Data\Resources\Help\Default_Examples_DefinedOnRoot" />
-    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
-    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
-    <None Remove="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
-    <None Remove="Data\Resources\Models\case5.xml" />
-    <None Remove="Data\Resources\Parsing\case5.xml" />
+    <None Remove="Properties\Resources\Help\Command_Examples_DefinedOnCommand" />
+    <None Remove="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
+    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
+    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnLeaves" />
+    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnRoot" />
+    <None Remove="Properties\Resources\Models\case5.xml" />
+    <None Remove="Properties\Resources\Parsing\case5.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\NoValueForOption_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\NoValueForOption_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameContainSymbol" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\InvalidShortOptionName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentBefore" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_NoArguments" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentAfter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Long" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Parsing\UnknownOption_Short" />
-    <EmbeddedResource Include="Data\Resources\Help\Command_Examples_DefinedOnCommand" />
-    <EmbeddedResource Include="Data\Resources\Help\Default" />
-    <EmbeddedResource Include="Data\Resources\Help\Default_Examples_DefinedOnRoot" />
-    <EmbeddedResource Include="Data\Resources\Help\Leaf" />
-    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnLeaves" />
-    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnRoot" />
-    <EmbeddedResource Include="Data\Resources\Help\Root" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\InvalidCharacterInValueName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionNamesCannotStartWithDigit" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\UnexpectedCharacter" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\UnterminatedValueName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\ValuesMustHaveName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\OptionsMustHaveName" />
-    <EmbeddedResource Include="Data\Resources\Exceptions\Template\MissingLongAndShortName" />
-    <EmbeddedResource Include="Data\Resources\Help\Command" />
-    <EmbeddedResource Include="Data\Resources\Help\Root_Examples_DefinedOnChildren" />
-    <EmbeddedResource Include="Data\Resources\Models\case1.xml" />
-    <EmbeddedResource Include="Data\Resources\Models\case2.xml" />
-    <EmbeddedResource Include="Data\Resources\Models\case3.xml" />
-    <EmbeddedResource Include="Data\Resources\Models\case5.xml" />
-    <EmbeddedResource Include="Data\Resources\Models\case4.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case5.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\default4.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\default3.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\default2.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\default1.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case1.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case2.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case3.xml" />
-    <EmbeddedResource Include="Data\Resources\Parsing\case4.xml" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\NoValueForOption_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\CouldNotMatchArgument" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\NoValueForOption_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\LongOptionNameStartWithDigit" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\LongOptionNameContainSymbol" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsMissing" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\OptionHasNoName_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\InvalidShortOptionName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\LongOptionNameIsOneCharacter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Equality_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\OptionValueWasExpected_Colon_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnexpectedOption_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentBefore" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_NoArguments" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownRootCommand_Suggestion_ArgumentAfter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentBefore" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_NoArguments" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownCommand_Suggestion_ArgumentAfter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownOption_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnexpectedOption_Short" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownCommand" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\CannotAssignValueToFlag_Long" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\Tokenization\UnterminatedQuote" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownCommand_NoArguments" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Parsing\UnknownOption_Short" />
+    <EmbeddedResource Include="Properties\Resources\Help\Command_Examples_DefinedOnCommand" />
+    <EmbeddedResource Include="Properties\Resources\Help\Default" />
+    <EmbeddedResource Include="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
+    <EmbeddedResource Include="Properties\Resources\Help\Leaf" />
+    <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnLeaves" />
+    <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnRoot" />
+    <EmbeddedResource Include="Properties\Resources\Help\Root" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\InvalidCharacterInOptionName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\InvalidCharacterInValueName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\OptionValueCannotBeOptional" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\LongOptionMustHaveMoreThanOneCharacter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\MultipleValuesAreNotSupported" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\MultipleOptionValuesAreNotSupported" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\ShortOptionMustOnlyBeOneCharacter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\OptionNamesCannotStartWithDigit" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\UnexpectedCharacter" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\UnterminatedValueName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\ArgumentCannotContainOptions" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\ValuesMustHaveName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\OptionsMustHaveName" />
+    <EmbeddedResource Include="Properties\Resources\Exceptions\Template\MissingLongAndShortName" />
+    <EmbeddedResource Include="Properties\Resources\Help\Command" />
+    <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
+    <EmbeddedResource Include="Properties\Resources\Models\case1.xml" />
+    <EmbeddedResource Include="Properties\Resources\Models\case2.xml" />
+    <EmbeddedResource Include="Properties\Resources\Models\case3.xml" />
+    <EmbeddedResource Include="Properties\Resources\Models\case5.xml" />
+    <EmbeddedResource Include="Properties\Resources\Models\case4.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\case5.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\default4.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\default3.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\default2.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\default1.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\case1.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\case2.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\case3.xml" />
+    <EmbeddedResource Include="Properties\Resources\Parsing\case4.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Shouldly" Version="3.0.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
@@ -104,19 +107,17 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.66">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="1.9.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="2.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
     <ProjectReference Include="..\Spectre.Cli\Spectre.Cli.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

@@ -8,37 +8,19 @@ namespace Spectre.Cli.Internal.Configuration
         private readonly ITypeRegistrar? _registrar;
 
         public IList<ConfiguredCommand> Commands { get; }
-        public ConfigurationSettings Settings { get; }
+        public CommandAppSettings Settings { get; }
         public ConfiguredCommand? DefaultCommand { get; private set; }
         public IList<string[]> Examples { get; }
+
+        ICommandAppSettings IConfigurator.Settings => Settings;
 
         public Configurator(ITypeRegistrar? registrar)
         {
             _registrar = registrar;
 
             Commands = new List<ConfiguredCommand>();
-            Settings = new ConfigurationSettings();
+            Settings = new CommandAppSettings();
             Examples = new List<string[]>();
-        }
-
-        public void SetApplicationName(string name)
-        {
-            Settings.ApplicationName = name;
-        }
-
-        public void UseStrictParsing()
-        {
-            Settings.ParsingMode = ParsingMode.Strict;
-        }
-
-        public void PropagateExceptions()
-        {
-            Settings.PropagateExceptions = true;
-        }
-
-        public void ValidateExamples()
-        {
-            Settings.ValidateExamples = true;
         }
 
         public void AddExample(string[] args)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal.Rendering
@@ -7,6 +7,7 @@ namespace Spectre.Cli.Internal.Rendering
     {
         private readonly Stack<ConsoleColor> _foreground;
         private readonly Stack<ConsoleColor> _background;
+        private readonly IConsoleWriter _console;
 
         private enum ConsoleColorType
         {
@@ -14,10 +15,11 @@ namespace Spectre.Cli.Internal.Rendering
             Background
         }
 
-        public ConsoleRenderer()
+        public ConsoleRenderer(IConsoleWriter? console)
         {
             _foreground = new Stack<ConsoleColor>();
             _background = new Stack<ConsoleColor>();
+            _console = console ?? new DefaultConsoleWriter();
         }
 
         private class Scope : IDisposable
@@ -43,9 +45,9 @@ namespace Spectre.Cli.Internal.Rendering
             }
         }
 
-        public static void Render(IRenderable renderable)
+        public static void Render(IRenderable renderable, IConsoleWriter? console)
         {
-            var renderer = new ConsoleRenderer();
+            var renderer = new ConsoleRenderer(console);
             renderable.Render(renderer);
         }
 
@@ -63,7 +65,7 @@ namespace Spectre.Cli.Internal.Rendering
 
         public void Append(string text)
         {
-            Console.Write(text);
+            _console.Write(text);
         }
 
         private void Push(ConsoleColorType type, ConsoleColor color)
@@ -71,12 +73,12 @@ namespace Spectre.Cli.Internal.Rendering
             if (type == ConsoleColorType.Foreground)
             {
                 _foreground.Push(Console.ForegroundColor);
-                Console.ForegroundColor = color;
+                _console.ForegroundColor = color;
             }
             else
             {
                 _background.Push(Console.BackgroundColor);
-                Console.BackgroundColor = color;
+                _console.BackgroundColor = color;
             }
         }
 
@@ -85,12 +87,12 @@ namespace Spectre.Cli.Internal.Rendering
             if (type == ConsoleColorType.Foreground)
             {
                 var color = _foreground.Pop();
-                Console.ForegroundColor = color;
+                _console.ForegroundColor = color;
             }
             else
             {
                 var color = _background.Pop();
-                Console.BackgroundColor = color;
+                _console.BackgroundColor = color;
             }
         }
     }

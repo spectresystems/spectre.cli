@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 
 namespace Spectre.Cli.Internal.Configuration
 {

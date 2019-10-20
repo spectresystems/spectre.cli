@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Parsing;
 using Spectre.Cli.Internal.Rendering;
 
