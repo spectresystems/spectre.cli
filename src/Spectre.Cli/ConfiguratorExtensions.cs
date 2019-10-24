@@ -39,7 +39,7 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator UseStrictParsing(this IConfigurator configurator)
         {
-            configurator.Settings.Strict = true;
+            configurator.Settings.StrictParsing = true;
             return configurator;
         }
 
@@ -64,6 +64,28 @@ namespace Spectre.Cli
         public static IConfigurator ValidateExamples(this IConfigurator configurator)
         {
             configurator.Settings.ValidateExamples = true;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Enables XML documentation for the command line application.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator EnableXmlDoc(this IConfigurator configurator)
+        {
+            configurator.Settings.XmlDocEnabled = true;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Enables debug mode for the command line application.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator EnableDebug(this IConfigurator configurator)
+        {
+            configurator.Settings.DebugEnabled = true;
             return configurator;
         }
 

@@ -18,7 +18,7 @@ namespace Spectre.Cli
         /// <summary>
         /// Gets or sets a value indicating whether or not parsing is strict.
         /// </summary>
-        bool Strict { get; set; }
+        bool StrictParsing { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not exceptions should be propagated.
@@ -29,5 +29,17 @@ namespace Spectre.Cli
         /// Gets or sets a value indicating whether or not examples should be validated.
         /// </summary>
         bool ValidateExamples { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not XML documentation can be exported.
+        /// This value can be overridden by setting the environment variable <c>SPECTRE_CLI_XMLDOC</c>.
+        /// </summary>
+        bool XmlDocEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not debug mode can be used.
+        /// This value can be overridden by setting the environment variable <c>SPECTRE_CLI_DEBUG</c>.
+        /// </summary>
+        bool DebugEnabled { get; set; }
     }
 }

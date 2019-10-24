@@ -21,6 +21,7 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
+                    config.EnableXmlDoc();
                     config.PropagateExceptions();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
@@ -50,6 +51,7 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
+                    config.EnableXmlDoc();
                     config.AddCommand<DogCommand>("dog");
                 });
 
@@ -71,6 +73,7 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
+                    config.EnableXmlDoc();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
@@ -96,6 +99,7 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
+                    config.EnableXmlDoc();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
@@ -120,6 +124,7 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
+                    config.EnableXmlDoc();
                     config.AddCommand<OptionVectorCommand>("cmd");
                 });
 
