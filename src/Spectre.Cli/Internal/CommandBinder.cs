@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Parsing;
 

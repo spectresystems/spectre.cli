@@ -1,4 +1,5 @@
 using System;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Rendering;
 

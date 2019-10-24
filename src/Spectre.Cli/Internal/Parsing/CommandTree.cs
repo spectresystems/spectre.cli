@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Modelling;
 
 namespace Spectre.Cli.Internal.Parsing

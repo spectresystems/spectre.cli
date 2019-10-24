@@ -12,7 +12,7 @@ namespace Spectre.Cli.Internal.Modelling
         public IList<string[]> Examples { get; }
 
         public CommandModel(
-            ConfigurationSettings settings,
+            CommandAppSettings settings,
             CommandInfo? defaultCommand,
             IEnumerable<CommandInfo> commands,
             IEnumerable<string[]> examples)

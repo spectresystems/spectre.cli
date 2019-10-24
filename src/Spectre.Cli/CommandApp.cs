@@ -80,7 +80,7 @@ namespace Spectre.Cli
                 var pretty = GetRenderableErrorMessage(ex);
                 if (pretty != null)
                 {
-                    ConsoleRenderer.Render(pretty);
+                    ConsoleRenderer.Render(pretty, _configurator.Settings.Console);
                 }
 
                 // Should we always propagate when debugging?

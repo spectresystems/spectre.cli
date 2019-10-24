@@ -9,6 +9,65 @@ namespace Spectre.Cli
     public static class ConfiguratorExtensions
     {
         /// <summary>
+        /// Sets the name of the application.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="name">The name of the application.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetApplicationName(this IConfigurator configurator, string name)
+        {
+            configurator.Settings.ApplicationName = name;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Sets the console writer.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="writer">A <see cref="IConsoleWriter"/> that represents the standard output stream.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetOut(this IConfigurator configurator, IConsoleWriter writer)
+        {
+            configurator.Settings.Console = writer;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Sets the parsing mode to strict.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator UseStrictParsing(this IConfigurator configurator)
+        {
+            configurator.Settings.Strict = true;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Tells the command line application to propagate all
+        /// exceptions to the user.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator PropagateExceptions(this IConfigurator configurator)
+        {
+            configurator.Settings.PropagateExceptions = true;
+            return configurator;
+        }
+
+        /// <summary>
+        /// Tells the command line application to validate all
+        /// examples before running the application.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator ValidateExamples(this IConfigurator configurator)
+        {
+            configurator.Settings.ValidateExamples = true;
+            return configurator;
+        }
+
+        /// <summary>
         /// Adds a command branch.
         /// </summary>
         /// <param name="configurator">The configurator.</param>
@@ -19,7 +78,7 @@ namespace Spectre.Cli
             string name,
             Action<IConfigurator<CommandSettings>> action)
         {
-            configurator.AddBranch<CommandSettings>(name, action);
+            configurator.AddBranch(name, action);
         }
 
         /// <summary>

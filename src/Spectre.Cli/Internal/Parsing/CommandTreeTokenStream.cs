@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 
 namespace Spectre.Cli.Internal.Parsing
 {

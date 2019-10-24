@@ -8,27 +8,9 @@ namespace Spectre.Cli
     public interface IConfigurator
     {
         /// <summary>
-        /// Sets the name of the application.
+        /// Gets the command app settings.
         /// </summary>
-        /// <param name="name">The name of the application.</param>
-        void SetApplicationName(string name);
-
-        /// <summary>
-        /// Sets the parsing mode to strict.
-        /// </summary>
-        void UseStrictParsing();
-
-        /// <summary>
-        /// Tells the command line application to propagate all
-        /// exceptions to the user.
-        /// </summary>
-        void PropagateExceptions();
-
-        /// <summary>
-        /// Tells the command line application to validate all
-        /// examples before running the application.
-        /// </summary>
-        void ValidateExamples();
+        public ICommandAppSettings Settings { get; }
 
         /// <summary>
         /// Adds an example of how to use the application.

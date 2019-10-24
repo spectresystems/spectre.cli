@@ -1,5 +1,5 @@
 using System;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 
 namespace Spectre.Cli.Internal
 {

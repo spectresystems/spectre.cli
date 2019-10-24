@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Cli.Internal.Exceptions;
+using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Parsing;
 
 namespace Spectre.Cli.Internal.Modelling
 {
     internal static class CommandModelValidator
     {
-        public static void Validate(CommandModel model, ConfigurationSettings settings)
+        public static void Validate(CommandModel model, CommandAppSettings settings)
         {
             if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
