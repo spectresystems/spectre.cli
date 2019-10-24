@@ -18,6 +18,8 @@ namespace Sample
             {
                 config.SetApplicationName("advanced");
                 config.ValidateExamples();
+                config.EnableXmlDoc();
+                config.EnableDebug();
 
                 // You can add the command directly.
                 config.AddCommand<BuildCommand>("build")

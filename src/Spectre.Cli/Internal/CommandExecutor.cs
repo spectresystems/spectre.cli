@@ -39,13 +39,28 @@ namespace Spectre.Cli.Internal
             {
                 if (args.ElementAt(0).Equals("__xmldoc", StringComparison.OrdinalIgnoreCase))
                 {
-                    @switch = Switch.Dump;
-                    args = args.Skip(1);
+                    if (configuration.Settings.IsTrue(c => c.XmlDocEnabled, "SPECTRE_CLI_XMLDOC"))
+                    {
+                        @switch = Switch.Dump;
+                        args = args.Skip(1);
+                    }
                 }
                 else if (args.ElementAt(0).Equals("__debug", StringComparison.OrdinalIgnoreCase))
                 {
-                    @switch = Switch.Debug;
-                    args = args.Skip(1);
+                    if (configuration.Settings.IsTrue(c => c.DebugEnabled, "SPECTRE_CLI_DEBUG"))
+                    {
+                        @switch = Switch.Debug;
+                        args = args.Skip(1);
+                    }
+                }
+                else if (args.ElementAt(0).Equals("__version", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Output the Spectre.Cli version.
+                    var version = typeof(CommandExecutor)?.Assembly?.GetName()?.Version?.ToString();
+                    version = version ?? "?";
+                    var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
+                    writer.Write($"Spectre.Cli version {version}");
+                    return Task.FromResult(0);
                 }
             }
 
