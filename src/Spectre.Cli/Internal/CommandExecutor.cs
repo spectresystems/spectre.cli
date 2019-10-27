@@ -17,7 +17,7 @@ namespace Spectre.Cli.Internal
         private enum Switch
         {
             None = 0,
-            Dump = 1,
+            XmlDocs = 1,
             Debug = 2,
         }
 
@@ -41,7 +41,7 @@ namespace Spectre.Cli.Internal
                 {
                     if (configuration.Settings.IsTrue(c => c.XmlDocEnabled, "SPECTRE_CLI_XMLDOC"))
                     {
-                        @switch = Switch.Dump;
+                        @switch = Switch.XmlDocs;
                         args = args.Skip(1);
                     }
                 }
@@ -72,7 +72,8 @@ namespace Spectre.Cli.Internal
             // Create the command model.
             var model = CommandModelBuilder.Build(configuration);
 
-            if (@switch == Switch.Dump)
+            // Show XML docs?
+            if (@switch == Switch.XmlDocs)
             {
                 var xml = CommandModelSerializer.Serialize(model);
                 var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
@@ -84,6 +85,7 @@ namespace Spectre.Cli.Internal
             var parser = new CommandTreeParser(model);
             var parsedResult = parser.Parse(args);
 
+            // Debugging?
             if (@switch == Switch.Debug)
             {
                 var xml = CommandTreeSerializer.Serialize(parsedResult);
