@@ -100,7 +100,7 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 try
                 {
-                    var parser = new CommandTreeParser(model);
+                    var parser = new CommandTreeParser(model, ParsingMode.Strict);
                     parser.Parse(example);
                 }
                 catch (Exception ex)

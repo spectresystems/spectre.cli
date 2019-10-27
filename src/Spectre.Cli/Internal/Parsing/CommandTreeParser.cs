@@ -9,6 +9,7 @@ namespace Spectre.Cli.Internal.Parsing
     internal class CommandTreeParser
     {
         private readonly CommandModel _configuration;
+        private readonly ParsingMode _parsingMode;
         private readonly CommandOptionAttribute _help;
 
         public enum State
@@ -30,15 +31,16 @@ namespace Spectre.Cli.Internal.Parsing
             }
         }
 
-        public CommandTreeParser(CommandModel configuration)
+        public CommandTreeParser(CommandModel configuration, ParsingMode? parsingMode = null)
         {
             _configuration = configuration;
+            _parsingMode = parsingMode ?? _configuration.ParsingMode;
             _help = new CommandOptionAttribute("-h|--help");
         }
 
         public CommandTreeParserResult Parse(IEnumerable<string> args)
         {
-            var context = new CommandTreeParserContext(args, _configuration.ParsingMode);
+            var context = new CommandTreeParserContext(args, _parsingMode);
 
             var tokenizerResult = CommandTreeTokenizer.Tokenize(context.Arguments);
             var tokens = tokenizerResult.Tokens;
