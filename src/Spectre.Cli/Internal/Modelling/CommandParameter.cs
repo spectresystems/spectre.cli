@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Spectre.Cli.Internal.Modelling
@@ -27,6 +28,11 @@ namespace Spectre.Cli.Internal.Modelling
             Converter = converter;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;
+        }
+
+        public bool IsFlagValue()
+        {
+            return ParameterType.GetInterfaces().Any(i => i == typeof(IFlagValue));
         }
 
         public bool HaveSameBackingPropertyAs(CommandParameter other)
@@ -60,6 +66,30 @@ namespace Spectre.Cli.Internal.Modelling
 
                 newArray.SetValue(value, newArray.Length - 1);
                 value = newArray;
+            }
+
+            if (IsFlagValue())
+            {
+                var flagValue = (IFlagValue?)Property.GetValue(settings);
+                if (flagValue == null)
+                {
+                    flagValue = (IFlagValue?)Activator.CreateInstance(ParameterType);
+                    if (flagValue == null)
+                    {
+                        throw new InvalidOperationException("Could not create flag value.");
+                    }
+                }
+
+                if (value != null)
+                {
+                    // Null means set, but not with a valid value.
+                    flagValue.Value = value;
+                }
+
+                // If the parameter was mapped, then it's set.
+                flagValue.IsSet = true;
+
+                value = flagValue;
             }
 
             Property.SetValue(settings, value);

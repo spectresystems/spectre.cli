@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Sample.Validation;
 using Spectre.Cli;
 
@@ -18,6 +18,10 @@ namespace Sample.Commands
         [CommandOption("--force-restore")]
         [Description("Forces a restore during build.")]
         public bool ForceRestore { get; set; }
+
+        [CommandOption("--serve [PORT]")]
+        [DefaultValue(8080)]
+        public FlagValue<int> Serve { get; set; }
 
         // For validating arguments together.
         public override ValidationResult Validate()

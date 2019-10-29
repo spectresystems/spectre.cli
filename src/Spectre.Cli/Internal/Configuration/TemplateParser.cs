@@ -22,6 +22,7 @@ namespace Spectre.Cli.Internal.Configuration
             public List<string> LongNames { get; set; }
             public List<string> ShortNames { get; set; }
             public string? Value { get; set; }
+            public bool ValueIsOptional { get; set; }
 
             public OptionResult()
             {
@@ -70,6 +71,7 @@ namespace Spectre.Cli.Internal.Configuration
         public static OptionResult ParseOptionTemplate(string template)
         {
             var result = new OptionResult();
+
             foreach (var token in TemplateTokenizer.Tokenize(template))
             {
                 if (token.TokenKind == TemplateToken.Kind.LongName || token.TokenKind == TemplateToken.Kind.ShortName)
@@ -117,10 +119,6 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         throw TemplateException.MultipleOptionValuesAreNotSupported(template, token);
                     }
-                    if (token.TokenKind == TemplateToken.Kind.OptionalValue)
-                    {
-                        throw TemplateException.OptionValueCannotBeOptional(template, token);
-                    }
 
                     foreach (var character in token.Value)
                     {
@@ -131,6 +129,7 @@ namespace Spectre.Cli.Internal.Configuration
                     }
 
                     result.Value = token.Value;
+                    result.ValueIsOptional = token.TokenKind == TemplateToken.Kind.OptionalValue;
                 }
             }
 

@@ -133,7 +133,6 @@ namespace Spectre.Cli.Internal.Modelling
                                 // Do we allow it to exist on this command as well?
                                 if (command.AllowParentOption(option))
                                 {
-                                    option.Required = false;
                                     option.IsShadowed = true;
                                     parameters.Add(option);
                                 }
@@ -185,7 +184,7 @@ namespace Spectre.Cli.Internal.Modelling
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
-            var kind = GetParameterKind(property.PropertyType);
+            var kind = GetOptionKind(property.PropertyType, attribute);
 
             if (defaultValue == null && property.PropertyType == typeof(bool))
             {
@@ -194,7 +193,7 @@ namespace Spectre.Cli.Internal.Modelling
 
             return new CommandOption(property.PropertyType, kind,
                 property, description?.Description, converter,
-                attribute, validators, defaultValue);
+                attribute, validators, defaultValue, attribute.ValueIsOptional);
         }
 
         private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
@@ -207,6 +206,15 @@ namespace Spectre.Cli.Internal.Modelling
 
             return new CommandArgument(property.PropertyType, kind,
                 property, description?.Description, converter, attribute, validators);
+        }
+
+        private static ParameterKind GetOptionKind(Type type, CommandOptionAttribute attribute)
+        {
+            if (attribute.ValueIsOptional)
+            {
+                return ParameterKind.FlagWithValue;
+            }
+            return GetParameterKind(type);
         }
 
         private static ParameterKind GetParameterKind(Type type)

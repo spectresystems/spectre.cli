@@ -6,9 +6,11 @@ namespace Spectre.Cli.Internal.Modelling
     {
         [Description("flag")]
         Flag = 0,
+        [Description("flagvalue")]
+        FlagWithValue = 1,
         [Description("scalar")]
-        Scalar = 1,
+        Scalar = 2,
         [Description("vector")]
-        Vector = 2
+        Vector = 3
     }
 }

@@ -8,18 +8,6 @@ namespace Spectre.Cli.Tests.Annotations
     public sealed partial class CommandOptionAttributeTests
     {
         [Fact]
-        public void Should_Throw_If_Value_Name_Is_Marked_As_Optional()
-        {
-            // Given, When
-            var result = Record.Exception(() => new CommandOptionAttribute("-o|--option [VALUE]"));
-
-            // Then
-            result.ShouldNotBe(null);
-            result.ShouldBeOfType<TemplateException>().And(exception =>
-                exception.Message.ShouldBe("Option values cannot be optional."));
-        }
-
-        [Fact]
         public void Should_Parse_Short_Name_Correctly()
         {
             // Given, When
