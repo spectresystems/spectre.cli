@@ -41,10 +41,10 @@ namespace Spectre.Cli.Internal.Modelling
         private static void Validate(CommandInfo command)
         {
             // Get duplicate options for command.
-            var options = GetDuplicates(command);
-            if (options.Length > 0)
+            var duplicateOptions = GetDuplicates(command);
+            if (duplicateOptions.Length > 0)
             {
-                throw ConfigurationException.DuplicateOption(command, options);
+                throw ConfigurationException.DuplicateOption(command, duplicateOptions);
             }
 
             // No children?
@@ -67,6 +67,16 @@ namespace Spectre.Cli.Internal.Modelling
                 if (arguments.Last().ParameterKind != ParameterKind.Vector)
                 {
                     throw ConfigurationException.VectorArgumentNotSpecifiedLast(command);
+                }
+            }
+
+            // Optional options that are not flags?
+            var options = command.Parameters.OfType<CommandOption>();
+            foreach (var option in options)
+            {
+                if (option.ParameterKind == ParameterKind.FlagWithValue && !option.IsFlagValue())
+                {
+                    throw ConfigurationException.OptionalOptionValueMustBeFlagWithValue(command, option);
                 }
             }
 

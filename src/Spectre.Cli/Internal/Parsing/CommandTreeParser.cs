@@ -369,14 +369,19 @@ namespace Spectre.Cli.Internal.Parsing
                     }
                     else
                     {
-                        switch (parameter)
+                        if (parameter is CommandOption option)
                         {
-                            case CommandOption option:
-                                throw ParseException.OptionHasNoValue(context.Arguments, token, option);
-                            default:
-                                // This should not happen at all. If it does, it's because we've added a new
-                                // option type which isn't a CommandOption for some reason.
-                                throw new InvalidOperationException($"Found invalid parameter type '{parameter.GetType().FullName}'.");
+                            if (parameter.IsFlagValue())
+                            {
+                                return null;
+                            }
+                            throw ParseException.OptionHasNoValue(context.Arguments, token, option);
+                        }
+                        else
+                        {
+                            // This should not happen at all. If it does, it's because we've added a new
+                            // option type which isn't a CommandOption for some reason.
+                            throw new InvalidOperationException($"Found invalid parameter type '{parameter.GetType().FullName}'.");
                         }
                     }
                 }

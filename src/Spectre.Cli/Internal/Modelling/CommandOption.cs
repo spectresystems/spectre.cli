@@ -11,18 +11,20 @@ namespace Spectre.Cli.Internal.Modelling
         public IReadOnlyList<string> ShortNames { get; }
         public string? ValueName { get; }
         public DefaultValueAttribute? DefaultValue { get; }
+        public bool ValueIsOptional { get; }
         public bool IsShadowed { get; set; }
 
         public CommandOption(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
             TypeConverterAttribute? converter, CommandOptionAttribute optionAttribute,
-            IEnumerable<ParameterValidationAttribute> validators, DefaultValueAttribute? defaultValue)
+            IEnumerable<ParameterValidationAttribute> validators, DefaultValueAttribute? defaultValue, bool valueIsOptional)
                 : base(parameterType, parameterKind, property, description, converter, validators, false)
         {
             LongNames = optionAttribute.LongNames;
             ShortNames = optionAttribute.ShortNames;
             ValueName = optionAttribute.ValueName;
             DefaultValue = defaultValue;
+            ValueIsOptional = valueIsOptional;
         }
 
         public string GetOptionName()

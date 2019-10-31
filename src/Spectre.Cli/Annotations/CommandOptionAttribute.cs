@@ -32,6 +32,11 @@ namespace Spectre.Cli
         public string? ValueName { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the value is optional.
+        /// </summary>
+        public bool ValueIsOptional { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.
         /// </summary>
         /// <param name="template">The option template.</param>
@@ -49,6 +54,7 @@ namespace Spectre.Cli
             LongNames = result.LongNames;
             ShortNames = result.ShortNames;
             ValueName = result.Value;
+            ValueIsOptional = result.ValueIsOptional;
         }
 
         internal bool IsMatch(string name)

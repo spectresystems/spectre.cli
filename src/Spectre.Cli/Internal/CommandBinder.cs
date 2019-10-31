@@ -12,7 +12,7 @@ namespace Spectre.Cli.Internal
         {
             ValidateRequiredParameters(tree);
 
-            TypeConverter? GetConverter(CommandParameter parameter)
+            TypeConverter? GetConverter(CommandSettings settings, CommandParameter parameter)
             {
                 if (parameter.Converter == null)
                 {
@@ -22,36 +22,84 @@ namespace Spectre.Cli.Internal
                         return TypeDescriptor.GetConverter(parameter.ParameterType.GetElementType());
                     }
 
+                    if (parameter.IsFlagValue())
+                    {
+                        // Is the optional value instanciated?
+                        var value = parameter.Property.GetValue(settings) as IFlagValue;
+                        if (value == null)
+                        {
+                            // Try to assign it with a null value.
+                            // This will create the optional value instance without a value.
+                            parameter.Assign(settings, null);
+                            value = parameter.Property.GetValue(settings) as IFlagValue;
+                            if (value == null)
+                            {
+                                throw new InvalidOperationException("Could not intialize optional value.");
+                            }
+                        }
+
+                        // Return a converter for the flag element type.
+                        return TypeDescriptor.GetConverter(value.Type);
+                    }
+
                     return TypeDescriptor.GetConverter(parameter.ParameterType);
                 }
+
                 var type = Type.GetType(parameter.Converter.ConverterTypeName);
                 return resolver.Resolve(type) as TypeConverter;
             }
 
             while (tree != null)
             {
+                // Process unmapped parameters.
+                foreach (var parameter in tree.Unmapped)
+                {
+                    if (parameter.IsFlagValue())
+                    {
+                        // Set the flag value to an empty, not set instance.
+                        var instance = Activator.CreateInstance(parameter.ParameterType);
+                        parameter.Property.SetValue(settings, instance);
+                    }
+                    else
+                    {
+                        // Is this an option with a default value?
+                        if (parameter is CommandOption option && option.DefaultValue != null)
+                        {
+                            parameter.Assign(settings, option.DefaultValue?.Value);
+                            ValidateParameter(parameter, settings);
+                        }
+                    }
+                }
+
                 // Process mapped parameters.
                 foreach (var mapped in tree.Mapped)
                 {
-                    var converter = GetConverter(mapped.Parameter);
+                    var converter = GetConverter(settings, mapped.Parameter);
                     if (converter == null)
                     {
                         throw RuntimeException.NoConverterFound(mapped.Parameter);
                     }
 
-                    mapped.Parameter.Assign(settings, converter.ConvertFromInvariantString(mapped.Value));
-                    ValidateParameter(mapped.Parameter, settings);
-                }
-
-                // Process unmapped parameters.
-                foreach (var parameter in tree.Unmapped)
-                {
-                    // Is this an option with a default value?
-                    if (parameter is CommandOption option && option.DefaultValue != null)
+                    if (mapped.Parameter.IsFlagValue() && mapped.Value == null)
                     {
-                        parameter.Assign(settings, option.DefaultValue?.Value);
-                        ValidateParameter(parameter, settings);
+                        if (mapped.Parameter is CommandOption option && option.DefaultValue != null)
+                        {
+                            // Set the default value.
+                            mapped.Parameter.Assign(settings, option.DefaultValue?.Value);
+                        }
+                        else
+                        {
+                            // Set the flag but not the value.
+                            mapped.Parameter.Assign(settings, null);
+                        }
                     }
+                    else
+                    {
+                        // Assign the value to the parameter.
+                        mapped.Parameter.Assign(settings, converter.ConvertFromInvariantString(mapped.Value));
+                    }
+
+                    ValidateParameter(mapped.Parameter, settings);
                 }
 
                 tree = tree.Next;

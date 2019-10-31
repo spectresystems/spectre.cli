@@ -124,13 +124,6 @@ namespace Spectre.Cli.Exceptions
                 "Too many option values.");
         }
 
-        internal static TemplateException OptionValueCannotBeOptional(string template, TemplateToken token)
-        {
-            return TemplateExceptionFactory.Create(template, token,
-                "Option values cannot be optional.",
-                "Must be required.");
-        }
-
         internal static TemplateException InvalidCharacterInValueName(string template, TemplateToken token, char character)
         {
             // Rewrite the token to point to the invalid character instead of the whole value.

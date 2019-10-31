@@ -178,27 +178,6 @@ namespace Spectre.Cli.Tests.Annotations
             }
         }
 
-        public sealed class TheOptionValueCannotBeOptionalMethod
-        {
-            public sealed class Settings : CommandSettings
-            {
-                [CommandOption("-f|--foo [FOO]")]
-                public string Foo { get; set; }
-            }
-
-            [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/OptionValueCannotBeOptional")]
-            public void Should_Return_Correct_Text(string expected)
-            {
-                // Given, When
-                var (message, result) = Fixture.Run<Settings>();
-
-                // Then
-                message.ShouldBe("Option values cannot be optional.");
-                result.ShouldBe(expected);
-            }
-        }
-
         public sealed class TheInvalidCharacterInValueNameMethod
         {
             public sealed class Settings : CommandSettings

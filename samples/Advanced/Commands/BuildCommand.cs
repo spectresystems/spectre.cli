@@ -35,18 +35,24 @@ namespace Sample.Commands
                 // Pretend we're restoring packages.
                 Console.WriteLine("Restoring packages...");
             }
-            
+
             // Get the project name.
             var project = settings.Project;
             if (string.IsNullOrWhiteSpace(project))
             {
                 project = "random.csproj";
             }
-            
+
             // Pretend we're building.
             Console.WriteLine($"Building {project}...");
             await Task.Delay(1000);
             Console.WriteLine("Build completed!");
+
+            // Serve?
+            if (settings.Serve.IsSet)
+            {
+                Console.WriteLine($"Serving content on https://localhost:{settings.Serve.Value}...");
+            }
 
             // Return success.
             return 0;
