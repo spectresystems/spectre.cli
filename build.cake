@@ -1,5 +1,4 @@
 #load nuget:?package=Spectre.Build&version=0.6.1
-#tool "nuget:https://api.nuget.org/v3/index.json?package=gitreleasemanager&version=0.7.1"
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -19,34 +18,6 @@ Task("Pack-NuGet")
             .WithProperty("AssemblyVersion", data.Version.MajorMinorPatchRevision)
             .WithProperty("FileVersion", data.Version.MajorMinorPatchRevision)
             .WithProperty("PackageVersion", data.Version.SemanticVersion)
-    });
-});
-
-///////////////////////////////////////////////////////////////////////////////
-// UTILITIES
-///////////////////////////////////////////////////////////////////////////////
-
-Task("Create-Release")
-    .WithCriteria<SpectreData>((context, data) => data.CI.IsLocal, "Not running locally")
-    .Does<SpectreData>((context, data) =>
-{
-    var username = context.Argument<string>("github-username", null);
-    var password = context.Argument<string>("github-password", null);
-
-    if (string.IsNullOrWhiteSpace(username) ||
-        string.IsNullOrWhiteSpace(password))
-    {
-        throw new InvalidOperationException("No GitHub credentials has been provided.");
-    }
-
-    context.GitReleaseManagerCreate(
-        username,
-        password,
-        "spectresystems", "spectre.cli", 
-        new GitReleaseManagerCreateSettings {
-            Milestone = $"v{data.Version.MajorMinorPatch}",
-            Name = $"v{data.Version.MajorMinorPatch}",
-            TargetCommitish = "master"
     });
 });
 
