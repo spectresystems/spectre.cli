@@ -1,11 +1,13 @@
 # Build script
-image: Visual Studio 2017
+image: Visual Studio 2019
 init:
   - git config --global core.autocrlf true
 
 # Build script
 build_script:
-  - ps: .\build.ps1 --target="BuildServer"
+  - ps: |
+      dotnet tool restore
+      dotnet cake --target="BuildServer"
 
 # Tests
 test: off
