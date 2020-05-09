@@ -12,12 +12,15 @@
     <PackageProjectUrl>https://github.com/spectresystems/spectre.cli</PackageProjectUrl>
     <PackageIcon>small-logo.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <DocumentationFile>bin\Debug\netstandard2.0\Spectre.Cli.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
-  <!-- NuGet icon -->
   <ItemGroup>
-    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" />
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <!-- C# 8.0 polyfill -->
@@ -36,17 +39,16 @@
     <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
   </ItemGroup>
 
-  <!-- Static analysis -->
-  <PropertyGroup>
-    <Features>IOperation</Features>
-    <CodeAnalysisRuleSet>../Spectre.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+  <!-- Static Analysis -->
   <ItemGroup>
-    <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.66">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.1.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>

@@ -12,6 +12,7 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 result = root.Commands.FirstOrDefault(c => c.Aliases.Contains(name, StringComparer.OrdinalIgnoreCase));
             }
+
             return result;
         }
     }

@@ -21,6 +21,7 @@ namespace Spectre.Cli.Internal.Rendering.Elements
                 _elements.Add(element);
                 Length += element.Length;
             }
+
             return this;
         }
 

@@ -14,6 +14,7 @@ namespace Spectre.Cli.Testing.Data.Settings
             {
                 return ValidationResult.Error("Tiger is not a dog name!");
             }
+
             return ValidationResult.Success();
         }
     }

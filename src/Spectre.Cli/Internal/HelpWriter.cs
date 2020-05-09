@@ -175,6 +175,7 @@ namespace Spectre.Cli.Internal
                         {
                             examples.AddRange(cmd.Examples);
                         }
+
                         queue.Enqueue(cmd);
                     }
 
@@ -224,7 +225,8 @@ namespace Spectre.Cli.Internal
                 composer.Tab();
 
                 // Argument name.
-                composer.Condition(argument.Required,
+                composer.Condition(
+                    argument.Required,
                     @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{argument.Name}>")),
                     @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{argument.Name}]")));
 
@@ -243,7 +245,7 @@ namespace Spectre.Cli.Internal
             // Collect all options into a single structure.
             var parameters = new List<HelpOption>
             {
-                new HelpOption("h", "help", null, "Prints help information")
+                new HelpOption("h", "help", null, "Prints help information"),
             };
 
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
@@ -309,9 +311,11 @@ namespace Spectre.Cli.Internal
                         {
                             element.Append(new RepeatingElement(neededSpaces, new TextElement(" ")));
                         }
+
                         element.Append(new TabElement());
                         element.Append(new TextElement(description.TrimEnd('.').Trim()));
                     }
+
                     element.Append(new LineBreakElement());
                 }
 

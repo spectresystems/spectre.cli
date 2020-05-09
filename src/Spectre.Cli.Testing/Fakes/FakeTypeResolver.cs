@@ -23,6 +23,7 @@ namespace Spectre.Cli.Testing.Fakes
             {
                 return value;
             }
+
             return Activator.CreateInstance(type);
         }
     }

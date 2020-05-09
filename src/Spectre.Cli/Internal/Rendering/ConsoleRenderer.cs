@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Spectre.Cli.Internal.Rendering
 {
@@ -12,7 +13,7 @@ namespace Spectre.Cli.Internal.Rendering
         private enum ConsoleColorType
         {
             Foreground,
-            Background
+            Background,
         }
 
         public ConsoleRenderer(IConsoleWriter? console)
@@ -33,6 +34,8 @@ namespace Spectre.Cli.Internal.Rendering
                 _type = type;
             }
 
+            [SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations", Justification = "Trust me")]
+            [SuppressMessage("Performance", "CA1821:Remove empty Finalizers", Justification = "Trust me")]
             ~Scope()
             {
                 throw new InvalidOperationException("Dispose was never called on console renderer scope.");

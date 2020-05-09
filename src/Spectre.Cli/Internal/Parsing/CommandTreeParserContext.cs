@@ -40,6 +40,7 @@ namespace Spectre.Cli.Internal.Parsing
                 {
                     _remaining.Add(key, new List<string?>());
                 }
+
                 _remaining[key].Add(value);
             }
         }

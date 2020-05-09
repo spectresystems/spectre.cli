@@ -8,6 +8,16 @@ namespace Spectre.Cli.Testing.Data.Commands
     {
         protected void DumpSettings(CommandContext context, TSettings settings)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             var properties = settings.GetType().GetProperties();
             foreach (var group in properties.GroupBy(x => x.DeclaringType).Reverse())
             {

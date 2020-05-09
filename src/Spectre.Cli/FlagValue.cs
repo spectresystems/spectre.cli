@@ -20,8 +20,10 @@ namespace Spectre.Cli
         public T Value { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+        /// <inheritdoc/>
         Type IFlagValue.Type => typeof(T);
 
+        /// <inheritdoc/>
         object? IFlagValue.Value
         {
             get => Value;

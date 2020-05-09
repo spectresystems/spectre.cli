@@ -1,3 +1,4 @@
+using System.Globalization;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Rendering;
@@ -24,7 +25,8 @@ namespace Spectre.Cli.Exceptions
 
         internal static TemplateException UnexpectedCharacter(string template, int position, char character)
         {
-            return TemplateExceptionFactory.Create(template,
+            return TemplateExceptionFactory.Create(
+                template,
                 new TemplateToken(TemplateToken.Kind.Unknown, position, $"{character}", $"{character}"),
                 $"Encountered unexpected character '{character}'.",
                 "Unexpected character.");
@@ -68,7 +70,8 @@ namespace Spectre.Cli.Exceptions
         internal static TemplateException OptionNamesCannotStartWithDigit(string template, TemplateToken token)
         {
             // Rewrite the token to point to the option name instead of the whole string.
-            token = new TemplateToken(token.TokenKind,
+            token = new TemplateToken(
+                token.TokenKind,
                 token.TokenKind == TemplateToken.Kind.ShortName ? token.Position + 1 : token.Position + 2,
                 token.Value, token.Value);
 
@@ -80,10 +83,10 @@ namespace Spectre.Cli.Exceptions
         internal static TemplateException InvalidCharacterInOptionName(string template, TemplateToken token, char character)
         {
             // Rewrite the token to point to the invalid character instead of the whole value.
-            token = new TemplateToken(token.TokenKind,
-                (token.TokenKind == TemplateToken.Kind.ShortName ? token.Position + 1 : token.Position + 2)
-                    + token.Value.IndexOf(character),
-                token.Value, character.ToString());
+            token = new TemplateToken(
+                token.TokenKind,
+                (token.TokenKind == TemplateToken.Kind.ShortName ? token.Position + 1 : token.Position + 2) + token.Value.IndexOf(character),
+                token.Value, character.ToString(CultureInfo.InvariantCulture));
 
             return TemplateExceptionFactory.Create(template, token,
                 $"Encountered invalid character '{character}' in option name.",
@@ -127,9 +130,10 @@ namespace Spectre.Cli.Exceptions
         internal static TemplateException InvalidCharacterInValueName(string template, TemplateToken token, char character)
         {
             // Rewrite the token to point to the invalid character instead of the whole value.
-            token = new TemplateToken(token.TokenKind,
+            token = new TemplateToken(
+                token.TokenKind,
                 token.Position + 1 + token.Value.IndexOf(character),
-                token.Value, character.ToString());
+                token.Value, character.ToString(CultureInfo.InvariantCulture));
 
             return TemplateExceptionFactory.Create(template, token,
                 $"Encountered invalid character '{character}' in value name.",

@@ -15,7 +15,7 @@ namespace Spectre.Cli.Internal
                 Indent = true,
                 IndentChars = "  ",
                 NewLineChars = "\n",
-                OmitXmlDeclaration = false
+                OmitXmlDeclaration = false,
             };
 
             using (var buffer = new StringWriter())
@@ -36,6 +36,7 @@ namespace Spectre.Cli.Internal
                 root.AppendChild(document.CreateComment(tree.Command.Name.ToUpperInvariant()));
                 root.AppendChild(Serialize(document, tree));
             }
+
             document.AppendChild(root);
             return document;
         }
@@ -56,6 +57,7 @@ namespace Spectre.Cli.Internal
                 {
                     parameterRootNode.AppendChild(parameter);
                 }
+
                 node.AppendChild(parameterRootNode);
             }
 
@@ -67,6 +69,7 @@ namespace Spectre.Cli.Internal
                 {
                     parameterRootNode.AppendChild(parameter);
                 }
+
                 node.AppendChild(parameterRootNode);
             }
 

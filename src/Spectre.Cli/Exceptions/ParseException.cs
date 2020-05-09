@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Spectre.Cli.Internal;
 using Spectre.Cli.Internal.Exceptions;
 using Spectre.Cli.Internal.Modelling;
@@ -29,6 +30,7 @@ namespace Spectre.Cli.Exceptions
             {
                 return new ParseException($"Could not create command. Command type is unknown.");
             }
+
             return new ParseException($"Could not create command of type '{commandType.FullName}'.");
         }
 
@@ -93,7 +95,7 @@ namespace Spectre.Cli.Exceptions
 
         internal static ParseException LongOptionNameContainSymbol(TextBuffer reader, int position, char character)
         {
-            var name = character.ToString();
+            var name = character.ToString(CultureInfo.InvariantCulture);
             var token = new CommandTreeToken(CommandTreeToken.Kind.LongOption, position, name, name);
             return ParseExceptionFactory.Create(reader.Original, token, "Invalid long option name.", "Invalid character.");
         }

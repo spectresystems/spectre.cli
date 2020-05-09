@@ -10,6 +10,7 @@ namespace Spectre.Cli.Testing
                 value = value.Replace("\r", string.Empty);
                 return value.Replace("\n", "\r\n");
             }
+
             return string.Empty;
         }
     }

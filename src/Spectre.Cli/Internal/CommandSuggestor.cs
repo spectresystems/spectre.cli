@@ -41,8 +41,8 @@ namespace Spectre.Cli.Internal
 
         private static float Score(string source, string target)
         {
-            source = source.ToLowerInvariant();
-            target = target.ToLowerInvariant();
+            source = source.ToUpperInvariant();
+            target = target.ToUpperInvariant();
 
             var n = source.Length;
             var m = target.Length;
@@ -51,6 +51,7 @@ namespace Spectre.Cli.Internal
             {
                 return m;
             }
+
             if (m == 0)
             {
                 return n;

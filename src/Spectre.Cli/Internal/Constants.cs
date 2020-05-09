@@ -12,7 +12,8 @@ namespace Spectre.Cli.Internal
 
         public static string[] AcceptedBooleanValues { get; } = new string[]
         {
-            True, False
+            True,
+            False,
         };
     }
 }

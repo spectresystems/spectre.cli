@@ -11,10 +11,12 @@ namespace Spectre.Cli.Internal
             {
                 throw new ArgumentNullException(nameof(command));
             }
+
             if (command.CommandType == null)
             {
                 throw new ArgumentException("Command type cannot be null.", nameof(command));
             }
+
             if (command.SettingsType == null)
             {
                 throw new ArgumentException("Command setting type cannot be null.", nameof(command));

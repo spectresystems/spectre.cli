@@ -28,6 +28,7 @@ namespace Spectre.Cli.Exceptions
             {
                 return new RuntimeException(message, ex);
             }
+
             return new RuntimeException(message);
         }
 
@@ -37,6 +38,7 @@ namespace Spectre.Cli.Exceptions
             {
                 return new RuntimeException($"Missing required argument '{argument.Value}'.");
             }
+
             return new RuntimeException($"Command '{node.Command.Name}' is missing required argument '{argument.Value}'.");
         }
 

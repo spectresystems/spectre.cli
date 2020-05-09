@@ -22,6 +22,7 @@ namespace Spectre.Cli.Internal.Parsing
                 {
                     return null;
                 }
+
                 return _tokens[_position];
             }
         }
@@ -39,6 +40,7 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 return null;
             }
+
             return _tokens[position];
         }
 
@@ -48,6 +50,7 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 return null;
             }
+
             var token = _tokens[_position];
             _position++;
             return token;

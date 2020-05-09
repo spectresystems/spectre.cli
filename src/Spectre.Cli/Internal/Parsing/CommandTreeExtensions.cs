@@ -12,6 +12,7 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 node = node.Parent;
             }
+
             return node;
         }
 
@@ -21,6 +22,7 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 node = node.Next;
             }
+
             return node;
         }
 
@@ -62,6 +64,7 @@ namespace Spectre.Cli.Internal.Parsing
 
                 node = node.Parent;
             }
+
             return false;
         }
     }

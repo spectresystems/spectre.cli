@@ -15,7 +15,7 @@ namespace Spectre.Cli.Internal.Parsing
         public enum State
         {
             Normal = 0,
-            Remaining = 1
+            Remaining = 1,
         }
 
         // // Consider removing this in favor for value tuples at some point.
@@ -205,6 +205,7 @@ namespace Spectre.Cli.Internal.Parsing
                 {
                     node.Next = ParseCommand(context, node.Command, node, stream);
                 }
+
                 return;
             }
 
@@ -375,6 +376,7 @@ namespace Spectre.Cli.Internal.Parsing
                             {
                                 return null;
                             }
+
                             throw ParseException.OptionHasNoValue(context.Arguments, token, option);
                         }
                         else

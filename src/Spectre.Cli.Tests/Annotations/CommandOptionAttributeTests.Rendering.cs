@@ -222,7 +222,7 @@ namespace Spectre.Cli.Tests.Annotations
 
         private static class Fixture
         {
-            public static (string message, string output) Run<TSettings>(params string[] args)
+            public static (string Message, string Output) Run<TSettings>(params string[] args)
                 where TSettings : CommandSettings
             {
                 var app = new CommandApp();

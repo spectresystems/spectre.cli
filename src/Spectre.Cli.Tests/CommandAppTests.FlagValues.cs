@@ -81,7 +81,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "foo", "--serve", "123"
+                    "foo", "--serve", "123",
                 });
 
                 // Then
@@ -108,7 +108,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "foo", "--serve"
+                    "foo", "--serve",
                 });
 
                 // Then
@@ -135,7 +135,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "foo", "--serve"
+                    "foo", "--serve",
                 });
 
                 // Then
@@ -162,7 +162,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "foo"
+                    "foo",
                 });
 
                 // Then
@@ -189,7 +189,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "foo"
+                    "foo",
                 });
 
                 // Then

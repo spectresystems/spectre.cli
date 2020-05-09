@@ -11,7 +11,7 @@ namespace Spectre.Cli.Internal.Parsing
         public enum Mode
         {
             Normal = 0,
-            Remaining = 1
+            Remaining = 1,
         }
 
         // Consider removing this in favor for value tuples at some point.
@@ -45,6 +45,8 @@ namespace Spectre.Cli.Internal.Parsing
 
                 previousReader = reader;
             }
+
+            previousReader?.Dispose();
 
             return new CommandTreeTokenizerResult(
                 new CommandTreeTokenStream(tokens),
@@ -168,6 +170,7 @@ namespace Spectre.Cli.Internal.Parsing
                     {
                         result.Add(option);
                     }
+
                     break;
                 default:
                     result.AddRange(ScanShortOptions(context, reader, position));
@@ -226,7 +229,8 @@ namespace Spectre.Cli.Internal.Parsing
                 {
                     // Create a token representing the short option.
                     var tokenPosition = position + 1 + result.Count;
-                    var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, current.ToString(), current.ToString());
+                    var represntation = current.ToString(CultureInfo.InvariantCulture);
+                    var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, represntation, represntation);
                     throw ParseException.InvalidShortOptionName(reader.Original, token);
                 }
             }
@@ -261,14 +265,17 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 throw ParseException.LongOptionNameIsMissing(reader, position);
             }
+
             if (name.Value.Length == 1)
             {
                 throw ParseException.LongOptionNameIsOneCharacter(reader, position, name.Value);
             }
+
             if (char.IsDigit(name.Value[0]))
             {
                 throw ParseException.LongOptionNameStartWithDigit(reader, position, name.Value);
             }
+
             for (var index = 0; index < name.Value.Length; index++)
             {
                 if (!char.IsLetterOrDigit(name.Value[index]) && name.Value[index] != '-' && name.Value[index] != '_')

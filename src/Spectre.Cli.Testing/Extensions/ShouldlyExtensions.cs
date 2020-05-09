@@ -8,28 +8,43 @@ namespace Spectre.Cli.Testing
     public static class ShouldlyExtensions
     {
         [DebuggerStepThrough]
-        public static T And<T>(this T obj, Action<T> action)
+        public static T And<T>(this T item, Action<T> action)
         {
-            action(obj);
-            return obj;
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            action(item);
+            return item;
         }
 
         [DebuggerStepThrough]
-        public static void As<T>(this T obj, Action<T> action)
+        public static void As<T>(this T item, Action<T> action)
         {
-            action(obj);
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            action(item);
         }
 
         [DebuggerStepThrough]
-        public static void As<T>(this object obj, Action<T> action)
+        public static void As<T>(this object item, Action<T> action)
         {
-            action((T)obj);
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            action((T)item);
         }
 
         [DebuggerStepThrough]
-        public static void ShouldBe<T>(this Type obj)
+        public static void ShouldBe<T>(this Type item)
         {
-            obj.ShouldBe(typeof(T));
+            item.ShouldBe(typeof(T));
         }
     }
 }

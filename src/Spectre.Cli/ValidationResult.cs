@@ -47,6 +47,7 @@ namespace Spectre.Cli
             {
                 throw new ArgumentNullException(nameof(message));
             }
+
             return new ValidationResult(false, message);
         }
     }

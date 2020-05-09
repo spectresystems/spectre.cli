@@ -16,7 +16,7 @@ namespace Spectre.Cli.Internal.Modelling
                 Indent = true,
                 IndentChars = "  ",
                 NewLineChars = "\n",
-                OmitXmlDeclaration = false
+                OmitXmlDeclaration = false,
             };
 
             using (var buffer = new StringWriter())
@@ -37,6 +37,7 @@ namespace Spectre.Cli.Internal.Modelling
                 root.AppendChild(document.CreateComment(command.Name.ToUpperInvariant()));
                 root.AppendChild(CreateCommandNode(document, command));
             }
+
             document.AppendChild(root);
             return document;
         }
@@ -52,6 +53,7 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 node.SetNullableAttribute("type", command.CommandType?.FullName);
             }
+
             node.SetNullableAttribute("settings", command.SettingsType?.FullName);
 
             // Parameters
@@ -62,6 +64,7 @@ namespace Spectre.Cli.Internal.Modelling
                 {
                     parameterRootNode.AppendChild(parameter);
                 }
+
                 node.AppendChild(parameterRootNode);
             }
 
@@ -104,6 +107,7 @@ namespace Spectre.Cli.Internal.Modelling
                         validatorNode.SetNullableAttribute("message", validator.ErrorMessage);
                         validatorRootNode.AppendChild(validatorNode);
                     }
+
                     node.AppendChild(validatorRootNode);
                 }
 

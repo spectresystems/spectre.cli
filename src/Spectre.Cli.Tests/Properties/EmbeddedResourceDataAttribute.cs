@@ -27,19 +27,28 @@ namespace Spectre.Cli.Tests
             {
                 result[index + 1] = _args[index];
             }
+
             return new[] { result };
         }
 
         public static string ReadManifestData(string resourceName)
         {
+            if (resourceName == null)
+            {
+                throw new ArgumentNullException(nameof(resourceName));
+            }
+
             var assembly = typeof(EmbeddedResourceDataAttribute).Assembly;
+#pragma warning disable CA1307 // Specify StringComparison
             resourceName = resourceName.Replace("/", ".");
+#pragma warning restore CA1307 // Specify StringComparison
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
                 {
                     throw new InvalidOperationException("Could not load manifest resource stream.");
                 }
+
                 using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd().NormalizeLineEndings();

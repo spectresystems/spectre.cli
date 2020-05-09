@@ -51,6 +51,7 @@ namespace Spectre.Cli.Internal.Configuration
             {
                 throw RuntimeException.CouldNotGetSettingsType(typeof(TCommand));
             }
+
             return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand);
         }
 

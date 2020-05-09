@@ -28,6 +28,7 @@ namespace Spectre.Cli.Internal
                     {
                         throw RuntimeException.CouldNotResolveType(type);
                     }
+
                     return obj;
                 }
 

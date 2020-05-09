@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Spectre.Cli.Testing.Data.Validators
 {
@@ -18,8 +18,10 @@ namespace Spectre.Cli.Testing.Data.Validators
                 {
                     return ValidationResult.Success();
                 }
+
                 return ValidationResult.Error("Number is not greater than 0.");
             }
+
             throw new InvalidOperationException("Parameter is not a number.");
         }
     }

@@ -37,7 +37,7 @@ namespace Spectre.Cli.Tests
             var result = app.Run(new[]
             {
                 "animal", "--alive", "mammal", "--name",
-                "Rufus", "dog", "12", "--good-boy"
+                "Rufus", "dog", "12", "--good-boy",
             });
 
             // Then
@@ -584,7 +584,7 @@ namespace Spectre.Cli.Tests
                 // When
                 var result = app.Run(new[]
                 {
-                    "multi", "a", "b", "c"
+                    "multi", "a", "b", "c",
                 });
 
                 // Then
@@ -614,7 +614,7 @@ namespace Spectre.Cli.Tests
                 var result = app.Run(new[]
                 {
                     "cmd", "--foo", "red",
-                    "--bar", "4", "--foo", "blue"
+                    "--bar", "4", "--foo", "blue",
                 });
 
                 // Then

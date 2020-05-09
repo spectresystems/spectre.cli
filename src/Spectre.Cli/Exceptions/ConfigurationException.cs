@@ -58,7 +58,7 @@ namespace Spectre.Cli.Exceptions
             throw new ConfigurationException($"The command '{command.Name}' specifies an argument vector that is not the last argument.");
         }
 
-        internal static ConfigurationException OptionalOptionValueMustBeFlagWithValue(CommandInfo command, CommandOption option)
+        internal static ConfigurationException OptionalOptionValueMustBeFlagWithValue(CommandOption option)
         {
             return new ConfigurationException($"The option '{option.GetOptionName()}' has an optional value but does not implement IOptionalValue.");
         }

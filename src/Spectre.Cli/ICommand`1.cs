@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Spectre.Cli
 {
@@ -14,7 +14,7 @@ namespace Spectre.Cli
         /// </summary>
         /// <param name="context">The command context.</param>
         /// <param name="settings">The settings.</param>
-        /// <returns>The validation result.</returns>
+        /// <returns>An integer indicating whether or not the command executed successfully.</returns>
         Task<int> Execute(CommandContext context, TSettings settings);
     }
 }

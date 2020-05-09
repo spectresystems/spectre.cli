@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Shouldly;
 
@@ -7,6 +8,16 @@ namespace Spectre.Cli.Testing
     {
         public static void ShouldHaveRemainingArgument(this CommandContext context, string name, string[] values)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
             context.Remaining.Parsed.Contains(name).ShouldBeTrue();
             context.Remaining.Parsed[name].Count().ShouldBe(values.Length);
 

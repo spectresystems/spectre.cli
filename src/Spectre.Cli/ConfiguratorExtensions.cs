@@ -16,6 +16,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator SetApplicationName(this IConfigurator configurator, string name)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.ApplicationName = name;
             return configurator;
         }
@@ -28,6 +33,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator SetOut(this IConfigurator configurator, IConsoleWriter writer)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.Console = writer;
             return configurator;
         }
@@ -39,6 +49,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator UseStrictParsing(this IConfigurator configurator)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.StrictParsing = true;
             return configurator;
         }
@@ -51,6 +66,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator PropagateExceptions(this IConfigurator configurator)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.PropagateExceptions = true;
             return configurator;
         }
@@ -63,6 +83,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator ValidateExamples(this IConfigurator configurator)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.ValidateExamples = true;
             return configurator;
         }
@@ -74,6 +99,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator EnableXmlDoc(this IConfigurator configurator)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.XmlDocEnabled = true;
             return configurator;
         }
@@ -85,6 +115,11 @@ namespace Spectre.Cli
         /// <returns>A configurator that can be used to configure the application further.</returns>
         public static IConfigurator EnableDebug(this IConfigurator configurator)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.Settings.DebugEnabled = true;
             return configurator;
         }
@@ -100,6 +135,11 @@ namespace Spectre.Cli
             string name,
             Action<IConfigurator<CommandSettings>> action)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.AddBranch(name, action);
         }
 
@@ -116,6 +156,11 @@ namespace Spectre.Cli
             Action<IConfigurator<TSettings>> action)
                 where TSettings : CommandSettings
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.AddBranch(name, action);
         }
 
@@ -131,6 +176,11 @@ namespace Spectre.Cli
             string name,
             Func<CommandContext, int> func)
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
             return configurator;
         }
@@ -149,6 +199,11 @@ namespace Spectre.Cli
             Func<CommandContext, int> func)
                 where TSettings : CommandSettings
         {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
             configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
             return configurator;
         }

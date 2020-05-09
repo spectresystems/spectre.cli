@@ -76,7 +76,7 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 if (option.ParameterKind == ParameterKind.FlagWithValue && !option.IsFlagValue())
                 {
-                    throw ConfigurationException.OptionalOptionValueMustBeFlagWithValue(command, option);
+                    throw ConfigurationException.OptionalOptionValueMustBeFlagWithValue(option);
                 }
             }
 
@@ -134,6 +134,7 @@ namespace Spectre.Cli.Internal.Modelling
                         {
                             result.Add(key, 0);
                         }
+
                         result[key]++;
                     }
                 }

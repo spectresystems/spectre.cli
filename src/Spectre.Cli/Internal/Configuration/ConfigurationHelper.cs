@@ -13,6 +13,7 @@ namespace Spectre.Cli.Internal.Configuration
             {
                 return result[0];
             }
+
             return null;
         }
 
@@ -27,9 +28,11 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         continue;
                     }
+
                     genericTypeArguments = @interface.GenericTypeArguments;
                     return true;
                 }
+
                 type = type.GetTypeInfo().BaseType;
             }
 

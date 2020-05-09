@@ -16,8 +16,10 @@ namespace Spectre.Cli.Internal.Modelling
                         return true;
                     }
                 }
+
                 parent = parent.Parent;
             }
+
             return false;
         }
 
@@ -51,6 +53,7 @@ namespace Spectre.Cli.Internal.Modelling
                     }
                 }
             }
+
             return false;
         }
 
@@ -66,8 +69,10 @@ namespace Spectre.Cli.Internal.Modelling
                         return true;
                     }
                 }
+
                 parent = parent.Parent;
             }
+
             return false;
         }
     }

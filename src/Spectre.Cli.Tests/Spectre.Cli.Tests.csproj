@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
-    <Features>IOperation</Features>
     <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
@@ -101,23 +101,22 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <!-- Static analysis -->
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>../Spectre.Test.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+  <!-- Static Analysis -->
   <ItemGroup>
-    <AdditionalFiles Include="../stylecop.json" Link="Properties\stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.66">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
+      <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
-    <ProjectReference Include="..\Spectre.Cli\Spectre.Cli.csproj" />
   </ItemGroup>
+
 
 </Project>

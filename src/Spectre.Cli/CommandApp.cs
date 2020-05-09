@@ -33,6 +33,11 @@ namespace Spectre.Cli
         /// <param name="configuration">The configuration.</param>
         public void Configure(Action<IConfigurator> configuration)
         {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             configuration(_configurator);
         }
 
@@ -40,7 +45,8 @@ namespace Spectre.Cli
         /// Sets the default command.
         /// </summary>
         /// <typeparam name="TCommand">The command type.</typeparam>
-        public void SetDefaultCommand<TCommand>() where TCommand : class, ICommand
+        public void SetDefaultCommand<TCommand>()
+            where TCommand : class, ICommand
         {
             GetConfigurator().SetDefaultCommand<TCommand>();
         }
@@ -125,6 +131,7 @@ namespace Spectre.Cli
                         {
                             converted.Append(new LineBreakElement());
                         }
+
                         converted.Append(innerRenderable);
                     }
                 }

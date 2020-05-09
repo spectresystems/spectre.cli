@@ -50,6 +50,7 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         throw TemplateException.MultipleValuesAreNotSupported(template, token);
                     }
+
                     if (string.IsNullOrWhiteSpace(token.Value))
                     {
                         throw TemplateException.ValuesMustHaveName(template, token);
@@ -80,6 +81,7 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         throw TemplateException.OptionsMustHaveName(template, token);
                     }
+
                     if (char.IsDigit(token.Value[0]))
                     {
                         throw TemplateException.OptionNamesCannotStartWithDigit(template, token);
@@ -100,6 +102,7 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         throw TemplateException.LongOptionMustHaveMoreThanOneCharacter(template, token);
                     }
+
                     result.LongNames.Add(token.Value);
                 }
 
@@ -109,6 +112,7 @@ namespace Spectre.Cli.Internal.Configuration
                     {
                         throw TemplateException.ShortOptionMustOnlyBeOneCharacter(template, token);
                     }
+
                     result.ShortNames.Add(token.Value);
                 }
 

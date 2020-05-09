@@ -11,6 +11,6 @@ namespace Spectre.Cli.Internal.Modelling
         [Description("scalar")]
         Scalar = 2,
         [Description("vector")]
-        Vector = 3
+        Vector = 3,
     }
 }

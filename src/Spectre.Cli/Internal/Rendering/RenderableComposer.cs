@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Spectre.Cli.Internal.Rendering.Elements;
 
@@ -28,10 +29,12 @@ namespace Spectre.Cli.Internal.Rendering
             {
                 Root.Append(new TextElement(text));
             }
+
             return this;
         }
 
-        public RenderableComposer Condition(bool condition,
+        public RenderableComposer Condition(
+            bool condition,
             Action<RenderableComposer> @true,
             Action<RenderableComposer> @false)
         {
@@ -75,7 +78,7 @@ namespace Spectre.Cli.Internal.Rendering
 
         public RenderableComposer Repeat(char character, int count)
         {
-            Root.Append(new RepeatingElement(count, new TextElement(character.ToString())));
+            Root.Append(new RepeatingElement(count, new TextElement(character.ToString(CultureInfo.InvariantCulture))));
             return this;
         }
 
@@ -106,6 +109,7 @@ namespace Spectre.Cli.Internal.Rendering
                     Root.Append(new TextElement(separator));
                 }
             }
+
             return this;
         }
 

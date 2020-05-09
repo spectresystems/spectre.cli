@@ -129,6 +129,7 @@ namespace Spectre.Cli.Internal
                         }
                     }
                 }
+
                 node = node.Next;
             }
         }

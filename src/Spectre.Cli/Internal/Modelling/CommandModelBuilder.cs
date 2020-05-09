@@ -106,6 +106,7 @@ namespace Spectre.Cli.Internal.Modelling
                             level--;
                             break;
                         }
+
                         currentCommand = currentCommand.Parent;
                     }
 
@@ -204,8 +205,9 @@ namespace Spectre.Cli.Internal.Modelling
 
             var kind = GetParameterKind(property.PropertyType);
 
-            return new CommandArgument(property.PropertyType, kind,
-                property, description?.Description, converter, attribute, validators);
+            return new CommandArgument(
+                property.PropertyType, kind, property,
+                description?.Description, converter, attribute, validators);
         }
 
         private static ParameterKind GetOptionKind(Type type, CommandOptionAttribute attribute)
@@ -214,6 +216,7 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 return ParameterKind.FlagWithValue;
             }
+
             return GetParameterKind(type);
         }
 
@@ -223,10 +226,12 @@ namespace Spectre.Cli.Internal.Modelling
             {
                 return ParameterKind.Flag;
             }
+
             if (type.IsArray)
             {
                 return ParameterKind.Vector;
             }
+
             return ParameterKind.Scalar;
         }
     }

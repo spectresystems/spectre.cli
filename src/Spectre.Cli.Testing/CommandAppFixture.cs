@@ -19,7 +19,7 @@ namespace Spectre.Cli.Testing
             _configuration = action;
         }
 
-        public (int exitCode, string output) Run(params string[] args)
+        public (int ExitCode, string Output) Run(params string[] args)
         {
             var writer = new FakeConsoleWriter();
 

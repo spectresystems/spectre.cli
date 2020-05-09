@@ -13,11 +13,13 @@ namespace Spectre.Cli.Internal.Rendering
                 {
                     return true;
                 }
+
                 if (renderable is BlockElement block)
                 {
                     return block.Elements.FirstOrDefault()?.StartsWithLineBreak() ?? false;
                 }
             }
+
             return false;
         }
     }

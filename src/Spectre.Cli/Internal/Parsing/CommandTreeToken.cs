@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal.Parsing
 {
     internal sealed class CommandTreeToken
     {
@@ -13,7 +13,7 @@
             String,
             LongOption,
             ShortOption,
-            Remaining
+            Remaining,
         }
 
         public CommandTreeToken(Kind kind, int position, string value, string representation)

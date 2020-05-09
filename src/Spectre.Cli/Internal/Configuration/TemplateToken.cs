@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal.Configuration
 {
     internal sealed class TemplateToken
     {
@@ -21,7 +21,7 @@
             LongName,
             ShortName,
             RequiredValue,
-            OptionalValue
+            OptionalValue,
         }
     }
 }

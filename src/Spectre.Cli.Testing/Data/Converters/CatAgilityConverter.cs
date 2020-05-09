@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace Spectre.Cli.Testing.Data.Converters
@@ -11,6 +11,7 @@ namespace Spectre.Cli.Testing.Data.Converters
             {
                 return stringValue.Length;
             }
+
             return base.ConvertFrom(context, culture, value);
         }
     }

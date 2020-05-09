@@ -35,7 +35,7 @@ namespace Spectre.Cli.Internal
 
             // TODO: Hack
             var @switch = Switch.None;
-            if (args.Count() > 0)
+            if (args.Any())
             {
                 if (args.ElementAt(0).Equals("__xmldoc", StringComparison.OrdinalIgnoreCase))
                 {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal.Modelling
 {
@@ -14,10 +14,12 @@ namespace Spectre.Cli.Internal.Modelling
                 {
                     return false;
                 }
+
                 if (ReferenceEquals(x, y))
                 {
                     return true;
                 }
+
                 return x.Property.MetadataToken == y.Property.MetadataToken;
             }
 

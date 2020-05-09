@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Spectre.Cli.Internal
 {
-    internal sealed class TextBuffer
+    internal sealed class TextBuffer : IDisposable
     {
         private readonly StringReader _reader;
 
@@ -16,6 +16,11 @@ namespace Spectre.Cli.Internal
             _reader = new StringReader(text);
             Original = text;
             Position = 0;
+        }
+
+        public void Dispose()
+        {
+            _reader?.Dispose();
         }
 
         public TextBuffer(TextBuffer? buffer, string text)
@@ -38,6 +43,7 @@ namespace Spectre.Cli.Internal
                 character = '\0';
                 return false;
             }
+
             character = (char)value;
             return true;
         }
@@ -57,6 +63,7 @@ namespace Spectre.Cli.Internal
             {
                 return result == character;
             }
+
             return false;
         }
 

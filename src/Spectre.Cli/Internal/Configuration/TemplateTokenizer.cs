@@ -8,8 +8,9 @@ namespace Spectre.Cli.Internal.Configuration
     {
         public static IReadOnlyList<TemplateToken> Tokenize(string template)
         {
-            var tokens = new List<TemplateToken>();
-            var buffer = new TextBuffer(template);
+            using var buffer = new TextBuffer(template);
+            var result = new List<TemplateToken>();
+
             while (!buffer.ReachedEnd)
             {
                 EatWhitespace(buffer);
@@ -21,7 +22,7 @@ namespace Spectre.Cli.Internal.Configuration
 
                 if (character == '-')
                 {
-                    tokens.Add(ReadOption(buffer));
+                    result.Add(ReadOption(buffer));
                 }
                 else if (character == '|')
                 {
@@ -29,18 +30,19 @@ namespace Spectre.Cli.Internal.Configuration
                 }
                 else if (character == '<')
                 {
-                    tokens.Add(ReadValue(buffer, true));
+                    result.Add(ReadValue(buffer, true));
                 }
                 else if (character == '[')
                 {
-                    tokens.Add(ReadValue(buffer, false));
+                    result.Add(ReadValue(buffer, false));
                 }
                 else
                 {
                     throw TemplateException.UnexpectedCharacter(buffer.Original, buffer.Position, character);
                 }
             }
-            return tokens;
+
+            return result;
         }
 
         private static void EatWhitespace(TextBuffer buffer)
@@ -52,6 +54,7 @@ namespace Spectre.Cli.Internal.Configuration
                 {
                     break;
                 }
+
                 buffer.Read();
             }
         }
@@ -67,6 +70,7 @@ namespace Spectre.Cli.Internal.Configuration
                 var longValue = ReadOptionName(buffer);
                 return new TemplateToken(TemplateToken.Kind.LongName, position, longValue, $"--{longValue}");
             }
+
             var shortValue = ReadOptionName(buffer);
             return new TemplateToken(TemplateToken.Kind.ShortName, position, shortValue, $"-{shortValue}");
         }
@@ -81,8 +85,10 @@ namespace Spectre.Cli.Internal.Configuration
                 {
                     break;
                 }
+
                 builder.Append(buffer.Read());
             }
+
             return builder.ToString();
         }
 

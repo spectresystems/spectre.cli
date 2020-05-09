@@ -20,6 +20,7 @@ namespace Spectre.Cli.Internal
             {
                 element.SetAttribute(name, "NULL");
             }
+
             element.SetAttribute(name, string.Join(",", values ?? Enumerable.Empty<string>()));
         }
 
@@ -38,6 +39,7 @@ namespace Spectre.Cli.Internal
                 {
                     throw new InvalidOperationException("Enum is missing description.");
                 }
+
                 element.SetAttribute(name, attribute.Description);
             }
         }

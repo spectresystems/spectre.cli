@@ -28,7 +28,7 @@ namespace Spectre.Cli.Tests
                 var result = app.Run(new[]
                 {
                      "cat", "--name", "Tiger",
-                     "--agility", "FOOBAR"
+                     "--agility", "FOOBAR",
                 });
 
                 // Then
