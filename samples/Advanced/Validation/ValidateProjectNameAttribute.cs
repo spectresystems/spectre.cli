@@ -1,4 +1,4 @@
-﻿using Spectre.Cli;
+using Spectre.Cli;
 
 namespace Sample.Validation
 {
@@ -9,16 +9,16 @@ namespace Sample.Validation
         {
         }
 
-        public override ValidationResult Validate(object value)
+        public override ValidationResult Validate(object value, CommandParameterInfo parameterInfo)
         {
             if (!(value is string project))
             {
-                return ValidationResult.Error("Package must be a string.");
+                return ValidationResult.Error($"Package must be a string ({parameterInfo?.PropertyName}).");
             }
 
             if (!project.EndsWith(".csproj"))
             {
-                return ValidationResult.Error("Provided project is not a csproj file.");
+                return ValidationResult.Error($"Provided project is not a csproj file ({parameterInfo?.PropertyName}).");
             }
 
             return ValidationResult.Success();

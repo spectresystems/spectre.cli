@@ -6,15 +6,16 @@ using System.Reflection;
 
 namespace Spectre.Cli.Internal.Modelling
 {
-    internal abstract class CommandParameter
+    internal abstract class CommandParameter : CommandParameterInfo
     {
         public Type ParameterType { get; }
         public ParameterKind ParameterKind { get; }
         public PropertyInfo Property { get; }
-        public string? Description { get; }
+        public override string? Description { get; }
         public TypeConverterAttribute? Converter { get; }
         public List<ParameterValidationAttribute> Validators { get; }
         public bool Required { get; set; }
+        public override string PropertyName => Property.Name;
 
         protected CommandParameter(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property,
