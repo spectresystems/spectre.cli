@@ -10,7 +10,7 @@ namespace Spectre.Cli.Testing.Data.Validators
         {
         }
 
-        public override ValidationResult Validate(object value)
+        public override ValidationResult Validate(object value, string propertyName)
         {
             if (value is int integer)
             {
@@ -19,10 +19,10 @@ namespace Spectre.Cli.Testing.Data.Validators
                     return ValidationResult.Success();
                 }
 
-                return ValidationResult.Error("Number is not greater than 0.");
+                return ValidationResult.Error($"Number is not greater than 0 ({propertyName}).");
             }
 
-            throw new InvalidOperationException("Parameter is not a number.");
+            throw new InvalidOperationException($"Parameter is not a number ({propertyName}).");
         }
     }
 }
