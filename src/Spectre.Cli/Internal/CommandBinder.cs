@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Cli.Exceptions;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Parsing;
@@ -8,6 +9,7 @@ namespace Spectre.Cli.Internal
 {
     internal static class CommandBinder
     {
+        [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
         public static void Bind(CommandTree? tree, ref CommandSettings settings, ITypeResolver resolver)
         {
             ValidateRequiredParameters(tree);

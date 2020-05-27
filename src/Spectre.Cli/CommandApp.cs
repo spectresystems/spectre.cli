@@ -74,14 +74,8 @@ namespace Spectre.Cli
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!_configurator.Settings.PropagateExceptions)
             {
-                // Should we propagate exceptions?
-                if (_configurator.Settings.PropagateExceptions)
-                {
-                    throw;
-                }
-
                 // Render the exception.
                 var pretty = GetRenderableErrorMessage(ex);
                 if (pretty != null)

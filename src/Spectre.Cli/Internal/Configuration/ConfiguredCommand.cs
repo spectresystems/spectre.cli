@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Exceptions;
 
 namespace Spectre.Cli.Internal.Configuration
 {
@@ -35,6 +34,11 @@ namespace Spectre.Cli.Internal.Configuration
 
             Children = new List<ConfiguredCommand>();
             Examples = new List<string[]>();
+        }
+
+        public static ConfiguredCommand FromBranch(Type settings, string name)
+        {
+            return new ConfiguredCommand(name, null, settings, null, false);
         }
 
         public static ConfiguredCommand FromBranch<TSettings>(string name)

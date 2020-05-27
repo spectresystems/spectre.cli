@@ -117,6 +117,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Advanced\" />
+  </ItemGroup>
 
 
 </Project>

@@ -1,8 +1,10 @@
 using System;
+using Spectre.Cli.Exceptions;
+using Spectre.Cli.Unsafe;
 
 namespace Spectre.Cli.Internal.Configuration
 {
-    internal sealed class Configurator<TSettings> : IConfigurator<TSettings>
+    internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConfigurator<TSettings>
         where TSettings : CommandSettings
     {
         private readonly ConfiguredCommand _command;
@@ -43,9 +45,8 @@ namespace Spectre.Cli.Internal.Configuration
                 name, (context, settings) => func(context, (TDerivedSettings)settings));
 
             _command.Children.Add(command);
-            var configurator = new CommandConfigurator(command);
 
-            return configurator;
+            return new CommandConfigurator(command);
         }
 
         public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
@@ -53,6 +54,39 @@ namespace Spectre.Cli.Internal.Configuration
         {
             var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
             action(new Configurator<TDerivedSettings>(command, _registrar));
+            _command.Children.Add(command);
+        }
+
+        ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
+        {
+            var method = GetType().GetMethod("AddCommand");
+            if (method == null)
+            {
+                throw new ConfigurationException("Could not find AddCommand by reflection.");
+            }
+
+            method = method.MakeGenericMethod(command);
+
+            if (!(method.Invoke(this, new object[] { name }) is ICommandConfigurator result))
+            {
+                throw new ConfigurationException("Invoking AddCommand returned null.");
+            }
+
+            return result;
+        }
+
+        void IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+        {
+            var command = ConfiguredCommand.FromBranch(settings, name);
+
+            // Create the configurator.
+            var configuratorType = typeof(Configurator<>).MakeGenericType(settings);
+            if (!(Activator.CreateInstance(configuratorType, new object?[] { command, _registrar }) is IUnsafeBranchConfigurator configurator))
+            {
+                throw new ConfigurationException("Could not create configurator by reflection.");
+            }
+
+            action(configurator);
             _command.Children.Add(command);
         }
     }

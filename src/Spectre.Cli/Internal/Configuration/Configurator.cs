@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Cli.Exceptions;
+using Spectre.Cli.Unsafe;
 
 namespace Spectre.Cli.Internal.Configuration
 {
-    internal sealed class Configurator : IConfigurator, IConfiguration
+    internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfiguration
     {
         private readonly ITypeRegistrar? _registrar;
 
@@ -59,6 +61,39 @@ namespace Spectre.Cli.Internal.Configuration
         {
             var command = ConfiguredCommand.FromBranch<TSettings>(name);
             action(new Configurator<TSettings>(command, _registrar));
+            Commands.Add(command);
+        }
+
+        ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
+        {
+            var method = GetType().GetMethod("AddCommand");
+            if (method == null)
+            {
+                throw new ConfigurationException("Could not find AddCommand by reflection.");
+            }
+
+            method = method.MakeGenericMethod(command);
+
+            if (!(method.Invoke(this, new object[] { name }) is ICommandConfigurator result))
+            {
+                throw new ConfigurationException("Invoking AddCommand returned null.");
+            }
+
+            return result;
+        }
+
+        void IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+        {
+            var command = ConfiguredCommand.FromBranch(settings, name);
+
+            // Create the configurator.
+            var configuratorType = typeof(Configurator<>).MakeGenericType(settings);
+            if (!(Activator.CreateInstance(configuratorType, new object?[] { command, _registrar }) is IUnsafeBranchConfigurator configurator))
+            {
+                throw new ConfigurationException("Could not create configurator by reflection.");
+            }
+
+            action(configurator);
             Commands.Add(command);
         }
     }
