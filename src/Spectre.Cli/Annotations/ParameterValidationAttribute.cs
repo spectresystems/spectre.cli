@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Spectre.Cli
@@ -29,7 +30,8 @@ namespace Spectre.Cli
         /// Validates the parameter value.
         /// </summary>
         /// <param name="value">The parameter value.</param>
+        /// <param name="parameterInfo">The parameter info.</param>
         /// <returns>The validation result.</returns>
-        public abstract ValidationResult Validate(object? value);
+        public abstract ValidationResult Validate(object? value, CommandParameterInfo parameterInfo);
     }
 }

@@ -10,7 +10,7 @@ namespace Spectre.Cli.Testing.Data.Validators
         {
         }
 
-        public override ValidationResult Validate(object value)
+        public override ValidationResult Validate(object value, CommandParameterInfo parameterInfo)
         {
             if (value is int integer)
             {
@@ -19,10 +19,10 @@ namespace Spectre.Cli.Testing.Data.Validators
                     return ValidationResult.Success();
                 }
 
-                return ValidationResult.Error("Number is not even.");
+                return ValidationResult.Error($"Number is not even ({parameterInfo?.PropertyName}).");
             }
 
-            throw new InvalidOperationException("Parameter is not a number.");
+            throw new InvalidOperationException($"Parameter is not a number ({parameterInfo?.PropertyName}).");
         }
     }
 }
