@@ -23,7 +23,7 @@ namespace Spectre.Cli
         /// </summary>
         /// <typeparam name="TCommand">The command type.</typeparam>
         /// <param name="name">The name of the command.</param>
-        /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+        /// <returns>A command configurator that can be used to configure the command further.</returns>
         ICommandConfigurator AddCommand<TCommand>(string name)
             where TCommand : class, ICommand;
 

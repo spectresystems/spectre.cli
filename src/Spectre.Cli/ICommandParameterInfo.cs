@@ -3,22 +3,18 @@ namespace Spectre.Cli
     /// <summary>
     /// Represents a command parameter.
     /// </summary>
-    public abstract class CommandParameterInfo
+    public interface ICommandParameterInfo
     {
         /// <summary>
         /// Gets the property name.
         /// </summary>
-        /// <value>
-        /// The property name.
-        /// </value>
+        /// <value>The property name.</value>
         public abstract string PropertyName { get; }
 
         /// <summary>
         /// Gets the description.
         /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
+        /// <value>The description.</value>
         public abstract string? Description { get; }
     }
 }

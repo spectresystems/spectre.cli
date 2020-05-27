@@ -139,7 +139,7 @@ namespace Spectre.Cli.Internal
             var assignedValue = parameter.Get(settings);
             foreach (var validator in parameter.Validators)
             {
-                var validationResult = validator.Validate(assignedValue, parameter);
+                var validationResult = validator.Validate(parameter, assignedValue);
                 if (!validationResult.Successful)
                 {
                     // If there is a error message specified in the parameter validator attribute,

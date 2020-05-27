@@ -6,11 +6,11 @@ namespace Spectre.Cli.Internal.Modelling
     {
         public static readonly ByBackingPropertyComparer ByBackingProperty = new ByBackingPropertyComparer();
 
-        public sealed class ByBackingPropertyComparer : IEqualityComparer<CommandParameter>
+        public sealed class ByBackingPropertyComparer : IEqualityComparer<CommandParameter?>
         {
-            public bool Equals(CommandParameter x, CommandParameter y)
+            public bool Equals(CommandParameter? x, CommandParameter? y)
             {
-                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                if (x is null || y is null)
                 {
                     return false;
                 }
@@ -23,9 +23,9 @@ namespace Spectre.Cli.Internal.Modelling
                 return x.Property.MetadataToken == y.Property.MetadataToken;
             }
 
-            public int GetHashCode(CommandParameter obj)
+            public int GetHashCode(CommandParameter? obj)
             {
-                return obj.Property?.MetadataToken.GetHashCode() ?? 0;
+                return obj?.Property?.MetadataToken.GetHashCode() ?? 0;
             }
         }
     }
