@@ -126,13 +126,13 @@ namespace Spectre.Cli.Internal.Configuration
 
                     foreach (var character in token.Value)
                     {
-                        if (!char.IsLetterOrDigit(character))
+                        if (!char.IsLetterOrDigit(character) && character != '=')
                         {
                             throw TemplateException.InvalidCharacterInValueName(template, token, character);
                         }
                     }
 
-                    result.Value = token.Value;
+                    result.Value = token.Value.ToUpperInvariant();
                     result.ValueIsOptional = token.TokenKind == TemplateToken.Kind.OptionalValue;
                 }
             }

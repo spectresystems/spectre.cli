@@ -32,7 +32,7 @@ namespace Spectre.Cli.Internal
                         {
                             // Try to assign it with a null value.
                             // This will create the optional value instance without a value.
-                            parameter.Assign(settings, null);
+                            parameter.Assign(settings, resolver, null);
                             value = parameter.Property.GetValue(settings) as IFlagValue;
                             if (value == null)
                             {
@@ -67,7 +67,7 @@ namespace Spectre.Cli.Internal
                         // Is this an option with a default value?
                         if (parameter is CommandOption option && option.DefaultValue != null)
                         {
-                            parameter.Assign(settings, option.DefaultValue?.Value);
+                            parameter.Assign(settings, resolver, option.DefaultValue?.Value);
                             ValidateParameter(parameter, settings);
                         }
                     }
@@ -76,29 +76,37 @@ namespace Spectre.Cli.Internal
                 // Process mapped parameters.
                 foreach (var mapped in tree.Mapped)
                 {
-                    var converter = GetConverter(settings, mapped.Parameter);
-                    if (converter == null)
+                    if (mapped.Parameter.WantRawValue)
                     {
-                        throw RuntimeException.NoConverterFound(mapped.Parameter);
-                    }
-
-                    if (mapped.Parameter.IsFlagValue() && mapped.Value == null)
-                    {
-                        if (mapped.Parameter is CommandOption option && option.DefaultValue != null)
-                        {
-                            // Set the default value.
-                            mapped.Parameter.Assign(settings, option.DefaultValue?.Value);
-                        }
-                        else
-                        {
-                            // Set the flag but not the value.
-                            mapped.Parameter.Assign(settings, null);
-                        }
+                        // Just try to assign the raw value.
+                        mapped.Parameter.Assign(settings, resolver, mapped.Value);
                     }
                     else
                     {
-                        // Assign the value to the parameter.
-                        mapped.Parameter.Assign(settings, converter.ConvertFromInvariantString(mapped.Value));
+                        var converter = GetConverter(settings, mapped.Parameter);
+                        if (converter == null)
+                        {
+                            throw RuntimeException.NoConverterFound(mapped.Parameter);
+                        }
+
+                        if (mapped.Parameter.IsFlagValue() && mapped.Value == null)
+                        {
+                            if (mapped.Parameter is CommandOption option && option.DefaultValue != null)
+                            {
+                                // Set the default value.
+                                mapped.Parameter.Assign(settings, resolver, option.DefaultValue?.Value);
+                            }
+                            else
+                            {
+                                // Set the flag but not the value.
+                                mapped.Parameter.Assign(settings, resolver, null);
+                            }
+                        }
+                        else
+                        {
+                            // Assign the value to the parameter.
+                            mapped.Parameter.Assign(settings, resolver, converter.ConvertFromInvariantString(mapped.Value));
+                        }
                     }
 
                     ValidateParameter(mapped.Parameter, settings);
