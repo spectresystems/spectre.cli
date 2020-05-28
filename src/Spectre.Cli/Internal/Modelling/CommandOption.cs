@@ -16,9 +16,10 @@ namespace Spectre.Cli.Internal.Modelling
 
         public CommandOption(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
-            TypeConverterAttribute? converter, CommandOptionAttribute optionAttribute,
-            IEnumerable<ParameterValidationAttribute> validators, DefaultValueAttribute? defaultValue, bool valueIsOptional)
-                : base(parameterType, parameterKind, property, description, converter, validators, false)
+            TypeConverterAttribute? converter, PairDeconstructorAttribute? deconstructor,
+            CommandOptionAttribute optionAttribute, IEnumerable<ParameterValidationAttribute> validators,
+            DefaultValueAttribute? defaultValue, bool valueIsOptional)
+                : base(parameterType, parameterKind, property, description, converter, deconstructor, validators, false)
         {
             LongNames = optionAttribute.LongNames;
             ShortNames = optionAttribute.ShortNames;

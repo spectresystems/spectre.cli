@@ -182,6 +182,7 @@ namespace Spectre.Cli.Internal.Modelling
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var deconstructor = property.GetCustomAttribute<PairDeconstructorAttribute>();
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
@@ -193,7 +194,7 @@ namespace Spectre.Cli.Internal.Modelling
             }
 
             return new CommandOption(property.PropertyType, kind,
-                property, description?.Description, converter,
+                property, description?.Description, converter, deconstructor,
                 attribute, validators, defaultValue, attribute.ValueIsOptional);
         }
 
@@ -207,7 +208,8 @@ namespace Spectre.Cli.Internal.Modelling
 
             return new CommandArgument(
                 property.PropertyType, kind, property,
-                description?.Description, converter, attribute, validators);
+                description?.Description, converter,
+                attribute, validators);
         }
 
         private static ParameterKind GetOptionKind(Type type, CommandOptionAttribute attribute)

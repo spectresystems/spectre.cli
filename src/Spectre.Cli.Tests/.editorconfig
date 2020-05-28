@@ -38,3 +38,6 @@ dotnet_style_collection_initializer = false:suggestion
 
 # RCS1021: Simplify lambda expression.
 dotnet_diagnostic.RCS1021.severity = none
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = none

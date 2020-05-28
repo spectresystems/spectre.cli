@@ -59,7 +59,7 @@ namespace Spectre.Cli.Tests
                 // Then
                 result.ShouldBeOfType<ConfigurationException>().And(ex =>
                 {
-                    ex.Message.ShouldBe("The option 'serve' has an optional value but does not implement IOptionalValue.");
+                    ex.Message.ShouldBe("The option 'serve' has an optional value but does not implement IFlagValue.");
                 });
             }
 

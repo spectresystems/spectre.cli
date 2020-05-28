@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using Spectre.Cli.Internal.Collections;
 
 namespace Spectre.Cli.Internal.Modelling
 {
@@ -13,13 +14,18 @@ namespace Spectre.Cli.Internal.Modelling
         public PropertyInfo Property { get; }
         public string? Description { get; }
         public TypeConverterAttribute? Converter { get; }
+        public PairDeconstructorAttribute? PairDeconstructor { get; }
         public List<ParameterValidationAttribute> Validators { get; }
         public bool Required { get; set; }
         public string PropertyName => Property.Name;
 
+        public virtual bool WantRawValue => ParameterType.IsPairDeconstructable()
+            && (PairDeconstructor != null || Converter == null);
+
         protected CommandParameter(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property,
             string? description, TypeConverterAttribute? converter,
+            PairDeconstructorAttribute? deconstuctor,
             IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
             ParameterType = parameterType;
@@ -27,6 +33,7 @@ namespace Spectre.Cli.Internal.Modelling
             Property = property;
             Description = description;
             Converter = converter;
+            PairDeconstructor = deconstuctor;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;
         }
@@ -41,9 +48,46 @@ namespace Spectre.Cli.Internal.Modelling
             return CommandParameterComparer.ByBackingProperty.Equals(this, other);
         }
 
-        public void Assign(CommandSettings settings, object? value)
+        public void Assign(CommandSettings settings, ITypeResolver resolver, object? value)
         {
-            if (Property.PropertyType.IsArray)
+            // Is the property pair deconstructable?
+            // TODO: This needs to be better defined
+            if (Property.PropertyType.IsPairDeconstructable() && WantRawValue)
+            {
+                var genericTypes = Property.PropertyType.GetGenericArguments();
+
+                var multimap = (IMultiMap?)Property.GetValue(settings);
+                if (multimap == null)
+                {
+                    multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
+                    if (multimap == null)
+                    {
+                        throw new InvalidOperationException("Could not create multimap");
+                    }
+                }
+
+                // Create deconstructor.
+                var deconstructorType = PairDeconstructor?.Type ?? typeof(DefaultPairDeconstructor);
+                if (!(resolver.Resolve(deconstructorType) is IPairDeconstructor deconstructor))
+                {
+                    if (!(Activator.CreateInstance(deconstructorType) is IPairDeconstructor activatedDeconstructor))
+                    {
+                        throw new InvalidOperationException($"Could not create pair deconstructor.");
+                    }
+
+                    deconstructor = activatedDeconstructor;
+                }
+
+                // Deconstruct and add to multimap.
+                var pair = deconstructor.Deconstruct(resolver, genericTypes[0], genericTypes[1], value as string);
+                if (pair.Key != null)
+                {
+                    multimap.Add(pair);
+                }
+
+                value = multimap;
+            }
+            else if (Property.PropertyType.IsArray)
             {
                 // Add a new item to the array
                 var array = (Array?)Property.GetValue(settings);
@@ -68,8 +112,7 @@ namespace Spectre.Cli.Internal.Modelling
                 newArray.SetValue(value, newArray.Length - 1);
                 value = newArray;
             }
-
-            if (IsFlagValue())
+            else if (IsFlagValue())
             {
                 var flagValue = (IFlagValue?)Property.GetValue(settings);
                 if (flagValue == null)

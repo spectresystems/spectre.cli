@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Advanced\**" />
+    <EmbeddedResource Remove="Advanced\**" />
+    <None Remove="Advanced\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\Resources\Help\Command_Examples_DefinedOnCommand" />
     <None Remove="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
     <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
@@ -116,9 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Advanced\" />
   </ItemGroup>
 
 

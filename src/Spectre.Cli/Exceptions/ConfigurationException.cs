@@ -60,7 +60,18 @@ namespace Spectre.Cli.Exceptions
 
         internal static ConfigurationException OptionalOptionValueMustBeFlagWithValue(CommandOption option)
         {
-            return new ConfigurationException($"The option '{option.GetOptionName()}' has an optional value but does not implement IOptionalValue.");
+            return new ConfigurationException($"The option '{option.GetOptionName()}' has an optional value but does not implement IFlagValue.");
+        }
+
+        internal static ConfigurationException OptionBothHasPairDeconstructorAndTypeParameter(CommandOption option)
+        {
+            return new ConfigurationException($"The option '{option.GetOptionName()}' is both marked as pair deconstructable and convertable.");
+        }
+
+        internal static ConfigurationException OptionTypeDoesNotSupportDeconstruction(CommandOption option)
+        {
+            return new ConfigurationException($"The option '{option.GetOptionName()}' is marked as " +
+                "pair deconstructable, but the underlying type does not support that.");
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Spectre.Cli.Internal
                 {
                     // Output the Spectre.Cli version.
                     var version = typeof(CommandExecutor)?.Assembly?.GetName()?.Version?.ToString();
-                    version = version ?? "?";
+                    version ??= "?";
                     var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
                     writer.Write($"Spectre.Cli version {version}");
                     return Task.FromResult(0);

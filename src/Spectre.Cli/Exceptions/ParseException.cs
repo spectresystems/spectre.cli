@@ -123,5 +123,16 @@ namespace Spectre.Cli.Exceptions
         {
             return ParseExceptionFactory.Create(args, token, $"Unknown option '{token.Value}'.", "Unknown option.");
         }
+
+        internal static ParseException ValueIsNotInValidFormat(string value)
+        {
+            return new ParseException("Can't parse value", new RenderableComposer()
+                .LineBreak()
+                .Color(ConsoleColor.Red, error => error.Text("Error:")).Space()
+                .Color(ConsoleColor.Gray, c => c.Text("The value '"))
+                .Color(ConsoleColor.White, c => c.Text(value))
+                .Color(ConsoleColor.Gray, c => c.Text("' is not in a correct format."))
+                .LineBreak());
+        }
     }
 }

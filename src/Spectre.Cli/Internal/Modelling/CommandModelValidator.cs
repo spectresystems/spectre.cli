@@ -27,6 +27,7 @@ namespace Spectre.Cli.Internal.Modelling
                 }
             }
 
+            Validate(model.DefaultCommand);
             foreach (var command in model.Commands)
             {
                 Validate(command);
@@ -38,8 +39,13 @@ namespace Spectre.Cli.Internal.Modelling
             }
         }
 
-        private static void Validate(CommandInfo command)
+        private static void Validate(CommandInfo? command)
         {
+            if (command == null)
+            {
+                return;
+            }
+
             // Get duplicate options for command.
             var duplicateOptions = GetDuplicates(command);
             if (duplicateOptions.Length > 0)
@@ -70,10 +76,23 @@ namespace Spectre.Cli.Internal.Modelling
                 }
             }
 
-            // Optional options that are not flags?
             var options = command.Parameters.OfType<CommandOption>();
             foreach (var option in options)
             {
+                // Pair deconstructable?
+                if (option.Property.PropertyType.IsPairDeconstructable())
+                {
+                    if (option.PairDeconstructor != null && option.Converter != null)
+                    {
+                        throw ConfigurationException.OptionBothHasPairDeconstructorAndTypeParameter(option);
+                    }
+                }
+                else if (option.PairDeconstructor != null)
+                {
+                    throw ConfigurationException.OptionTypeDoesNotSupportDeconstruction(option);
+                }
+
+                // Optional options that are not flags?
                 if (option.ParameterKind == ParameterKind.FlagWithValue && !option.IsFlagValue())
                 {
                     throw ConfigurationException.OptionalOptionValueMustBeFlagWithValue(option);
