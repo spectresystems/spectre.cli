@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Spectre.Cli.Internal.Modelling;
 using Spectre.Cli.Internal.Rendering;
-using Spectre.Cli.Internal.Rendering.Elements;
 
 namespace Spectre.Cli.Internal
 {

@@ -125,6 +125,23 @@ namespace Spectre.Cli
         }
 
         /// <summary>
+        /// Sets the command interceptor to be used.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="interceptor">A <see cref="ICommandSettingsInterceptor"/>.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetInterceptor(this IConfigurator configurator, ICommandSettingsInterceptor interceptor)
+        {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
+            configurator.Settings.Interceptor = interceptor;
+            return configurator;
+        }
+
+        /// <summary>
         /// Adds a command branch.
         /// </summary>
         /// <param name="configurator">The configurator.</param>

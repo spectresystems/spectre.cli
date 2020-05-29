@@ -34,7 +34,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("__xmldoc");
+                var (_, output) = fixture.Run("@xmldoc");
 
                 // Then
                 output.ShouldBe(expected);
@@ -56,7 +56,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("__xmldoc");
+                var (_, output) = fixture.Run("@xmldoc");
 
                 // Then
                 output.ShouldBe(expected);
@@ -82,7 +82,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("__xmldoc");
+                var (_, output) = fixture.Run("@xmldoc");
 
                 // Then
                 output.ShouldBe(expected);
@@ -107,7 +107,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("__xmldoc");
+                var (_, output) = fixture.Run("@xmldoc");
 
                 // Then
                 output.ShouldBe(expected);
@@ -129,7 +129,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("__xmldoc");
+                var (_, output) = fixture.Run("@xmldoc");
 
                 // Then
                 output.ShouldBe(expected);

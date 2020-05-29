@@ -21,16 +21,6 @@ namespace Spectre.Cli.Internal.Parsing
             Unmapped = new List<CommandParameter>();
         }
 
-        public CommandSettings CreateSettings(ITypeResolver resolver)
-        {
-            if (resolver.Resolve(Command.SettingsType) is CommandSettings settings)
-            {
-                return settings;
-            }
-
-            throw ParseException.CouldNotCreateSettings(Command.SettingsType);
-        }
-
         public ICommand CreateCommand(ITypeResolver resolver)
         {
             if (Command.Delegate != null)

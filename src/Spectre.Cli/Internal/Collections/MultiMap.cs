@@ -6,11 +6,6 @@ using System.Linq;
 
 namespace Spectre.Cli.Internal.Collections
 {
-    internal interface IMultiMap
-    {
-        void Add((object? Key, object? Value) pair);
-    }
-
     [SuppressMessage("Performance", "CA1812", Justification = "Created via reflection")]
     internal sealed class MultiMap<TKey, TValue> : IMultiMap, ILookup<TKey, TValue>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
         where TKey : notnull

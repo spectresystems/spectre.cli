@@ -37,7 +37,7 @@ namespace Spectre.Cli.Internal
             var @switch = Switch.None;
             if (args.Any())
             {
-                if (args.ElementAt(0).Equals("__xmldoc", StringComparison.OrdinalIgnoreCase))
+                if (args.ElementAt(0).Equals("@xmldoc", StringComparison.OrdinalIgnoreCase))
                 {
                     if (configuration.Settings.IsTrue(c => c.XmlDocEnabled, "SPECTRE_CLI_XMLDOC"))
                     {
@@ -45,7 +45,7 @@ namespace Spectre.Cli.Internal
                         args = args.Skip(1);
                     }
                 }
-                else if (args.ElementAt(0).Equals("__debug", StringComparison.OrdinalIgnoreCase))
+                else if (args.ElementAt(0).Equals("@debug", StringComparison.OrdinalIgnoreCase))
                 {
                     if (configuration.Settings.IsTrue(c => c.DebugEnabled, "SPECTRE_CLI_DEBUG"))
                     {
@@ -53,7 +53,7 @@ namespace Spectre.Cli.Internal
                         args = args.Skip(1);
                     }
                 }
-                else if (args.ElementAt(0).Equals("__version", StringComparison.OrdinalIgnoreCase))
+                else if (args.ElementAt(0).Equals("@version", StringComparison.OrdinalIgnoreCase))
                 {
                     // Output the Spectre.Cli version.
                     var version = typeof(CommandExecutor)?.Assembly?.GetName()?.Version?.ToString();
@@ -123,20 +123,19 @@ namespace Spectre.Cli.Internal
             var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
             // Execute the command tree.
-            return Execute(leaf, parsedResult.Tree, context, resolver);
+            return Execute(leaf, parsedResult.Tree, context, resolver, configuration);
         }
 
         private static Task<int> Execute(
             CommandTree leaf,
             CommandTree tree,
             CommandContext context,
-            ITypeResolver resolver)
+            ITypeResolver resolver,
+            IConfiguration configuration)
         {
-            // Create the command and the settings.
-            var settings = leaf.CreateSettings(resolver);
-
             // Bind the command tree against the settings.
-            CommandBinder.Bind(tree, ref settings, resolver);
+            var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
+            configuration.Settings.Interceptor?.Intercept(settings);
 
             // Create and validate the command.
             var command = leaf.CreateCommand(resolver);

@@ -1,12 +1,12 @@
 using System;
-using Spectre.Cli.Internal;
 
-namespace Spectre.Cli
+namespace Spectre.Cli.Internal.Configuration
 {
     internal sealed class CommandAppSettings : ICommandAppSettings
     {
         public string? ApplicationName { get; set; }
         public IConsoleWriter? Console { get; set; }
+        public ICommandSettingsInterceptor? Interceptor { get; set; }
         public bool PropagateExceptions { get; set; }
         public bool ValidateExamples { get; set; }
         public bool StrictParsing { get; set; }

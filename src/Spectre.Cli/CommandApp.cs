@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Spectre.Cli.Internal;
 using Spectre.Cli.Internal.Configuration;
 using Spectre.Cli.Internal.Rendering;
-using Spectre.Cli.Internal.Rendering.Elements;
 
 namespace Spectre.Cli
 {

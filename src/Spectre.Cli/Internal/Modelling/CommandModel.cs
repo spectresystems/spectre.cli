@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Cli.Internal.Configuration;
 
 namespace Spectre.Cli.Internal.Modelling
 {

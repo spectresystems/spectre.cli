@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Spectre.Cli.Internal.Rendering.Elements
+namespace Spectre.Cli.Internal.Rendering
 {
     internal sealed class ColorElement : IRenderable
     {

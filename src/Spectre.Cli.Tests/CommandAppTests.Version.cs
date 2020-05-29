@@ -30,7 +30,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__version", "animal", "--alive", "mammal",
+                    "@version", "animal", "--alive", "mammal",
                     "--name", "Rufus", "dog", "12", "--good-boy");
 
                 // Then

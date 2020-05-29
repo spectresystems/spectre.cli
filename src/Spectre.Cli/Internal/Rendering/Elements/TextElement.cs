@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Rendering.Elements
+namespace Spectre.Cli.Internal.Rendering
 {
     internal sealed class TextElement : IRenderable
     {

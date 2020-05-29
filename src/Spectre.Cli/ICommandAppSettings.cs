@@ -16,6 +16,12 @@ namespace Spectre.Cli
         IConsoleWriter? Console { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="ICommandSettingsInterceptor"/> used
+        /// to intercept settings before it's being sent to the command.
+        /// </summary>
+        ICommandSettingsInterceptor? Interceptor { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not parsing is strict.
         /// </summary>
         bool StrictParsing { get; set; }

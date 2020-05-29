@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using Spectre.Cli.Internal;
 
 namespace Spectre.Cli

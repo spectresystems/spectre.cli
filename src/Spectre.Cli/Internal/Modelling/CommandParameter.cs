@@ -9,6 +9,7 @@ namespace Spectre.Cli.Internal.Modelling
 {
     internal abstract class CommandParameter : ICommandParameterInfo
     {
+        public Guid Id { get; }
         public Type ParameterType { get; }
         public ParameterKind ParameterKind { get; }
         public PropertyInfo Property { get; }
@@ -28,6 +29,7 @@ namespace Spectre.Cli.Internal.Modelling
             PairDeconstructorAttribute? deconstuctor,
             IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
+            Id = Guid.NewGuid();
             ParameterType = parameterType;
             ParameterKind = parameterKind;
             Property = property;

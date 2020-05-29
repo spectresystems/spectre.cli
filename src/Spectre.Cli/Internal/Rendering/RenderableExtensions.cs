@@ -1,5 +1,4 @@
 using System.Linq;
-using Spectre.Cli.Internal.Rendering.Elements;
 
 namespace Spectre.Cli.Internal.Rendering
 {

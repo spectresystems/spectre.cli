@@ -35,7 +35,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__debug", "animal", "--alive", "mammal",
+                    "@debug", "animal", "--alive", "mammal",
                     "--name", "Rufus", "dog", "12", "--good-boy");
 
                 // Then
@@ -59,7 +59,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__debug", "dog", "12", "4",
+                    "@debug", "dog", "12", "4",
                     "--good-boy", "--name", "Rufus", "--alive");
 
                 // Then
@@ -87,7 +87,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__debug", "animal", "dog", "12",
+                    "@debug", "animal", "dog", "12",
                     "--good-boy", "--name", "Rufus");
 
                 // Then
@@ -114,7 +114,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__debug", "animal", "4", "dog", "12",
+                    "@debug", "animal", "4", "dog", "12",
                     "--good-boy", "--name", "Rufus");
 
                 // Then
@@ -138,7 +138,7 @@ namespace Spectre.Cli.Tests
 
                 // When
                 var (_, output) = fixture.Run(
-                    "__debug", "cmd", "--foo", "red", "--bar",
+                    "@debug", "cmd", "--foo", "red", "--bar",
                     "4", "--foo", "blue");
 
                 // Then
@@ -162,7 +162,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 var parameters = new List<string>();
-                parameters.Add("__debug");
+                parameters.Add("@debug");
                 parameters.AddRange(args);
 
                 // When
