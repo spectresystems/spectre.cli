@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal interface IConfiguration
     {

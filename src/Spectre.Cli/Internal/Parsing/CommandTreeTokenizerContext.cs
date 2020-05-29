@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandTreeTokenizerContext
     {

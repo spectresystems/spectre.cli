@@ -1,7 +1,6 @@
 using Shouldly;
 using Spectre.Cli.Testing;
 using Spectre.Cli.Testing.Data.Commands;
-using Spectre.Cli.Testing.Fakes;
 using Xunit;
 
 namespace Spectre.Cli.Tests
@@ -14,7 +13,7 @@ namespace Spectre.Cli.Tests
             {
             }
 
-            public sealed class Settings : CommandSettings
+            public sealed class InjectSettings : CommandSettings
             {
                 public FakeDependency Fake { get; set; }
 
@@ -24,7 +23,7 @@ namespace Spectre.Cli.Tests
                 [CommandOption("--age <AGE>")]
                 public int Age { get; set; }
 
-                public Settings(FakeDependency fake, string name)
+                public InjectSettings(FakeDependency fake, string name)
                 {
                     Fake = fake;
                     Name = "Hello " + name;
@@ -35,20 +34,18 @@ namespace Spectre.Cli.Tests
             public void Should_Inject_Parameters()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
+                var app = new CommandAppFixture();
                 var dependency = new FakeDependency();
-                resolver.Register(dependency);
 
-                var app = new CommandApp<GenericCommand<Settings>>(new FakeTypeRegistrar(resolver));
-                var settings = default(Settings);
+                app.WithDefaultCommand<GenericCommand<InjectSettings>>();
                 app.Configure(config =>
                 {
-                    config.SetInterceptor(new ActionInterceptor(intercepted => settings = (Settings)intercepted));
+                    config.Settings.Registrar.RegisterInstance(dependency);
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--name", "foo",
                     "--age", "35",
@@ -56,10 +53,13 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.ShouldNotBeNull();
-                settings.Fake.ShouldBe(dependency);
-                settings.Name.ShouldBe("Hello foo");
-                settings.Age.ShouldBe(35);
+                settings.ShouldBeOfType<InjectSettings>().And(injected =>
+                {
+                    injected.ShouldNotBeNull();
+                    injected.Fake.ShouldBeSameAs(dependency);
+                    injected.Name.ShouldBe("Hello foo");
+                    injected.Age.ShouldBe(35);
+                });
             }
         }
     }

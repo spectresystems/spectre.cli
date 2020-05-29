@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Spectre.Cli.Internal.Collections;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal abstract class CommandParameter : ICommandParameterInfo
     {

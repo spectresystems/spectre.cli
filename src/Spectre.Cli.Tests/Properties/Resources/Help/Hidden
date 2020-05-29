@@ -1,0 +1,9 @@
+USAGE:
+    myapp [OPTIONS] <COMMAND>
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    dog      The dog command
+    horse    The horse command

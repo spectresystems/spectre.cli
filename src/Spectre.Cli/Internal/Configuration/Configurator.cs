@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
 using Spectre.Cli.Unsafe;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfiguration
     {
-        private readonly ITypeRegistrar? _registrar;
+        private readonly ITypeRegistrar _registrar;
 
         public IList<ConfiguredCommand> Commands { get; }
         public CommandAppSettings Settings { get; }
@@ -16,12 +16,12 @@ namespace Spectre.Cli.Internal.Configuration
 
         ICommandAppSettings IConfigurator.Settings => Settings;
 
-        public Configurator(ITypeRegistrar? registrar)
+        public Configurator(ITypeRegistrar registrar)
         {
             _registrar = registrar;
 
             Commands = new List<ConfiguredCommand>();
-            Settings = new CommandAppSettings();
+            Settings = new CommandAppSettings(registrar);
             Examples = new List<string[]>();
         }
 
@@ -35,15 +35,12 @@ namespace Spectre.Cli.Internal.Configuration
         {
             DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
                 Constants.DefaultCommandName, isDefaultCommand: true);
-
-            _registrar?.RegisterCommand(DefaultCommand);
         }
 
         public ICommandConfigurator AddCommand<TCommand>(string name)
             where TCommand : class, ICommand
         {
             var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
-            _registrar?.RegisterCommand(command);
             return new CommandConfigurator(command);
         }
 
@@ -52,7 +49,6 @@ namespace Spectre.Cli.Internal.Configuration
         {
             var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
                 name, (context, settings) => func(context, (TSettings)settings)));
-
             return new CommandConfigurator(command);
         }
 

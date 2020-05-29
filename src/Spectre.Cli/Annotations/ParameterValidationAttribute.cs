@@ -1,6 +1,5 @@
 using System;
 
-// ReSharper disable once CheckNamespace
 namespace Spectre.Cli
 {
     /// <summary>

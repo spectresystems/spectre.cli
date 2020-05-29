@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Rendering
+namespace Spectre.Cli.Internal
 {
     internal interface IRenderable
     {

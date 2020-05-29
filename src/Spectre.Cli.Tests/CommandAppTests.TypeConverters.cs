@@ -1,4 +1,5 @@
 using Shouldly;
+using Spectre.Cli.Testing;
 using Spectre.Cli.Testing.Data.Commands;
 using Spectre.Cli.Testing.Data.Settings;
 using Spectre.Cli.Testing.Fakes;
@@ -14,18 +15,15 @@ namespace Spectre.Cli.Tests
             public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new CatSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
+                    config.PropagateExceptions();
                     config.AddCommand<CatCommand>("cat");
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                      "cat", "--name", "Tiger",
                      "--agility", "FOOBAR",
@@ -33,7 +31,10 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Agility.ShouldBe(6);
+                settings.ShouldBeOfType<CatSettings>().And(cat =>
+                {
+                    cat.Agility.ShouldBe(6);
+                });
             }
         }
     }

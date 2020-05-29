@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="utf-16"?>
-<model>
+<?xml version="1.0" encoding="utf-8"?>
+<Model>
   <!--DOG-->
-  <command name="dog" isbranch="false" type="Spectre.Cli.Testing.Data.Commands.DogCommand" settings="Spectre.Cli.Testing.Data.Settings.DogSettings">
-    <parameters>
-      <argument name="LEGS" position="0" required="false" kind="scalar" type="System.Int32">
-        <description>The number of legs.</description>
-        <validators>
-          <validator type="Spectre.Cli.Testing.Data.Validators.EvenNumberValidatorAttribute" message="Animals must have an even number of legs." />
-          <validator type="Spectre.Cli.Testing.Data.Validators.PositiveNumberValidatorAttribute" message="Number of legs must be greater than 0." />
-        </validators>
-      </argument>
-      <argument name="AGE" position="1" required="true" kind="scalar" type="System.Int32" />
-      <option short="a" long="alive,not-dead" value="NULL" required="false" kind="flag" type="System.Boolean">
-        <description>Indicates whether or not the animal is alive.</description>
-      </option>
-      <option short="g" long="good-boy" value="NULL" required="false" kind="flag" type="System.Boolean" />
-      <option short="n,p" long="name,pet-name" value="VALUE" required="false" kind="scalar" type="System.String" />
-    </parameters>
-  </command>
-</model>
+  <Command Name="dog" IsBranch="false" ClrType="Spectre.Cli.Testing.Data.Commands.DogCommand" Settings="Spectre.Cli.Testing.Data.Settings.DogSettings">
+    <Parameters>
+      <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
+        <Description>The number of legs.</Description>
+        <Validators>
+          <Validator ClrType="Spectre.Cli.Testing.Data.Validators.EvenNumberValidatorAttribute" Message="Animals must have an even number of legs." />
+          <Validator ClrType="Spectre.Cli.Testing.Data.Validators.PositiveNumberValidatorAttribute" Message="Number of legs must be greater than 0." />
+        </Validators>
+      </Argument>
+      <Argument Name="AGE" Position="1" Required="true" Kind="scalar" ClrType="System.Int32" />
+      <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
+        <Description>Indicates whether or not the animal is alive.</Description>
+      </Option>
+      <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean" />
+      <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
+    </Parameters>
+  </Command>
+</Model>

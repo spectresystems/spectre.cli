@@ -1,29 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing;
-using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal
 {
     internal sealed class CommandExecutor
     {
-        private readonly ITypeRegistrar? _registrar;
+        private readonly ITypeRegistrar _registrar;
 
-        private enum Switch
+        public CommandExecutor(ITypeRegistrar registrar)
         {
-            None = 0,
-            XmlDocs = 1,
-            Debug = 2,
-        }
-
-        public CommandExecutor(ITypeRegistrar? registrar)
-        {
-            _registrar = registrar;
+            _registrar = registrar ?? throw new ArgumentNullException(nameof(registrar));
+            _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
         }
 
         public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
@@ -33,66 +22,17 @@ namespace Spectre.Cli.Internal
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            // TODO: Hack
-            var @switch = Switch.None;
-            if (args.Any())
-            {
-                if (args.ElementAt(0).Equals("@xmldoc", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (configuration.Settings.IsTrue(c => c.XmlDocEnabled, "SPECTRE_CLI_XMLDOC"))
-                    {
-                        @switch = Switch.XmlDocs;
-                        args = args.Skip(1);
-                    }
-                }
-                else if (args.ElementAt(0).Equals("@debug", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (configuration.Settings.IsTrue(c => c.DebugEnabled, "SPECTRE_CLI_DEBUG"))
-                    {
-                        @switch = Switch.Debug;
-                        args = args.Skip(1);
-                    }
-                }
-                else if (args.ElementAt(0).Equals("@version", StringComparison.OrdinalIgnoreCase))
-                {
-                    // Output the Spectre.Cli version.
-                    var version = typeof(CommandExecutor)?.Assembly?.GetName()?.Version?.ToString();
-                    version ??= "?";
-                    var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
-                    writer.Write($"Spectre.Cli version {version}");
-                    return Task.FromResult(0);
-                }
-            }
+            _registrar.RegisterInstance(typeof(IConfiguration), configuration);
 
-            return Execute(configuration, args, @switch);
-        }
-
-        private Task<int> Execute(IConfiguration configuration, IEnumerable<string> args, Switch @switch)
-        {
             // Create the command model.
             var model = CommandModelBuilder.Build(configuration);
-
-            // Show XML docs?
-            if (@switch == Switch.XmlDocs)
-            {
-                var xml = CommandModelSerializer.Serialize(model);
-                var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
-                writer.Write(xml);
-                return Task.FromResult(0);
-            }
+            _registrar.RegisterInstance(typeof(CommandModel), model);
+            _registrar.RegisterDependencies(model);
 
             // Parse and map the model against the arguments.
             var parser = new CommandTreeParser(model);
             var parsedResult = parser.Parse(args);
-
-            // Debugging?
-            if (@switch == Switch.Debug)
-            {
-                var xml = CommandTreeSerializer.Serialize(parsedResult);
-                var writer = configuration.Settings.Console ?? new DefaultConsoleWriter();
-                writer.Write(xml);
-                return Task.FromResult(0);
-            }
+            _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
 
             // Currently the root?
             if (parsedResult.Tree == null)
@@ -116,10 +56,10 @@ namespace Spectre.Cli.Internal
             }
 
             // Register the arguments with the container.
-            _registrar?.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
+            _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
             // Create the resolver and the context.
-            var resolver = new TypeResolverAdapter(_registrar?.Build());
+            var resolver = new TypeResolverAdapter(_registrar.Build());
             var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
             // Execute the command tree.
@@ -135,7 +75,7 @@ namespace Spectre.Cli.Internal
         {
             // Bind the command tree against the settings.
             var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-            configuration.Settings.Interceptor?.Intercept(settings);
+            configuration.Settings.Interceptor?.Intercept(context, settings);
 
             // Create and validate the command.
             var command = leaf.CreateCommand(resolver);

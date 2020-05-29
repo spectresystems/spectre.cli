@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Modelling;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal class CommandTreeParser
     {
@@ -16,19 +15,6 @@ namespace Spectre.Cli.Internal.Parsing
         {
             Normal = 0,
             Remaining = 1,
-        }
-
-        // // Consider removing this in favor for value tuples at some point.
-        public sealed class CommandTreeParserResult
-        {
-            public CommandTree? Tree { get; }
-            public IRemainingArguments Remaining { get; }
-
-            public CommandTreeParserResult(CommandTree? tree, IRemainingArguments remaining)
-            {
-                Tree = tree;
-                Remaining = remaining;
-            }
         }
 
         public CommandTreeParser(CommandModel configuration, ParsingMode? parsingMode = null)
@@ -233,7 +219,6 @@ namespace Spectre.Cli.Internal.Parsing
             {
                 // Vector
                 var current = stream.Current;
-                var aggregator = new List<string>(); // TODO: Allocations
                 while (current?.TokenKind == CommandTreeToken.Kind.String)
                 {
                     var value = stream.Consume(CommandTreeToken.Kind.String)?.Value;

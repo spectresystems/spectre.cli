@@ -93,44 +93,12 @@ namespace Spectre.Cli
         }
 
         /// <summary>
-        /// Enables XML documentation for the command line application.
-        /// </summary>
-        /// <param name="configurator">The configurator.</param>
-        /// <returns>A configurator that can be used to configure the application further.</returns>
-        public static IConfigurator EnableXmlDoc(this IConfigurator configurator)
-        {
-            if (configurator == null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            configurator.Settings.XmlDocEnabled = true;
-            return configurator;
-        }
-
-        /// <summary>
-        /// Enables debug mode for the command line application.
-        /// </summary>
-        /// <param name="configurator">The configurator.</param>
-        /// <returns>A configurator that can be used to configure the application further.</returns>
-        public static IConfigurator EnableDebug(this IConfigurator configurator)
-        {
-            if (configurator == null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            configurator.Settings.DebugEnabled = true;
-            return configurator;
-        }
-
-        /// <summary>
         /// Sets the command interceptor to be used.
         /// </summary>
         /// <param name="configurator">The configurator.</param>
-        /// <param name="interceptor">A <see cref="ICommandSettingsInterceptor"/>.</param>
+        /// <param name="interceptor">A <see cref="ICommandInterceptor"/>.</param>
         /// <returns>A configurator that can be used to configure the application further.</returns>
-        public static IConfigurator SetInterceptor(this IConfigurator configurator, ICommandSettingsInterceptor interceptor)
+        public static IConfigurator SetInterceptor(this IConfigurator configurator, ICommandInterceptor interceptor)
         {
             if (configurator == null)
             {

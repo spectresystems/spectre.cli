@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal static class ConfigurationHelper
     {

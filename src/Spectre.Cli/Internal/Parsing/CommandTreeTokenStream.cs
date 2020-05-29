@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Exceptions;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandTreeTokenStream : IReadOnlyList<CommandTreeToken>
     {

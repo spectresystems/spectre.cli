@@ -2,7 +2,7 @@ using System;
 using Spectre.Cli.Exceptions;
 using Spectre.Cli.Unsafe;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConfigurator<TSettings>
         where TSettings : CommandSettings
@@ -26,6 +26,11 @@ namespace Spectre.Cli.Internal.Configuration
             _command.Examples.Add(args);
         }
 
+        public void HideBranch()
+        {
+            _command.IsHidden = true;
+        }
+
         public ICommandConfigurator AddCommand<TCommand>(string name)
             where TCommand : class, ICommandLimiter<TSettings>
         {
@@ -33,8 +38,6 @@ namespace Spectre.Cli.Internal.Configuration
             var configurator = new CommandConfigurator(command);
 
             _command.Children.Add(command);
-            _registrar?.RegisterCommand(command);
-
             return configurator;
         }
 
@@ -45,7 +48,6 @@ namespace Spectre.Cli.Internal.Configuration
                 name, (context, settings) => func(context, (TDerivedSettings)settings));
 
             _command.Children.Add(command);
-
             return new CommandConfigurator(command);
         }
 

@@ -1,8 +1,5 @@
 using System;
 using Spectre.Cli.Internal;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing;
-using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Exceptions
 {
@@ -26,6 +23,7 @@ namespace Spectre.Cli.Exceptions
             var message = $"Could not resolve type '{type.FullName}'.";
             if (ex != null)
             {
+                // TODO: Show internal stuff here.
                 return new RuntimeException(message, ex);
             }
 

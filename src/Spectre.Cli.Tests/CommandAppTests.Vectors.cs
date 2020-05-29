@@ -58,11 +58,7 @@ namespace Spectre.Cli.Tests
             public void Should_Assign_Values_To_Argument_Vector()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new ArgumentVectorSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -70,28 +66,27 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "multi", "a", "b", "c",
                 });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Foo.Length.ShouldBe(3);
-                settings.Foo[0].ShouldBe("a");
-                settings.Foo[1].ShouldBe("b");
-                settings.Foo[2].ShouldBe("c");
+                settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+                {
+                    vec.Foo.Length.ShouldBe(3);
+                    vec.Foo[0].ShouldBe("a");
+                    vec.Foo[1].ShouldBe("b");
+                    vec.Foo[2].ShouldBe("c");
+                });
             }
 
             [Fact]
             public void Should_Assign_Values_To_Option_Vector()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new OptionVectorSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -99,7 +94,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "cmd", "--foo", "red",
                     "--bar", "4", "--foo", "blue",
@@ -107,8 +102,11 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Foo.ShouldBe(new string[] { "red", "blue" });
-                settings.Bar.ShouldBe(new int[] { 4 });
+                settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+                {
+                    vec.Foo.ShouldBe(new string[] { "red", "blue" });
+                    vec.Bar.ShouldBe(new int[] { 4 });
+                });
             }
         }
     }

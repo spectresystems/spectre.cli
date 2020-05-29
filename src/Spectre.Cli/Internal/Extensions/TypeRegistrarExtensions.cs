@@ -1,30 +1,65 @@
 using System;
-using Spectre.Cli.Internal.Configuration;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Spectre.Cli.Internal
 {
     internal static class TypeRegistrarExtensions
     {
-        public static void RegisterCommand(this ITypeRegistrar registrar, ConfiguredCommand command)
+        public static void RegisterDependencies(this ITypeRegistrar registrar, CommandModel model)
         {
-            if (command == null)
+            var stack = new Stack<CommandInfo>();
+            model.Commands.ForEach(c => stack.Push(c));
+            if (model.DefaultCommand != null)
             {
-                throw new ArgumentNullException(nameof(command));
+                stack.Push(model.DefaultCommand);
             }
 
-            if (command.CommandType == null)
+            while (stack.Count > 0)
             {
-                throw new ArgumentException("Command type cannot be null.", nameof(command));
-            }
+                var command = stack.Pop();
 
-            if (command.SettingsType == null)
-            {
-                throw new ArgumentException("Command setting type cannot be null.", nameof(command));
-            }
+                if (command.SettingsType == null)
+                {
+                    // TODO: Error message
+                    throw new InvalidOperationException("Command setting type cannot be null.");
+                }
 
-            registrar?.Register(typeof(ICommand), command.CommandType);
-            registrar?.Register(command.CommandType, command.CommandType);
-            registrar?.Register(command.SettingsType, command.SettingsType);
+                if (command.CommandType != null)
+                {
+                    registrar?.Register(typeof(ICommand), command.CommandType);
+                    registrar?.Register(command.CommandType, command.CommandType);
+                }
+
+                if (!command.SettingsType.IsAbstract)
+                {
+                    registrar?.Register(command.SettingsType, command.SettingsType);
+                }
+
+                foreach (var parameter in command.Parameters)
+                {
+                    var pairDeconstructor = parameter?.PairDeconstructor?.Type;
+                    if (pairDeconstructor != null)
+                    {
+                        registrar?.Register(pairDeconstructor, pairDeconstructor);
+                    }
+
+                    var typeConverterTypeName = parameter?.Converter?.ConverterTypeName;
+                    if (!string.IsNullOrWhiteSpace(typeConverterTypeName))
+                    {
+                        var typeConverterType = Type.GetType(typeConverterTypeName);
+                        Debug.Assert(typeConverterType != null, "Could not create type");
+                        registrar?.Register(typeConverterType, typeConverterType);
+                    }
+                }
+
+                foreach (var child in command.Children)
+                {
+                    stack.Push(child);
+                }
+            }
         }
     }
 }

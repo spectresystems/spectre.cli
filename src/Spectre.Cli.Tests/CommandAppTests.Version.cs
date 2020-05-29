@@ -17,7 +17,6 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableDebug();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddBranch<MammalSettings>("mammal", mammal =>
@@ -29,9 +28,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run(
-                    "@version", "animal", "--alive", "mammal",
-                    "--name", "Rufus", "dog", "12", "--good-boy");
+                var (_, output, _, _) = fixture.Run(Constants.VersionCommand);
 
                 // Then
                 output.ShouldStartWith("Spectre.Cli version ");

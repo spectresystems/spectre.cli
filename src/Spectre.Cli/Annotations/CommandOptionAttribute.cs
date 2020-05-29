@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Cli.Internal.Configuration;
+using Spectre.Cli.Internal;
 
-// ReSharper disable once CheckNamespace
 namespace Spectre.Cli
 {
     /// <summary>

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Spectre.Cli.Internal.Modelling;
 
 namespace Spectre.Cli.Internal
 {
@@ -21,7 +20,7 @@ namespace Spectre.Cli.Internal
             }
 
             var score = float.MaxValue;
-            foreach (var child in container.Commands)
+            foreach (var child in container.Commands.Where(x => !x.IsHidden))
             {
                 var temp = Score(child.Name, name);
                 if (temp < score)

@@ -32,5 +32,13 @@ namespace Spectre.Cli
         /// <param name="data">The data to pass to the command.</param>
         /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
         ICommandConfigurator WithData(object data);
+
+        /// <summary>
+        /// Marks the command as hidden.
+        /// Hidden commands do not show up in help documentation or
+        /// generated XML models.
+        /// </summary>
+        /// <returns>The same <see cref="ICommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+        ICommandConfigurator IsHidden();
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Spectre.Cli.Exceptions;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal static class TemplateTokenizer
     {

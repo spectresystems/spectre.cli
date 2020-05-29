@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Spectre.Cli.Internal.Configuration;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandModel : ICommandContainer
     {

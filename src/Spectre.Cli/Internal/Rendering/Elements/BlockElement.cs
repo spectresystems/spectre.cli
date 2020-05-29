@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Cli.Internal.Rendering
+namespace Spectre.Cli.Internal
 {
     internal sealed class BlockElement : IRenderable
     {

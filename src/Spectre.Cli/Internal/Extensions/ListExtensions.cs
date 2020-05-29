@@ -1,9 +1,21 @@
+using System;
 using System.Collections.Generic;
 
 namespace Spectre.Cli.Internal
 {
     internal static class ListExtensions
     {
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            if (source != null && action != null)
+            {
+                foreach (var item in source)
+                {
+                    action(item);
+                }
+            }
+        }
+
         public static T AddAndReturn<T>(this IList<T> source, T item)
             where T : class
         {

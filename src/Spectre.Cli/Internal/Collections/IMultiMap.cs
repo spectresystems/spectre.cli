@@ -1,4 +1,4 @@
-﻿namespace Spectre.Cli.Internal.Collections
+namespace Spectre.Cli.Internal
 {
     internal interface IMultiMap
     {

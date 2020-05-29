@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal interface ICommandContainer
     {

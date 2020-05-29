@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal class CommandTreeParserContext
     {

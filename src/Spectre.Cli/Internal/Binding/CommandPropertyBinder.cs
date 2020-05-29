@@ -1,7 +1,7 @@
 using System;
 using Spectre.Cli.Exceptions;
 
-namespace Spectre.Cli.Internal.Binding
+namespace Spectre.Cli.Internal
 {
     internal static class CommandPropertyBinder
     {

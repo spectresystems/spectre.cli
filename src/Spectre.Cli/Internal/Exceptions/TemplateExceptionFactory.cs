@@ -1,9 +1,7 @@
 using System;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Rendering;
 
-namespace Spectre.Cli.Internal.Exceptions
+namespace Spectre.Cli.Internal
 {
     internal static class TemplateExceptionFactory
     {

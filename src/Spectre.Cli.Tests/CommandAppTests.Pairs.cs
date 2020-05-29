@@ -129,18 +129,15 @@ namespace Spectre.Cli.Tests
             public void Should_Map_Pairs_To_Pair_Deconstructable_Collection_Using_Default_Deconstructort()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DefaultPairDeconstructorSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp<GenericCommand<DefaultPairDeconstructorSettings>>(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--var", "foo=1",
                     "--var", "foo=3",
@@ -149,28 +146,28 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Values.ShouldNotBeNull();
-                settings.Values.Count.ShouldBe(2);
-                settings.Values["foo"].ShouldBe(3);
-                settings.Values["bar"].ShouldBe(4);
+                settings.ShouldBeOfType<DefaultPairDeconstructorSettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(2);
+                    pair.Values["foo"].ShouldBe(3);
+                    pair.Values["bar"].ShouldBe(4);
+                });
             }
 
             [Fact]
             public void Should_Map_Lookup_Values()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new LookupSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp<GenericCommand<LookupSettings>>(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<LookupSettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "foo=qux",
@@ -178,27 +175,27 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Values.ShouldNotBeNull();
-                settings.Values.Count.ShouldBe(1);
-                settings.Values["foo"].ToList().Count.ShouldBe(2);
+                settings.ShouldBeOfType<LookupSettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(1);
+                    pair.Values["foo"].ToList().Count.ShouldBe(2);
+                });
             }
 
             [Fact]
             public void Should_Map_Dictionary_Values()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DictionarySettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp<GenericCommand<DictionarySettings>>(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<DictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "baz=qux",
@@ -206,28 +203,28 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Values.ShouldNotBeNull();
-                settings.Values.Count.ShouldBe(2);
-                settings.Values["foo"].ShouldBe("bar");
-                settings.Values["baz"].ShouldBe("qux");
+                settings.ShouldBeOfType<DictionarySettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(2);
+                    pair.Values["foo"].ShouldBe("bar");
+                    pair.Values["baz"].ShouldBe("qux");
+                });
             }
 
             [Fact]
             public void Should_Map_Latest_Value_Of_Same_Key_When_Mapping_To_Dictionary()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DictionarySettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp<GenericCommand<DictionarySettings>>(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<DictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "foo=qux",
@@ -235,27 +232,27 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Values.ShouldNotBeNull();
-                settings.Values.Count.ShouldBe(1);
-                settings.Values["foo"].ShouldBe("qux");
+                settings.ShouldBeOfType<DictionarySettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(1);
+                    pair.Values["foo"].ShouldBe("qux");
+                });
             }
 
             [Fact]
             public void Should_Map_ReadOnly_Dictionary_Values()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new ReadOnlyDictionarySettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp<GenericCommand<ReadOnlyDictionarySettings>>(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<ReadOnlyDictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "baz=qux",
@@ -263,10 +260,13 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Values.ShouldNotBeNull();
-                settings.Values.Count.ShouldBe(2);
-                settings.Values["foo"].ShouldBe("bar");
-                settings.Values["baz"].ShouldBe("qux");
+                settings.ShouldBeOfType<ReadOnlyDictionarySettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(2);
+                    pair.Values["foo"].ShouldBe("bar");
+                    pair.Values["baz"].ShouldBe("qux");
+                });
             }
         }
     }

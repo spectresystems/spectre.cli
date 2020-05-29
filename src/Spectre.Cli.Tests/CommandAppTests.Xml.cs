@@ -21,7 +21,6 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableXmlDoc();
                     config.PropagateExceptions();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
@@ -34,7 +33,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("@xmldoc");
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
                 output.ShouldBe(expected);
@@ -51,12 +50,11 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableXmlDoc();
                     config.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var (_, output) = fixture.Run("@xmldoc");
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
                 output.ShouldBe(expected);
@@ -73,7 +71,6 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableXmlDoc();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
@@ -82,7 +79,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("@xmldoc");
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
                 output.ShouldBe(expected);
@@ -99,7 +96,6 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableXmlDoc();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
                         animal.AddCommand<DogCommand>("dog");
@@ -107,7 +103,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("@xmldoc");
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
                 output.ShouldBe(expected);
@@ -124,12 +120,29 @@ namespace Spectre.Cli.Tests
                 var fixture = new CommandAppFixture();
                 fixture.Configure(config =>
                 {
-                    config.EnableXmlDoc();
                     config.AddCommand<OptionVectorCommand>("cmd");
                 });
 
                 // When
-                var (_, output) = fixture.Run("@xmldoc");
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+
+                // Then
+                output.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Xml/default_command.xml")]
+            public void Should_Dump_Correct_Model_For_Model_With_Default_Command(string expected)
+            {
+                // Given
+                var fixture = new CommandAppFixture().WithDefaultCommand<DogCommand>();
+                fixture.Configure(config =>
+                {
+                    config.AddCommand<HorseCommand>("horse");
+                });
+
+                // When
+                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
                 output.ShouldBe(expected);

@@ -1,6 +1,4 @@
 using System;
-using Spectre.Cli.Internal.Binding;
-using Spectre.Cli.Internal.Parsing;
 
 namespace Spectre.Cli.Internal
 {

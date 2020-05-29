@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Spectre.Cli.Internal.Configuration;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal static class CommandModelBuilder
     {
@@ -186,7 +185,7 @@ namespace Spectre.Cli.Internal.Modelling
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
-            var kind = GetOptionKind(property.PropertyType, attribute);
+            var kind = GetOptionKind(property.PropertyType, attribute, deconstructor, converter);
 
             if (defaultValue == null && property.PropertyType == typeof(bool))
             {
@@ -212,11 +211,20 @@ namespace Spectre.Cli.Internal.Modelling
                 attribute, validators);
         }
 
-        private static ParameterKind GetOptionKind(Type type, CommandOptionAttribute attribute)
+        private static ParameterKind GetOptionKind(
+            Type type,
+            CommandOptionAttribute attribute,
+            PairDeconstructorAttribute? deconstructor,
+            TypeConverterAttribute? converter)
         {
             if (attribute.ValueIsOptional)
             {
                 return ParameterKind.FlagWithValue;
+            }
+
+            if (type.IsPairDeconstructable() && (deconstructor != null || converter == null))
+            {
+                return ParameterKind.Pair;
             }
 
             return GetParameterKind(type);

@@ -2,18 +2,18 @@ using System;
 
 namespace Spectre.Cli.Testing
 {
-    public sealed class ActionInterceptor : ICommandSettingsInterceptor
+    public sealed class ActionInterceptor : ICommandInterceptor
     {
-        private readonly Action<CommandSettings> _action;
+        private readonly Action<CommandContext, CommandSettings> _action;
 
-        public ActionInterceptor(Action<CommandSettings> action)
+        public ActionInterceptor(Action<CommandContext, CommandSettings> action)
         {
             _action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        public void Intercept(CommandSettings settings)
+        public void Intercept(CommandContext context, CommandSettings settings)
         {
-            _action(settings);
+            _action(context, settings);
         }
     }
 }

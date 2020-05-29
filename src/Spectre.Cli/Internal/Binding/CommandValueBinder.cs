@@ -1,8 +1,6 @@
 using System;
-using Spectre.Cli.Internal.Collections;
-using Spectre.Cli.Internal.Modelling;
 
-namespace Spectre.Cli.Internal.Binding
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandValueBinder
     {
@@ -15,15 +13,15 @@ namespace Spectre.Cli.Internal.Binding
 
         public void Bind(CommandParameter parameter, ITypeResolver resolver, object? value)
         {
-            if (parameter.Property.PropertyType.IsPairDeconstructable() && parameter.WantRawValue)
+            if (parameter.ParameterKind == ParameterKind.Pair)
             {
-                value = GetPair(parameter, resolver, value);
+                value = GetLookup(parameter, resolver, value);
             }
-            else if (parameter.Property.PropertyType.IsArray)
+            else if (parameter.ParameterKind == ParameterKind.Vector)
             {
                 value = GetArray(parameter, value);
             }
-            else if (parameter.IsFlagValue())
+            else if (parameter.ParameterKind == ParameterKind.FlagWithValue)
             {
                 value = GetFlag(parameter, value);
             }
@@ -31,7 +29,7 @@ namespace Spectre.Cli.Internal.Binding
             _lookup.SetValue(parameter, value);
         }
 
-        private object GetPair(CommandParameter parameter, ITypeResolver resolver, object? value)
+        private object GetLookup(CommandParameter parameter, ITypeResolver resolver, object? value)
         {
             var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
 
