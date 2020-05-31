@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Rendering;
+using Spectre.Cli.Internal;
 
 namespace Spectre.Cli.Exceptions
 {

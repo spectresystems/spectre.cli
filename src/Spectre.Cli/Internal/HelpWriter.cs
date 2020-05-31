@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Internal
 {
     internal static class HelpWriter
     {
-        // Consider removing this in favor for value tuples at some point.
         private sealed class HelpArgument
         {
             public string Name { get; }
@@ -25,19 +22,20 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        // Consider removing this in favor for value tuples at some point.
         private sealed class HelpOption
         {
             public string Short { get; }
             public string Long { get; }
             public string? Value { get; }
+            public bool? ValueIsOptional { get; }
             public string? Description { get; }
 
-            public HelpOption(string @short, string @long, string? @value, string? description)
+            public HelpOption(string @short, string @long, string? @value, bool? valueIsOptional, string? description)
             {
                 Short = @short;
                 Long = @long;
                 Value = value;
+                ValueIsOptional = valueIsOptional;
                 Description = description;
             }
         }
@@ -244,13 +242,13 @@ namespace Spectre.Cli.Internal
             // Collect all options into a single structure.
             var parameters = new List<HelpOption>
             {
-                new HelpOption("h", "help", null, "Prints help information"),
+                new HelpOption("h", "help", null, null, "Prints help information"),
             };
 
             parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
                 new HelpOption(
                     o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
-                    o.ValueName, o.Description))
+                    o.ValueName, o.ValueIsOptional, o.Description))
                 ?? Array.Empty<HelpOption>());
 
             var options = parameters.ToArray();
@@ -290,7 +288,15 @@ namespace Spectre.Cli.Internal
                     if (option.Value != null)
                     {
                         item.Append(new TextElement(" "));
-                        item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{option.Value}>")));
+
+                        if (option.ValueIsOptional ?? false)
+                        {
+                            item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"[{option.Value}]")));
+                        }
+                        else
+                        {
+                            item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{option.Value}>")));
+                        }
                     }
 
                     result.Add(Tuple.Create(option.Description, item));
@@ -331,6 +337,8 @@ namespace Spectre.Cli.Internal
             bool isDefaultCommand)
         {
             var commands = isDefaultCommand ? model.Commands : command.Commands;
+            commands = command.Commands.Where(x => !x.IsHidden).ToList();
+
             if (commands.Count > 0)
             {
                 composer.Color(ConsoleColor.Yellow, c => c.Text("COMMANDS:")).LineBreak();

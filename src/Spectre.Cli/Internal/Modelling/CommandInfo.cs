@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using Spectre.Cli.Internal.Configuration;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandInfo : ICommandContainer
     {
@@ -16,6 +15,7 @@ namespace Spectre.Cli.Internal.Modelling
         public Type SettingsType { get; }
         public Func<CommandContext, CommandSettings, int>? Delegate { get; }
         public bool IsDefaultCommand { get; }
+        public bool IsHidden { get; }
         public CommandInfo? Parent { get; }
         public IList<CommandInfo> Children { get; }
         public IList<CommandParameter> Parameters { get; }
@@ -36,6 +36,7 @@ namespace Spectre.Cli.Internal.Modelling
             SettingsType = prototype.SettingsType;
             Delegate = prototype.Delegate;
             IsDefaultCommand = prototype.IsDefaultCommand;
+            IsHidden = prototype.IsHidden;
 
             Children = new List<CommandInfo>();
             Parameters = new List<CommandParameter>();

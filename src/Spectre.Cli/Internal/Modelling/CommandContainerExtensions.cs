@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal static class CommandContainerExtensions
     {

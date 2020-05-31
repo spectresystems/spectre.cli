@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Spectre.Cli.Exceptions;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal static class CommandTreeTokenizer
     {
@@ -185,7 +185,7 @@ namespace Spectre.Cli.Internal.Parsing
                     reader.Read(); // Consume
                     context.AddRemaining(character);
 
-                    if (!reader.TryPeek(out character))
+                    if (!reader.TryPeek(out _))
                     {
                         var token = new CommandTreeToken(CommandTreeToken.Kind.String, reader.Position, "=", "=");
                         throw ParseException.OptionValueWasExpected(reader.Original, token);

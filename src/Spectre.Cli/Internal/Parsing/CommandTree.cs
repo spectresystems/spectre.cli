@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Modelling;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandTree
     {

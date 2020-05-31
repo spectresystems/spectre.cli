@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Shouldly;
 
-// ReSharper disable once CheckNamespace
 namespace Spectre.Cli.Testing
 {
     public static class ShouldlyExtensions

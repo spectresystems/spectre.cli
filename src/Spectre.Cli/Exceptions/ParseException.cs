@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Spectre.Cli.Internal;
-using Spectre.Cli.Internal.Exceptions;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing;
-using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli.Exceptions
 {
@@ -107,9 +103,7 @@ namespace Spectre.Cli.Exceptions
 
         internal static ParseException UnknownCommand(CommandModel model, CommandTree? node, IEnumerable<string> args, CommandTreeToken token)
         {
-            var availableCommands = node?.Command ?? (ICommandContainer)model;
             var suggestion = CommandSuggestor.Suggest(model, node?.Command, token.Value);
-
             var text = suggestion != null ? $"Did you mean '{suggestion.Name}'?" : "No such command.";
             return ParseExceptionFactory.Create(args, token, $"Unknown command '{token.Value}'.", text);
         }

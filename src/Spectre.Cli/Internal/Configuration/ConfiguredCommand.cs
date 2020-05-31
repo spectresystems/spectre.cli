@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
 
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal sealed class ConfiguredCommand
     {
@@ -14,6 +14,7 @@ namespace Spectre.Cli.Internal.Configuration
         public Type SettingsType { get; }
         public Func<CommandContext, CommandSettings, int>? Delegate { get; }
         public bool IsDefaultCommand { get; }
+        public bool IsHidden { get; set; }
 
         public IList<ConfiguredCommand> Children { get; }
         public IList<string[]> Examples { get; }

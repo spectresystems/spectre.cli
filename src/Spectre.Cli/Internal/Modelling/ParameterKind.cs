@@ -1,16 +1,18 @@
 using System.ComponentModel;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal enum ParameterKind
     {
         [Description("flag")]
         Flag = 0,
-        [Description("flagvalue")]
-        FlagWithValue = 1,
         [Description("scalar")]
-        Scalar = 2,
+        Scalar = 1,
         [Description("vector")]
-        Vector = 3,
+        Vector = 2,
+        [Description("flagvalue")]
+        FlagWithValue = 3,
+        [Description("pair")]
+        Pair = 4,
     }
 }

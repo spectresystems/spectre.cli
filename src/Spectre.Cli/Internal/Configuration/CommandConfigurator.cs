@@ -1,4 +1,4 @@
-namespace Spectre.Cli.Internal.Configuration
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandConfigurator : ICommandConfigurator
     {
@@ -30,6 +30,12 @@ namespace Spectre.Cli.Internal.Configuration
         public ICommandConfigurator WithData(object data)
         {
             Command.Data = data;
+            return this;
+        }
+
+        public ICommandConfigurator IsHidden()
+        {
+            Command.IsHidden = true;
             return this;
         }
     }

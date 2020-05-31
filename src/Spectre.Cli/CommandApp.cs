@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal;
-using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Rendering;
 
 namespace Spectre.Cli
 {
@@ -15,6 +13,7 @@ namespace Spectre.Cli
     {
         private readonly Configurator _configurator;
         private readonly CommandExecutor _executor;
+        private bool _executed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandApp"/> class.
@@ -22,6 +21,8 @@ namespace Spectre.Cli
         /// <param name="registrar">The registrar.</param>
         public CommandApp(ITypeRegistrar? registrar = null)
         {
+            registrar ??= new DefaultTypeRegistrar();
+
             _configurator = new Configurator(registrar);
             _executor = new CommandExecutor(registrar);
         }
@@ -69,6 +70,19 @@ namespace Spectre.Cli
         {
             try
             {
+                if (!_executed)
+                {
+                    // Add built-in (hidden) commands.
+                    _configurator.AddBranch(Constants.Commands.Branch, cli =>
+                    {
+                        cli.HideBranch();
+                        cli.AddCommand<VersionCommand>(Constants.Commands.Version);
+                        cli.AddCommand<XmlDocCommand>(Constants.Commands.XmlDoc);
+                    });
+                }
+
+                _executed = true;
+
                 return await _executor
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);

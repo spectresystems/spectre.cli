@@ -16,10 +16,15 @@ namespace Spectre.Cli
         IConsoleWriter? Console { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="ICommandSettingsInterceptor"/> used
+        /// Gets or sets the <see cref="ICommandInterceptor"/> used
         /// to intercept settings before it's being sent to the command.
         /// </summary>
-        ICommandSettingsInterceptor? Interceptor { get; set; }
+        ICommandInterceptor? Interceptor { get; set; }
+
+        /// <summary>
+        /// Gets the type registrar.
+        /// </summary>
+        ITypeRegistrarFrontend Registrar { get;  }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not parsing is strict.
@@ -35,17 +40,5 @@ namespace Spectre.Cli
         /// Gets or sets a value indicating whether or not examples should be validated.
         /// </summary>
         bool ValidateExamples { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not XML documentation can be exported.
-        /// This value can be overridden by setting the environment variable <c>SPECTRE_CLI_XMLDOC</c>.
-        /// </summary>
-        bool XmlDocEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not debug mode can be used.
-        /// This value can be overridden by setting the environment variable <c>SPECTRE_CLI_DEBUG</c>.
-        /// </summary>
-        bool DebugEnabled { get; set; }
     }
 }

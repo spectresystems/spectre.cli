@@ -37,7 +37,7 @@ dotnet_diagnostic.SA1117.severity = none
 dotnet_diagnostic.CA1826.severity = none
 
 # CA1814: Prefer jagged arrays over multidimensional
-dotnet_diagnostic.CA1814.severity = suggestion
+dotnet_diagnostic.CA1814.severity = none
 
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
@@ -56,3 +56,6 @@ dotnet_diagnostic.SA1600.severity = none
 
 # SA1402: File may only contain a single type
 dotnet_diagnostic.SA1402.severity = none
+
+# RCS1057: Add empty line between declarations.
+dotnet_diagnostic.RCS1057.severity = none

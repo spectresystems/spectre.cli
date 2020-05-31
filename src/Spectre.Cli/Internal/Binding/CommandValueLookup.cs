@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Cli.Internal.Modelling;
 
-namespace Spectre.Cli.Internal.Binding
+namespace Spectre.Cli.Internal
 {
     internal sealed class CommandValueLookup : IEnumerable<(CommandParameter Parameter, object? Value)>
     {

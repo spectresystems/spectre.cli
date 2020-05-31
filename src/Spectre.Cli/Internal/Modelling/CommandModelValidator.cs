@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Parsing;
 
-namespace Spectre.Cli.Internal.Modelling
+namespace Spectre.Cli.Internal
 {
     internal static class CommandModelValidator
     {

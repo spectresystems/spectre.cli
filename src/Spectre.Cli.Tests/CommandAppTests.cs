@@ -14,11 +14,7 @@ namespace Spectre.Cli.Tests
         public void Should_Pass_Case_1()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -33,7 +29,7 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[]
+            var (result, _, _, settings) = app.Run(new[]
             {
                 "animal", "--alive", "mammal", "--name",
                 "Rufus", "dog", "12", "--good-boy",
@@ -41,21 +37,20 @@ namespace Spectre.Cli.Tests
 
             // Then
             result.ShouldBe(0);
-            settings.Age.ShouldBe(12);
-            settings.GoodBoy.ShouldBe(true);
-            settings.Name.ShouldBe("Rufus");
-            settings.IsAlive.ShouldBe(true);
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Age.ShouldBe(12);
+                dog.GoodBoy.ShouldBe(true);
+                dog.Name.ShouldBe("Rufus");
+                dog.IsAlive.ShouldBe(true);
+            });
         }
 
         [Fact]
         public void Should_Pass_Case_2()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -63,26 +58,29 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "dog", "12", "4", "--good-boy",
+                "--name", "Rufus", "--alive",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Legs.ShouldBe(12);
-            settings.Age.ShouldBe(4);
-            settings.GoodBoy.ShouldBe(true);
-            settings.Name.ShouldBe("Rufus");
-            settings.IsAlive.ShouldBe(true);
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Legs.ShouldBe(12);
+                dog.Age.ShouldBe(4);
+                dog.GoodBoy.ShouldBe(true);
+                dog.Name.ShouldBe("Rufus");
+                dog.IsAlive.ShouldBe(true);
+            });
         }
 
         [Fact]
         public void Should_Pass_Case_3()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -94,25 +92,28 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "animal", "dog", "12", "--good-boy",
+                "--name", "Rufus",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Age.ShouldBe(12);
-            settings.GoodBoy.ShouldBe(true);
-            settings.Name.ShouldBe("Rufus");
-            settings.IsAlive.ShouldBe(false);
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Age.ShouldBe(12);
+                dog.GoodBoy.ShouldBe(true);
+                dog.Name.ShouldBe("Rufus");
+                dog.IsAlive.ShouldBe(false);
+            });
         }
 
         [Fact]
         public void Should_Pass_Case_4()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -123,26 +124,29 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "animal", "4", "dog", "12", "--good-boy",
+                "--name", "Rufus",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Legs.ShouldBe(4);
-            settings.Age.ShouldBe(12);
-            settings.GoodBoy.ShouldBe(true);
-            settings.IsAlive.ShouldBe(false);
-            settings.Name.ShouldBe("Rufus");
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Legs.ShouldBe(4);
+                dog.Age.ShouldBe(12);
+                dog.GoodBoy.ShouldBe(true);
+                dog.IsAlive.ShouldBe(false);
+                dog.Name.ShouldBe("Rufus");
+            });
         }
 
         [Fact]
         public void Should_Pass_Case_5()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new OptionVectorSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -150,25 +154,28 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "multi", "--foo", "a", "--foo", "b", "--bar", "1", "--foo", "c", "--bar", "2" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "multi", "--foo", "a", "--foo", "b",
+                "--bar", "1", "--foo", "c", "--bar", "2",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Foo.Length.ShouldBe(3);
-            settings.Foo.ShouldBe(new[] { "a", "b", "c" });
-            settings.Bar.Length.ShouldBe(2);
-            settings.Bar.ShouldBe(new[] { 1, 2 });
+            settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+            {
+                vec.Foo.Length.ShouldBe(3);
+                vec.Foo.ShouldBe(new[] { "a", "b", "c" });
+                vec.Bar.Length.ShouldBe(2);
+                vec.Bar.ShouldBe(new[] { 1, 2 });
+            });
         }
 
         [Fact]
         public void Should_Pass_Case_6()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new ArgumentVectorSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -176,23 +183,25 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "multi", "a", "b", "c" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "multi", "a", "b", "c",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Foo.Length.ShouldBe(3);
-            settings.Foo.ShouldBe(new[] { "a", "b", "c" });
+            settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+            {
+                vec.Foo.Length.ShouldBe(3);
+                vec.Foo.ShouldBe(new[] { "a", "b", "c" });
+            });
         }
 
         [Fact]
         public void Should_Be_Able_To_Use_Command_Alias()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new OptionVectorSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -200,12 +209,18 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "multiple", "--foo", "a" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "multiple", "--foo", "a",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Foo.Length.ShouldBe(1);
-            settings.Foo.ShouldBe(new[] { "a" });
+            settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+            {
+                vec.Foo.Length.ShouldBe(1);
+                vec.Foo.ShouldBe(new[] { "a" });
+            });
         }
 
         [Fact]
@@ -236,8 +251,6 @@ namespace Spectre.Cli.Tests
             // Given
             var registrar = new FakeTypeRegistrar();
             var app = new CommandApp(registrar);
-
-            // When
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -249,9 +262,14 @@ namespace Spectre.Cli.Tests
                 });
             });
 
+            // When
+            app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
+            });
+
             // Then
             registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
-            registrar.Registrations[typeof(ICommand)].Count.ShouldBe(3);
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(GenericCommand<FooCommandSettings>));
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(HorseCommand));
@@ -263,17 +281,20 @@ namespace Spectre.Cli.Tests
             // Given
             var registrar = new FakeTypeRegistrar();
             var app = new CommandApp<DogCommand>(registrar);
-
-            // When
             app.Configure(config =>
             {
                 config.PropagateExceptions();
             });
 
+            // When
+            app.Run(new[]
+            {
+                "12", "4",
+            });
+
             // Then
             registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
             registrar.Registrations.ContainsKey(typeof(DogSettings));
-            registrar.Registrations[typeof(ICommand)].Count.ShouldBe(1);
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
         }
 
@@ -283,11 +304,15 @@ namespace Spectre.Cli.Tests
             // Given
             var registrar = new FakeTypeRegistrar();
             var app = new CommandApp<DogCommand>(registrar);
-
-            // When
             app.Configure(config =>
             {
                 config.PropagateExceptions();
+            });
+
+            // When
+            app.Run(new[]
+            {
+                "12", "4",
             });
 
             // Then
@@ -304,11 +329,7 @@ namespace Spectre.Cli.Tests
         public void Should_Accept_Explicit_Boolan_Flag(string value, bool expected)
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -316,11 +337,17 @@ namespace Spectre.Cli.Tests
             });
 
             // When
-            var result = app.Run(new[] { "dog", "12", "4", "--alive", value });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "dog", "12", "4", "--alive", value,
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.IsAlive.ShouldBe(expected);
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.IsAlive.ShouldBe(expected);
+            });
         }
 
         [Fact]
@@ -329,8 +356,6 @@ namespace Spectre.Cli.Tests
             // Given
             var registrar = new FakeTypeRegistrar();
             var app = new CommandApp(registrar);
-
-            // When
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -339,6 +364,12 @@ namespace Spectre.Cli.Tests
                     animal.AddCommand<DogCommand>("dog");
                     animal.AddCommand<HorseCommand>("horse");
                 });
+            });
+
+            // When
+            app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
             });
 
             // Then
@@ -354,8 +385,7 @@ namespace Spectre.Cli.Tests
         public void Should_Throw_When_Encountering_Unknown_Option_In_Strict_Mode()
         {
             // Given
-            var registrar = new FakeTypeRegistrar();
-            var app = new CommandApp(registrar);
+            var app = new CommandApp();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -377,148 +407,127 @@ namespace Spectre.Cli.Tests
         public void Should_Add_Unknown_Option_To_Remaining_Arguments_In_Relaxed_Mode()
         {
             // Given
-            var capturedContext = default(CommandContext);
-
-            var resolver = new FakeTypeResolver();
-            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-            resolver.Register(new DogSettings());
-            resolver.Register(command);
-
-            var registrar = new FakeTypeRegistrar(resolver);
-            var app = new CommandApp(registrar);
-
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                    animal.AddCommand<DogCommand>("dog");
                 });
             });
 
             // When
-            var result = app.Run(new[] { "animal", "4", "dog", "12", "--foo", "bar" });
+            var (result, _, ctx, _) = app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
+                "--foo", "bar",
+            });
 
             // Then
-            capturedContext.ShouldNotBeNull();
-            capturedContext.Remaining.Parsed.Count.ShouldBe(1);
-            capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+            ctx.ShouldNotBeNull();
+            ctx.Remaining.Parsed.Count.ShouldBe(1);
+            ctx.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
         }
 
         [Fact]
         public void Should_Add_Unknown_Boolean_Option_To_Remaining_Arguments_In_Relaxed_Mode()
         {
             // Given
-            var capturedContext = default(CommandContext);
-
-            var resolver = new FakeTypeResolver();
-            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-            resolver.Register(new DogSettings());
-            resolver.Register(command);
-
-            var registrar = new FakeTypeRegistrar(resolver);
-            var app = new CommandApp(registrar);
-
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                    animal.AddCommand<DogCommand>("dog");
                 });
             });
 
             // When
-            var result = app.Run(new[] { "animal", "4", "dog", "12", "--foo" });
+            var (result, _, ctx, _) = app.Run(new[]
+            {
+                "animal", "4", "dog", "12", "--foo",
+            });
 
             // Then
-            capturedContext.ShouldNotBeNull();
-            capturedContext.Remaining.Parsed.Count.ShouldBe(1);
-            capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
+            ctx.ShouldNotBeNull();
+            ctx.Remaining.Parsed.Count.ShouldBe(1);
+            ctx.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
         }
 
         [Fact]
         public void Should_Be_Able_To_Set_The_Default_Command()
         {
             // Given
-            var resolver = new FakeTypeResolver();
-            var settings = new DogSettings();
-            resolver.Register(settings);
-
-            var app = new CommandApp(new FakeTypeRegistrar(resolver));
-            app.SetDefaultCommand<DogCommand>();
+            var app = new CommandAppFixture();
+            app.WithDefaultCommand<DogCommand>();
 
             // When
-            var result = app.Run(new[] { "4", "12", "--good-boy", "--name", "Rufus" });
+            var (result, _, _, settings) = app.Run(new[]
+            {
+                "4", "12", "--good-boy", "--name", "Rufus",
+            });
 
             // Then
             result.ShouldBe(0);
-            settings.Legs.ShouldBe(4);
-            settings.Age.ShouldBe(12);
-            settings.GoodBoy.ShouldBe(true);
-            settings.Name.ShouldBe("Rufus");
+            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Legs.ShouldBe(4);
+                dog.Age.ShouldBe(12);
+                dog.GoodBoy.ShouldBe(true);
+                dog.Name.ShouldBe("Rufus");
+            });
         }
 
         [Fact]
         public void Should_Set_Command_Name_In_Context()
         {
             // Given
-            var capturedContext = default(CommandContext);
-
-            var resolver = new FakeTypeResolver();
-            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-            resolver.Register(new DogSettings());
-            resolver.Register(command);
-
-            var registrar = new FakeTypeRegistrar(resolver);
-            var app = new CommandApp(registrar);
-
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                    animal.AddCommand<DogCommand>("dog");
                 });
             });
 
             // When
-            var result = app.Run(new[] { "animal", "4", "dog", "12" });
+            var (result, _, ctx, _) = app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
+            });
 
             // Then
-            capturedContext.ShouldNotBeNull();
-            capturedContext.Name.ShouldBe("dog");
+            ctx.ShouldNotBeNull();
+            ctx.Name.ShouldBe("dog");
         }
 
         [Fact]
         public void Should_Pass_Command_Data_In_Context()
         {
             // Given
-            var capturedContext = default(CommandContext);
-
-            var resolver = new FakeTypeResolver();
-            var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-            resolver.Register(new DogSettings());
-            resolver.Register(command);
-
-            var registrar = new FakeTypeRegistrar(resolver);
-            var app = new CommandApp(registrar);
-
+            var app = new CommandAppFixture();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
-                    animal.AddCommand<InterceptingCommand<DogSettings>>("dog").WithData(123);
+                    animal.AddCommand<DogCommand>("dog").WithData(123);
                 });
             });
 
             // When
-            var result = app.Run(new[] { "animal", "4", "dog", "12" });
+            var (result, _, ctx, _) = app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
+            });
 
             // Then
-            capturedContext.ShouldNotBeNull();
-            capturedContext.Data.ShouldBe(123);
+            ctx.ShouldNotBeNull();
+            ctx.Data.ShouldBe(123);
         }
 
         public sealed class Delegate_Commands
@@ -527,9 +536,7 @@ namespace Spectre.Cli.Tests
             public void Should_Execute_Delegate_Command_At_Root_Level()
             {
                 // Given
-                var intercepted = false;
-                var age = 0;
-                var legs = 0;
+                var dog = default(DogSettings);
                 var data = 0;
 
                 var app = new CommandApp();
@@ -539,9 +546,7 @@ namespace Spectre.Cli.Tests
                     config.AddDelegate<DogSettings>("foo",
                         (context, settings) =>
                         {
-                            intercepted = true;
-                            age = settings.Age;
-                            legs = settings.Legs;
+                            dog = settings;
                             data = (int)context.Data;
                             return 1;
                         }).WithData(2);
@@ -552,9 +557,9 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(1);
-                intercepted.ShouldBeTrue();
-                age.ShouldBe(12);
-                legs.ShouldBe(4);
+                dog.ShouldNotBeNull();
+                dog.Age.ShouldBe(12);
+                dog.Legs.ShouldBe(4);
                 data.ShouldBe(2);
             }
 
@@ -562,9 +567,7 @@ namespace Spectre.Cli.Tests
             public void Should_Execute_Nested_Delegate_Command()
             {
                 // Given
-                var intercepted = false;
-                var age = 0;
-                var legs = 0;
+                var dog = default(DogSettings);
                 var data = 0;
 
                 var app = new CommandApp();
@@ -576,9 +579,7 @@ namespace Spectre.Cli.Tests
                         foo.AddDelegate<DogSettings>("bar",
                             (context, settings) =>
                             {
-                                intercepted = true;
-                                age = settings.Age;
-                                legs = settings.Legs;
+                                dog = settings;
                                 data = (int)context.Data;
                                 return 1;
                             }).WithData(2);
@@ -590,9 +591,9 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(1);
-                intercepted.ShouldBeTrue();
-                age.ShouldBe(12);
-                legs.ShouldBe(4);
+                dog.ShouldNotBeNull();
+                dog.Age.ShouldBe(12);
+                dog.Legs.ShouldBe(4);
                 data.ShouldBe(2);
             }
         }
@@ -603,65 +604,60 @@ namespace Spectre.Cli.Tests
             public void Should_Register_Remaining_Parsed_Arguments_With_Context()
             {
                 // Given
-                var capturedContext = default(CommandContext);
-
-                var resolver = new FakeTypeResolver();
-                var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-                resolver.Register(new DogSettings());
-                resolver.Register(command);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
-                        animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                        animal.AddCommand<DogCommand>("dog");
                     });
                 });
 
                 // When
-                app.Run(new[] { "animal", "4", "dog", "12", "--", "--foo", "bar", "--foo", "baz", "-bar", "\"baz\"", "qux" });
+                var (result, _, ctx, _) = app.Run(new[]
+                {
+                    "animal", "4", "dog", "12", "--",
+                    "--foo", "bar", "--foo", "baz",
+                    "-bar", "\"baz\"", "qux",
+                });
 
                 // Then
-                capturedContext.Remaining.Parsed.Count.ShouldBe(4);
-                capturedContext.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-                capturedContext.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-                capturedContext.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-                capturedContext.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+                ctx.Remaining.Parsed.Count.ShouldBe(4);
+                ctx.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
+                ctx.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
+                ctx.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
+                ctx.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
             }
 
             [Fact]
             public void Should_Register_Remaining_Raw_Arguments_With_Context()
             {
                 // Given
-                var capturedContext = default(CommandContext);
-
-                var resolver = new FakeTypeResolver();
-                var command = new InterceptingCommand<DogSettings>((context, _) => { capturedContext = context; });
-                resolver.Register(new DogSettings());
-                resolver.Register(command);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                     config.AddBranch<AnimalSettings>("animal", animal =>
                     {
-                        animal.AddCommand<InterceptingCommand<DogSettings>>("dog");
+                        animal.AddCommand<DogCommand>("dog");
                     });
                 });
 
                 // When
-                app.Run(new[] { "animal", "4", "dog", "12", "--", "--foo", "bar", "-bar", "\"baz\"", "qux" });
+                var (result, _, ctx, _) = app.Run(new[]
+                {
+                    "animal", "4", "dog", "12", "--",
+                    "--foo", "bar", "-bar", "\"baz\"", "qux",
+                });
 
                 // Then
-                capturedContext.Remaining.Raw.Count.ShouldBe(5);
-                capturedContext.Remaining.Raw[0].ShouldBe("--foo");
-                capturedContext.Remaining.Raw[1].ShouldBe("bar");
-                capturedContext.Remaining.Raw[2].ShouldBe("-bar");
-                capturedContext.Remaining.Raw[3].ShouldBe("\"baz\"");
-                capturedContext.Remaining.Raw[4].ShouldBe("qux");
+                ctx.Remaining.Raw.Count.ShouldBe(5);
+                ctx.Remaining.Raw[0].ShouldBe("--foo");
+                ctx.Remaining.Raw[1].ShouldBe("bar");
+                ctx.Remaining.Raw[2].ShouldBe("-bar");
+                ctx.Remaining.Raw[3].ShouldBe("\"baz\"");
+                ctx.Remaining.Raw[4].ShouldBe("qux");
             }
         }
 
@@ -671,7 +667,7 @@ namespace Spectre.Cli.Tests
             public void Should_Not_Propagate_Runtime_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandApp(new FakeTypeRegistrar());
+                var app = new CommandApp();
                 app.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -692,7 +688,7 @@ namespace Spectre.Cli.Tests
             public void Should_Not_Propagate_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandApp(new FakeTypeRegistrar());
+                var app = new CommandApp();
                 app.Configure(config =>
                 {
                     config.AddCommand<ThrowingCommand>("throw");

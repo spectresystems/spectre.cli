@@ -2,10 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Modelling;
-using Spectre.Cli.Internal.Parsing;
 
-namespace Spectre.Cli.Internal.Binding
+namespace Spectre.Cli.Internal
 {
     internal static class CommandValueResolver
     {

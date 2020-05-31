@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Spectre.Cli.Internal.Rendering
+namespace Spectre.Cli.Internal
 {
     internal static class RenderableExtensions
     {

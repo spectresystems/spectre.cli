@@ -5,12 +5,13 @@ namespace Spectre.Cli
     /// will intercept command settings before it's
     /// passed to a command.
     /// </summary>
-    public interface ICommandSettingsInterceptor
+    public interface ICommandInterceptor
     {
         /// <summary>
-        /// Intercepts command settings before it's passed to a command.
+        /// Intercepts command information before it's passed to a command.
         /// </summary>
+        /// <param name="context">The intercepted <see cref="CommandContext"/>.</param>
         /// <param name="settings">The intercepted <see cref="CommandSettings"/>.</param>
-        void Intercept(CommandSettings settings);
+        void Intercept(CommandContext context, CommandSettings settings);
     }
 }

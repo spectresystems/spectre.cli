@@ -1,5 +1,5 @@
 using System;
-using Spectre.Cli.Internal.Rendering;
+using Spectre.Cli.Internal;
 
 namespace Spectre.Cli
 {

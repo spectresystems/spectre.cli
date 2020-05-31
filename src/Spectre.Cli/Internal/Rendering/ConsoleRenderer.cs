@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Spectre.Cli.Internal.Rendering
+namespace Spectre.Cli.Internal
 {
     internal sealed class ConsoleRenderer : IRenderer
     {

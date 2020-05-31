@@ -25,7 +25,28 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
+
+                // Then
+                output.ShouldBe(expected);
+            }
+
+            [Theory]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Hidden")]
+            public void Should_Skip_Hidden_Commands(string expected)
+            {
+                // Given
+                var fixture = new CommandAppFixture();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                    configurator.AddCommand<DogCommand>("dog");
+                    configurator.AddCommand<HorseCommand>("horse");
+                    configurator.AddCommand<GiraffeCommand>("giraffe").IsHidden();
+                });
+
+                // When
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -48,7 +69,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("cat", "--help");
+                var (_, output, _, _) = fixture.Run("cat", "--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -71,7 +92,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("cat", "lion", "--help");
+                var (_, output, _, _) = fixture.Run("cat", "lion", "--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -90,7 +111,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -112,7 +133,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -134,7 +155,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -160,7 +181,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -188,7 +209,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("animal", "--help");
+                var (_, output, _, _) = fixture.Run("animal", "--help");
 
                 // Then
                 output.ShouldBe(expected);
@@ -208,7 +229,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var (_, output) = fixture.Run("--help");
+                var (_, output, _, _) = fixture.Run("--help");
 
                 // Then
                 output.ShouldBe(expected);

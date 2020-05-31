@@ -1,6 +1,6 @@
 using System;
 
-namespace Spectre.Cli.Internal.Rendering
+namespace Spectre.Cli.Internal
 {
     internal interface IRenderer
     {

@@ -1,7 +1,5 @@
 using System.Globalization;
-using Spectre.Cli.Internal.Configuration;
-using Spectre.Cli.Internal.Exceptions;
-using Spectre.Cli.Internal.Rendering;
+using Spectre.Cli.Internal;
 
 namespace Spectre.Cli.Exceptions
 {

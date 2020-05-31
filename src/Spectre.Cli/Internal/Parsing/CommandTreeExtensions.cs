@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using Spectre.Cli.Internal.Modelling;
 
-namespace Spectre.Cli.Internal.Parsing
+namespace Spectre.Cli.Internal
 {
     internal static class CommandTreeExtensions
     {

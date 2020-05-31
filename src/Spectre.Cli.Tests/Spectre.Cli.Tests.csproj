@@ -16,11 +16,17 @@
   <ItemGroup>
     <None Remove="Properties\Resources\Help\Command_Examples_DefinedOnCommand" />
     <None Remove="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
+    <None Remove="Properties\Resources\Help\Hidden" />
     <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
     <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnLeaves" />
     <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnRoot" />
     <None Remove="Properties\Resources\Models\case5.xml" />
+    <None Remove="Properties\Resources\Models\default_command.xml" />
     <None Remove="Properties\Resources\Parsing\case5.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Spectre.Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +62,7 @@
     <EmbeddedResource Include="Properties\Resources\Help\Default" />
     <EmbeddedResource Include="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
     <EmbeddedResource Include="Properties\Resources\Help\Leaf" />
+    <EmbeddedResource Include="Properties\Resources\Help\Hidden" />
     <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnLeaves" />
     <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnRoot" />
     <EmbeddedResource Include="Properties\Resources\Help\Root" />
@@ -75,6 +82,7 @@
     <EmbeddedResource Include="Properties\Resources\Exceptions\Template\MissingLongAndShortName" />
     <EmbeddedResource Include="Properties\Resources\Help\Command" />
     <EmbeddedResource Include="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
+    <EmbeddedResource Include="Properties\Resources\Xml\default_command.xml" />
     <EmbeddedResource Include="Properties\Resources\Models\case1.xml" />
     <EmbeddedResource Include="Properties\Resources\Models\case2.xml" />
     <EmbeddedResource Include="Properties\Resources\Models\case3.xml" />
@@ -122,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Imported\" />
   </ItemGroup>
 
 

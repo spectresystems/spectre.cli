@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
-using Spectre.Cli.Internal.Parsing;
-using Spectre.Cli.Internal.Rendering;
 
-namespace Spectre.Cli.Internal.Exceptions
+namespace Spectre.Cli.Internal
 {
     internal static class ParseExceptionFactory
     {

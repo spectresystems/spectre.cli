@@ -16,7 +16,7 @@ namespace Spectre.Cli.Tests
             public void Should_Throw_If_Attribute_Validation_Fails()
             {
                 // Given
-                var app = new CommandApp(new FakeTypeRegistrar());
+                var app = new CommandApp();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -41,7 +41,7 @@ namespace Spectre.Cli.Tests
             public void Should_Throw_If_Settings_Validation_Fails()
             {
                 // Given
-                var app = new CommandApp(new FakeTypeRegistrar());
+                var app = new CommandApp();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -66,7 +66,7 @@ namespace Spectre.Cli.Tests
             public void Should_Throw_If_Command_Validation_Fails()
             {
                 // Given
-                var app = new CommandApp(new FakeTypeRegistrar());
+                var app = new CommandApp();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();

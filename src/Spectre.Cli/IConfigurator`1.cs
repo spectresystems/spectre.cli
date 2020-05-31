@@ -22,6 +22,13 @@ namespace Spectre.Cli
         void AddExample(string[] args);
 
         /// <summary>
+        /// Marks the branch as hidden.
+        /// Hidden branches do not show up in help documentation or
+        /// generated XML models.
+        /// </summary>
+        void HideBranch();
+
+        /// <summary>
         /// Adds a command.
         /// </summary>
         /// <typeparam name="TCommand">The command type.</typeparam>

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-// ReSharper disable once CheckNamespace
 namespace Spectre.Cli.Testing
 {
     public static class XmlElementExtensions

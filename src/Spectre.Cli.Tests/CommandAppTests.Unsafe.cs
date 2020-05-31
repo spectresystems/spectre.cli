@@ -17,11 +17,7 @@ namespace Spectre.Cli.Tests
             public void Can_Mix_Safe_And_Unsafe_Configurators()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -37,7 +33,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
@@ -45,21 +41,20 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Age.ShouldBe(12);
-                settings.GoodBoy.ShouldBe(true);
-                settings.Name.ShouldBe("Rufus");
-                settings.IsAlive.ShouldBe(true);
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Age.ShouldBe(12);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.Name.ShouldBe("Rufus");
+                    dog.IsAlive.ShouldBe(true);
+                });
             }
 
             [Fact]
             public void Can_Turn_Safety_On_After_Turning_It_Off_For_Branch()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -76,7 +71,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
@@ -84,10 +79,13 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Age.ShouldBe(12);
-                settings.GoodBoy.ShouldBe(true);
-                settings.Name.ShouldBe("Rufus");
-                settings.IsAlive.ShouldBe(true);
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Age.ShouldBe(12);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.Name.ShouldBe("Rufus");
+                    dog.IsAlive.ShouldBe(true);
+                });
             }
 
             [Fact]
@@ -116,11 +114,7 @@ namespace Spectre.Cli.Tests
             public void Should_Pass_Case_1()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -136,7 +130,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[]
+                var (result, _, _, settings) = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
@@ -144,21 +138,20 @@ namespace Spectre.Cli.Tests
 
                 // Then
                 result.ShouldBe(0);
-                settings.Age.ShouldBe(12);
-                settings.GoodBoy.ShouldBe(true);
-                settings.Name.ShouldBe("Rufus");
-                settings.IsAlive.ShouldBe(true);
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Age.ShouldBe(12);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.Name.ShouldBe("Rufus");
+                    dog.IsAlive.ShouldBe(true);
+                });
             }
 
             [Fact]
             public void Should_Pass_Case_2()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -166,26 +159,29 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "dog", "12", "4", "--good-boy", "--name", "Rufus", "--alive" });
+                var (result, _, _, settings) = app.Run(new[]
+                {
+                    "dog", "12", "4", "--good-boy",
+                    "--name", "Rufus", "--alive",
+                });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Legs.ShouldBe(12);
-                settings.Age.ShouldBe(4);
-                settings.GoodBoy.ShouldBe(true);
-                settings.Name.ShouldBe("Rufus");
-                settings.IsAlive.ShouldBe(true);
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Legs.ShouldBe(12);
+                    dog.Age.ShouldBe(4);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.Name.ShouldBe("Rufus");
+                    dog.IsAlive.ShouldBe(true);
+                });
             }
 
             [Fact]
             public void Should_Pass_Case_3()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -197,25 +193,28 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "animal", "dog", "12", "--good-boy", "--name", "Rufus" });
+                var (result, _, _, settings) = app.Run(new[]
+                {
+                    "animal", "dog", "12", "--good-boy",
+                    "--name", "Rufus",
+                });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Age.ShouldBe(12);
-                settings.GoodBoy.ShouldBe(true);
-                settings.Name.ShouldBe("Rufus");
-                settings.IsAlive.ShouldBe(false);
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Age.ShouldBe(12);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.Name.ShouldBe("Rufus");
+                    dog.IsAlive.ShouldBe(false);
+                });
             }
 
             [Fact]
             public void Should_Pass_Case_4()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new DogSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -226,26 +225,29 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "animal", "4", "dog", "12", "--good-boy", "--name", "Rufus" });
+                var (result, _, _, settings) = app.Run(new[]
+                {
+                    "animal", "4", "dog", "12",
+                    "--good-boy", "--name", "Rufus",
+                });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Legs.ShouldBe(4);
-                settings.Age.ShouldBe(12);
-                settings.GoodBoy.ShouldBe(true);
-                settings.IsAlive.ShouldBe(false);
-                settings.Name.ShouldBe("Rufus");
+                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                {
+                    dog.Legs.ShouldBe(4);
+                    dog.Age.ShouldBe(12);
+                    dog.GoodBoy.ShouldBe(true);
+                    dog.IsAlive.ShouldBe(false);
+                    dog.Name.ShouldBe("Rufus");
+                });
             }
 
             [Fact]
             public void Should_Pass_Case_5()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new OptionVectorSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -253,25 +255,27 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "multi", "--foo", "a", "--foo", "b", "--bar", "1", "--foo", "c", "--bar", "2" });
+                var (result, _, _, settings) = app.Run(new[]
+                {
+                    "multi", "--foo", "a", "--foo", "b", "--bar", "1", "--foo", "c", "--bar", "2",
+                });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Foo.Length.ShouldBe(3);
-                settings.Foo.ShouldBe(new[] { "a", "b", "c" });
-                settings.Bar.Length.ShouldBe(2);
-                settings.Bar.ShouldBe(new[] { 1, 2 });
+                settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+                {
+                    vec.Foo.Length.ShouldBe(3);
+                    vec.Foo.ShouldBe(new[] { "a", "b", "c" });
+                    vec.Bar.Length.ShouldBe(2);
+                    vec.Bar.ShouldBe(new[] { 1, 2 });
+                });
             }
 
             [Fact]
             public void Should_Pass_Case_6()
             {
                 // Given
-                var resolver = new FakeTypeResolver();
-                var settings = new ArgumentVectorSettings();
-                resolver.Register(settings);
-
-                var app = new CommandApp(new FakeTypeRegistrar(resolver));
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -279,12 +283,18 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "multi", "a", "b", "c" });
+                var (result, _, _, settings) = app.Run(new[]
+                {
+                    "multi", "a", "b", "c",
+                });
 
                 // Then
                 result.ShouldBe(0);
-                settings.Foo.Length.ShouldBe(3);
-                settings.Foo.ShouldBe(new[] { "a", "b", "c" });
+                settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+                {
+                    vec.Foo.Length.ShouldBe(3);
+                    vec.Foo.ShouldBe(new[] { "a", "b", "c" });
+                });
             }
         }
     }
