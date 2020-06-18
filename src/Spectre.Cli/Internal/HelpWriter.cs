@@ -337,7 +337,7 @@ namespace Spectre.Cli.Internal
             bool isDefaultCommand)
         {
             var commands = isDefaultCommand ? model.Commands : command.Commands;
-            commands = command.Commands.Where(x => !x.IsHidden).ToList();
+            commands = commands.Where(x => !x.IsHidden).ToList();
 
             if (commands.Count > 0)
             {
