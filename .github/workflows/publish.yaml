@@ -34,4 +34,4 @@ jobs:
           VERSION=$(dotnet minver -t v -v e)
 
           # Run the build script
-          dotnet cake --target="Default" --buildversion="$VERSION" 
+          dotnet cake --target="Publish" --buildversion="$VERSION" 
