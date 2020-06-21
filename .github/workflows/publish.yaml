@@ -31,7 +31,7 @@ jobs:
           dotnet tool restore
 
           # Get the version number
-          VERSION=$(dotnet minver -t v -v e -b preview)
+          VERSION=$(dotnet minver -t v -v e -d preview)
 
           # Run the build script
           dotnet cake --target="Publish" --buildversion="$VERSION" 
