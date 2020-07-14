@@ -7,7 +7,6 @@ using Spectre.Cli.Exceptions;
 using Spectre.Cli.Testing;
 using Spectre.Cli.Testing.Data.Commands;
 using Spectre.Cli.Testing.Data.Converters;
-using Spectre.Cli.Testing.Fakes;
 using Xunit;
 
 namespace Spectre.Cli.Tests

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Spectre.Cli
@@ -36,6 +37,7 @@ namespace Spectre.Cli
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
         {
             Debug.Assert(settings is TSettings, "Command settings is of unexpected type.");
@@ -43,6 +45,7 @@ namespace Spectre.Cli
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings)
         {
             return ExecuteAsync(context, settings);

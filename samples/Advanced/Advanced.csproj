@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net462;netcoreapp2.0</TargetFrameworks>
-    <LangVersion>7.2</LangVersion>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Sample</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Autofac" Version="5.2.0" />
   </ItemGroup>
 
 </Project>

@@ -10,6 +10,7 @@ namespace Spectre.Cli
     /// </summary>
     public sealed class DefaultPairDeconstructor : IPairDeconstructor
     {
+        /// <inheritdoc/>
         (object? Key, object? Value) IPairDeconstructor.Deconstruct(
             ITypeResolver resolver,
             Type keyType,
@@ -57,7 +58,7 @@ namespace Spectre.Cli
                 Parse(valueConverter, valueType, stringValue));
         }
 
-        private object Parse(TypeConverter converter, Type type, string value)
+        private static object Parse(TypeConverter converter, Type type, string value)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace Spectre.Cli
             }
         }
 
-        private TypeConverter GetConverter(Type type)
+        private static TypeConverter GetConverter(Type type)
         {
             var converter = TypeDescriptor.GetConverter(type);
             if (converter != null)

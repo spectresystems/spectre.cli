@@ -32,14 +32,16 @@ namespace Spectre.Cli.Exceptions
 
         internal static TemplateException UnterminatedValueName(string template, TemplateToken token)
         {
-            return TemplateExceptionFactory.Create(template, token,
+            return TemplateExceptionFactory.Create(
+                template, token,
                 $"Encountered unterminated value name '{token.Value}'.",
                 "Unterminated value name.");
         }
 
         internal static TemplateException ArgumentCannotContainOptions(string template, TemplateToken token)
         {
-            return TemplateExceptionFactory.Create(template, token,
+            return TemplateExceptionFactory.Create(
+                template, token,
                 "Arguments can not contain options.",
                 "Not permitted.");
         }

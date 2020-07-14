@@ -1,18 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Description>An extremly opinionated command line parser.</Description>
-    <Company>Spectre Systems AB</Company>
-    <Copyright>Spectre Systems AB</Copyright>
-    <Authors>Patrik Svensson</Authors>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/spectresystems/spectre.cli</PackageProjectUrl>
-    <PackageIcon>small-logo.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
@@ -20,37 +9,15 @@
 
   <ItemGroup>
     <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
-    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
-  <!-- C# 8.0 polyfill -->
   <ItemGroup>
-    <PackageReference Include="Nullable" Version="1.1.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <PropertyGroup>
-    <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
-    <GenerateNullableAttributes>False</GenerateNullableAttributes>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.77" PrivateAssets="all" />
-    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
-  </ItemGroup>
-
-  <!-- Static Analysis -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.164" />
+    <PackageReference Update="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.154" />
   </ItemGroup>
 
 </Project>

@@ -6,17 +6,17 @@ namespace Spectre.Cli.Internal
         public const string True = "true";
         public const string False = "false";
 
+        public static string[] AcceptedBooleanValues { get; } = new string[]
+        {
+            True,
+            False,
+        };
+
         public static class Commands
         {
             public const string Branch = "cli";
             public const string Version = "version";
             public const string XmlDoc = "xmldoc";
         }
-
-        public static string[] AcceptedBooleanValues { get; } = new string[]
-        {
-            True,
-            False,
-        };
     }
 }

@@ -17,6 +17,7 @@ namespace Spectre.Cli
         /// <returns>The deconstructed pair.</returns>
         protected abstract (TKey Key, TValue Value) Deconstruct(string? value);
 
+        /// <inheritdoc/>
         (object? Key, object? Value) IPairDeconstructor.Deconstruct(ITypeResolver resolver, Type keyType, Type valueType, string? value)
         {
             if (!keyType.IsAssignableFrom(typeof(TKey)) || !valueType.IsAssignableFrom(typeof(TValue)))

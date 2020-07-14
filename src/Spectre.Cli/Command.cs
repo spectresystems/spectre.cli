@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Spectre.Cli
@@ -27,6 +28,7 @@ namespace Spectre.Cli
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         ValidationResult ICommand.Validate(CommandContext context, CommandSettings settings)
         {
             return ValidationResult.Success();

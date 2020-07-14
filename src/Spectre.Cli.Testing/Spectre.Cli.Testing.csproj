@@ -1,29 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Project References">
     <ProjectReference Include="..\Spectre.Cli\Spectre.Cli.csproj" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Package References">
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
-
-  <!-- Static Analysis -->
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.164" />
+    <PackageReference Update="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.154" />
   </ItemGroup>
 
 </Project>

@@ -1,31 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Advanced\**" />
-    <EmbeddedResource Remove="Advanced\**" />
-    <None Remove="Advanced\**" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Properties\Resources\Help\Command_Examples_DefinedOnCommand" />
-    <None Remove="Properties\Resources\Help\Default_Examples_DefinedOnRoot" />
-    <None Remove="Properties\Resources\Help\Hidden" />
-    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnChildren" />
-    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnLeaves" />
-    <None Remove="Properties\Resources\Help\Root_Examples_DefinedOnRoot" />
-    <None Remove="Properties\Resources\Models\case5.xml" />
-    <None Remove="Properties\Resources\Models\default_command.xml" />
-    <None Remove="Properties\Resources\Parsing\case5.xml" />
+    <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
+    <Folder Include="Imported\" />
     <Compile Include="..\Spectre.Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
   </ItemGroup>
 
@@ -100,40 +94,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Shouldly" Version="3.0.2" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
-  <!-- Static Analysis -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.164" />
+    <PackageReference Update="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.154" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Spectre.Cli.Testing\Spectre.Cli.Testing.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Imported\" />
-  </ItemGroup>
-
 
 </Project>

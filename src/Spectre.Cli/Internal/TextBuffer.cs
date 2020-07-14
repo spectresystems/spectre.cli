@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Spectre.Cli.Internal
 {
     internal sealed class TextBuffer : IDisposable
     {
+        [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "False positive...")]
         private readonly StringReader _reader;
 
         public bool ReachedEnd => _reader.Peek() == -1;
