@@ -19,7 +19,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/UnexpectedCharacter")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/UnexpectedCharacter")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -40,7 +40,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/UnterminatedValueName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/UnterminatedValueName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -61,7 +61,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/OptionsMustHaveName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/OptionsMustHaveName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -82,7 +82,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/OptionNamesCannotStartWithDigit")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/OptionNamesCannotStartWithDigit")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -103,7 +103,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/InvalidCharacterInOptionName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/InvalidCharacterInOptionName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -124,7 +124,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/LongOptionMustHaveMoreThanOneCharacter")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/LongOptionMustHaveMoreThanOneCharacter")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -145,7 +145,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/ShortOptionMustOnlyBeOneCharacter")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/ShortOptionMustOnlyBeOneCharacter")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -166,7 +166,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/MultipleOptionValuesAreNotSupported")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/MultipleOptionValuesAreNotSupported")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -187,7 +187,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/InvalidCharacterInValueName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/InvalidCharacterInValueName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -208,7 +208,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/MissingLongAndShortName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/MissingLongAndShortName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -235,13 +235,15 @@ namespace Spectre.Cli.Tests.Annotations
                 }
                 catch (TemplateException ex)
                 {
-                    var writer = new FakeConsoleWriter();
-                    ex.Render(writer);
+                    using (var writer = new FakeConsole())
+                    {
+                        ex.Render(writer);
 
-                    return (ex.Message, writer.Output
-                        .ToString()
-                        .NormalizeLineEndings()
-                        .Trim());
+                        return (ex.Message, writer.Output
+                            .NormalizeLineEndings()
+                            .TrimLines()
+                            .Trim());
+                    }
                 }
 
                 throw new InvalidOperationException("Expected a template exception");

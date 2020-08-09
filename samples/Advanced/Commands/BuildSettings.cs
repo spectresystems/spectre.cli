@@ -11,6 +11,10 @@ namespace Sample.Commands
         [Description("Specifies the project file.")]
         public string Project { get; set; }
 
+        [CommandOption("-p|--password <VALUE>")]
+        [Description("The password to use.")]
+        public string Password { get; set; }
+
         [CommandOption("--no-restore")]
         [Description("Doesn't perform an implicit restore during build.")]
         public bool NoRestore { get; set; }
@@ -21,6 +25,7 @@ namespace Sample.Commands
 
         [CommandOption("--serve [PORT]")]
         [DefaultValue(8080)]
+        [Description("Serves the content on the specified port.\nDefaults to port [grey]8080[/]")]
         public FlagValue<int> Serve { get; set; }
 
         // For validating arguments together.

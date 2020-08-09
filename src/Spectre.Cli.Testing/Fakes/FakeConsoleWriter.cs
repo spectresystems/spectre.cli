@@ -1,30 +1,47 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using Spectre.Console;
 
 namespace Spectre.Cli.Testing.Fakes
 {
-    public sealed class FakeConsoleWriter : IConsoleWriter
+    public sealed class FakeConsole : IAnsiConsole, IDisposable
     {
-        public StringWriter Output { get; set; }
+        public Capabilities Capabilities { get; }
+        public Encoding Encoding { get; }
 
-        public ConsoleColor BackgroundColor { get; set; }
-        public ConsoleColor ForegroundColor { get; set; }
+        public int Width { get; }
+        public int Height { get; }
 
-        public FakeConsoleWriter()
+        public Decoration Decoration { get; set; }
+        public Color Foreground { get; set; }
+        public Color Background { get; set; }
+
+        public StringWriter Writer { get; }
+        public string Output => Writer.ToString().TrimEnd('\n');
+        public IReadOnlyList<string> Lines => Output.Split(new char[] { '\n' });
+
+        public FakeConsole(
+            int width = 80, int height = 9000, Encoding encoding = null,
+            bool supportsAnsi = true, ColorSystem colorSystem = ColorSystem.Standard,
+            bool legacyConsole = false)
         {
-            Output = new StringWriter();
+            Capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole);
+            Encoding = encoding ?? Encoding.UTF8;
+            Width = width;
+            Height = height;
+            Writer = new StringWriter();
+        }
+
+        public void Dispose()
+        {
+            Writer.Dispose();
         }
 
         public void Write(string text)
         {
-            Output.Write(text);
-        }
-
-        public override string ToString()
-        {
-            return Output.ToString()
-                .NormalizeLineEndings()
-                .Trim();
+            Writer.Write(text);
         }
     }
 }

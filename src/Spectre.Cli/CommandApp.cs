@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli
 {
@@ -93,7 +94,11 @@ namespace Spectre.Cli
                 var pretty = GetRenderableErrorMessage(ex);
                 if (pretty != null)
                 {
-                    ConsoleRenderer.Render(pretty, _configurator.Settings.Console);
+                    var renderer = new ConsoleRenderer(_configurator.Settings.Console);
+                    foreach (var item in pretty)
+                    {
+                        renderer.Render(item);
+                    }
                 }
 
                 // Should we always propagate when debugging?
@@ -113,20 +118,22 @@ namespace Spectre.Cli
             return _configurator;
         }
 
-        private static IRenderable? GetRenderableErrorMessage(Exception ex, bool convert = true)
+        private static List<IRenderable?>? GetRenderableErrorMessage(Exception ex, bool convert = true)
         {
             if (ex is CommandAppException renderable && renderable.Pretty != null)
             {
-                return renderable.Pretty;
+                return new List<IRenderable?> { renderable.Pretty };
             }
 
             if (convert)
             {
-                // Convert the exception.
-                var converted = new BlockElement()
-                    .Append(new LineBreakElement())
-                    .Append(new ColorElement(ConsoleColor.Red, new TextElement("Error: ")))
-                    .Append(new TextElement(ex.Message));
+                var converted = new List<IRenderable?>
+                {
+                    new Composer()
+                        .LineBreak()
+                        .Text("[red]Error:[/]")
+                        .Space().Text(ex.Message),
+                };
 
                 // Got a renderable inner exception?
                 if (ex.InnerException != null)
@@ -134,12 +141,7 @@ namespace Spectre.Cli
                     var innerRenderable = GetRenderableErrorMessage(ex.InnerException, convert: false);
                     if (innerRenderable != null)
                     {
-                        if (innerRenderable.StartsWithLineBreak())
-                        {
-                            converted.Append(new LineBreakElement());
-                        }
-
-                        converted.Append(innerRenderable);
+                        converted.AddRange(innerRenderable);
                     }
                 }
 

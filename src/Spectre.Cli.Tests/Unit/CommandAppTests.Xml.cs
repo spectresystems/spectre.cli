@@ -14,7 +14,7 @@ namespace Spectre.Cli.Tests
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
             /// </summary>
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Models/case1.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case1.xml")]
             public void Should_Dump_Correct_Model_For_Case_1(string expected)
             {
                 // Given
@@ -43,7 +43,7 @@ namespace Spectre.Cli.Tests
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-2
             /// </summary>
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Models/case2.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case2.xml")]
             public void Should_Dump_Correct_Model_For_Case_2(string expected)
             {
                 // Given
@@ -64,7 +64,7 @@ namespace Spectre.Cli.Tests
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-3
             /// </summary>
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Models/case3.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case3.xml")]
             public void Should_Dump_Correct_Model_For_Case_3(string expected)
             {
                 // Given
@@ -89,7 +89,7 @@ namespace Spectre.Cli.Tests
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-4
             /// </summary>
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Models/case4.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case4.xml")]
             public void Should_Dump_Correct_Model_For_Case_4(string expected)
             {
                 // Given
@@ -113,7 +113,7 @@ namespace Spectre.Cli.Tests
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-5
             /// </summary>
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Models/case5.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case5.xml")]
             public void Should_Dump_Correct_Model_For_Case_5(string expected)
             {
                 // Given
@@ -131,7 +131,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Xml/default_command.xml")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Xml/default_command.xml")]
             public void Should_Dump_Correct_Model_For_Model_With_Default_Command(string expected)
             {
                 // Given

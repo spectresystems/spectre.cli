@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using SystemConsole = System.Console;
 
 namespace Spectre.Cli.Testing.Data.Commands
 {
@@ -21,27 +22,27 @@ namespace Spectre.Cli.Testing.Data.Commands
             var properties = settings.GetType().GetProperties();
             foreach (var group in properties.GroupBy(x => x.DeclaringType).Reverse())
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(group.Key.FullName);
-                Console.ResetColor();
+                SystemConsole.WriteLine();
+                SystemConsole.ForegroundColor = ConsoleColor.Yellow;
+                SystemConsole.WriteLine(group.Key.FullName);
+                SystemConsole.ResetColor();
 
                 foreach (var property in group)
                 {
-                    Console.WriteLine($"  {property.Name} = {property.GetValue(settings)}");
+                    SystemConsole.WriteLine($"  {property.Name} = {property.GetValue(settings)}");
                 }
             }
 
             if (context.Remaining.Raw.Count > 0)
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Remaining:");
-                Console.ResetColor();
-                Console.WriteLine(string.Join(", ", context.Remaining));
+                SystemConsole.WriteLine();
+                SystemConsole.ForegroundColor = ConsoleColor.Yellow;
+                SystemConsole.WriteLine("Remaining:");
+                SystemConsole.ResetColor();
+                SystemConsole.WriteLine(string.Join(", ", context.Remaining));
             }
 
-            Console.WriteLine();
+            SystemConsole.WriteLine();
         }
     }
 }

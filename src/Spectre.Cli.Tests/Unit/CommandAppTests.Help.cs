@@ -11,7 +11,7 @@ namespace Spectre.Cli.Tests
         public class Help
         {
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Root")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Root")]
             public void Should_Output_Root_Correctly(string expected)
             {
                 // Given
@@ -32,7 +32,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Hidden")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Hidden")]
             public void Should_Skip_Hidden_Commands(string expected)
             {
                 // Given
@@ -53,7 +53,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Command")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Command")]
             public void Should_Output_Command_Correctly(string expected)
             {
                 // Given
@@ -76,7 +76,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Leaf")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Leaf")]
             public void Should_Output_Leaf_Correctly(string expected)
             {
                 // Given
@@ -99,7 +99,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Default")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Default")]
             public void Should_Output_Default_Command_Correctly(string expected)
             {
                 // Given
@@ -118,7 +118,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Root_Examples_DefinedOnRoot")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Root_Examples_DefinedOnRoot")]
             public void Should_Output_Root_Examples_Defined_On_Root(string expected)
             {
                 // Given
@@ -140,7 +140,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Root_Examples_DefinedOnChildren")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Root_Examples_DefinedOnChildren")]
             public void Should_Output_Root_Examples_Defined_On_Direct_Children_If_Root_Have_No_Examples(string expected)
             {
                 // Given
@@ -162,7 +162,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Root_Examples_DefinedOnLeaves")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Root_Examples_DefinedOnLeaves")]
             public void Should_Output_Root_Examples_Defined_On_Leaves_If_No_Other_Examples_Are_Found(string expected)
             {
                 // Given
@@ -188,7 +188,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Command_Examples_DefinedOnCommand")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Command_Examples_DefinedOnCommand")]
             public void Should_Only_Output_Command_Examples_Defined_On_Command(string expected)
             {
                 // Given
@@ -216,7 +216,7 @@ namespace Spectre.Cli.Tests
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Help/Default_Examples_DefinedOnRoot")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Help/Default_Examples_DefinedOnRoot")]
             public void Should_Output_Root_Examples_If_Default_Command_Is_Specified(string expected)
             {
                 // Given

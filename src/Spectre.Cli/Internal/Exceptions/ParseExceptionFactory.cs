@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli.Internal
 {
@@ -18,14 +18,14 @@ namespace Spectre.Cli.Internal
 
         private static IRenderable CreatePrettyMessage(string arguments, CommandTreeToken token, string message, string details)
         {
-            var composer = new RenderableComposer();
+            var composer = new Composer();
 
             var position = token?.Position ?? 0;
             var value = token?.Representation ?? arguments;
 
             // Header
             composer.LineBreak();
-            composer.Color(ConsoleColor.Red, error => error.Text("Error:"));
+            composer.Style("red", "Error:");
             composer.Space().Text(message);
             composer.LineBreak();
 
@@ -36,10 +36,12 @@ namespace Spectre.Cli.Internal
             // Error
             composer.LineBreak();
             composer.Spaces(7).Spaces(position);
-            composer.Color(ConsoleColor.Red, error =>
+
+            composer.Style("red", error =>
             {
                 error.Repeat('^', value.Length);
-                error.Text($" {details.TrimEnd('.')}");
+                error.Space();
+                error.Text(details.TrimEnd('.'));
                 error.LineBreak();
             });
 

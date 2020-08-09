@@ -667,7 +667,7 @@ namespace Spectre.Cli.Tests
             public void Should_Not_Propagate_Runtime_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandApp();
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -678,7 +678,7 @@ namespace Spectre.Cli.Tests
                 });
 
                 // When
-                var result = app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" });
+                var (result, _, _, _) = app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" });
 
                 // Then
                 result.ShouldBe(-1);
@@ -688,14 +688,14 @@ namespace Spectre.Cli.Tests
             public void Should_Not_Propagate_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandApp();
+                var app = new CommandAppFixture();
                 app.Configure(config =>
                 {
                     config.AddCommand<ThrowingCommand>("throw");
                 });
 
                 // When
-                var result = app.Run(new[] { "throw" });
+                var (result, _, _, _) = app.Run(new[] { "throw" });
 
                 // Then
                 result.ShouldBe(-1);

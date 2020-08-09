@@ -1,102 +1,36 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using Spectre.Console;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli.Internal
 {
-    internal sealed class ConsoleRenderer : IRenderer
+    internal sealed class ConsoleRenderer
     {
-        private readonly Stack<ConsoleColor> _foreground;
-        private readonly Stack<ConsoleColor> _background;
-        private readonly IConsoleWriter _console;
+        private readonly IAnsiConsole? _console;
 
-        private enum ConsoleColorType
+        public ConsoleRenderer(IAnsiConsole? console)
         {
-            Foreground,
-            Background,
+            _console = console ?? AnsiConsole.Console;
         }
 
-        public ConsoleRenderer(IConsoleWriter? console)
-        {
-            _foreground = new Stack<ConsoleColor>();
-            _background = new Stack<ConsoleColor>();
-            _console = console ?? new DefaultConsoleWriter();
-        }
-
-        private class Scope : IDisposable
-        {
-            private readonly ConsoleRenderer _renderer;
-            private readonly ConsoleColorType _type;
-
-            public Scope(ConsoleRenderer renderer, ConsoleColorType type)
-            {
-                _renderer = renderer;
-                _type = type;
-            }
-
-            [SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations", Justification = "Trust me")]
-            [SuppressMessage("Performance", "CA1821:Remove empty Finalizers", Justification = "Trust me")]
-            ~Scope()
-            {
-                throw new InvalidOperationException("Dispose was never called on console renderer scope.");
-            }
-
-            public void Dispose()
-            {
-                GC.SuppressFinalize(this);
-                _renderer.Pop(_type);
-            }
-        }
-
-        public static void Render(IRenderable renderable, IConsoleWriter? console)
+        public static void Render(IRenderable? renderable, IAnsiConsole? console)
         {
             var renderer = new ConsoleRenderer(console);
-            renderable.Render(renderer);
+            renderer.Render(renderable);
         }
 
-        public IDisposable SetBackground(ConsoleColor color)
+        public static void Render(IEnumerable<IRenderable?> renderables, IAnsiConsole? console)
         {
-            Push(ConsoleColorType.Background, color);
-            return new Scope(this, ConsoleColorType.Background);
-        }
-
-        public IDisposable SetForeground(ConsoleColor color)
-        {
-            Push(ConsoleColorType.Foreground, color);
-            return new Scope(this, ConsoleColorType.Foreground);
-        }
-
-        public void Append(string text)
-        {
-            _console.Write(text);
-        }
-
-        private void Push(ConsoleColorType type, ConsoleColor color)
-        {
-            if (type == ConsoleColorType.Foreground)
+            var renderer = new ConsoleRenderer(console);
+            foreach (var renderable in renderables)
             {
-                _foreground.Push(Console.ForegroundColor);
-                _console.ForegroundColor = color;
-            }
-            else
-            {
-                _background.Push(Console.BackgroundColor);
-                _console.BackgroundColor = color;
+                renderer.Render(renderable);
             }
         }
 
-        private void Pop(ConsoleColorType type)
+        public void Render(IRenderable? renderable)
         {
-            if (type == ConsoleColorType.Foreground)
-            {
-                var color = _foreground.Pop();
-                _console.ForegroundColor = color;
-            }
-            else
-            {
-                var color = _background.Pop();
-                _console.BackgroundColor = color;
-            }
+            _console.Render(renderable);
         }
     }
 }
