@@ -38,9 +38,7 @@ namespace Spectre.Cli.Internal
             if (parsedResult.Tree == null)
             {
                 // Display help.
-                ConsoleRenderer.Render(
-                    HelpWriter.Write(model),
-                    configuration.Settings.Console);
+                ConsoleRenderer.Render(HelpWriter.Write(model), configuration.Settings.Console);
                 return Task.FromResult(0);
             }
 
@@ -49,9 +47,7 @@ namespace Spectre.Cli.Internal
             if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
                 // Branches can't be executed. Show help.
-                ConsoleRenderer.Render(
-                    HelpWriter.WriteCommand(model, leaf.Command),
-                    configuration.Settings.Console);
+                ConsoleRenderer.Render(HelpWriter.WriteCommand(model, leaf.Command), configuration.Settings.Console);
                 return Task.FromResult(leaf.ShowHelp ? 0 : 1);
             }
 

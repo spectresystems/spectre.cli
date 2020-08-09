@@ -17,7 +17,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/ArgumentCannotContainOptions")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/ArgumentCannotContainOptions")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -37,7 +37,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/MultipleValuesAreNotSupported")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/MultipleValuesAreNotSupported")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -57,7 +57,7 @@ namespace Spectre.Cli.Tests.Annotations
             }
 
             [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Template/ValuesMustHaveName")]
+            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Template/ValuesMustHaveName")]
             public void Should_Return_Correct_Text(string expected)
             {
                 // Given, When
@@ -73,17 +73,18 @@ namespace Spectre.Cli.Tests.Annotations
             public static string Run<TSettings>(params string[] args)
                 where TSettings : CommandSettings
             {
-                var writer = new FakeConsoleWriter();
+                using (var writer = new FakeConsole())
+                {
+                    var app = new CommandApp();
+                    app.Configure(c => c.SetConsole(writer));
+                    app.Configure(c => c.AddCommand<GenericCommand<TSettings>>("foo"));
+                    app.Run(args);
 
-                var app = new CommandApp();
-                app.Configure(c => c.SetOut(writer));
-                app.Configure(c => c.AddCommand<GenericCommand<TSettings>>("foo"));
-                app.Run(args);
-
-                return writer.Output
-                    .ToString()
-                    .NormalizeLineEndings()
-                    .Trim();
+                    return writer.Output
+                        .NormalizeLineEndings()
+                        .TrimLines()
+                        .Trim();
+                }
             }
         }
     }

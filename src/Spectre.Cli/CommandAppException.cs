@@ -1,5 +1,6 @@
 using System;
-using Spectre.Cli.Internal;
+using Spectre.Console;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli
 {
@@ -25,12 +26,15 @@ namespace Spectre.Cli
         }
 
         /// <summary>
-        /// Renders the exception using the specified <see cref="IConsoleWriter"/>.
+        /// Renders the exception using the specified <see cref="IAnsiConsole"/>.
         /// </summary>
-        /// <param name="writer">The writer.</param>
-        public void Render(IConsoleWriter writer)
+        /// <param name="console">The console.</param>
+        public void Render(IAnsiConsole console)
         {
-            Pretty?.Render(new ConsoleRenderer(writer));
+            if (Pretty != null)
+            {
+                console?.Render(Pretty);
+            }
         }
     }
 }

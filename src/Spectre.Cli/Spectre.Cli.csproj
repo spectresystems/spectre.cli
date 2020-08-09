@@ -3,12 +3,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
+    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../res/gfx/png/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
+    <PackageReference Include="Spectre.Console" Version="0.10.0" />
   </ItemGroup>
 
   <ItemGroup>

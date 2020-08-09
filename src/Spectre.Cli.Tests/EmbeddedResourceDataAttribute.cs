@@ -51,7 +51,10 @@ namespace Spectre.Cli.Tests
 
                 using (var reader = new StreamReader(stream))
                 {
-                    return reader.ReadToEnd().NormalizeLineEndings();
+                    return reader.ReadToEnd()
+                        .NormalizeLineEndings()
+                        .TrimLines()
+                        .Trim();
                 }
             }
         }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace Spectre.Cli.Internal
 {
@@ -22,6 +24,11 @@ namespace Spectre.Cli.Internal
             DefaultCommand = defaultCommand;
             Commands = new List<CommandInfo>(commands ?? Array.Empty<CommandInfo>());
             Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
+        }
+
+        public string GetApplicationName()
+        {
+            return ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location) ?? "?";
         }
     }
 }

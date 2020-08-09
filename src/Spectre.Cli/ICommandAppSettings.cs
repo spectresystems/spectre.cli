@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Spectre.Cli
 {
     /// <summary>
@@ -11,9 +13,9 @@ namespace Spectre.Cli
         string? ApplicationName { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="IConsoleWriter"/>.
+        /// Gets or sets the <see cref="IAnsiConsole"/>.
         /// </summary>
-        IConsoleWriter? Console { get; set; }
+        IAnsiConsole? Console { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ICommandInterceptor"/> used
@@ -24,7 +26,7 @@ namespace Spectre.Cli
         /// <summary>
         /// Gets the type registrar.
         /// </summary>
-        ITypeRegistrarFrontend Registrar { get;  }
+        ITypeRegistrarFrontend Registrar { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not parsing is strict.

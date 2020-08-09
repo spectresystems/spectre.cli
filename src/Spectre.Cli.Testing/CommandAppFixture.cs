@@ -29,7 +29,8 @@ namespace Spectre.Cli.Testing
         {
             CommandContext context = null;
             CommandSettings settings = null;
-            var writer = new FakeConsoleWriter();
+
+            using var console = new FakeConsole();
 
             var app = new CommandApp();
             _appConfiguration?.Invoke(app);
@@ -40,10 +41,15 @@ namespace Spectre.Cli.Testing
                 context = ctx;
                 settings = s;
             })));
-            app.Configure(c => c.SetOut(writer));
+            app.Configure(c => c.SetConsole(console));
             var result = app.Run(args);
 
-            return (result, writer.ToString(), context, settings);
+            var output = console.Output
+                .NormalizeLineEndings()
+                .TrimLines()
+                .Trim();
+
+            return (result, output, context, settings);
         }
     }
 }

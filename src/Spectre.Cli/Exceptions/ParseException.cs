@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Spectre.Cli.Internal;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli.Exceptions
 {
@@ -120,13 +121,7 @@ namespace Spectre.Cli.Exceptions
 
         internal static ParseException ValueIsNotInValidFormat(string value)
         {
-            return new ParseException("Can't parse value", new RenderableComposer()
-                .LineBreak()
-                .Color(ConsoleColor.Red, error => error.Text("Error:")).Space()
-                .Color(ConsoleColor.Gray, c => c.Text("The value '"))
-                .Color(ConsoleColor.White, c => c.Text(value))
-                .Color(ConsoleColor.Gray, c => c.Text("' is not in a correct format."))
-                .LineBreak());
+            throw new NotImplementedException("ParseException");
         }
     }
 }

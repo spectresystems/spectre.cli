@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Text;
+using Spectre.Console;
+using Spectre.Console.Composition;
 
 namespace Spectre.Cli.Internal
 {
@@ -19,6 +20,15 @@ namespace Spectre.Cli.Internal
                 Name = name;
                 Required = required;
                 Description = description;
+            }
+
+            public static IReadOnlyList<HelpArgument> Get(CommandInfo? command)
+            {
+                var arguments = new List<HelpArgument>();
+                arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
+                    x => new HelpArgument(x.Value, x.Required, x.Description))
+                    ?? Array.Empty<HelpArgument>());
+                return arguments;
             }
         }
 
@@ -38,114 +48,116 @@ namespace Spectre.Cli.Internal
                 ValueIsOptional = valueIsOptional;
                 Description = description;
             }
+
+            public static IReadOnlyList<HelpOption> Get(CommandInfo? command)
+            {
+                var parameters = new List<HelpOption>();
+                parameters.Add(new HelpOption("h", "help", null, null, "Prints help information"));
+                parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
+                    new HelpOption(
+                        o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
+                        o.ValueName, o.ValueIsOptional, o.Description))
+                    ?? Array.Empty<HelpOption>());
+                return parameters;
+            }
         }
 
-        public static IRenderable Write(CommandModel model)
+        public static IEnumerable<IRenderable> Write(CommandModel model)
         {
             return WriteCommand(model, null);
         }
 
-        public static IRenderable WriteCommand(CommandModel model, CommandInfo? command)
+        public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command)
         {
-            var composer = new RenderableComposer();
-            composer.LineBreak();
+            var container = command as ICommandContainer ?? model;
+            var isDefaultCommand = command?.IsDefaultCommand ?? false;
 
-            // Usage
-            WriteUsage(composer, model, command);
-            composer.LineBreak().LineBreak();
+            var result = new List<IRenderable>();
+            result.AddRange(GetUsage(model, command));
+            result.AddRange(GetExamples(model, command));
+            result.AddRange(GetArguments(command));
+            result.AddRange(GetOptions(command));
+            result.AddRange(GetCommands(model, container, isDefaultCommand));
 
-            // Examples
-            WriteExamples(composer, model, command);
-
-            // Arguments
-            WriteArguments(composer, command);
-
-            // Options
-            WriteOptions(composer, command);
-
-            // Commands
-            WriteCommands(
-                composer, model,
-                command as ICommandContainer ?? model,
-                command?.IsDefaultCommand ?? false);
-
-            composer.LineBreak();
-            return composer;
+            return result;
         }
 
-        private static void WriteUsage(RenderableComposer composer, CommandModel model, CommandInfo? command)
+        private static IEnumerable<IRenderable> GetUsage(CommandModel model, CommandInfo? command)
         {
-            var parameters = new Stack<IRenderable>();
+            var composer = new Composer();
+            composer.Style("yellow", "USAGE:").LineBreak();
+            composer.Tab().Text(model.GetApplicationName());
+
+            var parameters = new Stack<string>();
 
             if (command == null)
             {
-                parameters.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
-                parameters.Push(new ColorElement(ConsoleColor.DarkGray, new TextElement("[OPTIONS]")));
+                parameters.Push("[aqua]<COMMAND>[/]");
+                parameters.Push("[grey][[OPTIONS][/]");
             }
             else
             {
-                CommandInfo? current = command;
+                var current = command;
                 if (command.IsBranch)
                 {
-                    parameters.Push(new ColorElement(ConsoleColor.Cyan, new TextElement("<COMMAND>")));
+                    parameters.Push("[aqua]<COMMAND>[/]");
                 }
 
                 while (current != null)
                 {
-                    var builder = new BlockElement();
-
-                    if (!current.IsDefaultCommand)
+                    var isCurrent = current == command;
+                    if (isCurrent)
                     {
-                        builder.Append(new TextElement(current.Name));
+                        parameters.Push("[grey][[OPTIONS][/]");
                     }
 
                     if (current.Parameters.OfType<CommandArgument>().Any())
                     {
-                        var isCurrent = current == command;
-                        if (isCurrent)
-                        {
-                            foreach (var argument in current.Parameters.OfType<CommandArgument>()
-                                .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
-                            {
-                                var text = new TextElement($" <{argument.Value}>");
-                                builder.Append(new ColorElement(ConsoleColor.Cyan, text));
-                            }
-                        }
-
                         var optionalArguments = current.Parameters.OfType<CommandArgument>().Where(x => !x.Required).ToArray();
                         if (optionalArguments.Length > 0 || !isCurrent)
                         {
                             foreach (var optionalArgument in optionalArguments)
                             {
-                                var text = new TextElement($" [{optionalArgument.Value}]");
-                                builder.Append(new ColorElement(ConsoleColor.Gray, text));
+                                parameters.Push($"[grey][[{optionalArgument.Value.SafeMarkup()}][/]");
+                            }
+                        }
+
+                        if (isCurrent)
+                        {
+                            foreach (var argument in current.Parameters.OfType<CommandArgument>()
+                                .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
+                            {
+                                parameters.Push($"[aqua]<{argument.Value.SafeMarkup()}>[/]");
                             }
                         }
                     }
 
-                    if (current == command)
+                    if (!current.IsDefaultCommand)
                     {
-                        builder.Append(new ColorElement(ConsoleColor.DarkGray, new TextElement(" [OPTIONS]")));
+                        if (isCurrent)
+                        {
+                            parameters.Push($"[underline]{current.Name.SafeMarkup()}[/]");
+                        }
+                        else
+                        {
+                            parameters.Push($"{current.Name.SafeMarkup()}");
+                        }
                     }
 
-                    parameters.Push(builder);
                     current = current.Parent;
                 }
             }
 
-            composer.Color(ConsoleColor.Yellow, c => c.Text("USAGE:")).LineBreak();
-            composer.Tab().Text(model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location));
-
-            // Root or not a default command?
-            if (command?.IsDefaultCommand != true)
-            {
-                composer.Space();
-            }
-
             composer.Join(" ", parameters);
+            composer.LineBreaks(2);
+
+            return new[]
+            {
+                composer,
+            };
         }
 
-        private static void WriteExamples(RenderableComposer composer, CommandModel model, CommandInfo? command)
+        private static IEnumerable<IRenderable> GetExamples(CommandModel model, CommandInfo? command)
         {
             var maxExamples = int.MaxValue;
 
@@ -185,153 +197,121 @@ namespace Spectre.Cli.Internal
 
             if (examples.Count > 0)
             {
-                var prefix = model.ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location);
+                var composer = new Composer();
+                composer.Style("yellow", "EXAMPLES:").LineBreak();
 
-                composer.Color(ConsoleColor.Yellow, c => c.Text("EXAMPLES:")).LineBreak();
-                for (int index = 0; index < Math.Min(maxExamples, examples.Count); index++)
+                for (var index = 0; index < Math.Min(maxExamples, examples.Count); index++)
                 {
                     var args = string.Join(" ", examples[index]);
-
-                    composer.Tab().Text(prefix);
-                    composer.Space().Color(ConsoleColor.DarkGray, c => c.Text(args));
+                    composer.Tab().Text(model.GetApplicationName()).Space().Style("grey", args);
                     composer.LineBreak();
                 }
 
                 composer.LineBreak();
+                return new[] { composer };
             }
+
+            return Array.Empty<IRenderable>();
         }
 
-        private static void WriteArguments(RenderableComposer composer, CommandInfo? command)
+        private static IEnumerable<IRenderable> GetArguments(CommandInfo? command)
         {
-            var arguments = new List<HelpArgument>();
-            arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
-                x => new HelpArgument(x.Value, x.Required, x.Description))
-                ?? Array.Empty<HelpArgument>());
-
+            var arguments = HelpArgument.Get(command);
             if (arguments.Count == 0)
             {
-                return;
+                return Array.Empty<IRenderable>();
             }
 
-            composer.Color(ConsoleColor.Yellow, c => c.Text("ARGUMENTS:")).LineBreak();
+            var result = new List<IRenderable>();
 
-            var maxLength = arguments.Max(arg => arg.Name.Length);
+            result.Add(Text.New("[yellow]ARGUMENTS:[/]"));
+            result.Add(Text.New("\n"));
+
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
             foreach (var argument in arguments)
             {
-                composer.Tab();
-
-                // Argument name.
-                composer.Condition(
-                    argument.Required,
-                    @true: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"<{argument.Name}>")),
-                    @false: c1 => c1.Color(ConsoleColor.Gray, c => c.Text($"[{argument.Name}]")));
-
-                // Description
-                composer.Spaces(maxLength - argument.Name.Length);
-                composer.Tab().Text(argument.Description?.TrimEnd('.')?.Trim());
-
-                composer.LineBreak();
+                if (argument.Required)
+                {
+                    grid.AddRow(
+                        $"[aqua]<{argument.Name.SafeMarkup()}>[/]",
+                        argument.Description?.TrimEnd('.') ?? string.Empty);
+                }
+                else
+                {
+                    grid.AddRow(
+                        $"[aqua][[{argument.Name.SafeMarkup()}][/]",
+                        argument.Description?.TrimEnd('.') ?? string.Empty);
+                }
             }
 
-            composer.LineBreak();
+            grid.AddRow(string.Empty, string.Empty);
+            result.Add(grid);
+
+            return result;
         }
 
-        private static void WriteOptions(RenderableComposer composer, CommandInfo? command)
+        private static IEnumerable<IRenderable> GetOptions(CommandInfo? command)
         {
             // Collect all options into a single structure.
-            var parameters = new List<HelpOption>
+            var parameters = HelpOption.Get(command);
+            if (parameters.Count == 0)
             {
-                new HelpOption("h", "help", null, null, "Prints help information"),
-            };
+                return Array.Empty<IRenderable>();
+            }
 
-            parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
-                new HelpOption(
-                    o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
-                    o.ValueName, o.ValueIsOptional, o.Description))
-                ?? Array.Empty<HelpOption>());
+            var result = new List<IRenderable>();
+            result.Add(Text.New("[yellow]OPTIONS:[/]"));
+            result.Add(Text.New("\n"));
 
-            var options = parameters.ToArray();
-            if (options.Length > 0)
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
+
+            foreach (var option in parameters.ToArray())
             {
-                composer.Color(ConsoleColor.Yellow, c => c.Text("OPTIONS:")).LineBreak();
-
-                // Start with composing a list of lines.
-                var result = new List<Tuple<string?, BlockElement>>();
-                foreach (var option in options)
+                var parts = new StringBuilder();
+                if (option.Short != null)
                 {
-                    var item = new BlockElement();
-                    item.Append(new TabElement());
-
-                    // Short
-                    if (option.Short != null)
+                    parts.Append("[aqua]-").Append(option.Short.SafeMarkup()).Append("[/]");
+                    if (option.Long != null)
                     {
-                        item.Append(new TextElement($"-{option.Short}"));
-                        if (option.Long != null)
-                        {
-                            item.Append(new TextElement(","));
-                        }
+                        parts.Append(", ");
+                    }
+                }
+
+                if (option.Long != null)
+                {
+                    parts.Append("[aqua]--").Append(option.Long.SafeMarkup()).Append("[/]");
+                }
+
+                if (option.Value != null)
+                {
+                    parts.Append(" ");
+                    if (option.ValueIsOptional ?? false)
+                    {
+                        parts.Append("[grey][[").Append(option.Value.SafeMarkup()).Append("][/]");
                     }
                     else
                     {
-                        item.Append(new RepeatingElement(3, new TextElement(" ")));
+                        parts.Append("[grey]<").Append(option.Value.SafeMarkup()).Append(">[/]");
                     }
-
-                    // Long
-                    if (option.Long != null)
-                    {
-                        item.Append(new TextElement(" "));
-                        item.Append(new TextElement($"--{option.Long}"));
-                    }
-
-                    // Value
-                    if (option.Value != null)
-                    {
-                        item.Append(new TextElement(" "));
-
-                        if (option.ValueIsOptional ?? false)
-                        {
-                            item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"[{option.Value}]")));
-                        }
-                        else
-                        {
-                            item.Append(new ColorElement(ConsoleColor.Gray, new TextElement($"<{option.Value}>")));
-                        }
-                    }
-
-                    result.Add(Tuple.Create(option.Description, item));
                 }
 
-                // Now add the descriptions to all lines.
-                var maxLength = result.Max(x => x.Item2.Length);
-                foreach (var item in result)
-                {
-                    var description = item.Item1;
-                    var element = item.Item2;
-
-                    if (!string.IsNullOrWhiteSpace(description))
-                    {
-                        var neededSpaces = maxLength - element.Length;
-                        if (neededSpaces > 0)
-                        {
-                            element.Append(new RepeatingElement(neededSpaces, new TextElement(" ")));
-                        }
-
-                        element.Append(new TabElement());
-                        element.Append(new TextElement(description.TrimEnd('.').Trim()));
-                    }
-
-                    element.Append(new LineBreakElement());
-                }
-
-                // Append the items.
-                composer.Append(result.Select(x => x.Item2));
-                composer.LineBreak();
+                grid.AddRow(
+                    parts.ToString(),
+                    option.Description?.TrimEnd('.') ?? string.Empty);
             }
+
+            grid.AddRow(string.Empty, string.Empty);
+            result.Add(grid);
+
+            return result;
         }
 
-        private static void WriteCommands(
-            RenderableComposer composer,
+        private static IEnumerable<IRenderable> GetCommands(
             CommandModel model,
             ICommandContainer command,
             bool isDefaultCommand)
@@ -339,18 +319,30 @@ namespace Spectre.Cli.Internal
             var commands = isDefaultCommand ? model.Commands : command.Commands;
             commands = commands.Where(x => !x.IsHidden).ToList();
 
-            if (commands.Count > 0)
+            if (commands.Count == 0)
             {
-                composer.Color(ConsoleColor.Yellow, c => c.Text("COMMANDS:")).LineBreak();
-                var maxCommandLength = commands.Max(x => x.Name.Length);
-                foreach (var child in commands)
-                {
-                    composer.Tab().Text(child.Name);
-                    composer.Spaces(maxCommandLength - child.Name.Length);
-                    composer.Tab().Text(child.Description?.TrimEnd('.') ?? string.Empty);
-                    composer.LineBreak();
-                }
+                return Array.Empty<IRenderable>();
             }
+
+            var result = new List<IRenderable>();
+            result.Add(Text.New("[yellow]COMMANDS:[/]"));
+            result.Add(Text.New("\n"));
+
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
+
+            foreach (var child in commands)
+            {
+                grid.AddRow(
+                    $"[aqua]{child.Name.SafeMarkup()}[/]",
+                    child.Description?.TrimEnd('.') ?? string.Empty);
+            }
+
+            grid.AddRow(string.Empty, string.Empty);
+            result.Add(grid);
+
+            return result;
         }
     }
 }

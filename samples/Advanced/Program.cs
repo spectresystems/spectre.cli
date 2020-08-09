@@ -16,7 +16,7 @@ namespace Sample
 
             app.Configure(config =>
             {
-                config.SetApplicationName("advanced");
+                config.SetApplicationName("advanced.exe");
                 config.ValidateExamples();
 
                 // You can add the command directly.

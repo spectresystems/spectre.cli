@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Spectre.Console;
 
 namespace Spectre.Cli.Internal
 {
@@ -14,12 +15,12 @@ namespace Spectre.Cli.Internal
     internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
     {
         private readonly CommandModel _model;
-        private readonly IConsoleWriter _writer;
+        private readonly IAnsiConsole _writer;
 
         public XmlDocCommand(IConfiguration configuration, CommandModel model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            _writer = configuration?.Settings?.Console ?? new DefaultConsoleWriter();
+            _writer = configuration?.Settings?.Console ?? AnsiConsole.Console;
         }
 
         public sealed class Settings : CommandSettings

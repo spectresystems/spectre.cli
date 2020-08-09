@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advanced", "..\samples\Adva
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Cli.Testing", "Spectre.Cli.Testing\Spectre.Cli.Testing.csproj", "{1768622C-893A-4E39-9510-D43AFD3A7BB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{526644ED-EEAD-42F9-A0AC-72DAC785DA7D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FC0717A-740F-4385-8BC0-83E4CB356C58}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -100,10 +98,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1C4E650D-A747-44C4-A0D0-D5DB7B7FD7B9} = {526644ED-EEAD-42F9-A0AC-72DAC785DA7D}
 		{71158628-01CA-423C-9579-AD9BA4A92723} = {10A85EE7-DCD2-4B11-BE48-B93B340B247B}
 		{200D9893-8C63-4652-ADEB-7A717AD7C57F} = {10A85EE7-DCD2-4B11-BE48-B93B340B247B}
-		{1768622C-893A-4E39-9510-D43AFD3A7BB5} = {526644ED-EEAD-42F9-A0AC-72DAC785DA7D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F42C737-45EA-4E96-9855-84B8F32223CA}

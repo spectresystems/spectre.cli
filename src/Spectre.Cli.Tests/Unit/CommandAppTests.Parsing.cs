@@ -15,7 +15,7 @@ namespace Spectre.Cli.Tests
             public sealed class UnknownCommand
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownCommand")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownCommand")]
                 public void Should_Return_Correct_Text_When_Command_Is_Unknown(string expected)
                 {
                     // Given
@@ -33,7 +33,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentAfter")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentAfter")]
                 public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -51,7 +51,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentAfter")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentAfter")]
                 public void Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -72,7 +72,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_NoArguments")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_NoArguments")]
                 public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -91,7 +91,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_NoArguments")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_NoArguments")]
                 public void Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Command_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -113,7 +113,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentBefore")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownRootCommand_Suggestion_ArgumentBefore")]
                 public void Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -132,7 +132,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentBefore")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownCommand_Suggestion_ArgumentBefore")]
                 public void Should_Return_Correct_Text_With_Suggestion_When_Command_After_Argument_Is_Unknown_And_Distance_Is_Small(string expected)
                 {
                     // Given
@@ -153,7 +153,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownCommand_NoArguments")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownCommand_NoArguments")]
                 public void Should_Return_Correct_Text_For_Unknown_Command_When_Current_Command_Has_No_Arguments(string expected)
                 {
                     // Given
@@ -174,7 +174,7 @@ namespace Spectre.Cli.Tests
             public sealed class CannotAssignValueToFlag
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/CannotAssignValueToFlag_Long")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/CannotAssignValueToFlag_Long")]
                 public void Should_Return_Correct_Text_For_Long_Option(string expected)
                 {
                     // Given
@@ -192,7 +192,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/CannotAssignValueToFlag_Short")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/CannotAssignValueToFlag_Short")]
                 public void Should_Return_Correct_Text_For_Short_Option(string expected)
                 {
                     // Given
@@ -213,7 +213,7 @@ namespace Spectre.Cli.Tests
             public sealed class NoValueForOption
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/NoValueForOption_Long")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/NoValueForOption_Long")]
                 public void Should_Return_Correct_Text_For_Long_Option(string expected)
                 {
                     // Given
@@ -231,7 +231,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/NoValueForOption_Short")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/NoValueForOption_Short")]
                 public void Should_Return_Correct_Text_For_Short_Option(string expected)
                 {
                     // Given
@@ -252,7 +252,7 @@ namespace Spectre.Cli.Tests
             public sealed class NoMatchingArgument
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/CouldNotMatchArgument")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/CouldNotMatchArgument")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -273,7 +273,7 @@ namespace Spectre.Cli.Tests
             public sealed class UnexpectedOption
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnexpectedOption_Long")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnexpectedOption_Long")]
                 public void Should_Return_Correct_Text_For_Long_Option(string expected)
                 {
                     // Given
@@ -291,7 +291,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnexpectedOption_Short")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnexpectedOption_Short")]
                 public void Should_Return_Correct_Text_For_Short_Option(string expected)
                 {
                     // Given
@@ -312,7 +312,7 @@ namespace Spectre.Cli.Tests
             public sealed class UnknownOption
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownOption_Long")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownOption_Long")]
                 public void Should_Return_Correct_Text_For_Long_Option_If_Strict_Mode_Is_Enabled(string expected)
                 {
                     // Given
@@ -331,7 +331,7 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/UnknownOption_Short")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/UnknownOption_Short")]
                 public void Should_Return_Correct_Text_For_Short_Option_If_Strict_Mode_Is_Enabled(string expected)
                 {
                     // Given
@@ -353,7 +353,7 @@ namespace Spectre.Cli.Tests
             public sealed class UnterminatedQuote
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/UnterminatedQuote")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/UnterminatedQuote")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -374,7 +374,7 @@ namespace Spectre.Cli.Tests
             public sealed class OptionWithoutName
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/OptionHasNoName_Short")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/OptionHasNoName_Short")]
                 public void Should_Return_Correct_Text_For_Short_Option(string expected)
                 {
                     // Given
@@ -392,8 +392,8 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Equality_Long", '=')]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Colon_Long", ':')]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Equality_Long", '=')]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Colon_Long", ':')]
                 public void Should_Return_Correct_Text_For_Expected_Long_Option_Value(string expected, char separator)
                 {
                     // Given
@@ -411,8 +411,8 @@ namespace Spectre.Cli.Tests
                 }
 
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Equality_Short", '=')]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Colon_Short", ':')]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Equality_Short", '=')]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/OptionValueWasExpected_Colon_Short", ':')]
                 public void Should_Return_Correct_Text_For_Expected_Short_Option_Value(string expected, char separator)
                 {
                     // Given
@@ -433,7 +433,7 @@ namespace Spectre.Cli.Tests
             public sealed class InvalidShortOptionName
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/InvalidShortOptionName")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/InvalidShortOptionName")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -454,7 +454,7 @@ namespace Spectre.Cli.Tests
             public sealed class LongOptionNameIsOneCharacter
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsOneCharacter")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsOneCharacter")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -475,7 +475,7 @@ namespace Spectre.Cli.Tests
             public sealed class LongOptionNameIsMissing
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsMissing")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/LongOptionNameIsMissing")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -496,7 +496,7 @@ namespace Spectre.Cli.Tests
             public sealed class LongOptionNameStartWithDigit
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/LongOptionNameStartWithDigit")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/LongOptionNameStartWithDigit")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -517,7 +517,7 @@ namespace Spectre.Cli.Tests
             public sealed class LongOptionNameContainSymbol
             {
                 [Theory]
-                [EmbeddedResourceData("Spectre.Cli.Tests/Properties/Resources/Exceptions/Parsing/Tokenization/LongOptionNameContainSymbol")]
+                [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Exceptions/Parsing/Tokenization/LongOptionNameContainSymbol")]
                 public void Should_Return_Correct_Text(string expected)
                 {
                     // Given
@@ -575,16 +575,20 @@ namespace Spectre.Cli.Tests
 
             public string Run(params string[] args)
             {
-                var writer = new FakeConsoleWriter();
+                using (var console = new FakeConsole())
+                {
+                    var app = new CommandApp();
+                    _appConfiguration?.Invoke(app);
 
-                var app = new CommandApp();
-                _appConfiguration?.Invoke(app);
+                    app.Configure(_configuration);
+                    app.Configure(c => c.SetConsole(console));
+                    app.Run(args);
 
-                app.Configure(_configuration);
-                app.Configure(c => c.SetOut(writer));
-                app.Run(args);
-
-                return writer.ToString();
+                    return console.Output
+                        .NormalizeLineEndings()
+                        .TrimLines()
+                        .Trim();
+                }
             }
         }
     }

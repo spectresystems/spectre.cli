@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Spectre.Console;
 
 namespace Spectre.Cli.Internal
 {
@@ -7,11 +8,11 @@ namespace Spectre.Cli.Internal
     [SuppressMessage("Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Injected")]
     internal sealed class VersionCommand : Command<VersionCommand.Settings>
     {
-        private readonly IConsoleWriter _writer;
+        private readonly IAnsiConsole _writer;
 
         public VersionCommand(IConfiguration configuration)
         {
-            _writer = configuration?.Settings?.Console ?? new DefaultConsoleWriter();
+            _writer = configuration?.Settings?.Console ?? AnsiConsole.Console;
         }
 
         public sealed class Settings : CommandSettings
