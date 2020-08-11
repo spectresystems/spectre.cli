@@ -20,6 +20,7 @@
   
   <ItemGroup>
     <Folder Include="Imported\" />
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\Spectre.Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
   </ItemGroup>
 

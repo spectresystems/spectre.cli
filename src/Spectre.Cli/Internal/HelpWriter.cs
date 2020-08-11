@@ -228,7 +228,7 @@ namespace Spectre.Cli.Internal
             result.Add(Text.New("\n"));
 
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
             grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
             foreach (var argument in arguments)
@@ -267,41 +267,54 @@ namespace Spectre.Cli.Internal
             result.Add(Text.New("\n"));
 
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
             grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
-            foreach (var option in parameters.ToArray())
+            string GetLol(HelpOption option)
             {
-                var parts = new StringBuilder();
+                var builder = new StringBuilder();
                 if (option.Short != null)
                 {
-                    parts.Append("-").Append(option.Short.SafeMarkup());
+                    builder.Append($"-{option.Short.SafeMarkup()}");
                     if (option.Long != null)
                     {
-                        parts.Append(", ");
+                        builder.Append(", ");
+                    }
+                }
+                else
+                {
+                    builder.Append("  ");
+                    if (option.Long != null)
+                    {
+                        builder.Append("  ");
                     }
                 }
 
                 if (option.Long != null)
                 {
-                    parts.Append("--").Append(option.Long.SafeMarkup());
+                    builder.Append($"--{option.Long.SafeMarkup()}");
                 }
 
                 if (option.Value != null)
                 {
-                    parts.Append(" ");
+                    builder.Append(" ");
                     if (option.ValueIsOptional ?? false)
                     {
-                        parts.Append("[grey][[").Append(option.Value.SafeMarkup()).Append("][/]");
+                        builder.Append($"[grey][[{option.Value.SafeMarkup()}][/]");
                     }
                     else
                     {
-                        parts.Append("[silver]<").Append(option.Value.SafeMarkup()).Append(">[/]");
+                        builder.Append($"[silver]<{option.Value.SafeMarkup()}>[/]");
                     }
                 }
 
+                return builder.ToString();
+            }
+
+            foreach (var option in parameters.ToArray())
+            {
                 grid.AddRow(
-                    parts.ToString(),
+                    GetLol(option),
                     option.Description?.TrimEnd('.') ?? string.Empty);
             }
 
@@ -329,7 +342,7 @@ namespace Spectre.Cli.Internal
             result.Add(Text.New("\n"));
 
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { Padding = new Padding(4, 3), NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
             grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
             foreach (var child in commands)

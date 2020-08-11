@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Spectre.Console" Version="0.10.0" />
+    <PackageReference Include="Spectre.Console" Version="0.11.0" />
   </ItemGroup>
 
   <ItemGroup>
