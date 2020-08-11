@@ -118,7 +118,7 @@ namespace Spectre.Cli.Internal
                         {
                             foreach (var optionalArgument in optionalArguments)
                             {
-                                parameters.Push($"[grey][[{optionalArgument.Value.SafeMarkup()}][/]");
+                                parameters.Push($"[silver][[{optionalArgument.Value.SafeMarkup()}][/]");
                             }
                         }
 
@@ -236,13 +236,13 @@ namespace Spectre.Cli.Internal
                 if (argument.Required)
                 {
                     grid.AddRow(
-                        $"[aqua]<{argument.Name.SafeMarkup()}>[/]",
+                        $"[silver]<{argument.Name.SafeMarkup()}>[/]",
                         argument.Description?.TrimEnd('.') ?? string.Empty);
                 }
                 else
                 {
                     grid.AddRow(
-                        $"[aqua][[{argument.Name.SafeMarkup()}][/]",
+                        $"[grey][[{argument.Name.SafeMarkup()}][/]",
                         argument.Description?.TrimEnd('.') ?? string.Empty);
                 }
             }
@@ -275,7 +275,7 @@ namespace Spectre.Cli.Internal
                 var parts = new StringBuilder();
                 if (option.Short != null)
                 {
-                    parts.Append("[aqua]-").Append(option.Short.SafeMarkup()).Append("[/]");
+                    parts.Append("-").Append(option.Short.SafeMarkup());
                     if (option.Long != null)
                     {
                         parts.Append(", ");
@@ -284,7 +284,7 @@ namespace Spectre.Cli.Internal
 
                 if (option.Long != null)
                 {
-                    parts.Append("[aqua]--").Append(option.Long.SafeMarkup()).Append("[/]");
+                    parts.Append("--").Append(option.Long.SafeMarkup());
                 }
 
                 if (option.Value != null)
@@ -296,7 +296,7 @@ namespace Spectre.Cli.Internal
                     }
                     else
                     {
-                        parts.Append("[grey]<").Append(option.Value.SafeMarkup()).Append(">[/]");
+                        parts.Append("[silver]<").Append(option.Value.SafeMarkup()).Append(">[/]");
                     }
                 }
 
@@ -335,7 +335,7 @@ namespace Spectre.Cli.Internal
             foreach (var child in commands)
             {
                 grid.AddRow(
-                    $"[aqua]{child.Name.SafeMarkup()}[/]",
+                    $"[silver]{child.Name.SafeMarkup()}[/]",
                     child.Description?.TrimEnd('.') ?? string.Empty);
             }
 
