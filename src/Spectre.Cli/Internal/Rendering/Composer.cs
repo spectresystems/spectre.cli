@@ -72,7 +72,7 @@ namespace Spectre.Cli.Internal
         {
             for (var i = 0; i < count; i++)
             {
-                _content.Append("\r\n");
+                _content.Append(Environment.NewLine);
             }
 
             return this;
@@ -97,12 +97,12 @@ namespace Spectre.Cli.Internal
 
         public Measurement Measure(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)Console.Text.New(_content.ToString())).Measure(context, maxWidth);
+            return ((IRenderable)Console.Text.Markup(_content.ToString())).Measure(context, maxWidth);
         }
 
         public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)Console.Text.New(_content.ToString())).Render(context, maxWidth);
+            return ((IRenderable)Console.Text.Markup(_content.ToString())).Render(context, maxWidth);
         }
 
         public override string ToString()

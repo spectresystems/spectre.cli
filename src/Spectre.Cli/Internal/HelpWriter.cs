@@ -224,8 +224,8 @@ namespace Spectre.Cli.Internal
 
             var result = new List<IRenderable>();
 
-            result.Add(Text.New("[yellow]ARGUMENTS:[/]"));
-            result.Add(Text.New("\n"));
+            result.Add(Text.Markup("[yellow]ARGUMENTS:[/]"));
+            result.Add(Text.Markup("\n"));
 
             var grid = new Grid();
             grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
@@ -247,7 +247,7 @@ namespace Spectre.Cli.Internal
                 }
             }
 
-            grid.AddRow(string.Empty, string.Empty);
+            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
@@ -263,8 +263,8 @@ namespace Spectre.Cli.Internal
             }
 
             var result = new List<IRenderable>();
-            result.Add(Text.New("[yellow]OPTIONS:[/]"));
-            result.Add(Text.New("\n"));
+            result.Add(Text.Markup("[yellow]OPTIONS:[/]"));
+            result.Add(Text.Markup("\n"));
 
             var grid = new Grid();
             grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
@@ -318,7 +318,7 @@ namespace Spectre.Cli.Internal
                     option.Description?.TrimEnd('.') ?? string.Empty);
             }
 
-            grid.AddRow(string.Empty, string.Empty);
+            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
@@ -338,8 +338,8 @@ namespace Spectre.Cli.Internal
             }
 
             var result = new List<IRenderable>();
-            result.Add(Text.New("[yellow]COMMANDS:[/]"));
-            result.Add(Text.New("\n"));
+            result.Add(Text.Markup("[yellow]COMMANDS:[/]"));
+            result.Add(Text.Markup("\n"));
 
             var grid = new Grid();
             grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
@@ -352,7 +352,7 @@ namespace Spectre.Cli.Internal
                     child.Description?.TrimEnd('.') ?? string.Empty);
             }
 
-            grid.AddRow(string.Empty, string.Empty);
+            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
