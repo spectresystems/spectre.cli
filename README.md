@@ -2,7 +2,7 @@
 
 An extremly opinionated command line parser targeting [.NET Standard 2.0](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support).
 
-[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli) ![Build Status](https://ci.appveyor.com/api/projects/status/1johjx7tjvux4qb4?svg=true)
+[![NuGet](https://img.shields.io/nuget/v/Spectre.Cli.svg)](https://www.nuget.org/packages/Spectre.Cli) [![Build Status](https://github.com/spectresystems/spectre.cli/workflows/Continuous%20Integration/badge.svg)](https://github.com/spectresystems/spectre.cli/actions?query=workflow%3A%22Continuous+Integration%22)
 
 ## Usage
 
