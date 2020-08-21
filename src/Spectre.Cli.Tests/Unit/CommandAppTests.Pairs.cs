@@ -154,6 +154,27 @@ namespace Spectre.Cli.Tests
                 });
             }
 
+            [Theory]
+            [InlineData("foo=1=2", "Error: The value 'foo=1=2' is not in a correct format")]
+            [InlineData("foo=1=2=3", "Error: The value 'foo=1=2=3' is not in a correct format")]
+            public void Should_Throw_If_Value_Is_Not_In_A_Valid_Format_Using_Default_Deconstructor(
+                string input, string expected)
+            {
+                // Given
+                var app = new CommandAppFixture();
+                app.WithDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
+
+                // When
+                var (result, output, _, settings) = app.Run(new[]
+                {
+                    "--var", input,
+                });
+
+                // Then
+                result.ShouldBe(-1);
+                output.ShouldBe(expected);
+            }
+
             [Fact]
             public void Should_Map_Lookup_Values()
             {

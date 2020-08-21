@@ -5,7 +5,7 @@ namespace Spectre.Cli.Internal
 {
     internal static class CommandSuggestor
     {
-        private const float _smallestDistance = 2f;
+        private const float SmallestDistance = 2f;
 
         public static CommandInfo? Suggest(CommandModel model, CommandInfo? command, string name)
         {
@@ -30,7 +30,7 @@ namespace Spectre.Cli.Internal
                 }
             }
 
-            if (score <= _smallestDistance)
+            if (score <= SmallestDistance)
             {
                 return result;
             }
@@ -56,7 +56,7 @@ namespace Spectre.Cli.Internal
                 return n;
             }
 
-            int[,] d = new int[n + 1, m + 1];
+            var d = new int[n + 1, m + 1];
             Enumerable.Range(0, n + 1).ToList().ForEach(i => d[i, 0] = i);
             Enumerable.Range(0, m + 1).ToList().ForEach(i => d[0, i] = i);
 

@@ -6,7 +6,7 @@ namespace Spectre.Cli.Internal
 {
     internal sealed class ConsoleRenderer
     {
-        private readonly IAnsiConsole? _console;
+        private readonly IAnsiConsole _console;
 
         public ConsoleRenderer(IAnsiConsole? console)
         {
@@ -30,6 +30,11 @@ namespace Spectre.Cli.Internal
 
         public void Render(IRenderable? renderable)
         {
+            if (renderable is null)
+            {
+                throw new System.ArgumentNullException(nameof(renderable));
+            }
+
             _console.Render(renderable);
         }
     }

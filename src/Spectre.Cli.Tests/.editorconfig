@@ -67,3 +67,6 @@ dotnet_analyzer_diagnostic.category-StyleCop.CSharp.ReadabilityRules.severity = 
 
 # Default severity for analyzer diagnostics with category 'Usage'
 dotnet_analyzer_diagnostic.category-Usage.severity = none
+
+# RCS1021: Simplify lambda expression.
+dotnet_diagnostic.RCS1021.severity = none

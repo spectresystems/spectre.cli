@@ -26,11 +26,7 @@ namespace Spectre.Cli.Internal
             var parts = value.Split(new[] { '=' }, StringSplitOptions.None);
             if (parts.Length < 1 || parts.Length > 2)
             {
-                parts = value.Split(new[] { ':' }, StringSplitOptions.None);
-                if (parts.Length < 1 || parts.Length > 2)
-                {
-                    throw ParseException.ValueIsNotInValidFormat(value);
-                }
+                throw ParseException.ValueIsNotInValidFormat(value);
             }
 
             var stringkey = parts[0];
