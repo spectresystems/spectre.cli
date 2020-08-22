@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Cli;

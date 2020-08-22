@@ -1,4 +1,3 @@
-using System;
 using Demo.Commands;
 using Spectre.Cli;
 
