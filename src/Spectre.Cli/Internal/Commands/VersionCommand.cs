@@ -1,5 +1,8 @@
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Spectre.Console;
 
 namespace Spectre.Cli.Internal
@@ -21,12 +24,34 @@ namespace Spectre.Cli.Internal
 
         public override int Execute(CommandContext context, Settings settings)
         {
-            var version = typeof(VersionCommand)?.Assembly?.GetName()?.Version?.ToString();
-            version ??= "?";
+            _writer.MarkupLine(
+                "[yellow]Spectre.Cli[/] version [aqua]{0}[/]",
+                GetVersion(typeof(VersionCommand)?.Assembly));
 
-            _writer.Write($"Spectre.Cli version {version}");
+            _writer.MarkupLine(
+                "[yellow]Spectre.Console[/] version [aqua]{0}[/]",
+                GetVersion(typeof(IAnsiConsole)?.Assembly));
 
             return 0;
+        }
+
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
+        private static string GetVersion(Assembly? assembly)
+        {
+            if (assembly == null)
+            {
+                return "?";
+            }
+
+            try
+            {
+                var info = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return info.ProductVersion ?? "?";
+            }
+            catch
+            {
+                return "?";
+            }
         }
     }
 }
