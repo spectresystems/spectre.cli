@@ -191,6 +191,44 @@ namespace Spectre.Cli.Tests
                     flag.Serve.Value.ShouldBeNull();
                 });
             }
+
+            [Theory]
+            [InlineData("Foo", true, "Set=True, Value=Foo")]
+            [InlineData("Bar", false, "Set=False, Value=Bar")]
+            public void Should_Return_Correct_String_Representation_From_ToString(
+                string value,
+                bool isSet,
+                string expected)
+            {
+                // Given
+                var flag = new FlagValue<string>();
+                flag.Value = value;
+                flag.IsSet = isSet;
+
+                // When
+                var result = flag.ToString();
+
+                // Then
+                result.ShouldBe(expected);
+            }
+
+            [Theory]
+            [InlineData(true, "Set=True")]
+            [InlineData(false, "Set=False")]
+            public void Should_Return_Correct_String_Representation_From_ToString_If_Value_Is_Not_Set(
+                bool isSet,
+                string expected)
+            {
+                // Given
+                var flag = new FlagValue<string>();
+                flag.IsSet = isSet;
+
+                // When
+                var result = flag.ToString();
+
+                // Then
+                result.ShouldBe(expected);
+            }
         }
     }
 }

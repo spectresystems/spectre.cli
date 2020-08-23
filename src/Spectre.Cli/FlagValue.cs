@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace Spectre.Cli
 {
@@ -33,6 +34,24 @@ namespace Spectre.Cli
                 Value = (T)value;
 #pragma warning restore CS8601 // Possible null reference assignment.
             }
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            var flag = (IFlagValue)this;
+            if (flag.Value != null)
+            {
+                return string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Set={0}, Value={1}",
+                    IsSet,
+                    flag.Value.ToString());
+            }
+
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "Set={0}", IsSet);
         }
     }
 }
