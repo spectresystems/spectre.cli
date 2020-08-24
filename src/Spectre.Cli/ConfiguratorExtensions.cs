@@ -157,7 +157,7 @@ namespace Spectre.Cli
         /// <param name="name">The name of the command.</param>
         /// <param name="func">The delegate to execute as part of command execution.</param>
         /// <returns>A command configurator that can be used to configure the command further.</returns>
-        public static IConfigurator AddDelegate(
+        public static ICommandConfigurator AddDelegate(
             this IConfigurator configurator,
             string name,
             Func<CommandContext, int> func)
@@ -167,8 +167,7 @@ namespace Spectre.Cli
                 throw new ArgumentNullException(nameof(configurator));
             }
 
-            configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
-            return configurator;
+            return configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
         }
 
         /// <summary>
@@ -179,7 +178,7 @@ namespace Spectre.Cli
         /// <param name="name">The name of the command.</param>
         /// <param name="func">The delegate to execute as part of command execution.</param>
         /// <returns>A command configurator that can be used to configure the command further.</returns>
-        public static IConfigurator<TSettings> AddDelegate<TSettings>(
+        public static ICommandConfigurator AddDelegate<TSettings>(
             this IConfigurator<TSettings> configurator,
             string name,
             Func<CommandContext, int> func)
@@ -190,8 +189,7 @@ namespace Spectre.Cli
                 throw new ArgumentNullException(nameof(configurator));
             }
 
-            configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
-            return configurator;
+            return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
         }
     }
 }
