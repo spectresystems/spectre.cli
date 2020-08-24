@@ -126,7 +126,8 @@ namespace Spectre.Cli.Internal
 
                     foreach (var character in token.Value)
                     {
-                        if (!char.IsLetterOrDigit(character) && character != '=')
+                        if (!char.IsLetterOrDigit(character) &&
+                            character != '=' && character != '-' && character != '_')
                         {
                             throw TemplateException.InvalidCharacterInValueName(template, token, character);
                         }

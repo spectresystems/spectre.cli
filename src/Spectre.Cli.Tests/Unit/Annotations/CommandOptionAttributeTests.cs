@@ -127,6 +127,18 @@ namespace Spectre.Cli.Tests.Annotations
         }
 
         [Theory]
+        [InlineData("--foo <HELLO-WORLD>", "HELLO-WORLD")]
+        [InlineData("--foo <HELLO_WORLD>", "HELLO_WORLD")]
+        public void Should_Accept_Dash_And_Underscore_In_Value_Name(string template, string name)
+        {
+            // Given, When
+            var result = new CommandOptionAttribute(template);
+
+            // Then
+            result.ValueName.ShouldBe(name);
+        }
+
+        [Theory]
         [InlineData("--foo|-1")]
         public void Should_Throw_If_First_Letter_Of_An_Option_Name_Is_A_Digit(string template)
         {
