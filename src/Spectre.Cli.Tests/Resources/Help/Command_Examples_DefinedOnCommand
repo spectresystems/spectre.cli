@@ -12,5 +12,5 @@ OPTIONS:
     -a, --alive    Indicates whether or not the animal is alive
 
 COMMANDS:
-    dog      The dog command
-    horse    The horse command
+    dog <AGE>    The dog command
+    horse        The horse command

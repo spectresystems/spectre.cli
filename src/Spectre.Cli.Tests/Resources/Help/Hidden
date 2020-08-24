@@ -5,5 +5,5 @@ OPTIONS:
     -h, --help    Prints help information
 
 COMMANDS:
-    dog      The dog command
-    horse    The horse command
+    dog <AGE>    The dog command
+    horse        The horse command

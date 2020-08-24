@@ -352,8 +352,18 @@ namespace Spectre.Cli.Internal
 
             foreach (var child in commands)
             {
+                var arguments = new Composer();
+                arguments.Style("silver", child.Name.SafeMarkup());
+                arguments.Space();
+
+                foreach (var argument in HelpArgument.Get(child).Where(a => a.Required))
+                {
+                    arguments.Style("silver", $"<{argument.Name.SafeMarkup()}>");
+                    arguments.Space();
+                }
+
                 grid.AddRow(
-                    $"[silver]{child.Name.SafeMarkup()}[/]",
+                    arguments.ToString().TrimEnd(),
                     child.Description?.TrimEnd('.') ?? string.Empty);
             }
 
