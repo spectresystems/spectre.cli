@@ -201,6 +201,7 @@ namespace Spectre.Cli.Internal
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
+            var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
 
             var kind = GetParameterKind(property.PropertyType);
@@ -208,7 +209,7 @@ namespace Spectre.Cli.Internal
             return new CommandArgument(
                 property.PropertyType, kind, property,
                 description?.Description, converter,
-                attribute, validators);
+                defaultValue, attribute, validators);
         }
 
         private static ParameterKind GetOptionKind(

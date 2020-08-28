@@ -73,5 +73,10 @@ namespace Spectre.Cli.Exceptions
             return new ConfigurationException($"The option '{option.GetOptionName()}' is marked as " +
                 "pair deconstructable, but the underlying type does not support that.");
         }
+
+        internal static ConfigurationException RequiredArgumentsCannotHaveDefaultValue(CommandArgument option)
+        {
+            return new ConfigurationException($"The required argument '{option.Value}' cannot have a default value.");
+        }
     }
 }

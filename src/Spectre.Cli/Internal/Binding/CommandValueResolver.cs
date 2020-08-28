@@ -28,9 +28,9 @@ namespace Spectre.Cli.Internal
                     else
                     {
                         // Is this an option with a default value?
-                        if (parameter is CommandOption option && option.DefaultValue != null)
+                        if (parameter.DefaultValue != null)
                         {
-                            binder.Bind(parameter, resolver, option.DefaultValue?.Value);
+                            binder.Bind(parameter, resolver, parameter.DefaultValue?.Value);
                             CommandValidator.ValidateParameter(parameter, lookup);
                         }
                     }

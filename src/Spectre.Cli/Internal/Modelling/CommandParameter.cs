@@ -13,6 +13,7 @@ namespace Spectre.Cli.Internal
         public ParameterKind ParameterKind { get; }
         public PropertyInfo Property { get; }
         public string? Description { get; }
+        public DefaultValueAttribute? DefaultValue { get; }
         public TypeConverterAttribute? Converter { get; }
         public PairDeconstructorAttribute? PairDeconstructor { get; }
         public List<ParameterValidationAttribute> Validators { get; }
@@ -25,6 +26,7 @@ namespace Spectre.Cli.Internal
         protected CommandParameter(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property,
             string? description, TypeConverterAttribute? converter,
+            DefaultValueAttribute? defaultValue,
             PairDeconstructorAttribute? deconstuctor,
             IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
@@ -34,6 +36,7 @@ namespace Spectre.Cli.Internal
             Property = property;
             Description = description;
             Converter = converter;
+            DefaultValue = defaultValue;
             PairDeconstructor = deconstuctor;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;

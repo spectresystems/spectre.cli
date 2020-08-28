@@ -1,3 +1,4 @@
+using System;
 using Shouldly;
 using Spectre.Cli.Exceptions;
 using Spectre.Cli.Testing;
@@ -220,6 +221,49 @@ namespace Spectre.Cli.Tests
             {
                 vec.Foo.Length.ShouldBe(1);
                 vec.Foo.ShouldBe(new[] { "a" });
+            });
+        }
+
+        [Fact]
+        public void Should_Assign_Default_Value_To_Optional_Argument()
+        {
+            // Given
+            var app = new CommandAppFixture();
+            app.WithDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueSettings>>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var (result, _, _, settings) = app.Run(Array.Empty<string>());
+
+            // Then
+            result.ShouldBe(0);
+            settings.ShouldBeOfType<OptionalArgumentWithDefaultValueSettings>().And(settings =>
+            {
+                settings.Greeting.ShouldBe("Hello World");
+            });
+        }
+
+        [Fact]
+        public void Should_Throw_If_Required_Argument_Have_Default_Value()
+        {
+            // Given
+            var app = new CommandAppFixture();
+            app.WithDefaultCommand<GenericCommand<RequiredArgumentWithDefaultValueSettings>>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(Array.Empty<string>()));
+
+            // Then
+            result.ShouldBeOfType<ConfigurationException>().And(ex =>
+            {
+                ex.Message.ShouldBe("The required argument 'GREETING' cannot have a default value.");
             });
         }
 

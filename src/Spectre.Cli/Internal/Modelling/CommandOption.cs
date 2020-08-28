@@ -10,7 +10,6 @@ namespace Spectre.Cli.Internal
         public IReadOnlyList<string> LongNames { get; }
         public IReadOnlyList<string> ShortNames { get; }
         public string? ValueName { get; }
-        public DefaultValueAttribute? DefaultValue { get; }
         public bool ValueIsOptional { get; }
         public bool IsShadowed { get; set; }
 
@@ -19,12 +18,12 @@ namespace Spectre.Cli.Internal
             TypeConverterAttribute? converter, PairDeconstructorAttribute? deconstructor,
             CommandOptionAttribute optionAttribute, IEnumerable<ParameterValidationAttribute> validators,
             DefaultValueAttribute? defaultValue, bool valueIsOptional)
-                : base(parameterType, parameterKind, property, description, converter, deconstructor, validators, false)
+                : base(parameterType, parameterKind, property, description, converter,
+                      defaultValue, deconstructor, validators, false)
         {
             LongNames = optionAttribute.LongNames;
             ShortNames = optionAttribute.ShortNames;
             ValueName = optionAttribute.ValueName;
-            DefaultValue = defaultValue;
             ValueIsOptional = valueIsOptional;
         }
 

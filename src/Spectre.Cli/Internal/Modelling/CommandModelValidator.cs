@@ -75,6 +75,17 @@ namespace Spectre.Cli.Internal
                 }
             }
 
+            // Arguments
+            var argumnets = command.Parameters.OfType<CommandArgument>();
+            foreach (var argument in arguments)
+            {
+                if (argument.Required && argument.DefaultValue != null)
+                {
+                    throw ConfigurationException.RequiredArgumentsCannotHaveDefaultValue(argument);
+                }
+            }
+
+            // Options
             var options = command.Parameters.OfType<CommandOption>();
             foreach (var option in options)
             {
