@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Spectre.Console.Composition;
+using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Internal
 {
@@ -97,12 +98,12 @@ namespace Spectre.Cli.Internal
 
         public Measurement Measure(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)Console.Text.Markup(_content.ToString())).Measure(context, maxWidth);
+            return ((IRenderable)new Markup(_content.ToString())).Measure(context, maxWidth);
         }
 
         public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)Console.Text.Markup(_content.ToString())).Render(context, maxWidth);
+            return ((IRenderable)new Markup(_content.ToString())).Render(context, maxWidth);
         }
 
         public override string ToString()

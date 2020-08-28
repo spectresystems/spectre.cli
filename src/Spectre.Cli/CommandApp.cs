@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli
 {
@@ -132,7 +132,7 @@ namespace Spectre.Cli
                     new Composer()
                         .LineBreak()
                         .Text("[red]Error:[/]")
-                        .Space().Text(ex.Message),
+                        .Space().Text(ex.Message.SafeMarkup()),
                 };
 
                 // Got a renderable inner exception?

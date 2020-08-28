@@ -9,7 +9,9 @@ namespace Spectre.Cli.Internal
                 return string.Empty;
             }
 
-            return text.Replace("[", "[[");
+            return text
+                .Replace("[", "[[")
+                .Replace("]", "]]");
         }
     }
 }

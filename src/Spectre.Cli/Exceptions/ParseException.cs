@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Spectre.Cli.Internal;
 using Spectre.Console;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Exceptions
 {
@@ -123,7 +123,7 @@ namespace Spectre.Cli.Exceptions
         internal static ParseException ValueIsNotInValidFormat(string value)
         {
             var text = $"[red]Error:[/] The value '[white]{value}[/]' is not in a correct format";
-            return new ParseException("Could not parse value", Text.Markup(text));
+            return new ParseException("Could not parse value", new Markup(text));
         }
     }
 }

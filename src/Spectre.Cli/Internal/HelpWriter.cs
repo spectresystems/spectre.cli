@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Spectre.Console;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Internal
 {
@@ -93,7 +93,7 @@ namespace Spectre.Cli.Internal
             if (command == null)
             {
                 parameters.Push("[aqua]<COMMAND>[/]");
-                parameters.Push("[grey][[OPTIONS][/]");
+                parameters.Push("[grey][[OPTIONS]][/]");
             }
             else
             {
@@ -108,7 +108,7 @@ namespace Spectre.Cli.Internal
                     var isCurrent = current == command;
                     if (isCurrent)
                     {
-                        parameters.Push("[grey][[OPTIONS][/]");
+                        parameters.Push("[grey][[OPTIONS]][/]");
                     }
 
                     if (current.Parameters.OfType<CommandArgument>().Any())
@@ -118,7 +118,7 @@ namespace Spectre.Cli.Internal
                         {
                             foreach (var optionalArgument in optionalArguments)
                             {
-                                parameters.Push($"[silver][[{optionalArgument.Value.SafeMarkup()}][/]");
+                                parameters.Push($"[silver][[{optionalArgument.Value.SafeMarkup()}]][/]");
                             }
                         }
 
@@ -224,8 +224,8 @@ namespace Spectre.Cli.Internal
 
             var result = new List<IRenderable>
             {
-                Text.Markup("[yellow]ARGUMENTS:[/]"),
-                Text.Markup("\n"),
+                new Markup("[yellow]ARGUMENTS:[/]"),
+                new Markup("\n"),
             };
 
             var grid = new Grid();
@@ -243,7 +243,7 @@ namespace Spectre.Cli.Internal
                 else
                 {
                     grid.AddRow(
-                        $"[grey][[{argument.Name.SafeMarkup()}][/]",
+                        $"[grey][[{argument.Name.SafeMarkup()}]][/]",
                         argument.Description?.TrimEnd('.') ?? string.Empty);
                 }
             }
@@ -265,8 +265,8 @@ namespace Spectre.Cli.Internal
 
             var result = new List<IRenderable>
             {
-                Text.Markup("[yellow]OPTIONS:[/]"),
-                Text.Markup("\n"),
+                new Markup("[yellow]OPTIONS:[/]"),
+                new Markup("\n"),
             };
 
             var grid = new Grid();
@@ -303,7 +303,7 @@ namespace Spectre.Cli.Internal
                     builder.Append(" ");
                     if (option.ValueIsOptional ?? false)
                     {
-                        builder.Append("[grey][[").Append(option.Value.SafeMarkup()).Append("][/]");
+                        builder.Append("[grey][[").Append(option.Value.SafeMarkup()).Append("]][/]");
                     }
                     else
                     {
@@ -342,8 +342,8 @@ namespace Spectre.Cli.Internal
 
             var result = new List<IRenderable>
             {
-                Text.Markup("[yellow]COMMANDS:[/]"),
-                Text.Markup("\n"),
+                new Markup("[yellow]COMMANDS:[/]"),
+                new Markup("\n"),
             };
 
             var grid = new Grid();

@@ -1,5 +1,5 @@
 using Spectre.Cli.Exceptions;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Internal
 {
@@ -22,21 +22,21 @@ namespace Spectre.Cli.Internal
             composer.Style("red", "Error:");
             composer.Space().Text("An error occured when parsing template.");
             composer.LineBreak();
-            composer.Spaces(7).Style("yellow", message);
+            composer.Spaces(7).Style("yellow", message.SafeMarkup());
             composer.LineBreak();
 
             if (string.IsNullOrWhiteSpace(template))
             {
                 // Error
                 composer.LineBreak();
-                composer.Style("red", message);
+                composer.Style("red", message.SafeMarkup());
                 composer.LineBreak();
             }
             else
             {
                 // Template
                 composer.LineBreak();
-                composer.Spaces(7).Text(template);
+                composer.Spaces(7).Text(template.SafeMarkup());
 
                 // Error
                 composer.LineBreak();
@@ -45,7 +45,7 @@ namespace Spectre.Cli.Internal
                 {
                     error.Repeat('^', value.Length);
                     error.Space();
-                    error.Text(details.TrimEnd('.'));
+                    error.Text(details.TrimEnd('.').SafeMarkup());
                     error.LineBreak();
                 });
             }

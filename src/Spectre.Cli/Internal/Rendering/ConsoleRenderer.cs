@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Spectre.Console;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Internal
 {
