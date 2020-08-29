@@ -14,7 +14,7 @@ namespace Spectre.Cli.Internal
 
         public VersionCommand(IConfiguration configuration)
         {
-            _writer = configuration?.Settings?.Console ?? AnsiConsole.Console;
+            _writer = (configuration?.Settings?.Console ?? new ConsoleSettings()).CreateConsole();
         }
 
         public sealed class Settings : CommandSettings

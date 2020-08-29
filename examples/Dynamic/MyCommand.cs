@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Spectre.Cli;
-using Spectre.Console;
 
 namespace Dynamic
 {
@@ -14,7 +13,7 @@ namespace Dynamic
                 
             }
 
-            AnsiConsole.MarkupLine("Value = [aqua]{0}[/]", data);
+            Console.WriteLine("Value = {0}", data);
             return 0;
         }
     }

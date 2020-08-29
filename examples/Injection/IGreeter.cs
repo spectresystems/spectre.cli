@@ -1,4 +1,4 @@
-using Spectre.Console;
+using System;
 
 namespace Injection
 {
@@ -11,7 +11,7 @@ namespace Injection
     {
         public void Greet(string name)
         {
-            AnsiConsole.MarkupLine($"[aqua]Hello[/] [red]{name}[/]!");
+            Console.WriteLine($"Hello {name}!");
         }
     }
 }

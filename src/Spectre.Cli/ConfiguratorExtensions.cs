@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console;
 
 namespace Spectre.Cli
 {
@@ -27,12 +26,12 @@ namespace Spectre.Cli
         }
 
         /// <summary>
-        /// Sets the console.
+        /// Configures the console.
         /// </summary>
         /// <param name="configurator">The configurator.</param>
-        /// <param name="console">A <see cref="IAnsiConsole"/> that represents the standard output stream.</param>
+        /// <param name="console">The console settings.</param>
         /// <returns>A configurator that can be used to configure the application further.</returns>
-        public static IConfigurator SetConsole(this IConfigurator configurator, IAnsiConsole console)
+        public static IConfigurator ConfigureConsole(this IConfigurator configurator, IConsoleSettings console)
         {
             if (configurator == null)
             {

@@ -1,5 +1,5 @@
+using System;
 using Spectre.Cli;
-using Spectre.Console;
 
 namespace Delegates
 {
@@ -22,7 +22,7 @@ namespace Delegates
 
         private static int Foo(CommandContext context)
         {
-            AnsiConsole.MarkupLine("[aqua]Foo[/]");
+            Console.WriteLine("Foo");
             return 0;
         }
 
@@ -30,7 +30,7 @@ namespace Delegates
         {
             for (var index = 0; index < settings.Count; index++)
             {
-                AnsiConsole.MarkupLine("[aqua]Bar[/]");
+                Console.WriteLine("Bar");
             }
 
             return 0;

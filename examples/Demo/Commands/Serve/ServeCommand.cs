@@ -1,7 +1,7 @@
+using System;
 using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Cli;
-using Spectre.Console;
 
 namespace Demo.Commands
 {
@@ -26,11 +26,11 @@ namespace Demo.Commands
                 var browser = settings.OpenBrowser.Value;
                 if (browser != null)
                 {
-                    AnsiConsole.MarkupLine($"Open in [aqua]{browser}[/]");
+                    Console.WriteLine($"Open in {browser}");
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine($"Open in default browser.");
+                    Console.WriteLine($"Open in default browser.");
                 }
             }
 

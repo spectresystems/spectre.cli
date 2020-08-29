@@ -88,7 +88,7 @@ namespace Spectre.Cli
                     .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
-            catch (Exception ex) when (!_configurator.Settings.PropagateExceptions)
+            catch (Exception ex)
             {
                 // Render the exception.
                 var pretty = GetRenderableErrorMessage(ex);
@@ -105,6 +105,11 @@ namespace Spectre.Cli
                 if (Debugger.IsAttached
                     && ex is CommandAppException appException
                     && appException.AlwaysPropagateWhenDebugging)
+                {
+                    throw;
+                }
+
+                if (_configurator.Settings.PropagateExceptions)
                 {
                     throw;
                 }

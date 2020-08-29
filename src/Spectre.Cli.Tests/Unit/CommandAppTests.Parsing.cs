@@ -581,7 +581,7 @@ namespace Spectre.Cli.Tests
                     _appConfiguration?.Invoke(app);
 
                     app.Configure(_configuration);
-                    app.Configure(c => c.SetConsole(console));
+                    app.Configure(c => c.ConfigureConsole(console));
                     app.Run(args);
 
                     return console.Output

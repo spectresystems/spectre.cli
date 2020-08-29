@@ -8,18 +8,18 @@ namespace Spectre.Cli.Internal
     {
         private readonly IAnsiConsole _console;
 
-        public ConsoleRenderer(IAnsiConsole? console)
+        public ConsoleRenderer(IConsoleSettings? console)
         {
-            _console = console ?? AnsiConsole.Console;
+            _console = (console ?? new ConsoleSettings()).CreateConsole();
         }
 
-        public static void Render(IRenderable? renderable, IAnsiConsole? console)
+        public static void Render(IRenderable? renderable, IConsoleSettings? console)
         {
             var renderer = new ConsoleRenderer(console);
             renderer.Render(renderable);
         }
 
-        public static void Render(IEnumerable<IRenderable?> renderables, IAnsiConsole? console)
+        public static void Render(IEnumerable<IRenderable?> renderables, IConsoleSettings? console)
         {
             var renderer = new ConsoleRenderer(console);
             foreach (var renderable in renderables)

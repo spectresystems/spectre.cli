@@ -20,7 +20,7 @@ namespace Spectre.Cli.Internal
         public XmlDocCommand(IConfiguration configuration, CommandModel model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            _writer = configuration?.Settings?.Console ?? AnsiConsole.Console;
+            _writer = (configuration?.Settings?.Console ?? new ConsoleSettings()).CreateConsole();
         }
 
         public sealed class Settings : CommandSettings

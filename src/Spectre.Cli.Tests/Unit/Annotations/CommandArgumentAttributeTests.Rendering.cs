@@ -76,7 +76,7 @@ namespace Spectre.Cli.Tests.Annotations
                 using (var writer = new FakeConsole())
                 {
                     var app = new CommandApp();
-                    app.Configure(c => c.SetConsole(writer));
+                    app.Configure(c => c.ConfigureConsole(writer));
                     app.Configure(c => c.AddCommand<GenericCommand<TSettings>>("foo"));
                     app.Run(args);
 

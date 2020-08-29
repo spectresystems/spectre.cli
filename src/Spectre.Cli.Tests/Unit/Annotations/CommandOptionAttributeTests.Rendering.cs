@@ -1,9 +1,7 @@
-using System;
 using Shouldly;
 using Spectre.Cli.Exceptions;
 using Spectre.Cli.Testing;
 using Spectre.Cli.Testing.Data.Commands;
-using Spectre.Cli.Testing.Fakes;
 using Xunit;
 
 namespace Spectre.Cli.Tests.Annotations
@@ -225,28 +223,14 @@ namespace Spectre.Cli.Tests.Annotations
             public static (string Message, string Output) Run<TSettings>(params string[] args)
                 where TSettings : CommandSettings
             {
-                var app = new CommandApp();
-                app.Configure(c => c.PropagateExceptions());
-                app.Configure(c => c.AddCommand<GenericCommand<TSettings>>("foo"));
-
-                try
+                var app = new CommandAppFixture();
+                app.Configure(c =>
                 {
-                    app.Run(args);
-                }
-                catch (TemplateException ex)
-                {
-                    using (var writer = new FakeConsole())
-                    {
-                        ex.Render(writer);
+                    c.PropagateExceptions();
+                    c.AddCommand<GenericCommand<TSettings>>("foo");
+                });
 
-                        return (ex.Message, writer.Output
-                            .NormalizeLineEndings()
-                            .TrimLines()
-                            .Trim());
-                    }
-                }
-
-                throw new InvalidOperationException("Expected a template exception");
+                return app.RunAndCatch<TemplateException>(args);
             }
         }
     }

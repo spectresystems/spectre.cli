@@ -25,6 +25,42 @@ namespace Spectre.Cli.Testing
             _configuration = action;
         }
 
+        public (string Message, string Output) RunAndCatch<T>(params string[] args)
+            where T : Exception
+        {
+            CommandContext context = null;
+            CommandSettings settings = null;
+
+            using var console = new FakeConsole();
+
+            var app = new CommandApp();
+            _appConfiguration?.Invoke(app);
+
+            app.Configure(_configuration);
+            app.Configure(c => c.ConfigureConsole(console));
+            app.Configure(c => c.SetInterceptor(new ActionInterceptor((ctx, s) =>
+            {
+                context = ctx;
+                settings = s;
+            })));
+
+            try
+            {
+                app.Run(args);
+            }
+            catch (T ex)
+            {
+                var output = console.Output
+                    .NormalizeLineEndings()
+                    .TrimLines()
+                    .Trim();
+
+                return (ex.Message, output);
+            }
+
+            throw new InvalidOperationException("No exception was thrown");
+        }
+
         public (int ExitCode, string Output, CommandContext Context, CommandSettings Settings) Run(params string[] args)
         {
             CommandContext context = null;
@@ -36,12 +72,13 @@ namespace Spectre.Cli.Testing
             _appConfiguration?.Invoke(app);
 
             app.Configure(_configuration);
+            app.Configure(c => c.ConfigureConsole(console));
             app.Configure(c => c.SetInterceptor(new ActionInterceptor((ctx, s) =>
             {
                 context = ctx;
                 settings = s;
             })));
-            app.Configure(c => c.SetConsole(console));
+
             var result = app.Run(args);
 
             var output = console.Output
