@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "..\examples\Demo\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injection", "..\examples\Injection\Injection.csproj", "{980BAB18-5482-4D37-A956-86450067E3D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dynamic", "..\examples\Dynamic\Dynamic.csproj", "{D5BD424D-73E1-4E0E-AB69-4576A2B5966B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dynamic", "..\examples\Dynamic\Dynamic.csproj", "{D5BD424D-73E1-4E0E-AB69-4576A2B5966B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delegates", "..\examples\Delegates\Delegates.csproj", "{07C6EEC5-8520-403E-9C1C-54130CDC17D3}"
 EndProject
