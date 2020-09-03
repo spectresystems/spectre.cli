@@ -1,4 +1,0 @@
-﻿Error: Invalid long option name.
-
-       dog --1foo
-           ^^^^^^ Option names cannot start with a digit

@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="/spectre.cli/assets/bootstrap/bootstrap.css" rel="stylesheet" />
+        <link href="/spectre.cli/assets/css/styles.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" data-no-mirror>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/a1cad7ed9a.js" crossorigin="anonymous" data-no-mirror></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
+
+        <title>Spectre.Cli - Welcome</title>
+    </head>
+    <body class="d-flex flex-column">
+        <div class="flex-grow-1 d-flex flex-column">
+
+            <nav id="topnav" class="navbar navbar-expand-lg navbar-light">
+                <div class="container py-3">
+                    <a class="navbar-brand" href="/spectre.cli"><img id="logo" src="/spectre.cli/assets/logo.svg" alt="Spectre.Cli"> Spectre.Cli</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                        <ul class="navbar-nav mr-auto">
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-light font-size-lg text-red" href="https://github.com/sponsors/patriksvensson"><i class="far fa-heart"></i> Sponsor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-light font-size-lg" href="https://github.com/spectresystems/spectre.cli"><i class="fab fa-github"></i> GitHub</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+            <div class="flex-grow-1 d-flex  bg-body flex-column section-docs">
+                    <div id="titlebar" class="py-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="offset-md-3 offset-lg-2 px-3 px-md-0">
+                                    <div class="section text-uppercase">Spectre.Cli</div>
+                                    <div class="text-white m-0 title">Welcome</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="undertitle">
+                        <div class="container bg-body">
+                            <div class="row">
+                                    <div class="col-md-3 col-lg-2 bg-body">
+                                    </div>
+                                    <div class="col-md-9 col-lg-8 bg-white">
+                                    </div>
+                                <div class="col-lg-2 d-none d-lg-block bg-section">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="flex-grow-1 d-flex flex-column bg-body">
+                        <div class="container flex-grow-1 d-flex flex-column bg-white">
+                            <div class="row flex-grow-1 align-items-stretch">
+                                    <div class="sidebar col-md-3 col-lg-2 pt-2 bg-body">
+                                            <div class="sidebar-nav-item active">
+                                                <a href="/spectre.cli/">Welcome</a>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-9 col-lg-8 pt-4 pt-md-0 pb-4 px-4">
+                                        <p><code>Spectre.Cli</code> is a modern library for parsing command line arguments. While it's extremely
+opinionated in what it does, it tries to follow established industry conventions, and draws
+its inspiration from applications you use everyday.</p>
+<h1 id="how-does-it-work">How does it work?</h1>
+<p>The underlying philosophy behing <code>Spectre.Cli</code> is to rely on the .NET type system to
+declare the commands, but tie everything together via composition.</p>
+<p>Imagine the following command structure:</p>
+<ul>
+<li>dotnet <em>(executable)</em>
+<ul>
+<li>add <code>[PROJECT]</code>
+<ul>
+<li>package <code>&lt;PACKAGE_NAME&gt;</code> --version <code>&lt;VERSION&gt;</code></li>
+<li>reference <code>&lt;PROJECT_REFERENCE&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>For this I would like to implement the commands (the different levels in the tree that
+executes something) separately from the settings (the options, flags and arguments),
+which I want to be able to inherit from each other.</p>
+<h2 id="specify-the-settings">Specify the settings</h2>
+<p>We start by creating some settings that represents the options, flags and arguments
+that we want to act upon.</p>
+<pre><code class="language-csharp">public class AddSettings : CommandSettings
+{
+    [CommandArgument(0, &quot;[PROJECT]&quot;)]
+    public string Project { get; set; }
+}
+
+public class AddPackageSettings : AddSettings
+{
+    [CommandArgument(0, &quot;&lt;PACKAGE_NAME&gt;&quot;)]
+    public string PackageName { get; set; }
+
+    [CommandOption(&quot;-v|--version &lt;VERSION&gt;&quot;)]
+    public string Version { get; set; }
+}
+
+public class AddReferenceSettings : AddSettings
+{
+    [CommandArgument(0, &quot;&lt;PROJECT_REFERENCE&gt;&quot;)]
+    public string ProjectReference { get; set; }
+}
+</code></pre>
+<h2 id="specify-the-commands">Specify the commands</h2>
+<p>Now it's time to specify the commands that act on the settings we created
+in the previous step.</p>
+<pre><code class="language-csharp">public class AddPackageCommand : Command&lt;AddPackageSettings&gt;
+{
+    public override int Execute(AddPackageSettings settings, ILookup&lt;string, string&gt; remaining)
+    {
+        // Omitted
+    }
+}
+
+public class AddReferenceCommand : Command&lt;AddReferenceSettings&gt;
+{
+    public override int Execute(AddReferenceSettings settings, ILookup&lt;string, string&gt; remaining)
+    {
+        // Omitted
+    }
+}
+</code></pre>
+<h2 id="lets-tie-it-together">Let's tie it together</h2>
+<p>Now when we have our commands and settings implemented, we can compose a command tree
+that tells the parser how to interpret user input.</p>
+<pre><code class="language-csharp">using Spectre.Cli;
+
+namespace MyApp
+{
+    public static class Program
+    {
+        public static int Main(string[] args)
+        {
+            var app = new CommandApp();
+
+            app.Configure(config =&gt;
+            {
+                config.AddBranch&lt;AddSettings&gt;(&quot;add&quot;, add =&gt;
+                {
+                    add.AddCommand&lt;AddPackageCommand&gt;(&quot;package&quot;);
+                    add.AddCommand&lt;AddReferenceCommand&gt;(&quot;reference&quot;);
+                });
+            });
+
+            return app.Run(args);
+        }
+    }
+}
+</code></pre>
+<h1 id="so-why-this-way">So why this way?</h1>
+<p>Now you might wonder, why do things like this? Well, for starters the different parts
+of the application are separated, while still having the option to share things like options,
+flags and arguments between them.</p>
+<p>This make the resulting code very clean and easy to navigate, not to mention to unit test.
+And most importantly at all, the type system guides me to do the right thing. I can't configure
+commands in non-compatible ways, and if I want to add a new top-level <code>add-package</code> command
+(or move the command completely), it's just a single line to change. This makes it easy to
+experiment and makes the CLI experience a first class citizen of your application.</p>
+
+                                    </div>
+                                <div class="col-lg-2 d-none d-lg-block bg-body pl-3 pt-3">
+                                            <div class="border-bottom mb-3">
+                                                <p class="small font-weight-bold">On This Page</p>
+                                                    <p class="small"><a href="#how-does-it-work">How does it work?</a></p>
+                                                    <p class="small"><a href="#so-why-this-way">So why this way?</a></p>
+                                            </div>
+                                        <p class="small font-weight-bold"><a href="https://github.com/spectresystems/spectre.cli/edit/main/docs/input/index.md"><i class="fad fa-pencil"></i> Edit This Page</a></p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="p-3 text-white font-size-sm">
+            <div class="container">
+                <div>
+                    <span>© 2020 Spectre Systems AB</span>
+                    <span class="float-right" style="color: #888888;">0.0.0-preview.0.184</span>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                mermaid.initialize(
+                {
+                    flowchart:
+                    {
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
+            });
+        </script>
+    </body>
+</html>
