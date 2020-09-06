@@ -7,7 +7,7 @@ namespace Demo.Utilities
     {
         public static void Dump(CommandSettings settings)
         {
-            var table = new Table { Border = BorderKind.Rounded };
+            var table = new Table { BorderKind = BorderKind.Rounded };
             table.AddColumn("[grey]Name[/]");
             table.AddColumn("[grey]Value[/]");
 
