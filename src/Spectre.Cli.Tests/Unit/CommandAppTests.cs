@@ -247,6 +247,28 @@ namespace Spectre.Cli.Tests
         }
 
         [Fact]
+        public void Should_Assign_Default_Value_To_Optional_Argument_Using_Converter_If_Necessary()
+        {
+            // Given
+            var app = new CommandAppFixture();
+            app.WithDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueAndTypeConverterSettings>>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var (result, _, _, settings) = app.Run(Array.Empty<string>());
+
+            // Then
+            result.ShouldBe(0);
+            settings.ShouldBeOfType<OptionalArgumentWithDefaultValueAndTypeConverterSettings>().And(settings =>
+            {
+                settings.Greeting.ShouldBe(5);
+            });
+        }
+
+        [Fact]
         public void Should_Throw_If_Required_Argument_Have_Default_Value()
         {
             // Given

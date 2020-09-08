@@ -30,7 +30,19 @@ namespace Spectre.Cli.Internal
                         // Is this an option with a default value?
                         if (parameter.DefaultValue != null)
                         {
-                            binder.Bind(parameter, resolver, parameter.DefaultValue?.Value);
+                            var value = parameter.DefaultValue?.Value;
+
+                            // Need to convert the default value?
+                            if (value != null && value.GetType() != parameter.ParameterType)
+                            {
+                                var converter = GetConverter(lookup, binder, resolver, parameter);
+                                if (converter != null)
+                                {
+                                    value = converter.ConvertFrom(value);
+                                }
+                            }
+
+                            binder.Bind(parameter, resolver, value);
                             CommandValidator.ValidateParameter(parameter, lookup);
                         }
                     }
