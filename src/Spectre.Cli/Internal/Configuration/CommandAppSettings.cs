@@ -8,6 +8,7 @@ namespace Spectre.Cli.Internal
         public IConsoleSettings? Console { get; set; }
         public ICommandInterceptor? Interceptor { get; set; }
         public ITypeRegistrarFrontend Registrar { get; set; }
+        public CaseSensitivity CaseSensitivity { get; set; }
         public bool PropagateExceptions { get; set; }
         public bool ValidateExamples { get; set; }
         public bool StrictParsing { get; set; }
@@ -18,6 +19,7 @@ namespace Spectre.Cli.Internal
         public CommandAppSettings(ITypeRegistrar registrar)
         {
             Registrar = new TypeRegistrar(registrar);
+            CaseSensitivity = CaseSensitivity.All;
         }
 
         public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

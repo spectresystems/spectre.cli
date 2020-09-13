@@ -30,7 +30,7 @@ namespace Spectre.Cli.Internal
             _registrar.RegisterDependencies(model);
 
             // Parse and map the model against the arguments.
-            var parser = new CommandTreeParser(model);
+            var parser = new CommandTreeParser(model, configuration.Settings);
             var parsedResult = parser.Parse(args);
             _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
 

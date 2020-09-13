@@ -76,6 +76,23 @@ namespace Spectre.Cli
         }
 
         /// <summary>
+        /// Configures case sensitivity.
+        /// </summary>
+        /// <param name="configurator">The configuration.</param>
+        /// <param name="sensitivity">The case sensitivity.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator CaseSensitivity(this IConfigurator configurator, CaseSensitivity sensitivity)
+        {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
+            configurator.Settings.CaseSensitivity = sensitivity;
+            return configurator;
+        }
+
+        /// <summary>
         /// Tells the command line application to validate all
         /// examples before running the application.
         /// </summary>

@@ -27,6 +27,11 @@ namespace Spectre.Cli
         ITypeRegistrarFrontend Registrar { get; }
 
         /// <summary>
+        /// Gets or sets case sensitivity.
+        /// </summary>
+        CaseSensitivity CaseSensitivity { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not parsing is strict.
         /// </summary>
         bool StrictParsing { get; set; }

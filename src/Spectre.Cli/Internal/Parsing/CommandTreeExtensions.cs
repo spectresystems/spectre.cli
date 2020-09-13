@@ -37,12 +37,12 @@ namespace Spectre.Cli.Internal
                 .FirstOrDefault(c => c.Position == position);
         }
 
-        public static CommandOption FindOption(this CommandTree tree, string name, bool longOption)
+        public static CommandOption FindOption(this CommandTree tree, string name, bool longOption, CaseSensitivity sensitivity)
         {
             return tree.Command.Parameters
                 .OfType<CommandOption>()
                 .FirstOrDefault(o => longOption
-                    ? o.LongNames.Contains(name, StringComparer.Ordinal)
+                    ? o.LongNames.Contains(name, sensitivity.GetStringComparer(CommandPart.LongOption))
                     : o.ShortNames.Contains(name, StringComparer.Ordinal));
         }
 

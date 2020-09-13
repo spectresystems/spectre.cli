@@ -9,6 +9,16 @@ namespace Spectre.Cli.Internal
     {
         public static void Validate(CommandModel model, CommandAppSettings settings)
         {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (settings is null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             if (model.Commands.Count == 0 && model.DefaultCommand == null)
             {
                 throw ConfigurationException.NoCommandConfigured();
@@ -34,7 +44,7 @@ namespace Spectre.Cli.Internal
 
             if (settings.ValidateExamples)
             {
-                ValidateExamples(model);
+                ValidateExamples(model, settings);
             }
         }
 
@@ -116,7 +126,7 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        private static void ValidateExamples(CommandModel model)
+        private static void ValidateExamples(CommandModel model, CommandAppSettings settings)
         {
             var examples = new List<string[]>();
             examples.AddRangeIfNotNull(model.Examples);
@@ -139,7 +149,7 @@ namespace Spectre.Cli.Internal
             {
                 try
                 {
-                    var parser = new CommandTreeParser(model, ParsingMode.Strict);
+                    var parser = new CommandTreeParser(model, settings, ParsingMode.Strict);
                     parser.Parse(example);
                 }
                 catch (Exception ex)

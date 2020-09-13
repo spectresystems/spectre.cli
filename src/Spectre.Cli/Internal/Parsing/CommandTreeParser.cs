@@ -11,17 +11,26 @@ namespace Spectre.Cli.Internal
         private readonly ParsingMode _parsingMode;
         private readonly CommandOptionAttribute _help;
 
+        public CaseSensitivity CaseSensitivity { get; }
+
         public enum State
         {
             Normal = 0,
             Remaining = 1,
         }
 
-        public CommandTreeParser(CommandModel configuration, ParsingMode? parsingMode = null)
+        public CommandTreeParser(CommandModel configuration, ICommandAppSettings settings, ParsingMode? parsingMode = null)
         {
+            if (settings is null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             _configuration = configuration;
             _parsingMode = parsingMode ?? _configuration.ParsingMode;
             _help = new CommandOptionAttribute("-h|--help");
+
+            CaseSensitivity = settings.CaseSensitivity;
         }
 
         public CommandTreeParserResult Parse(IEnumerable<string> args)
@@ -66,7 +75,7 @@ namespace Spectre.Cli.Internal
                 }
 
                 // Does the token value match a command?
-                var command = _configuration.FindCommand(token.Value);
+                var command = _configuration.FindCommand(token.Value, CaseSensitivity);
                 if (command == null)
                 {
                     if (_configuration.DefaultCommand != null)
@@ -106,7 +115,7 @@ namespace Spectre.Cli.Internal
                 throw new RuntimeException("Could not consume token when parsing command.");
             }
 
-            var command = current.FindCommand(commandToken.Value);
+            var command = current.FindCommand(commandToken.Value, CaseSensitivity);
             if (command == null)
             {
                 throw ParseException.UnknownCommand(_configuration, parent, context.Arguments, commandToken);
@@ -184,7 +193,7 @@ namespace Spectre.Cli.Internal
             var token = stream.Expect(CommandTreeToken.Kind.String);
 
             // Command?
-            var command = node.Command.FindCommand(token.Value);
+            var command = node.Command.FindCommand(token.Value, CaseSensitivity);
             if (command != null)
             {
                 if (context.State == State.Normal)
@@ -248,7 +257,7 @@ namespace Spectre.Cli.Internal
             if (context.State == State.Normal)
             {
                 // Find the option.
-                var option = node.FindOption(token.Value, isLongOption);
+                var option = node.FindOption(token.Value, isLongOption, CaseSensitivity);
                 if (option != null)
                 {
                     node.Mapped.Add(new MappedCommandParameter(
@@ -281,7 +290,7 @@ namespace Spectre.Cli.Internal
             }
         }
 
-        private static string? ParseOptionValue(
+        private string? ParseOptionValue(
             CommandTreeParserContext context,
             CommandTreeTokenStream stream,
             CommandTreeToken token,
@@ -303,7 +312,7 @@ namespace Spectre.Cli.Internal
                 if (context.State == State.Normal && parseValue)
                 {
                     // Is this a command?
-                    if (current.Command.FindCommand(valueToken.Value) == null)
+                    if (current.Command.FindCommand(valueToken.Value, CaseSensitivity) == null)
                     {
                         if (parameter != null)
                         {
