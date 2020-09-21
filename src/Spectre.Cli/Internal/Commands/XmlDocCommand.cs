@@ -29,7 +29,7 @@ namespace Spectre.Cli.Internal
 
         public override int Execute(CommandContext context, Settings settings)
         {
-            _writer.Write(Serialize(_model));
+            _writer.Write(Serialize(_model), Style.Plain);
             return 0;
         }
 

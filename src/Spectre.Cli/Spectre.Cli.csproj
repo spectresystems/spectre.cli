@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -10,16 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Spectre.Console" Version="0.19.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.164" />
-    <PackageReference Update="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.154" />
+    <PackageReference Include="Spectre.Console" Version="0.22.0" />
   </ItemGroup>
 
 </Project>
