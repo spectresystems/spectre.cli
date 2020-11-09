@@ -8,7 +8,7 @@ its inspiration from applications you use everyday.
 
 # How does it work?
 
-The underlying philosophy behing `Spectre.Cli` is to rely on the .NET type system to 
+The underlying philosophy behind `Spectre.Cli` is to rely on the .NET type system to 
 declare the commands, but tie everything together via composition.
 
 Imagine the following command structure:
