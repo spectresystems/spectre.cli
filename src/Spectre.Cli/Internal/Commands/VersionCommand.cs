@@ -1,20 +1,18 @@
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Spectre.Console;
 
 namespace Spectre.Cli.Internal
 {
     [Description("Displays the CLI library version")]
-    [SuppressMessage("Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Injected")]
     internal sealed class VersionCommand : Command<VersionCommand.Settings>
     {
         private readonly IAnsiConsole _writer;
 
         public VersionCommand(IConfiguration configuration)
         {
-            _writer = (configuration?.Settings?.Console ?? new ConsoleSettings()).CreateConsole();
+            _writer = configuration.Settings.Console.GetConsole();
         }
 
         public sealed class Settings : CommandSettings
@@ -34,7 +32,6 @@ namespace Spectre.Cli.Internal
             return 0;
         }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
         private static string GetVersion(Assembly? assembly)
         {
             if (assembly == null)

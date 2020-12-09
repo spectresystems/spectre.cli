@@ -118,7 +118,7 @@ namespace Spectre.Cli.Internal
                         {
                             foreach (var optionalArgument in optionalArguments)
                             {
-                                parameters.Push($"[silver][[{optionalArgument.Value.SafeMarkup()}]][/]");
+                                parameters.Push($"[silver][[{optionalArgument.Value.EscapeMarkup()}]][/]");
                             }
                         }
 
@@ -127,7 +127,7 @@ namespace Spectre.Cli.Internal
                             foreach (var argument in current.Parameters.OfType<CommandArgument>()
                                 .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
                             {
-                                parameters.Push($"[aqua]<{argument.Value.SafeMarkup()}>[/]");
+                                parameters.Push($"[aqua]<{argument.Value.EscapeMarkup()}>[/]");
                             }
                         }
                     }
@@ -136,11 +136,11 @@ namespace Spectre.Cli.Internal
                     {
                         if (isCurrent)
                         {
-                            parameters.Push($"[underline]{current.Name.SafeMarkup()}[/]");
+                            parameters.Push($"[underline]{current.Name.EscapeMarkup()}[/]");
                         }
                         else
                         {
-                            parameters.Push($"{current.Name.SafeMarkup()}");
+                            parameters.Push($"{current.Name.EscapeMarkup()}");
                         }
                     }
 
@@ -237,13 +237,13 @@ namespace Spectre.Cli.Internal
                 if (argument.Required)
                 {
                     grid.AddRow(
-                        $"[silver]<{argument.Name.SafeMarkup()}>[/]",
+                        $"[silver]<{argument.Name.EscapeMarkup()}>[/]",
                         argument.Description?.TrimEnd('.') ?? string.Empty);
                 }
                 else
                 {
                     grid.AddRow(
-                        $"[grey][[{argument.Name.SafeMarkup()}]][/]",
+                        $"[grey][[{argument.Name.EscapeMarkup()}]][/]",
                         argument.Description?.TrimEnd('.') ?? string.Empty);
                 }
             }
@@ -278,7 +278,7 @@ namespace Spectre.Cli.Internal
                 var builder = new StringBuilder();
                 if (option.Short != null)
                 {
-                    builder.Append('-').Append(option.Short.SafeMarkup());
+                    builder.Append('-').Append(option.Short.EscapeMarkup());
                     if (option.Long != null)
                     {
                         builder.Append(", ");
@@ -295,7 +295,7 @@ namespace Spectre.Cli.Internal
 
                 if (option.Long != null)
                 {
-                    builder.Append("--").Append(option.Long.SafeMarkup());
+                    builder.Append("--").Append(option.Long.EscapeMarkup());
                 }
 
                 if (option.Value != null)
@@ -303,11 +303,11 @@ namespace Spectre.Cli.Internal
                     builder.Append(" ");
                     if (option.ValueIsOptional ?? false)
                     {
-                        builder.Append("[grey][[").Append(option.Value.SafeMarkup()).Append("]][/]");
+                        builder.Append("[grey][[").Append(option.Value.EscapeMarkup()).Append("]][/]");
                     }
                     else
                     {
-                        builder.Append("[silver]<").Append(option.Value.SafeMarkup()).Append(">[/]");
+                        builder.Append("[silver]<").Append(option.Value.EscapeMarkup()).Append(">[/]");
                     }
                 }
 
@@ -353,12 +353,12 @@ namespace Spectre.Cli.Internal
             foreach (var child in commands)
             {
                 var arguments = new Composer();
-                arguments.Style("silver", child.Name.SafeMarkup());
+                arguments.Style("silver", child.Name.EscapeMarkup());
                 arguments.Space();
 
                 foreach (var argument in HelpArgument.Get(child).Where(a => a.Required))
                 {
-                    arguments.Style("silver", $"<{argument.Name.SafeMarkup()}>");
+                    arguments.Style("silver", $"<{argument.Name.EscapeMarkup()}>");
                     arguments.Space();
                 }
 

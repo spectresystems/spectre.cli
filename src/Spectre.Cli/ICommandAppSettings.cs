@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Spectre.Cli
 {
     /// <summary>
@@ -11,9 +13,9 @@ namespace Spectre.Cli
         string? ApplicationName { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="IConsoleSettings"/>.
+        /// Gets or sets the <see cref="IAnsiConsole"/>.
         /// </summary>
-        IConsoleSettings? Console { get; set; }
+        IAnsiConsole? Console { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ICommandInterceptor"/> used

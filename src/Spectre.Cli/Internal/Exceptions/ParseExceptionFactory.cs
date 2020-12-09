@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Spectre.Cli.Exceptions;
+using Spectre.Console;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Cli.Internal
@@ -26,12 +27,12 @@ namespace Spectre.Cli.Internal
             // Header
             composer.LineBreak();
             composer.Style("red", "Error:");
-            composer.Space().Text(message.SafeMarkup());
+            composer.Space().Text(message.EscapeMarkup());
             composer.LineBreak();
 
             // Template
             composer.LineBreak();
-            composer.Spaces(7).Text(arguments.SafeMarkup());
+            composer.Spaces(7).Text(arguments.EscapeMarkup());
 
             // Error
             composer.LineBreak();
@@ -41,7 +42,7 @@ namespace Spectre.Cli.Internal
             {
                 error.Repeat('^', value.Length);
                 error.Space();
-                error.Text(details.TrimEnd('.').SafeMarkup());
+                error.Text(details.TrimEnd('.').EscapeMarkup());
                 error.LineBreak();
             });
 

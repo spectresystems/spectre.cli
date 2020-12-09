@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -87,12 +86,6 @@ namespace Spectre.Cli.Internal
                 Text(string.Join(separator, composers));
             }
 
-            return this;
-        }
-
-        public Composer Join(string separator, IEnumerable<Composer> composers)
-        {
-            Text(string.Join(separator, composers.Select(x => x.ToString())));
             return this;
         }
 

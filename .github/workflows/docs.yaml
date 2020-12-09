@@ -2,7 +2,9 @@ name: Deploy Documentation
 on:
     workflow_dispatch:
     push:
-        paths:
+      branches:
+        - main
+      paths:
         - 'docs/**'
         - 'src/**'
 
@@ -21,10 +23,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup dotnet
+    - name: Setup dotnet 5.0.100
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.301' # SDK Version to use.
+        dotnet-version: 5.0.100
+
+    - name: Setup dotnet 5.0.100
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
 
     - name: Publish
       shell: bash

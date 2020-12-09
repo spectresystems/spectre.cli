@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Spectre.Cli.Exceptions;
 
 namespace Spectre.Cli.Internal
 {
-    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes")]
     internal sealed class DefaultPairDeconstructor : IPairDeconstructor
     {
         /// <inheritdoc/>

@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace Spectre.Cli.Internal
 {
-    [SuppressMessage("Performance", "CA1812", Justification = "Created via reflection")]
     internal sealed class MultiMap<TKey, TValue> : IMultiMap, ILookup<TKey, TValue>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
         where TKey : notnull
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Spectre.Cli.Internal;
+using Spectre.Console;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Cli
@@ -80,9 +81,9 @@ namespace Spectre.Cli
                         cli.AddCommand<VersionCommand>(Constants.Commands.Version);
                         cli.AddCommand<XmlDocCommand>(Constants.Commands.XmlDoc);
                     });
-                }
 
-                _executed = true;
+                    _executed = true;
+                }
 
                 return await _executor
                     .Execute(_configurator, args)
@@ -94,11 +95,7 @@ namespace Spectre.Cli
                 var pretty = GetRenderableErrorMessage(ex);
                 if (pretty != null)
                 {
-                    var renderer = new ConsoleRenderer(_configurator.Settings.Console);
-                    foreach (var item in pretty)
-                    {
-                        renderer.Render(item);
-                    }
+                    _configurator.Settings.Console.SafeRender(pretty);
                 }
 
                 // Should we always propagate when debugging?
@@ -137,7 +134,7 @@ namespace Spectre.Cli
                     new Composer()
                         .LineBreak()
                         .Text("[red]Error:[/]")
-                        .Space().Text(ex.Message.SafeMarkup()),
+                        .Space().Text(ex.Message.EscapeMarkup()),
                 };
 
                 // Got a renderable inner exception?

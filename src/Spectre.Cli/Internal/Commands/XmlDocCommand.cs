@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,6 @@ using Spectre.Console;
 namespace Spectre.Cli.Internal
 {
     [Description("Generates an XML representation of the CLI configuration.")]
-    [SuppressMessage("Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Injected")]
     internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
     {
         private readonly CommandModel _model;
@@ -20,7 +18,7 @@ namespace Spectre.Cli.Internal
         public XmlDocCommand(IConfiguration configuration, CommandModel model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            _writer = (configuration?.Settings?.Console ?? new ConsoleSettings()).CreateConsole();
+            _writer = configuration.Settings.Console.GetConsole();
         }
 
         public sealed class Settings : CommandSettings

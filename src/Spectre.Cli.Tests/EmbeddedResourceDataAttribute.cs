@@ -39,9 +39,7 @@ namespace Spectre.Cli.Tests
             }
 
             var assembly = typeof(EmbeddedResourceDataAttribute).Assembly;
-#pragma warning disable CA1307 // Specify StringComparison
             resourceName = resourceName.Replace("/", ".");
-#pragma warning restore CA1307 // Specify StringComparison
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
