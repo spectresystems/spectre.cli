@@ -28,10 +28,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Setup dotnet
+    - name: Setup dotnet 5.0.100
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.301' # SDK Version to use.
+        dotnet-version: 5.0.100
 
     - name: Build
       shell: bash
@@ -69,10 +69,15 @@ jobs:
         run: git fetch --tags
         shell: bash
 
-      - name: Setup dotnet
+      - name: Setup dotnet 3.1.301
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
+
+      - name: Setup dotnet 5.0.100
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
 
       - name: Build
         shell: bash
@@ -99,10 +104,15 @@ jobs:
         run: git fetch --tags
         shell: bash
 
-      - name: Setup dotnet
+      - name: Setup dotnet 3.1.301
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
+
+      - name: Setup dotnet 5.0.100
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
 
       - name: Publish
         shell: bash

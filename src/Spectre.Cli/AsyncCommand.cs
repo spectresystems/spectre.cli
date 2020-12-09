@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Spectre.Cli
@@ -16,21 +15,18 @@ namespace Spectre.Cli
         public abstract Task<int> ExecuteAsync(CommandContext context);
 
         /// <inheritdoc/>
-        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         Task<int> ICommand<EmptyCommandSettings>.Execute(CommandContext context, EmptyCommandSettings settings)
         {
             return ExecuteAsync(context);
         }
 
         /// <inheritdoc/>
-        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
         {
             return ExecuteAsync(context);
         }
 
         /// <inheritdoc/>
-        [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types")]
         ValidationResult ICommand.Validate(CommandContext context, CommandSettings settings)
         {
             return ValidationResult.Success();

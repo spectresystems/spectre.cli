@@ -1,21 +1,23 @@
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Cli.Testing;
 using Spectre.Cli.Testing.Data.Commands;
 using Spectre.Cli.Testing.Data.Settings;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Cli.Tests
 {
     public sealed partial class CommandAppTests
     {
+        [UsesVerify]
         public sealed class Xml
         {
             /// <summary>
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
             /// </summary>
-            [Theory]
-            [EmbeddedResourceData("Spectre.Cli.Tests/Resources/Models/case1.xml")]
-            public void Should_Dump_Correct_Model_For_Case_1(string expected)
+            [Fact]
+            public Task Should_Dump_Correct_Model_For_Case_1()
             {
                 // Given
                 var fixture = new CommandAppFixture();
@@ -36,7 +38,7 @@ namespace Spectre.Cli.Tests
                 var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                output.ShouldBe(expected);
+                return Verifier.Verify(output);
             }
 
             /// <summary>

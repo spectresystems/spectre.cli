@@ -49,7 +49,7 @@ namespace Spectre.Cli.Internal
         {
             return _remaining
                 .SelectMany(pair => pair.Value, (pair, value) => new { pair.Key, value })
-                .ToLookup(pair => pair.Key, pair => pair.value);
+                .ToLookup(pair => pair.Key, pair => (string?)pair.value);
         }
     }
 }
