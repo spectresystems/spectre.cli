@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Cli
@@ -23,18 +22,6 @@ namespace Spectre.Cli
             : base(message, ex)
         {
             Pretty = pretty;
-        }
-
-        /// <summary>
-        /// Renders the exception using the specified <see cref="IAnsiConsole"/>.
-        /// </summary>
-        /// <param name="console">The console.</param>
-        public void Render(IAnsiConsole console)
-        {
-            if (Pretty != null)
-            {
-                console?.Render(Pretty);
-            }
         }
     }
 }
