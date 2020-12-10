@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Spectre.Cli.Exceptions;
+using Spectre.Console;
 
 namespace Spectre.Cli.Internal
 {
@@ -28,6 +31,25 @@ namespace Spectre.Cli.Internal
             var model = CommandModelBuilder.Build(configuration);
             _registrar.RegisterInstance(typeof(CommandModel), model);
             _registrar.RegisterDependencies(model);
+
+            // No default command?
+            if (model.DefaultCommand == null)
+            {
+                // Got at least one argument?
+                var firstArgument = args.FirstOrDefault();
+                if (firstArgument != null)
+                {
+                    // Asking for version? Kind of a hack, but it's alright.
+                    // We should probably make this a bit better in the future.
+                    if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
+                        firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var console = configuration.Settings.Console.GetConsole();
+                        console.WriteLine(VersionHelper.GetVersion(Assembly.GetEntryAssembly()));
+                        return Task.FromResult(0);
+                    }
+                }
+            }
 
             // Parse and map the model against the arguments.
             var parser = new CommandTreeParser(model, configuration.Settings);
