@@ -49,10 +49,17 @@ namespace Spectre.Cli.Internal
                 Description = description;
             }
 
-            public static IReadOnlyList<HelpOption> Get(CommandInfo? command)
+            public static IReadOnlyList<HelpOption> Get(CommandModel model, CommandInfo? command)
             {
                 var parameters = new List<HelpOption>();
                 parameters.Add(new HelpOption("h", "help", null, null, "Prints help information"));
+
+                // At the root and no default command?
+                if (command == null && model?.DefaultCommand == null)
+                {
+                    parameters.Add(new HelpOption("v", "version", null, null, "Prints version information"));
+                }
+
                 parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
                     new HelpOption(
                         o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
@@ -76,7 +83,7 @@ namespace Spectre.Cli.Internal
             result.AddRange(GetUsage(model, command));
             result.AddRange(GetExamples(model, command));
             result.AddRange(GetArguments(command));
-            result.AddRange(GetOptions(command));
+            result.AddRange(GetOptions(model, command));
             result.AddRange(GetCommands(model, container, isDefaultCommand));
 
             return result;
@@ -254,10 +261,10 @@ namespace Spectre.Cli.Internal
             return result;
         }
 
-        private static IEnumerable<IRenderable> GetOptions(CommandInfo? command)
+        private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command)
         {
             // Collect all options into a single structure.
-            var parameters = HelpOption.Get(command);
+            var parameters = HelpOption.Get(model, command);
             if (parameters.Count == 0)
             {
                 return Array.Empty<IRenderable>();

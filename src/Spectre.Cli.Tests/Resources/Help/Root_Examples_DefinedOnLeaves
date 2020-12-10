@@ -6,7 +6,8 @@ EXAMPLES:
     myapp animal horse --name Brutus
 
 OPTIONS:
-    -h, --help    Prints help information
+    -h, --help       Prints help information
+    -v, --version    Prints version information
 
 COMMANDS:
     animal    The animal command
