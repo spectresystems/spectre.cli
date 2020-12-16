@@ -35,10 +35,10 @@ namespace Spectre.Cli
         /// <param name="remaining">The remaining arguments.</param>
         /// <param name="name">The command name.</param>
         /// <param name="data">The command data.</param>
-        internal CommandContext(IRemainingArguments remaining, string name, object? data)
+        public CommandContext(IRemainingArguments remaining, string name, object? data)
         {
-            Remaining = remaining;
-            Name = name;
+            Remaining = remaining ?? throw new System.ArgumentNullException(nameof(remaining));
+            Name = name ?? throw new System.ArgumentNullException(nameof(name));
             Data = data;
         }
     }
