@@ -1,4 +1,0 @@
-﻿Error: Expected an option value.
-
-       dog --foo=
-                 ^ Did you forget the option value?
